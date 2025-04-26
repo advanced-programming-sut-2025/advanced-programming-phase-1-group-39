@@ -1,7 +1,5 @@
 package models.cropsAndFarming;
 
-import models.Item;
-
 import java.util.ArrayList;
 
 class Plant {
@@ -9,15 +7,29 @@ class Plant {
     Seed seed;
 
     ArrayList<Integer> stages;
-    int currentStage = 0;
+    int currentStage;
 
-    int daysWithoutWater = 0;
-    boolean isWateredToday = false;
+    int daysWithoutWater;
+    boolean isWateredToday;
 
-    boolean hasFertilizer = false;
+    boolean hasFertilizer;
 
     boolean oneTimeHarvest;
     Integer regrowthTime;
     boolean canBecomeGiant;
+
+    public Plant(Crop product, Seed seed, ArrayList<Integer> stages,
+                 boolean oneTimeHarvest, int regrowthTime, boolean canBecomeGiant) {
+        this.product = product;
+        this.seed = seed;
+        this.stages = stages;
+        this.currentStage = 0;
+        this.daysWithoutWater = 0;
+        this.isWateredToday = false;
+        this.hasFertilizer = false;
+        this.oneTimeHarvest = oneTimeHarvest;
+        this.regrowthTime = regrowthTime;
+        this.canBecomeGiant = canBecomeGiant;
+    }
 }
 

@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Item;
+import models.cropsAndFarming.CropManager;
 import models.map.Map;
 import models.Result;
 
@@ -50,7 +51,13 @@ public class GameMenuController {
     public static Result upgradeTool(Matcher matcher) {return null;}
     public static Result useTool(Matcher matcher) {return null;}
 
-    public static Result showCraftInfo(Matcher matcher) {return null;}
+    public static Result showCraftInfo(Matcher matcher) {
+        if (matcher.matches()) {
+            return new Result(true, CropManager.getCropInfo(matcher.group(1)));
+        } else {
+            return new Result(false, "invalid command");
+        }
+    }
 
     public static Result plant(Matcher matcher) {return null;}
     public static Result showPlant(Matcher matcher) {return null;}

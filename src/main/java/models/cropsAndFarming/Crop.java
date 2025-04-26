@@ -8,6 +8,12 @@ public abstract class Crop extends Item {
     int baseSellPrice;
     boolean canBeEaten;
     int baseEnergy;
+    int baseHealth;
     Season season;
+
+
+    public Crop(String name) {
+        super(name);
+    }
 }
 

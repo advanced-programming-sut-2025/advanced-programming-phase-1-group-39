@@ -1,0 +1,129 @@
+[
+  {
+    "mapTypeId": 1,
+    "mapName": "Farm 1",
+    "description": "A Farm for Mining Lovers!",
+    "dimensions": {
+      "w": 80,
+      "h": 50
+    },
+    "fixedElements": {
+      "cabin": {
+        "x": 70,
+        "y": 5,
+        "w": 4,
+        "h": 4
+      },
+      "greenhouse": {
+        "x": 25,
+        "y": 0,
+        "w": 6,
+        "h": 7
+      },
+      "quarry": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "lakes": [
+        {
+          "id": "main_lake",
+          "x": 40,
+          "y": 40,
+          "w": 10,
+          "h": 8,
+          "emptyTiles" : [
+            {
+              "x": 40,
+              "y": 40
+            },{
+              "x": 50,
+              "y": 40
+            },{
+              "x": 40,
+              "y": 48
+            },{
+              "x": 50,
+              "y": 48
+            }
+          ]
+        }
+      ]
+    }
+  },{
+    "mapTypeId": 2,
+    "mapName": "Farm 2",
+    "description": "A Farm for Fishing Lovers!",
+    "dimensions": {
+      "w": 80,
+      "h": 50
+    },
+    "fixedElements": {
+      "cabin": {
+        "x": 70,
+        "y": 5,
+        "w": 4,
+        "h": 4
+      },
+      "greenhouse": {
+        "x": 25,
+        "y": 0,
+        "w": 6,
+        "h": 7
+      },
+      "quarry": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "lakes": [
+        {
+          "id": "main_lake",
+          "x": 40,
+          "y": 40,
+          "w": 10,
+          "h": 8,
+          "emptyTiles" : [
+            {
+              "x": 40,
+              "y": 40
+            },{
+              "x": 50,
+              "y": 40
+            },{
+              "x": 40,
+              "y": 48
+            },{
+              "x": 50,
+              "y": 48
+            }
+          ]
+        },
+        {
+          "id": "small_lake",
+          "x": 65,
+          "y": 25,
+          "w": 6,
+          "h": 6,
+          "emptyTiles" : [
+            {
+              "x": 71,
+              "y": 31
+            },{
+              "x": 70,
+              "y": 31
+            },{
+              "x": 71,
+              "y": 30
+            },{
+              "x": 71,
+              "y": 25
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

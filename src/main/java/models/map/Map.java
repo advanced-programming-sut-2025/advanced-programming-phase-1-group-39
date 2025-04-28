@@ -3,8 +3,10 @@ package models.map;
 public class Map {
     private int width, height;
     private Tile[][] tiles;
-    // TODO: sell baskets
 
+    private void readMapData() {
+
+    }
 
     private void initializeTiles() {}
 

@@ -5,8 +5,8 @@ import models.Enums.Season;
 import java.util.ArrayList;
 
 public class CropData {
-    public String cropName;
-    public String seedName;
+    public String name;
+    public String source;
     public ArrayList<Integer> stages;
     public int totalHarvestTime;
     public boolean oneTimeHarvest;
@@ -21,8 +21,8 @@ public class CropData {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Name: " + cropName + "\n");
-        sb.append("Suorce: " + seedName + "\n");
+        sb.append("Name: " + name + "\n");
+        sb.append("Suorce: " + source + "\n");
         sb.append("Stages: " + stages + "\n");
         sb.append("Total Harvest Time: " + totalHarvestTime + "\n");
         sb.append("One Time Harvest: " + oneTimeHarvest + "\n");

@@ -6,7 +6,7 @@ public class ArtisanGood extends Item {
     int energy;
 
     public ArtisanGood(String name, int baseSellPrice, int energy) {
-        super(name, baseSellPrice);
+        super(name);
         this.energy = energy;
     }
 }

@@ -11,7 +11,5 @@ public class Map {
     public void printMap(int centerX, int centerY, int size) {}
 
     public void fillRandom(){};
-
-
 }
 

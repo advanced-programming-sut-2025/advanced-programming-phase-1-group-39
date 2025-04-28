@@ -1,7 +1,7 @@
 [
   {
     "mapTypeId": 1,
-    "mapName": "Farm 1",
+    "mapType": "mine farm",
     "description": "A Farm for Mining Lovers!",
     "dimensions": {
       "w": 80,
@@ -53,7 +53,7 @@
     }
   },{
     "mapTypeId": 2,
-    "mapName": "Farm 2",
+    "mapType": "lake farm",
     "description": "A Farm for Fishing Lovers!",
     "dimensions": {
       "w": 80,

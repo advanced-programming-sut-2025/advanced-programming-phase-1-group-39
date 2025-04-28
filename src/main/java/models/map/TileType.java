@@ -1,14 +1,11 @@
 package models.map;
 
 public enum TileType {
-    EMPTY('.', true),
-    TREE('T', false),
-    ROCK('R', false),
-    LAKE('~', false),
-    GREENHOUSE('G', false),
-    CABIN('C', false),
-    FORAGE('F', true),
-    QUARRY('Q', false);
+    SOIL('.', true),
+    WATER('~', false),
+    WALL('O', false),
+    QUARRY('Q', true),
+    SELL_BASKET('B', false),;
 
     private final char symbol;
     private final boolean walkable;

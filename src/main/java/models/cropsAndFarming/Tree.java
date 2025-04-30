@@ -26,7 +26,7 @@ public class Tree{
     boolean hasFruit = false;
 
 
-    public Tree(String name, Seed source, ArrayList<Integer> stages, int currentStage, int totalHarvestTime,
+    public Tree(String name, Seed source, ArrayList<Integer> stages, int totalHarvestTime,
                 String fruitName, int fruitHarvestCycle, int fruitBaseSellPrice, boolean isFruitEdible,
                 Integer fruitEnergy, Integer fruitHealth, Season[] seasons) {
         this.name = name;
@@ -61,33 +61,6 @@ public class Tree{
         if (!isBurnt) {
 
         }
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append(name);
-        str.append("\n");
-        str.append(stages);
-        str.append("\n");
-        str.append(currentStage);
-        str.append("\n");
-        str.append(totalHarvestTime);
-        str.append("\n");
-        str.append(fruitName);
-        str.append("\n");
-        str.append(fruitHarvestCycle);
-        str.append("\n");
-        str.append(fruitBaseSellPrice);
-        str.append("\n");
-        str.append(isFruitEdible);
-        str.append("\n");
-        str.append(fruitEnergy);
-        str.append("\n");
-        str.append(fruitHealth);
-        str.append("\n");
-        str.append(Arrays.toString(seasons));
-        str.append("\n");
-        return str.toString();
+        return null;
     }
 }

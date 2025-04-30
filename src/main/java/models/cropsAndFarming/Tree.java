@@ -9,9 +9,10 @@ import java.util.List;
 
 public class Tree{
     private String name;
-    private Seed source; //seed
+    private Seed source;
     private ArrayList<Integer> stages = new ArrayList<>();
     private int currentStage;
+    private int daysOfCurrentStage;
     private int totalHarvestTime;
     private String fruitName;
     private int fruitHarvestCycle;
@@ -19,8 +20,7 @@ public class Tree{
     private boolean isFruitEdible;
     private Integer fruitEnergy;
     private Integer fruitHealth;
-    private Season[] seasons; // season
-    //int maxGrowthStage;
+    private Season[] seasons;
 
     boolean isBurnt = false;
     boolean hasFruit = false;
@@ -33,6 +33,7 @@ public class Tree{
         this.source = source;
         this.stages = stages;
         this.currentStage = 0;
+        this.daysOfCurrentStage = stages.get(currentStage);
         this.totalHarvestTime = totalHarvestTime;
         this.fruitName = fruitName;
         this.fruitHarvestCycle = fruitHarvestCycle;
@@ -51,10 +52,16 @@ public class Tree{
         return source;
     }
 
-    public void grow() {}
+    public void grow() {
+
+    }
     public void updateDaily() {}
-    public void hitByLightning() {isBurnt = true;}
-    public ArrayList<Item> cutDown() {return null;}
+    public void burn() {isBurnt = true;}
+    public ArrayList<Item> cutDown() {
+        if (!isBurnt) {
+
+        }
+    }
 
     @Override
     public String toString() {
@@ -82,7 +89,5 @@ public class Tree{
         str.append(Arrays.toString(seasons));
         str.append("\n");
         return str.toString();
-
-
     }
 }

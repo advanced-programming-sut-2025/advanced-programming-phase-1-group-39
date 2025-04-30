@@ -2,7 +2,7 @@ package models.cropsAndFarming;
 
 import java.util.ArrayList;
 
-class Plant {
+public class Plant {
     Crop product;
     Seed seed;
 

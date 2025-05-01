@@ -7,10 +7,6 @@ import java.util.Arrays;
 public class ForagingCrop extends Crop {
     private ForagingSource source;
 
-    public ForagingCrop(String name) {
-        super(name);
-    }
-
     public ForagingCrop(String name, int baseSellPrice, int energy, ForagingSource source, Season[] seasons) {
         super(name);
         this.baseSellPrice = baseSellPrice;
@@ -28,7 +24,7 @@ public class ForagingCrop extends Crop {
     public String toString() {
         return "ForagingCrop{" +
                 "source=" + source +
-                ", name='" + name + '\'' +
+                ", name='" + getName() + '\'' +
                 ", baseSellPrice=" + baseSellPrice +
                 ", canBeEaten=" + canBeEaten +
                 ", baseEnergy=" + baseEnergy +
@@ -38,7 +34,7 @@ public class ForagingCrop extends Crop {
     }
 
     @Override
-    protected Object clone(){
+    protected ForagingCrop clone(){
         return new ForagingCrop(this.name, this.baseSellPrice, this.baseEnergy, this.source, this.seasons);
     }
 }

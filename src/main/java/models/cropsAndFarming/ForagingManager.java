@@ -32,7 +32,6 @@ public class ForagingManager {
                         data.seasons
                 );
                 foragingCrops.put(data.name, crop);
-                System.out.println(crop);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,7 +58,6 @@ public class ForagingManager {
                         data.seasons
                 );
                 foragingSeeds.put(data.name, seed);
-                System.out.println(seed);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,7 +82,6 @@ public class ForagingManager {
                         data.sellPrice
                 );
                 foragingMinerals.put(data.name, mineral);
-                System.out.println(mineral);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,5 +93,26 @@ public class ForagingManager {
         int sellPrice;
     }
 
+    public static ForagingCrop getRandomCrop() {
+        if (foragingCrops.isEmpty()) return null;
 
+        ArrayList<ForagingCrop> values = new ArrayList<>(foragingCrops.values());
+        int randomIndex = (int) (Math.random() * values.size());
+        return values.get(randomIndex).clone();
+    }
+    public static ForagingSeed getRandomSeed() {
+        if (foragingSeeds.isEmpty()) return null;
+
+        ArrayList<ForagingSeed> values = new ArrayList<>(foragingSeeds.values());
+        int randomIndex = (int) (Math.random() * values.size());
+        return values.get(randomIndex).clone();
+    }
+    public static ForagingMineral getRandomMineral() {
+        if (foragingMinerals.isEmpty()) return null;
+
+        ArrayList<ForagingMineral> values = new ArrayList<>(foragingMinerals.values());
+        int randomIndex = (int) (Math.random() * values.size());
+        System.out.println(values.get(randomIndex));
+        return values.get(randomIndex).clone();
+    }
 }

@@ -1,11 +1,12 @@
 import models.cropsAndFarming.CropManager;
+import models.cropsAndFarming.ForagingManager;
 import models.cropsAndFarming.TreeManager;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        TreeManager.loadTrees("src/main/java/models/cropsAndFarming/trees.json");
-        System.out.println(TreeManager.getTreeInfo("Mahogany Seeds"));
+        ForagingManager.loadMinerals("src/main/java/models/cropsAndFarming/ForagingMinerals.json");
+        ForagingManager.getRandomMineral();
     }
 }

@@ -22,14 +22,15 @@ public class ForagingMineral extends Item {
     @Override
     public String toString() {
         return "ForagingMineral{" +
-                "source=" + source +
+                "name='" + name + '\'' +
                 ", baseSellPrice=" + baseSellPrice +
-                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", source=" + source +
                 '}';
     }
 
     @Override
-    protected Object clone(){
-        return new ForagingMineral(this.name, this.description, this.baseSellPrice);
+    protected ForagingMineral clone(){
+        return new ForagingMineral(this.getName(), this.description, this.baseSellPrice);
     }
 }

@@ -26,6 +26,6 @@ public class ForagingSeed extends Seed{
 
     @Override
     public ForagingSeed clone() {
-        return new ForagingSeed(this.getName(), this.getSeasons().clone());
+        return new ForagingSeed(this.getName(), this.seasons);
     }
 }

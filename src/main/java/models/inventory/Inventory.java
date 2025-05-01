@@ -1,17 +1,17 @@
 package models.inventory;
 
 import models.Item;
+import models.ItemStack;
 
 import java.util.HashMap;
 
 
 public class Inventory {
     InventoryType type;
-    //ToDO: change
-    HashMap<Item, Integer> inventoryItems;
+    ItemStack inventoryItems;
     TrashType trashType;
 
-    Item inHand;
+    ItemStack inHand;
 
     public String showInventory() {return null;}
 

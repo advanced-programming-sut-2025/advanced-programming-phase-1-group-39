@@ -8,14 +8,15 @@ public class User {
     private boolean isMale;
     private SecurityQuestion securityQuestion;
 
-    Player player;
+    Player player = new Player();
 
-    public User(String userName, String password, String nickname, String email, boolean isMale) {
+    public User(String userName, String password, String nickname, String email, boolean isMale, SecurityQuestion securityQuestion) {
         this.userName = userName;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
         this.isMale = isMale;
+        this.securityQuestion = securityQuestion;
     }
 
     public void setUserName(String userName) {

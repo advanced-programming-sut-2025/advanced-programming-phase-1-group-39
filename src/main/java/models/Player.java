@@ -14,8 +14,8 @@ import java.util.HashMap;
 
 public class Player {
     Location location;
-    int energy;
-    Skill skills;
+    int energy = 100;
+    Skill skills = new Skill();
     Inventory inventory;
 
 

@@ -93,6 +93,27 @@ public class ForagingManager {
         int sellPrice;
     }
 
+
+    public static ForagingCrop getCropByName(String name) {
+        if (foragingCrops.containsKey(name)) {
+            return foragingCrops.get(name).clone();
+        }
+        return null;
+    }
+    public static ForagingSeed getSeedByName(String name) {
+        if (foragingSeeds.containsKey(name)) {
+            return foragingSeeds.get(name).clone();
+        }
+        return null;
+    }
+    public static ForagingMineral getMineralByName(String name) {
+        if (foragingMinerals.containsKey(name)) {
+            return foragingMinerals.get(name).clone();
+        }
+        return null;
+    }
+
+
     public static ForagingCrop getRandomCrop() {
         if (foragingCrops.isEmpty()) return null;
 

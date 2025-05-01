@@ -96,8 +96,7 @@ public class Tree{
         if (!isBurnt) {
             return new ItemStack(source, 1);
         } else {
-            //Todo: return coal
+            return new ItemStack(ForagingManager.getMineralByName("Coal"), 5);
         }
-        return null;
     }
 }

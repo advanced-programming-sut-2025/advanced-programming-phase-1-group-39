@@ -1,13 +1,22 @@
 package views;
 
+import controllers.AppControllers;
+import controllers.GameController;
 import models.Enums.commands.GameCommands;
+
+import java.util.regex.Matcher;
 
 public class GameMenuView implements View {
 
     @Override
     public boolean checkCommand(String command) {
+        GameController controller = AppControllers.gameController;
 
-        if (GameCommands.PRINT_MAP.getMatcher(command) != null) {
+        Matcher matcher;
+
+        if ((matcher = GameCommands.PRINT_MAP.getMatcher(command)) != null) {
+            System.out.println(controller.printMap(matcher));
+        } else if (GameCommands.HELP_READING_MAP.getMatcher(command) != null) {
             System.out.println();
         }
 

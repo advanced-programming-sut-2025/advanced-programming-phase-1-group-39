@@ -1,6 +1,7 @@
 package models.map;
 
 import models.Item;
+import models.ItemStack;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.Plant;
 import models.cropsAndFarming.Tree;
@@ -38,6 +39,14 @@ public class Tile {
             c = 'T';
         }
         return c;
+    }
+
+    public void removePlant() {
+        plant = null;
+    }
+    public void cutDownTree() {
+        ItemStack items = tree.cutDown();
+        tree = null;
     }
 
     public boolean canPlant() {

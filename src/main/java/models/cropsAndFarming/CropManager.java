@@ -35,7 +35,6 @@ public class CropManager {
 
         FarmingProduct product = new FarmingProduct(
                 data.name,
-                tile,
                 data.baseSellPrice,
                 data.isEdible,
                 data.baseEnergy,
@@ -46,7 +45,7 @@ public class CropManager {
 
         Seed seed = new Seed(data.source, data.seasons);
 
-        Plant plant = new Plant(product, seed, data.stages, data.oneTimeHarvest, data.regrowthTime, data.canBecomeGiant);
+        Plant plant = new Plant(tile, product, seed, data.stages, data.oneTimeHarvest, data.regrowthTime, data.canBecomeGiant);
 
         return plant;
     }

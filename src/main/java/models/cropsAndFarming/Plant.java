@@ -1,10 +1,13 @@
 package models.cropsAndFarming;
 
 import models.ItemStack;
+import models.map.Tile;
 
 import java.util.ArrayList;
 
 public class Plant {
+    Tile tile;
+
     Seed seed;
     Crop product;
     int productStack;
@@ -24,8 +27,9 @@ public class Plant {
 
     boolean hasCrop;
 
-    public Plant(Crop product, Seed seed, ArrayList<Integer> stages,
+    public Plant(Tile tile, Crop product, Seed seed, ArrayList<Integer> stages,
                  boolean oneTimeHarvest, int regrowthTime, boolean canBecomeGiant) {
+        this.tile = tile;
         this.product = product;
         this.productStack = 0;
         this.seed = seed;
@@ -78,9 +82,9 @@ public class Plant {
         if (!hasCrop) {return null;}
 
         if (oneTimeHarvest) {
-            // Todo: remove plant
             productStack = 0;
             hasCrop = false;
+            tile.removePlant();
             return new ItemStack(product, productStack);
         } else {
             productStack = 0;

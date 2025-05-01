@@ -115,4 +115,17 @@ public class ForagingManager {
         System.out.println(values.get(randomIndex));
         return values.get(randomIndex).clone();
     }
+
+    public static String showForagingInfo(String name) {
+        if (foragingCrops.containsKey(name)) {
+            return foragingCrops.get(name).toString();
+        }
+        if (foragingSeeds.containsKey(name)) {
+            return foragingSeeds.get(name).toString();
+        }
+        if (foragingMinerals.containsKey(name)) {
+            return foragingMinerals.get(name).toString();
+        }
+        return name + " doesn't exist";
+    }
 }

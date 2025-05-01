@@ -1,18 +1,22 @@
 package models.map;
 
 public enum TileType {
-    EMPTY('.', true),
-    TREE('T', false),
-    ROCK('R', false),
-    LAKE('~', false),
-    GREENHOUSE('G', false),
-    CABIN('C', false),
-    FORAGE('F', true),
-    QUARRY('Q', false);
+    SOIL('.', true),
+    WATER('~', false),
+    WALL('O', false),
+    INDOOR('*', true),
+    DESTROYED('×', false),
+    QUARRY('Q', true),
+    SELL_BASKET('B', false),
+    DISABLE(' ', false),
+    ;
 
     private final char symbol;
     private final boolean walkable;
 
+    private boolean canPlant = false;
+    private boolean isWatered = false;
+    private boolean isFertalized = false;
 
     TileType(char symbol, boolean walkable) {
         this.symbol = symbol;
@@ -20,5 +24,14 @@ public enum TileType {
     }
 
     public boolean isWalkable() { return walkable; }
-}
 
+    public void setCanPlant() { canPlant = true; }
+    public void setIsFertalized() { isFertalized = true; }
+    public void setIsWatered() { isWatered = true; }
+
+    public boolean canPlant() { return canPlant; }
+    public boolean isFertalized() { return isFertalized; }
+    public boolean isWatered() { return isWatered; }
+
+    public char getSymbol() { return symbol; }
+}

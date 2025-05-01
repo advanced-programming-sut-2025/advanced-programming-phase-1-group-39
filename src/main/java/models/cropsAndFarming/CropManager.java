@@ -42,7 +42,7 @@ public class CropManager {
                 data.canBecomeGiant
         );
 
-        Seed seed = new Seed(data.source);
+        Seed seed = new Seed(data.source, data.seasons);
 
         Plant plant = new Plant(product, seed, data.stages, data.oneTimeHarvest, data.regrowthTime, data.canBecomeGiant);
 

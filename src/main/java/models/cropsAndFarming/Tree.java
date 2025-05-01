@@ -2,6 +2,7 @@ package models.cropsAndFarming;
 
 import models.Enums.Season;
 import models.Item;
+import models.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +16,10 @@ public class Tree{
     private int daysOfCurrentStage;
     private int totalHarvestTime;
     private String fruitName;
+    private FarmingProduct fruit;
+    private int fruitStack;
     private int fruitHarvestCycle;
+    private int fruitIntervalDays;
     private int fruitBaseSellPrice;
     private boolean isFruitEdible;
     private Integer fruitEnergy;
@@ -37,6 +41,8 @@ public class Tree{
         this.totalHarvestTime = totalHarvestTime;
         this.fruitName = fruitName;
         this.fruitHarvestCycle = fruitHarvestCycle;
+        this.fruitIntervalDays = 0;
+        this.fruitStack = 0;
         this.fruitBaseSellPrice = fruitBaseSellPrice;
         this.isFruitEdible = isFruitEdible;
         this.fruitEnergy = fruitEnergy;
@@ -52,14 +58,36 @@ public class Tree{
         return source;
     }
 
-    public void grow() {
-
+    public ItemStack harvest() {
+        if (hasFruit) {
+            return new ItemStack(fruit, fruitStack);
+        }
+        return null;
     }
-    public void updateDaily() {}
-    public void burn() {isBurnt = true;}
-    public ArrayList<Item> cutDown() {
-        if (!isBurnt) {
+    public void updateDaily() {
+        if (isBurnt) {return;}
 
+        if (currentStage < stages.size()) {
+            daysOfCurrentStage --;
+            if (daysOfCurrentStage <= 0) {
+                daysOfCurrentStage = 0;
+                currentStage++;
+            }
+        } else {
+            fruitIntervalDays++;
+            if (fruitIntervalDays >= fruitHarvestCycle) {
+                fruitIntervalDays = 0;
+                hasFruit = true;
+                fruitStack++;
+            }
+        }
+    }
+    public void burn() {isBurnt = true;}
+    public ItemStack cutDown() {
+        if (!isBurnt) {
+            return new ItemStack(source, 1);
+        } else {
+            //Todo: return coal
         }
         return null;
     }

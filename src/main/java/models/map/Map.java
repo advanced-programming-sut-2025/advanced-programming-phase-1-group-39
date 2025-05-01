@@ -169,8 +169,8 @@ public class Map {
 
     public String printCharMapBySize(int x, int y, int size) {
         StringBuilder text = new StringBuilder();
-        for (int i = y - size/2; i <= y + size - size/2; i++) {
-            for (int j = x - size/2; j <= x + size - size/2; j++) {
+        for (int i = y - size/2; i < y + size - size/2; i++) {
+            for (int j = x - size/2; j < x + size - size/2; j++) {
                 if (i < 0 || i > height || j < 0 || j > width) {continue;}
                 text.append(tiles[i][j].getSymbol() + " ");
             }

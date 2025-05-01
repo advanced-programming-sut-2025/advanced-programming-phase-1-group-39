@@ -45,8 +45,8 @@ public class Tile {
     }
 
     public void plantSeed(String seedName) {
-        Plant newPlant = CropManager.createPlantBySeed(seedName);
-        Tree newTree = TreeManager.getTreeBySeedName(seedName);
+        Plant newPlant = CropManager.createPlantBySeed(seedName, this);
+        Tree newTree = TreeManager.getTreeBySeedName(seedName, this);
         if (newPlant != null) {
             this.plant = plant;
         } else if (newTree != null) {

@@ -3,6 +3,7 @@ package models.cropsAndFarming;
 import models.Enums.Season;
 import models.Item;
 import models.ItemStack;
+import models.map.Tile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class Tree{
     private String name;
+    private Tile tile;
     private Seed source;
     private ArrayList<Integer> stages = new ArrayList<>();
     private int currentStage;
@@ -30,10 +32,11 @@ public class Tree{
     boolean hasFruit = false;
 
 
-    public Tree(String name, Seed source, ArrayList<Integer> stages, int totalHarvestTime,
+    public Tree(String name, Tile tile, Seed source, ArrayList<Integer> stages, int totalHarvestTime,
                 String fruitName, int fruitHarvestCycle, int fruitBaseSellPrice, boolean isFruitEdible,
                 Integer fruitEnergy, Integer fruitHealth, Season[] seasons) {
         this.name = name;
+        this.tile = tile;
         this.source = source;
         this.stages = stages;
         this.currentStage = 0;

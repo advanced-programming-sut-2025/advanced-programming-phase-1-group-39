@@ -2,6 +2,7 @@ package models.cropsAndFarming;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import models.map.Tile;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,13 +27,13 @@ public class TreeManager {
         }
     }
 
-    public static Tree getTreeBySeedName(String seedName) {
+    public static Tree getTreeBySeedName(String seedName, Tile tile) {
         TreeData data = trees.get(seedName);
         if (data == null) {
             return null;
         }
 
-        Tree tree = new Tree(data.name, data.source, data.stages, data.totalHarvestTime, data.fruitName, data.fruitHarvestCycle,
+        Tree tree = new Tree(data.name, tile, data.source, data.stages, data.totalHarvestTime, data.fruitName, data.fruitHarvestCycle,
                 data.fruitBaseSellPrice, data.isFruitEdible, data.fruitEnergy, data.fruitHealth, data.seasons);
 
         return tree;

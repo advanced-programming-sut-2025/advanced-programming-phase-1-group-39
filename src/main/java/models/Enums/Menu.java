@@ -1,30 +1,33 @@
 package models.Enums;
 
-import views.AppMenu;
+import views.*;
 
 public enum Menu {
-    LOGIN_MENU("login menu"),
-    MAIN_MENU("main menu"),
-    PROFILE_MENU("profile menu"),
-    GAME_MENU("game menu"),
-    GAME("game");
+    LOGIN_MENU("login menu", new LoginMenuView()),
+    MAIN_MENU("main menu", new MainMenuView()),
+    PROFILE_MENU("profile menu", new ProfileMenuView()),
+    GAME_MENU("game menu", new GameMenuView()),
+    GAME("game", new GameView()),
+    ExitMenu("exit", null);
 
-    private AppMenu menuView;
+    private View menuView;
     private String name;
 
-    Menu(String name) {
+    Menu(String name, View menuView) {
         this.name = name;
     }
 
-    public boolean checkInput(String input) {
-        return menuView.checkCommand(input);
-    }
 
-    public void setMenuView(AppMenu menuView) {
+    public void setMenuView(View menuView) {
         this.menuView = menuView;
     }
 
-    public AppMenu getMenuView() {
+    public void checkInput(String input) {
+        menuView.checkCommand(input);
+
+    }
+
+    public View getMenuView() {
         return menuView;
     }
 

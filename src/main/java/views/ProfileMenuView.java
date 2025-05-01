@@ -1,6 +1,6 @@
 package views;
 
-public class LoginMenuView implements View {
+public class ProfileMenuView implements View {
 
     @Override
     public void checkCommand(String command) {

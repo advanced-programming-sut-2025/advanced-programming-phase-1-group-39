@@ -1,5 +1,9 @@
 package views;
 
-public class LoginMenuView {
+public class LoginMenuView implements View {
 
+    @Override
+    public boolean checkCommand(String command) {
+        return false;
+    }
 }

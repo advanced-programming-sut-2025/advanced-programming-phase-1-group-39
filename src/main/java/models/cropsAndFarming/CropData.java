@@ -3,6 +3,7 @@ package models.cropsAndFarming;
 import models.Enums.Season;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CropData {
     public String name;
@@ -15,7 +16,7 @@ public class CropData {
     public boolean isEdible;
     public int baseEnergy;
     public int baseHealth;
-    public Season season;
+    public Season[] seasons;
     public boolean canBecomeGiant;
 
     @Override
@@ -31,7 +32,7 @@ public class CropData {
         sb.append("isEdible: " + isEdible + "\n");
         sb.append("Base Energy: " + baseEnergy + "\n");
         sb.append("Base Health: " + baseHealth + "\n");
-        sb.append("Season: " + season + "\n");
+        sb.append("Season: " + Arrays.toString(seasons) + "\n");
         sb.append("Can Become Giant: " + canBecomeGiant + "\n");
         return sb.toString();
     }

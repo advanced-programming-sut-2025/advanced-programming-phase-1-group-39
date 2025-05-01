@@ -8,7 +8,6 @@ public class foragingProduct extends Crop {
     ForagingSource source;
     boolean isSpawnableInLand;
     boolean isSpawnableInMine;
-    ArrayList<Season> seasons;
 
     public foragingProduct(String name) {
         super(name);

@@ -38,7 +38,7 @@ public class CropManager {
                 data.isEdible,
                 data.baseEnergy,
                 data.baseHealth,
-                data.season,
+                data.seasons,
                 data.canBecomeGiant
         );
 

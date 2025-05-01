@@ -60,6 +60,8 @@ public class Tree{
 
     public ItemStack harvest() {
         if (hasFruit) {
+            fruitStack = 0;
+            hasFruit = false;
             return new ItemStack(fruit, fruitStack);
         }
         return null;
@@ -70,8 +72,12 @@ public class Tree{
         if (currentStage < stages.size()) {
             daysOfCurrentStage --;
             if (daysOfCurrentStage <= 0) {
-                daysOfCurrentStage = 0;
-                currentStage++;
+                if (currentStage + 1 < stages.size()) {
+                    currentStage++;
+                    daysOfCurrentStage = stages.get(currentStage);
+                } else {
+                    daysOfCurrentStage = 0;
+                }
             }
         } else {
             fruitIntervalDays++;

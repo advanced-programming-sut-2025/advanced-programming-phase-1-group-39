@@ -73,7 +73,7 @@ public class Map {
                     startY = Constants.WORLD_MAP_HEIGHT - Constants.FARM_HEIGHT;
                     break;
             }
-
+            // fixeds
             JsonObject fixedElements = farmObject.getAsJsonObject("fixedElements");
             // adding cabin, greenhouse, main lake
             JsonObject cabin = fixedElements.getAsJsonObject("cabin");
@@ -88,13 +88,14 @@ public class Map {
             JsonArray lakes = fixedElements.getAsJsonArray("lakes");
             JsonObject mainLake = lakes.get(0).getAsJsonObject();
             addObjectToMap(mainLake, "lake", startX, startY);
-
-
             // add small lake
             if (farmType == FarmType.LAKE_FARM) {
                 JsonObject smallLake = lakes.get(1).getAsJsonObject();
                 addObjectToMap(smallLake, "lake", startX, startY);
             }
+
+            // random fill map
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,8 +126,8 @@ public class Map {
             }
 
             JsonObject door = object.getAsJsonObject("door");
-            int doorX = door.get("x").getAsInt();
-            int doorY = door.get("y").getAsInt();
+            int doorX = door.get("x").getAsInt() + startX;
+            int doorY = door.get("y").getAsInt() + startY;
             tiles[doorY][doorX].setType(TileType.INDOOR);
         }
         else if (type.equals("quarry")) {
@@ -147,8 +148,8 @@ public class Map {
 
             for (JsonElement element : emptyTiles) {
                 JsonObject tile = element.getAsJsonObject();
-                int tileX = tile.get("x").getAsInt();
-                int tileY = tile.get("y").getAsInt();
+                int tileX = tile.get("x").getAsInt() + startX;
+                int tileY = tile.get("y").getAsInt() + startY;
 
                 tiles[tileY][tileX].setType(TileType.SOIL);
             }

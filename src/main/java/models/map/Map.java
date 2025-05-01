@@ -5,7 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import models.Constants;
-import models.Enums.Direction;
 
 import java.io.FileReader;
 
@@ -189,7 +188,13 @@ public class Map {
                 + "Quarry : Q\n"
                 + "Lake : ~\n"
                 + "Plant : P\n"
-                + "Tree : T\n";
+                + "Tree : T\n"
+                + "Craft : C\n"
+                + "Artisan Machine : M\n";
+    }
+
+    public Tile getTile(int x, int y) {
+        return tiles[y][x];
     }
 }
 

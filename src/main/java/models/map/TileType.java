@@ -5,6 +5,7 @@ public enum TileType {
     WATER('~', false),
     WALL('O', false),
     INDOOR('*', true),
+    DESTROYED('×', false),
     QUARRY('Q', true),
     SELL_BASKET('B', false),
     DISABLE(' ', false),

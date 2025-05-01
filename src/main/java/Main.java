@@ -7,6 +7,6 @@ public class Main {
         map.addRandomFarm(FarmType.LAKE_FARM, 2);
         map.addRandomFarm(FarmType.MINE_FARM, 1);
         System.out.println(map.printWholeMap());
-        System.out.println(map.printCharMapBySize(0, 5, 10));
+        System.out.println(map.printCharMapBySize(8, 8, 6));
     }
 }

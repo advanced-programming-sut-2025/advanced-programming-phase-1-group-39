@@ -5,8 +5,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import models.Constants;
+import models.cropsAndFarming.ForagingCrop;
+import models.cropsAndFarming.ForagingManager;
 
 import java.io.FileReader;
+import java.util.Arrays;
+import java.util.List;
 
 public class Map {
     private final int width = Constants.WORLD_MAP_WIDTH, height = Constants.WORLD_MAP_HEIGHT;
@@ -155,6 +159,22 @@ public class Map {
         }
     }
 
+    private void fillFarmWithRandoms(int startX, int startY, int possibility) {
+        for (int i = startX; i < startX + Constants.FARM_WIDTH; i++) {
+            for (int j = startY; j < startY + Constants.FARM_HEIGHT; j++) {
+                Tile tile = tiles[j][i];
+
+                if (tile.getType() == TileType.SOIL) {
+                    if (Math.random() < 0.2) {
+                        ForagingCrop randomCrop = ForagingManager.getRandomCrop();
+                        tile.placeItem(randomCrop);
+                    }
+                }
+            }
+        }
+    }
+
+
     public String printWholeMap() {
         StringBuilder text = new StringBuilder();
         for (int i = 0; i < height; i++) {
@@ -180,17 +200,20 @@ public class Map {
         return text.toString();
     }
 
+    //Todo : Add printColorMap
+
     public String helpReadingMap() {
         return "Soil : .\n"
-                + "Water : w\n"
+                + "Water : ~\n"
                 + "Wall : O\n"
                 + "Indoor : *\n"
                 + "Quarry : Q\n"
-                + "Lake : ~\n"
                 + "Plant : P\n"
                 + "Tree : T\n"
                 + "Craft : C\n"
-                + "Artisan Machine : M\n";
+                + "Artisan Machine : M\n"
+                + "Stone : S\n"
+                + "Wood : W\n";
     }
 
     public Tile getTile(int x, int y) {

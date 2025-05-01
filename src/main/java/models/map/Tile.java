@@ -1,15 +1,17 @@
 package models.map;
 
 import models.Item;
+import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.Plant;
 import models.cropsAndFarming.Tree;
+import models.cropsAndFarming.TreeManager;
 
 import java.util.ArrayList;
 
 public class Tile {
     int x, y;
     private TileType type = TileType.SOIL;
-    private ArrayList<Item> itemsOnTile = new ArrayList<>();
+    private Item itemOnTile = null;
 
     private Plant plant = null;
     private Tree tree = null;
@@ -39,6 +41,8 @@ public class Tile {
             c = 'P';
         } else if (tree != null) {
             c = 'T';
+        } else if (itemOnTile != null) {
+
         }
         return c;
     }
@@ -50,5 +54,20 @@ public class Tile {
     public boolean canPlant() { return canPlant; }
     public boolean isFertilized() { return isFertilized; }
     public boolean isWatered() { return isWatered; }
+
+    //planting
+    public void plantSeed(String seedName) {
+        Plant newPlant = CropManager.createPlantBySeed(seedName);
+        Tree newTree = TreeManager.getTreeBySeedName(seedName);
+        if (newPlant != null) {
+            this.plant = plant;
+        } else if (newTree != null) {
+            this.tree = tree;
+        }
+    }
+
+    public void placeItem(Item item) {
+        this.itemOnTile = item;
+    }
 }
 

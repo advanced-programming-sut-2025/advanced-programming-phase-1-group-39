@@ -1,8 +1,10 @@
 package models.map;
 
 import models.Item;
+import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.Plant;
 import models.cropsAndFarming.Tree;
+import models.cropsAndFarming.TreeManager;
 
 import java.util.ArrayList;
 
@@ -36,5 +38,19 @@ public class Tile {
             c = 'T';
         }
         return c;
+    }
+
+    public boolean canPlant() {
+        return type.canPlant();
+    }
+
+    public void plantSeed(String seedName) {
+        Plant newPlant = CropManager.createPlantBySeed(seedName);
+        Tree newTree = TreeManager.getTreeBySeedName(seedName);
+        if (newPlant != null) {
+            this.plant = plant;
+        } else if (newTree != null) {
+            this.tree = tree;
+        }
     }
 }

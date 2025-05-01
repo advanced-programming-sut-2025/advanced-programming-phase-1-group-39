@@ -17,14 +17,8 @@ public enum Menu {
         this.name = name;
     }
 
-
-    public void setMenuView(View menuView) {
-        this.menuView = menuView;
-    }
-
     public void checkInput(String input) {
         menuView.checkCommand(input);
-
     }
 
     public View getMenuView() {

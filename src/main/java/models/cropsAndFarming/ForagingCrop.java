@@ -5,7 +5,7 @@ import models.Enums.Season;
 import java.util.Arrays;
 
 public class ForagingCrop extends Crop {
-    ForagingSource source;
+    private ForagingSource source;
 
     public ForagingCrop(String name) {
         super(name);

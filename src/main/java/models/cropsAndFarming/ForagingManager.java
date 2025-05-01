@@ -13,6 +13,8 @@ import java.util.HashMap;
 public class ForagingManager {
     public static HashMap<String, ForagingCrop> foragingCrops = new HashMap<>();
     public static HashMap<String, ForagingSeed> foragingSeeds = new HashMap<>();
+    public static HashMap<String, ForagingMineral> foragingMinerals = new HashMap<>();
+
 
     public static void loadCrops(String pathToJson) {
         Gson gson = new Gson();
@@ -63,10 +65,36 @@ public class ForagingManager {
             e.printStackTrace();
         }
     }
-
     private static class ForagingSeedJson {
         String name;
         Season[] seasons;
     }
+
+    public static void loadMinerals(String pathToJson) {
+        Gson gson = new Gson();
+
+        try (FileReader reader = new FileReader(pathToJson)) {
+            Type listType = new TypeToken<ArrayList<ForagingMineralJson>>() {}.getType();
+            ArrayList<ForagingMineralJson> mineralList = gson.fromJson(reader, listType);
+
+            for (ForagingMineralJson data : mineralList) {
+                ForagingMineral mineral = new ForagingMineral(
+                        data.name,
+                        data.description,
+                        data.sellPrice
+                );
+                foragingMinerals.put(data.name, mineral);
+                System.out.println(mineral);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private static class ForagingMineralJson {
+        String name;
+        String description;
+        int sellPrice;
+    }
+
 
 }

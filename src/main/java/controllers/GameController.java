@@ -1,5 +1,7 @@
 package controllers;
 
+import models.App;
+import models.Game;
 import models.Item;
 import models.Result;
 import models.cropsAndFarming.CropManager;
@@ -27,8 +29,19 @@ public class GameController {
     public void buildGreenHouse() {}
 
     public Result walkTo(Matcher matcher) {return null;}
-    public Result printMap(Matcher matcher) {return null;}
-    public Result helpReadingMap() {return null;}
+
+    public Result printMap(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        int size = Integer.parseInt(matcher.group("size"));
+
+        Game game = App.getApp().getNowGame();
+        return new Result(true, game.getMap().printCharMapBySize(x, y, size));
+    }
+    public Result helpReadingMap() {
+        Game game = App.getApp().getNowGame();
+        return new Result(true, game.getMap().helpReadingMap());
+    }
 
 
     public Result showEnergy() {return null;}

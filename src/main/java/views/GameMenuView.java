@@ -17,7 +17,7 @@ public class GameMenuView implements View {
         if ((matcher = GameCommands.PRINT_MAP.getMatcher(command)) != null) {
             System.out.println(controller.printMap(matcher));
         } else if (GameCommands.HELP_READING_MAP.getMatcher(command) != null) {
-            System.out.println();
+            System.out.println(controller.helpReadingMap());
         }
 
         return true;

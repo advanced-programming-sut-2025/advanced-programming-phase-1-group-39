@@ -4,8 +4,11 @@ public enum TileType {
     SOIL('.', true),
     WATER('~', false),
     WALL('O', false),
+    INDOOR('*', true),
     QUARRY('Q', true),
-    SELL_BASKET('B', false),;
+    SELL_BASKET('B', false),
+    DISABLE(' ', false),
+    ;
 
     private final char symbol;
     private final boolean walkable;
@@ -28,5 +31,7 @@ public enum TileType {
     public boolean canPlant() { return canPlant; }
     public boolean isFertalized() { return isFertalized; }
     public boolean isWatered() { return isWatered; }
+
+    public char getSymbol() { return symbol; }
 }
 

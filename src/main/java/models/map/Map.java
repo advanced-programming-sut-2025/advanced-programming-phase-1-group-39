@@ -167,5 +167,29 @@ public class Map {
 
         return text.toString();
     }
+
+    public String printCharMapBySize(int x, int y, int size) {
+        StringBuilder text = new StringBuilder();
+        for (int i = y - size; i <= y + size; i++) {
+            for (int j = x - size; j <= x + size; j++) {
+                if (i < 0 || i > height || j < 0 || j > width) {continue;}
+                text.append(tiles[i][j].getSymbol() + " ");
+            }
+            text.append("\n");
+        }
+
+        return text.toString();
+    }
+
+    public String helpReadingMap() {
+        return "Soil : .\n"
+                + "Water : w\n"
+                + "Wall : O\n"
+                + "Indoor : *\n"
+                + "Quarry : Q\n"
+                + "Lake : ~\n"
+                + "Plant : P\n"
+                + "Tree : T\n";
+    }
 }
 

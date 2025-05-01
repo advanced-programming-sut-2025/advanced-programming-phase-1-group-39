@@ -21,12 +21,16 @@ public class Map {
         try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {
             Gson gson = new Gson();
             JsonArray array = gson.fromJson(reader, JsonArray.class);
-
+            text.append("1\n");
             text.append(array.get(0).getAsJsonObject().get("mapType").getAsString() + "\n");
-            text.append(array.get(0).getAsJsonObject().get("mapType").getAsString() + "\n");
+            text.append(array.get(0).getAsJsonObject().get("description").getAsString() + "\n");
+            text.append("2\n");
+            text.append(array.get(1).getAsJsonObject().get("mapType").getAsString() + "\n");
+            text.append(array.get(1).getAsJsonObject().get("description").getAsString() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return text.toString();
     }
 

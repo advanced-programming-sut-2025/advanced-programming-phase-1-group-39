@@ -2,7 +2,7 @@
   {
     "mapTypeId": 1,
     "mapType": "mine farm",
-    "description": "A Farm for Mining Lovers!",
+    "description": "A farm for Mining Lovers with bigger Quarry!",
     "dimensions": {
       "w": 80,
       "h": 50
@@ -54,7 +54,7 @@
   },{
     "mapTypeId": 2,
     "mapType": "lake farm",
-    "description": "A Farm for Fishing Lovers!",
+    "description": "A Farm for Fishing Lovers with 2 lakes!",
     "dimensions": {
       "w": 80,
       "h": 50

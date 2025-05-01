@@ -7,5 +7,4 @@ public class App {
     ArrayList<Game> games;
     User loggedInUser;
     boolean stayLoggedIn = false;
-
 }

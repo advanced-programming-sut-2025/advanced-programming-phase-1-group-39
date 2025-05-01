@@ -1,5 +1,5 @@
 package views;
 
 public interface View {
-    boolean checkCommand(String command); // exit returns false others return true
+    void checkCommand(String command); // exit returns false others return true
 }

@@ -13,7 +13,7 @@ public enum GameCommands {
     CHEAT_ADVANCE_TIME("cheat\\s+advance\\s+time\\s+(?<h>-?\\d+)h"),
     CHEAT_ADVANCE_DATE("cheat\\s+advance\\s+date\\s+(?<d>-?\\d+)d"),
 
-    SEASON("season"),
+    SHOW_SEASON("season"),
 
     PRINT_MAP("print\\s+map\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)\\s+-s\\s+(?<size>\\d+)"),
     HELP_READING_MAP("help\\s+reading\\s+map");

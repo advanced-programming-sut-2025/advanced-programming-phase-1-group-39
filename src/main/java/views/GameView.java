@@ -26,9 +26,9 @@ public class GameView implements View {
             System.out.println(controller.cheatAdvanceTime(matcher));
         } else if ((matcher = GameCommands.CHEAT_ADVANCE_DATE.getMatcher(command)) != null) {
             System.out.println(controller.cheatAdvanceDate(matcher));
-        } else if ((GameCommands.SEASON.getMatcher(command)) != null) {
+        } else if ((GameCommands.SHOW_SEASON.getMatcher(command)) != null) {
             System.out.println(controller.showSeason());
-        } if ((matcher = GameCommands.PRINT_MAP.getMatcher(command)) != null) {
+        } else if ((matcher = GameCommands.PRINT_MAP.getMatcher(command)) != null) {
             System.out.println(controller.printMap(matcher));
         } else if (GameCommands.HELP_READING_MAP.getMatcher(command) != null) {
             System.out.println(controller.helpReadingMap());

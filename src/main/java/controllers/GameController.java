@@ -1,26 +1,58 @@
 package controllers;
 
-import models.App;
-import models.Game;
-import models.Item;
-import models.Result;
+import models.*;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
 
 import java.util.regex.Matcher;
 
 public class GameController {
+    public Result saveGame() {return null;}
+    public Result exitGame() {return null;}
+    public Result deleteGame() {return null;}
+
     public Result goNextTurn() {return null;}
-    public Result goToNextDay() {return null;}
 
-    public Result showTime() {return null;}
-    public Result showDate() {return null;}
-    public Result showDateTime() {return null;}
-    public Result showDayOfWeek() {return null;}
-    public void cheatAdvanceTime(Matcher matcher) {}
-    public void cheatAdvanceDate(Matcher matcher) {}
+    public int showTime() {
+        int h = App.getApp().getCurrentGame().getTime().getHour();
+        return h;
+    }
+    public String showDate() {
+        Time time = App.getApp().getCurrentGame().getTime();
+        return time.getDateDetail() + "\n" + time.getDayDetail();
+    }
+    public String showDateTime() {
+        return showDate() + "\n" + "Hour: " + showTime();
+    }
+    public String showDayOfWeek() {
+        return App.getApp().getCurrentGame().getTime().getDayOfWeek().name();
+    }
+    public Result cheatAdvanceTime(Matcher matcher) {
+        int h = Integer.parseInt(matcher.group("h"));
+        if (h < 0) {
+            return new Result(false, "hour can't be negative");
+        }
 
-    public Result showSeason() {return null;}
+        Game game = App.getApp().getCurrentGame();
+        game.addToHour(h);
+        return new Result(true, "hour cheated. now hour: " + game.getTime().getHour());
+    }
+    public Result cheatAdvanceDate(Matcher matcher) {
+        int d = Integer.parseInt(matcher.group("d"));
+        if (d < 0) {
+            return new Result(false, "day can't be negative");
+        }
+
+        Game game = App.getApp().getCurrentGame();
+        game.addToDay(d);
+        return new Result(true, "day cheated. now Date: \n" + showDate());
+
+    }
+
+    public String showSeason() {
+        Time time = App.getApp().getCurrentGame().getTime();
+        return time.getSeason().name();
+    }
 
     public Result cheatThor(Matcher matcher) {return null;}
     public Result showWeather() {return null;}
@@ -35,11 +67,11 @@ public class GameController {
         int y = Integer.parseInt(matcher.group("y"));
         int size = Integer.parseInt(matcher.group("size"));
 
-        Game game = App.getApp().getNowGame();
+        Game game = App.getApp().getCurrentGame();
         return new Result(true, game.getMap().printCharMapBySize(x, y, size));
     }
     public Result helpReadingMap() {
-        Game game = App.getApp().getNowGame();
+        Game game = App.getApp().getCurrentGame();
         return new Result(true, game.getMap().helpReadingMap());
     }
 

@@ -12,7 +12,4 @@ public class GameMenuController {
     private Map createRandomMap() {return null;}
     public Result chooseMap() {return null;}
     public Result loadGame() {return null;}
-    public Result saveGame() {return null;}
-    public Result exitGame() {return null;}
-    public Result deleteGame() {return null;}
 }

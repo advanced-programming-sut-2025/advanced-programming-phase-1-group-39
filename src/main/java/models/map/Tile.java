@@ -2,10 +2,7 @@ package models.map;
 
 import models.Item;
 import models.ItemStack;
-import models.cropsAndFarming.CropManager;
-import models.cropsAndFarming.Plant;
-import models.cropsAndFarming.Tree;
-import models.cropsAndFarming.TreeManager;
+import models.cropsAndFarming.*;
 
 
 public class Tile {
@@ -43,7 +40,12 @@ public class Tile {
         } else if (tree != null) {
             c = 'T';
         } else if (itemOnTile != null) {
-            // wood : / , Stone: 0 ,
+            //TODO: maybe change for Error
+            if (itemOnTile.getItem() instanceof ForagingCrop) c = 'F';
+            else if (itemOnTile.getItem() instanceof ForagingMaterial) {
+                if (itemOnTile.getItem().getName().equalsIgnoreCase("wood")) c = '/';
+                else if (itemOnTile.getItem().getName().equalsIgnoreCase("stone")) c = '0';
+            }
         }
         return c;
     }
@@ -59,9 +61,11 @@ public class Tile {
 
         else if (c == 'B') return AnsiColors.ANSI_YELLOW_BOLD;
         else if (c == 'P') return AnsiColors.ANSI_GREEN_BOLD;
-        else if (c == 'T') return AnsiColors.ANSI_DARK_GREEN_BOLD;
+        else if (c == 'T') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_DARK_GREEN_BACKGROUND;
         else if (c == '/') return AnsiColors.ANSI_BROWN_BOLD;
         else if (c == '0') return AnsiColors.ANSI_DARK_GRAY_BOLD;
+
+        else if (c == 'F') return AnsiColors.ANSI_ORANGE_BACKGROUND;
         else {
             return AnsiColors.ANSI_WHITE;
         }
@@ -102,8 +106,20 @@ public class Tile {
 
 
     // placed Items
+    public boolean canAddItemToTile() {
+        if (type != TileType.SOIL) return false;
+        if (itemOnTile != null) return false;
+        if (tree != null) return false;
+        if (plant != null) return false;
+        return true;
+    }
+
     public void placeItem(ItemStack item) {
         this.itemOnTile = item;
+    }
+
+    public void plantTree(Tree tree) {
+        this.tree = tree;
     }
 
     public ItemStack getItemOnTile() {

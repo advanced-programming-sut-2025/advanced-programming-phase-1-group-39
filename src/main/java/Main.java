@@ -14,13 +14,13 @@ public class Main {
 //    }
 
     public static void main(String[] args) {
-//        Map map = new Map();
-//        map.addRandomFarm(FarmType.LAKE_FARM, 2);
-//        map.addRandomFarm(FarmType.MINE_FARM, 1);
-
-//        System.out.println(map.printMapBySize(6,6,5));
+        Map map = new Map();
         ItemManager.loadItems();
+        map.addRandomFarm(FarmType.LAKE_FARM, 2);
+        map.addRandomFarm(FarmType.MINE_FARM, 1);
 
+        System.out.println(map.printColorMap());
+//        System.out.println(ForagingManager.getRandomTree(Season.SPRING, new Tile(1,1)));
 
 
     }

@@ -19,19 +19,16 @@ public class AnsiColors {
     public static final String ANSI_DARK_GRAY_BOLD = getAnsiBoldColor(64, 64, 64);
     public static final String ANSI_YELLOW_BOLD = "\u001b[1;33m";
     public static final String ANSI_GREEN_BOLD = getAnsiBoldColor(0, 156, 0);
-    public static final String ANSI_BROWN_BOLD = getAnsiBoldColor(159, 63, 0);
-    public static final String ANSI_DARK_GREEN_BOLD = getAnsiBoldColor(0, 95, 0);
-
+    public static final String ANSI_BROWN_BOLD = getAnsiBoldColor(102, 41, 0);
     // Background Colors
     public static final String ANSI_BLACK_BACKGROUND = getAnsiBackGround(49, 43, 43);
     public static final String ANSI_GRAY_BACKGROUND = getAnsiBackGround(104, 104, 103);
-    public static final String ANSI_RED_BACKGROUND = "\u001b[41m";
-    public static final String ANSI_YELLOW_BACKGROUND = "\u001b[33m";
-    public static final String ANSI_GREEN_BACKGROUND = "\u001b[42m";
     public static final String ANSI_BLUE_BACKGROUND = getAnsiBackGround(0, 172, 252);
+    public static final String ANSI_DARK_GREEN_BACKGROUND = getAnsiBackGround(0, 95, 0);
+    public static final String ANSI_ORANGE_BACKGROUND = getAnsiBackGround(200, 79, 0);
     public static final String ANSI_WHITE_BACKGROUND = "\u001b[47m";
     // Other colors
-    public static final String ANSI_GOLDEN_BACKGROUND = getAnsiBackGround(194, 146, 0);
+    public static final String ANSI_GOLDEN_BACKGROUND = getAnsiBackGround(155, 116, 0);
 
 
     public static String getAnsiBackGround(int r, int g, int b) {

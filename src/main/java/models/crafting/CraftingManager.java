@@ -9,11 +9,12 @@ import java.util.*;
 public class CraftingManager {
     private final Set<CraftingRecipe> learnedRecipes = new HashSet<>();
 
-    public void learnRecipe(CraftingRecipe recipe, Player player) {
+    public static void learnRecipe(CraftingRecipe recipe, Player player) {
         player.learnCraftingRecipe(recipe);
     }
 
-    public Result craft(String itemName, Player player) {
+    public static Result craft(String itemName, Player player) {
+        System.out.println(getRecipeByName(itemName).toString());
         if (player.getEnergy() < 2) {
             return new Result(false, "Not enough energy to craft."); // Todo: must add concious
         }
@@ -41,7 +42,7 @@ public class CraftingManager {
         return new Result(true, "Crafted: " + recipe.getItem().getName());
     }
 
-    private boolean hasAllIngredients(Inventory inv, CraftingRecipe recipe) {
+    private static boolean hasAllIngredients(Inventory inv, CraftingRecipe recipe) {
         for (Map.Entry<String, Integer> entry : recipe.getIngredients().entrySet()) {
             if (!inv.hasEnoughStack(entry.getKey(), entry.getValue())) {
                 return false;
@@ -50,7 +51,7 @@ public class CraftingManager {
         return true;
     }
 
-    private CraftingRecipe getRecipeByName(String name) {
+    private static CraftingRecipe getRecipeByName(String name) {
         for (CraftingRecipe recipe : CraftingRecipe.values()) {
             if (recipe.getItem().getName().equalsIgnoreCase(name)) {
                 return recipe;

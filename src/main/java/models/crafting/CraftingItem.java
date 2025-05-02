@@ -3,7 +3,6 @@ package models.crafting;
 import models.Item;
 
 public class CraftingItem extends Item {
-    private String name;
     private int sellPrice;
 
     public CraftingItem(String name, int sellPrice) {
@@ -17,6 +16,14 @@ public class CraftingItem extends Item {
 
     public int getSellPrice() {
         return sellPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "CraftingItem{" +
+                "sellPrice=" + sellPrice +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
 

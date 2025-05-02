@@ -27,6 +27,9 @@ public class Player {
 
     ArrayList<Quest> activeQuests;
 
+    Location startOfFarm;
+    Location endOfFarm;
+
     public boolean isConscious() {
         return energy > 0;
     }
@@ -44,6 +47,7 @@ public class Player {
     public void getFish() {}
 
     public int getLevelOfFriendship(NPC npc) {return 0;}
+
     public void startTrade(Player player, TradeItem item) {}
 
     public void learnCraftingRecipe(CraftingRecipe recipe) {
@@ -52,6 +56,7 @@ public class Player {
     public boolean hasLearnedCraftingRecipe(CraftingRecipe recipe) {
         return craftingRecipes.contains(recipe);
     }
+
     public String showCraftingRecipes() {
         StringBuilder sb = new StringBuilder();
         for (CraftingRecipe recipe : craftingRecipes) {

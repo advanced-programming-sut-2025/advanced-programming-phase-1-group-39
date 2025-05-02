@@ -16,6 +16,6 @@ public class Main {
         map.addRandomFarm(FarmType.LAKE_FARM, 2);
         map.addRandomFarm(FarmType.MINE_FARM, 1);
 
-        System.out.println(map.printColorMap());
+        System.out.println(map.printMapBySize(6,6,5));
     }
 }

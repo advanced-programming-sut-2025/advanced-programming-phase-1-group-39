@@ -1,5 +1,9 @@
+import models.Enums.Season;
+import models.cropsAndFarming.ForagingManager;
+import models.cropsAndFarming.TreeManager;
 import models.map.FarmType;
 import models.map.Map;
+import models.map.Tile;
 import views.AppView;
 
 public class Main {
@@ -11,7 +15,7 @@ public class Main {
         Map map = new Map();
         map.addRandomFarm(FarmType.LAKE_FARM, 2);
         map.addRandomFarm(FarmType.MINE_FARM, 1);
-        System.out.println(map.printWholeMap());
-        System.out.println(map.printCharMapBySize(8, 8, 6));
+
+        System.out.println(map.printColorMap());
     }
 }

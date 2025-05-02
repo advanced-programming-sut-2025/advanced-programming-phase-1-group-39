@@ -1,6 +1,5 @@
 package models;
 
-import com.sun.source.tree.ArrayAccessTree;
 import models.NPC.NPC;
 import models.NPC.Quest;
 import models.artisan.ArtisanMachineRecipe;
@@ -15,7 +14,7 @@ import java.util.HashMap;
 public class Player {
     Location location;
     int energy;
-    Skill skills = new Skill();
+    Skill skills;
     Inventory inventory;
 
 
@@ -32,9 +31,32 @@ public class Player {
         return energy > 0;
     }
 
-    public void setEnergy(int energy) {}
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+    public void changeEnergy(int amount) {
+        energy += amount;
+    }
     public void getFish() {}
 
     public int getLevelOfFriendship(NPC npc) {return 0;}
     public void startTrade(Player player, TradeItem item) {}
+
+    public void learnCraftingRecipe(CraftingRecipe recipe) {
+        craftingRecipes.add(recipe);
+    }
+    public boolean hasLearnedCraftingRecipe(CraftingRecipe recipe) {
+        return craftingRecipes.contains(recipe);
+    }
+    public String showCraftingRecipes() {
+        StringBuilder sb = new StringBuilder();
+        for (CraftingRecipe recipe : craftingRecipes) {
+            sb.append(recipe.toString());
+        }
+        return sb.toString();
+    }
 }

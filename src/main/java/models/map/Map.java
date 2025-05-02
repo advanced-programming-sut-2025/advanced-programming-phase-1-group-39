@@ -5,12 +5,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import models.Constants;
-import models.cropsAndFarming.ForagingCrop;
-import models.cropsAndFarming.ForagingManager;
+import models.Enums.Season;
 
 import java.io.FileReader;
-import java.util.Arrays;
-import java.util.List;
 
 public class Map {
     private final int width = Constants.WORLD_MAP_WIDTH, height = Constants.WORLD_MAP_HEIGHT;
@@ -98,7 +95,7 @@ public class Map {
             }
 
             // random fill map
-
+            fillFarmWithRandoms(startX, startY, 0.25);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,17 +156,23 @@ public class Map {
         }
     }
 
-    private void fillFarmWithRandoms(int startX, int startY, int possibility) {
+    private void fillFarmWithRandoms(int startX, int startY, double possibility) {
+//        Season nowSeason = App.getApp().getCurrentGame().getTime().getSeason();
+        Season nowSeason = Season.SPRING;
         for (int i = startX; i < startX + Constants.FARM_WIDTH; i++) {
             for (int j = startY; j < startY + Constants.FARM_HEIGHT; j++) {
                 Tile tile = tiles[j][i];
 
                 if (tile.getType() == TileType.SOIL) {
-                    if (Math.random() < 0.2) {
-                        ForagingCrop randomCrop = ForagingManager.getRandomCrop();
-                        tile.placeItem(randomCrop);
+                    if (Math.random() < possibility) {
+                        // TODO : should be corrected in loading
+//                        ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason);
+//                        System.out.println(randomCrop);
+//                        tile.placeItem(randomCrop);
+
                     }
                 }
+
             }
         }
     }
@@ -187,7 +190,7 @@ public class Map {
         return text.toString();
     }
 
-    public String printCharMapBySize(int x, int y, int size) {
+    public String printMapBySize(int x, int y, int size) {
         StringBuilder text = new StringBuilder();
         for (int i = y - size/2; i < y + size - size/2; i++) {
             for (int j = x - size/2; j < x + size - size/2; j++) {
@@ -196,11 +199,33 @@ public class Map {
             }
             text.append("\n");
         }
+        text.append("\n");
+
+        for (int i = y - size/2; i < y + size - size/2; i++) {
+            for (int j = x - size/2; j < x + size - size/2; j++) {
+                if (i < 0 || i > height || j < 0 || j > width) {continue;}
+                Tile tile = tiles[i][j];
+                text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
+            }
+            text.append("\n");
+        }
 
         return text.toString();
     }
 
-    //Todo : Add printColorMap
+    //Todo : Add chars to tile getColor and getSymbol
+    public String printColorMap() {
+        StringBuilder text = new StringBuilder();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                Tile tile = tiles[i][j];
+                text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
+            }
+            text.append("\n");
+        }
+
+        return text.toString();
+    }
 
     public String helpReadingMap() {
         return "Soil : .\n"

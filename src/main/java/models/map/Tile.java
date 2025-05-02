@@ -36,6 +36,7 @@ public class Tile {
         return type;
     }
 
+    // symbol
     public char getSymbol() {
         char c = type.getSymbol();
         if (plant != null) {
@@ -43,13 +44,32 @@ public class Tile {
         } else if (tree != null) {
             c = 'T';
         } else if (itemOnTile != null) {
-
+            // wood : / , Stone: 0 ,
         }
         return c;
     }
 
+    public String getTileColor() {
+        char c = getSymbol();
+        if (c == '.') return AnsiColors.ANSI_GOLDEN_BACKGROUND;
+        else if (c == '~') return AnsiColors.ANSI_BLUE_BACKGROUND;
+        else if (c == '*') return AnsiColors.ANSI_WHITE_BACKGROUND;
+        else if (c == 'O') return AnsiColors.ANSI_BLACK_BACKGROUND;
+        else if (c == '×') return AnsiColors.ANSI_BLACK_BOLD;
+        else if (c == 'Q') return AnsiColors.ANSI_GRAY_BACKGROUND;
+
+        else if (c == 'B') return AnsiColors.ANSI_YELLOW_BOLD;
+        else if (c == 'P') return AnsiColors.ANSI_GREEN_BOLD;
+        else if (c == 'T') return AnsiColors.ANSI_DARK_GREEN_BOLD;
+        else if (c == '/') return AnsiColors.ANSI_BROWN_BOLD;
+        else if (c == '0') return AnsiColors.ANSI_DARK_GRAY_BOLD;
+        else {
+            return AnsiColors.ANSI_WHITE;
+        }
+    }
+
     public void plow() {
-        setCanPlant();
+        canPlant = true;
     }
 
     public void removePlant() {
@@ -60,7 +80,6 @@ public class Tile {
         tree = null;
     }
 
-    public void setCanPlant() { canPlant = true; }
     public void setIsFertilized() { isFertilized = true; }
     public void setIsWatered() { isWatered = true; }
 
@@ -82,8 +101,22 @@ public class Tile {
         return plant.toString();
     }
 
+
+    // placed Items
     public void placeItem(Item item) {
         this.itemOnTile = item;
+    }
+
+    public Item getItemOnTile() {
+        return itemOnTile;
+    }
+
+    public Tree getTree() {
+        return tree;
+    }
+
+    public Plant getPlant() {
+        return plant;
     }
 }
 

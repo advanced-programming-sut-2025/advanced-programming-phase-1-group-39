@@ -2,6 +2,7 @@ package models.cropsAndFarming;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import models.map.Tile;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class CropManager {
         }
     }
 
-    public static Plant createPlantBySeed(String seedName) {
+    public static Plant createPlantBySeed(String seedName, Tile tile) {
         CropData data = crops.get(seedName);
         if (data == null) {
             return null;
@@ -44,7 +45,7 @@ public class CropManager {
 
         Seed seed = new Seed(data.source, data.seasons);
 
-        Plant plant = new Plant(product, seed, data.stages, data.oneTimeHarvest, data.regrowthTime, data.canBecomeGiant);
+        Plant plant = new Plant(tile, product, seed, data.stages, data.oneTimeHarvest, data.regrowthTime, data.canBecomeGiant);
 
         return plant;
     }

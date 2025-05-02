@@ -1,6 +1,7 @@
 package models.map;
 
 import models.Item;
+import models.ItemStack;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.Plant;
 import models.cropsAndFarming.Tree;
@@ -47,6 +48,18 @@ public class Tile {
         return c;
     }
 
+    public void plow() {
+        setCanPlant();
+    }
+
+    public void removePlant() {
+        plant = null;
+    }
+    public void cutDownTree() {
+        ItemStack items = tree.cutDown();
+        tree = null;
+    }
+
     public void setCanPlant() { canPlant = true; }
     public void setIsFertilized() { isFertilized = true; }
     public void setIsWatered() { isWatered = true; }
@@ -57,13 +70,16 @@ public class Tile {
 
     //planting
     public void plantSeed(String seedName) {
-        Plant newPlant = CropManager.createPlantBySeed(seedName);
-        Tree newTree = TreeManager.getTreeBySeedName(seedName);
+        Plant newPlant = CropManager.createPlantBySeed(seedName, this);
+        Tree newTree = TreeManager.getTreeBySeedName(seedName, this);
         if (newPlant != null) {
-            this.plant = plant;
+            this.plant = newPlant;
         } else if (newTree != null) {
-            this.tree = tree;
+            this.tree = newTree;
         }
+    }
+    public String showPlant() {
+        return plant.toString();
     }
 
     public void placeItem(Item item) {

@@ -37,4 +37,8 @@ public class ForagingCrop extends Crop {
     protected ForagingCrop clone(){
         return new ForagingCrop(this.name, this.baseSellPrice, this.baseEnergy, this.source, this.seasons);
     }
+
+    public Season[] getSeasons() {
+        return seasons;
+    }
 }

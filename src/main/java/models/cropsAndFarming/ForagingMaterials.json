@@ -1,0 +1,10 @@
+[
+  {
+    "name": "wood",
+    "sellPrice": 50
+  },
+  {
+    "name": "stone",
+    "sellPrice": 50
+  }
+]

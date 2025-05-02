@@ -41,6 +41,10 @@ public class Tile {
         return c;
     }
 
+    public void plow() {
+        type.setCanPlant();
+    }
+
     public void removePlant() {
         plant = null;
     }
@@ -61,5 +65,8 @@ public class Tile {
         } else if (newTree != null) {
             this.tree = tree;
         }
+    }
+    public String showPlant() {
+        return plant.toString();
     }
 }

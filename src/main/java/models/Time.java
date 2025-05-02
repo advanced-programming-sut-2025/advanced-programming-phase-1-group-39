@@ -25,10 +25,10 @@ public class Time {
 
     public void addToDay(int day) {
         this.day += day;
-        addToWeekDay(this.day);
+        addToWeekDay(day);
         if (this.day > 28) {
             addToSeason(this.day / 28);
-            this.day -= 28;
+            this.day = (this.day - 1) % 28 + 1;
         }
     }
     public void addToWeekDay(int day) {

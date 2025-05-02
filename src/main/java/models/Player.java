@@ -38,7 +38,9 @@ public class Player {
     public int getEnergy() {
         return energy;
     }
-    public void setEnergy(int energy) {}
+    public void changeEnergy(int amount) {
+        energy += amount;
+    }
     public void getFish() {}
 
     public int getLevelOfFriendship(NPC npc) {return 0;}

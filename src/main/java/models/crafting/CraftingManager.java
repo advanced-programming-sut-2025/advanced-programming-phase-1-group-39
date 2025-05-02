@@ -15,7 +15,7 @@ public class CraftingManager {
 
     public Result craft(String itemName, Player player) {
         if (player.getEnergy() < 2) {
-            return new Result(false, "Not enough energy to craft.");
+            return new Result(false, "Not enough energy to craft."); // Todo: must add concious
         }
 
         CraftingRecipe recipe = getRecipeByName(itemName);
@@ -36,10 +36,9 @@ public class CraftingManager {
             inv.removeItem(entry.getKey(), entry.getValue());
         }
 
-        inv.addItem(recipe.data.getName(), 1); // assuming 1 crafted item
-        player.reduceEnergy(2);
-        System.out.println("Crafted: " + recipe.data.getName());
-        return true;
+        inv.addItem(recipe.getItem(), 1);
+        player.changeEnergy(-2);
+        return new Result(true, "Crafted: " + recipe.getItem().getName());
     }
 
     private boolean hasAllIngredients(Inventory inv, CraftingRecipe recipe) {

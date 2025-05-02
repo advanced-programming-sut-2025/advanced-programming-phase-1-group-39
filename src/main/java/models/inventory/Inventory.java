@@ -32,7 +32,13 @@ public class Inventory {
         return null;
     }
 
-    public void addItem(String name, int amount) {
+    public void addItem(Item item, int amount) {
+        ItemStack itemStack = getItemByName(item.getName());
+        if (item != null) {
+            itemStack.addStack(-amount); // Todo: it's not complete
+        } else {
+            inventoryItems.add(new ItemStack(item, amount));
+        }
     }
     public void removeItem(String name, int amount) {
         ItemStack item = getItemByName(name);

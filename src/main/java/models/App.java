@@ -9,6 +9,7 @@ public class App {
     private ArrayList<User> users = new ArrayList<>();
     private ArrayList<Game> games = new ArrayList<>();
 
+
     private User loggedInUser = null;
     private boolean stayLoggedIn = false;
 
@@ -40,4 +41,6 @@ public class App {
     public Game getNowGame() {
         return nowGame;
     }
+
+    public Menu getCurrentMenu() { return currentMenu; }
 }

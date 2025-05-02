@@ -1,10 +1,10 @@
 [
   {
-    "name": "wood",
+    "name": "Wood",
     "sellPrice": 50
   },
   {
-    "name": "stone",
+    "name": "Stone",
     "sellPrice": 50
   }
 ]

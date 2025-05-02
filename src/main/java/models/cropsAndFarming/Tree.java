@@ -61,6 +61,11 @@ public class Tree{
         return source;
     }
 
+    public void setStageToLast() {
+        currentStage = stages.size() - 1;
+        daysOfCurrentStage = 0;
+    }
+
     public ItemStack harvest() {
         if (hasFruit) {
             fruitStack = 0;
@@ -70,16 +75,17 @@ public class Tree{
         return null;
     }
     public void updateDaily() {
-        if (isBurnt) {return;}
+        if (isBurnt) return;
 
         if (currentStage < stages.size()) {
-            daysOfCurrentStage --;
+            daysOfCurrentStage--;
             if (daysOfCurrentStage <= 0) {
-                if (currentStage + 1 < stages.size()) {
-                    currentStage++;
+                currentStage++;
+                if (currentStage < stages.size()) {
                     daysOfCurrentStage = stages.get(currentStage);
                 } else {
                     daysOfCurrentStage = 0;
+                    fruitIntervalDays = 0;
                 }
             }
         } else {
@@ -91,6 +97,7 @@ public class Tree{
             }
         }
     }
+
     public void burn() {isBurnt = true;}
     public ItemStack cutDown() {
         if (!isBurnt) {

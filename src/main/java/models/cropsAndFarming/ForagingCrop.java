@@ -19,6 +19,9 @@ public class ForagingCrop extends Crop {
     public ForagingSource getSource() {
         return source;
     }
+    public Season[] getSeasons() {
+        return seasons;
+    }
 
     @Override
     public String toString() {

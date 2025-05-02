@@ -3,6 +3,7 @@ package models.cropsAndFarming;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import models.Enums.Season;
+import models.map.Tile;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -114,20 +115,65 @@ public class ForagingManager {
     }
 
 
-    public static ForagingCrop getRandomCrop() {
+    public static ForagingCrop getRandomCrop(Season season) {
         if (foragingCrops.isEmpty()) return null;
 
-        ArrayList<ForagingCrop> values = new ArrayList<>(foragingCrops.values());
-        int randomIndex = (int) (Math.random() * values.size());
-        return values.get(randomIndex).clone();
+        ArrayList<ForagingCrop> filtered = new ArrayList<>();
+        for (ForagingCrop crop : foragingCrops.values()) {
+            for (Season s : crop.getSeasons()) {
+                if (s == season) {
+                    filtered.add(crop);
+                    break;
+                }
+            }
+        }
+
+        if (filtered.isEmpty()) return null;
+
+        int randomIndex = (int) (Math.random() * filtered.size());
+        return filtered.get(randomIndex).clone();
     }
-    public static ForagingSeed getRandomSeed() {
+
+    public static ForagingSeed getRandomSeed(Season season) {
         if (foragingSeeds.isEmpty()) return null;
 
-        ArrayList<ForagingSeed> values = new ArrayList<>(foragingSeeds.values());
-        int randomIndex = (int) (Math.random() * values.size());
-        return values.get(randomIndex).clone();
+        ArrayList<ForagingSeed> filtered = new ArrayList<>();
+        for (ForagingSeed seed : foragingSeeds.values()) {
+            for (Season s : seed.getSeasons()) {
+                if (s == season) {
+                    filtered.add(seed);
+                    break;
+                }
+            }
+        }
+
+        if (filtered.isEmpty()) return null;
+
+        int randomIndex = (int) (Math.random() * filtered.size());
+        return filtered.get(randomIndex).clone();
     }
+
+    public static Tree getRandomTree(Season season, Tile tile) {
+        if (foragingSeeds.isEmpty()) return null;
+
+        ArrayList<ForagingSeed> filtered = new ArrayList<>();
+        for (ForagingSeed seed : foragingSeeds.values()) {
+            for (Season s : seed.getSeasons()) {
+                if (s == season) {
+                    filtered.add(seed);
+                    break;
+                }
+            }
+        }
+
+        if (filtered.isEmpty()) return null;
+
+        int randomIndex = (int) (Math.random() * filtered.size());
+        Tree tree = TreeManager.getTreeBySeedName(filtered.get(randomIndex).clone().getName(), tile);
+        tre
+        System.out.println(tree.toString());
+    }
+
     public static ForagingMineral getRandomMineral() {
         if (foragingMinerals.isEmpty()) return null;
 

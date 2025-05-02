@@ -13,6 +13,8 @@ public class Game {
     private Map gameMap;
     private ArrayList<Building> buildings = new ArrayList<>();
 
+    private Time time = new Time();
+
     public Game(Player one, Player two, Player three, Player four) {
         this.players = new ArrayList<>(List.of(one, two, three, four));
         this.gameMap = new Map();
@@ -20,5 +22,13 @@ public class Game {
 
     public Map getMap() {
         return gameMap;
+    }
+
+    public void addToHour(int amount) {
+        time.addToHour(amount);
+        //TODO : Update of map and plants
+    }
+    public void goToNextDay() {
+        time.goToNextDay();
     }
 }

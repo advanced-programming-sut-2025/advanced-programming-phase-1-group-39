@@ -146,22 +146,6 @@ public class SignupMenuController {
     }
 
 
-
-
-//    Register("register\s+-u\s+(?<username>\S+)\s+-p\s+(?:(?<password>\S+)\s+(?<passwordConfirm>\S+)|(?<random>random))\s+-n\s+(?<nickName>\S+)\s+-e\s+(?<email>\S+)\s+-g\s+(?<gender>\S+)),
-//    UserName("[a-zA-Z0-9-]+"),
-//    Password("[a-zA-Z0-9?<>,\"';:/|}\\{+)=*&^%$#!]+"),
-//    WeakPassword("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-[\\]{}|:;\"'<>,.?/~`])[a-zA-Z0-9!@#$%^&*()_+=\\-[\\]{}|:;\"'<>,.?/~`]{8,}"),
-//
-//    Email("(?=.{1,64}@)([a-zA-Z0-9](?!.*\\.\\.)[a-zA-Z0-9._-]{0,62}[a-zA-Z0-9])@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+)"),
-//
-//    ShowCurrentManu("show\\s+current\\s+manu"),
-//
-//    GoToLoginMenu("manu\\s+enter\\s+login"),
-//
-//    ExitMenu("manu\\s+exit"),
-
-
     // Auxiliary functions :
 
     private boolean isUsernameUnique(String username) {

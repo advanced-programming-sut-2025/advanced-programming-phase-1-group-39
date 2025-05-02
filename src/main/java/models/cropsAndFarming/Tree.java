@@ -101,7 +101,7 @@ public class Tree{
     public void burn() {isBurnt = true;}
     public ItemStack cutDown() {
         if (!isBurnt) {
-            return new ItemStack(source, 1);
+            return new ItemStack(source, 1); // Todo: add wood
         } else {
             return new ItemStack(ForagingManager.getMineralByName("Coal"), 5);
         }

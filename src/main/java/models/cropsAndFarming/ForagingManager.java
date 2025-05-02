@@ -16,6 +16,7 @@ public class ForagingManager {
     public static HashMap<String, ForagingSeed> foragingSeeds = new HashMap<>();
     public static HashMap<String, ForagingSeed> foragingTreeSeeds = new HashMap<>();
     public static HashMap<String, ForagingMineral> foragingMinerals = new HashMap<>();
+    public static HashMap<String, ForagingMaterial> foragingMaterials = new HashMap<>();
 
 
     public static void loadCrops(String pathToJson) {
@@ -113,6 +114,29 @@ public class ForagingManager {
         int sellPrice;
     }
 
+    public static void loadMaterials(String pathToJson) {
+        Gson gson = new Gson();
+
+        try (FileReader reader = new FileReader(pathToJson)) {
+            Type listType = new TypeToken<ArrayList<ForagingMaterialJson>>() {}.getType();
+            ArrayList<ForagingMaterialJson> mineralList = gson.fromJson(reader, listType);
+
+            for (ForagingMaterialJson data : mineralList) {
+                ForagingMaterial material = new ForagingMaterial(
+                        data.name,
+                        data.sellPrice
+                );
+                foragingMaterials.put(data.name, material);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private static class ForagingMaterialJson {
+        String name;
+        int sellPrice;
+    }
+
 
     public static ForagingCrop getCropByName(String name) {
         if (foragingCrops.containsKey(name)) {
@@ -129,6 +153,12 @@ public class ForagingManager {
     public static ForagingMineral getMineralByName(String name) {
         if (foragingMinerals.containsKey(name)) {
             return foragingMinerals.get(name).clone();
+        }
+        return null;
+    }
+    public static ForagingMaterial getMaterialByName(String name) {
+        if (foragingMaterials.containsKey(name)) {
+            return foragingMaterials.get(name).clone();
         }
         return null;
     }

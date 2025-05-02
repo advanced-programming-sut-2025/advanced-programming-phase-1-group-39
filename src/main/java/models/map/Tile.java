@@ -44,7 +44,7 @@ public class Tile {
             if (itemOnTile.getItem() instanceof ForagingCrop) c = 'F';
             else if (itemOnTile.getItem() instanceof ForagingMaterial) {
                 if (itemOnTile.getItem().getName().equalsIgnoreCase("wood")) c = '/';
-                else if (itemOnTile.getItem().getName().equalsIgnoreCase("stone")) c = '0';
+                else if (itemOnTile.getItem().getName().equalsIgnoreCase("stone")) c = '●';
             }
         }
         return c;
@@ -62,8 +62,8 @@ public class Tile {
         else if (c == 'B') return AnsiColors.ANSI_YELLOW_BOLD;
         else if (c == 'P') return AnsiColors.ANSI_GREEN_BOLD;
         else if (c == 'T') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_DARK_GREEN_BACKGROUND;
-        else if (c == '/') return AnsiColors.ANSI_BROWN_BOLD;
-        else if (c == '0') return AnsiColors.ANSI_DARK_GRAY_BOLD;
+        else if (c == '/') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
+        else if (c == '●') return AnsiColors.ANSI_DARK_GRAY_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
 
         else if (c == 'F') return AnsiColors.ANSI_ORANGE_BACKGROUND;
         else {

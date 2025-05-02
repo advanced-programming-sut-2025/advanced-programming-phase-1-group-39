@@ -228,7 +228,14 @@ public class ForagingManager {
 
         ArrayList<ForagingMineral> values = new ArrayList<>(foragingMinerals.values());
         int randomIndex = (int) (Math.random() * values.size());
-        System.out.println(values.get(randomIndex));
+        return values.get(randomIndex).clone();
+    }
+
+    public static ForagingMaterial getRandomMaterial() {
+        if (foragingMaterials.isEmpty()) return null;
+
+        ArrayList<ForagingMaterial> values = new ArrayList<>(foragingMaterials.values());
+        int randomIndex = (int) (Math.random() * values.size());
         return values.get(randomIndex).clone();
     }
 

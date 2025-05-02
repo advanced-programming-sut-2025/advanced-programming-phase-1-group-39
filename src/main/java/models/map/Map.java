@@ -7,10 +7,7 @@ import com.google.gson.JsonObject;
 import models.Constants;
 import models.Enums.Season;
 import models.ItemStack;
-import models.cropsAndFarming.ForagingCrop;
-import models.cropsAndFarming.ForagingManager;
-import models.cropsAndFarming.ForagingSeed;
-import models.cropsAndFarming.Tree;
+import models.cropsAndFarming.*;
 
 import java.io.FileReader;
 
@@ -171,14 +168,16 @@ public class Map {
                 if (tile.canAddItemToTile()) {
                     if (Math.random() < possibility) {
                         // TODO : should be corrected in loading
-                        if (Math.random() < 0.1) {
+                        if (Math.random() < 0.05) {
                             ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason);
                             tile.placeItem(new ItemStack(randomCrop, 1));
                         } else if (Math.random() < 0.5) {
                             Tree randomTree = ForagingManager.getRandomTree(nowSeason, tile);
                             tile.plantTree(randomTree);
                         } else {
-                            // TODO : add wood and stoneش
+                            // TODO : add wood and stone
+                            ForagingMaterial randomMaterial = ForagingManager.getRandomMaterial();
+                            tile.placeItem(new ItemStack(randomMaterial, 1));
                         }
 
                     }

@@ -20,8 +20,5 @@ public class Main {
         map.addRandomFarm(FarmType.MINE_FARM, 1);
 
         System.out.println(map.printColorMap());
-//        System.out.println(ForagingManager.getRandomTree(Season.SPRING, new Tile(1,1)));
-
-
     }
 }

@@ -75,4 +75,9 @@ public class Tile {
             itemOnTile = item;
         }
     }
+    public ItemStack pickItem() {
+        ItemStack result = itemOnTile;
+        itemOnTile = null;
+        return result;
+    }
 }

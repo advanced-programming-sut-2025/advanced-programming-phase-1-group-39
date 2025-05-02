@@ -45,6 +45,10 @@ public class Time {
     }
 
 
+    public int getHour() {
+        return hour;
+    }
+
     public int getDay() {
         return day;
     }
@@ -59,5 +63,12 @@ public class Time {
 
     public DayOfWeek getDayOfWeek() {
         return dayOfWeek;
+    }
+
+    public String getDayDetail() {
+        return "Day " + day + "  " + dayOfWeek.name();
+    }
+    public String getDateDetail() {
+        return "Year " + year + "  " + season.name();
     }
 }

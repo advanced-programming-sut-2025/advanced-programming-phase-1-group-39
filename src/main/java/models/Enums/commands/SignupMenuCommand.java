@@ -6,10 +6,12 @@ import java.util.regex.Pattern;
 public enum SignupMenuCommand {
 
 
-    Register("register\\s+-u\\s+(?<username>.*?)\\s+-p\\s+(?<password>.*?)\\s+(?<passwordConfirm>.*?)\\s+-n\\s+(?<nickName>.*?)\\s+-e\\s+(?<email>.*?)\\s+-g\\s+(?<gender>.*+)"),
+    Register("register\\s+-u\\s+(?<username>.*?)\\s+-p\\s+(?:(?<password>\\S+)\\s+(?<passwordConfirm>\\S+)|(?<random>random))\\s+-n\\s+(?<nickName>.*?)\\s+-e\\s+(?<email>.*?)\\s+-g\\s+(?<gender>\\S+)"),
     UserName("[a-zA-Z0-9-]+"),
-    Password("[a-zA-Z0-9!@#$%^&*()_+=\\-[\\]{}|:;\"'<>,.?/~`]+"),
-    WeakPassword("(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-[\\]{}|:;\"'<>,.?/~`])[a-zA-Z0-9!@#$%^&*()_+=\\-[\\]{}|:;\"'<>,.?/~`]{8,}"),
+    Password("[a-zA-Z0-9?<>,\"';:/|}\\{+)=*&^%$#!]+"),
+    WeakPassword("(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[?<>,\"';:\\/|}\\{+\\)=*&^%$#!]).*"),
+    Gender("(male|female)"),
+
 
     Email("(?=.{1,64}@)([a-zA-Z0-9](?!.*\\.\\.)[a-zA-Z0-9._-]{0,62}[a-zA-Z0-9])@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+)"),
 

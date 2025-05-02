@@ -27,6 +27,23 @@ public class CropManager {
         }
     }
 
+    public static FarmingProduct getCropByName(String name) {
+        CropData data = crops.get(name);
+        if (data == null) {
+            return null;
+        }
+        FarmingProduct product = new FarmingProduct(
+                data.name,
+                data.baseSellPrice,
+                data.isEdible,
+                data.baseEnergy,
+                data.baseHealth,
+                data.seasons,
+                data.canBecomeGiant
+        );
+
+        return product;
+    }
     public static Plant createPlantBySeed(String seedName, Tile tile) {
         CropData data = crops.get(seedName);
         if (data == null) {

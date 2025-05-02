@@ -1,6 +1,7 @@
 package models.crafting;
 
 import models.Player;
+import models.Result;
 import models.inventory.Inventory;
 
 import java.util.*;
@@ -8,44 +9,30 @@ import java.util.*;
 public class CraftingManager {
     private final Set<CraftingRecipe> learnedRecipes = new HashSet<>();
 
-    public void learnRecipe(CraftingRecipe recipe) {
-        learnedRecipes.add(recipe);
+    public void learnRecipe(CraftingRecipe recipe, Player player) {
+        player.learnCraftingRecipe(recipe);
     }
 
-    public void showLearnedRecipes(Player player) {
-        System.out.println("Crafting Recipes:");
-        for (CraftingRecipe recipe : learnedRecipes) {
-            boolean canCraft = hasAllIngredients(player.getInventory(), recipe);
-            String status = canCraft ? "[✓]" : "[✗]";
-            System.out.println(status + " " + recipe.data.getName() + " - " + recipe.data.getDescription());
-        }
-    }
-
-    public boolean craft(String itemName, Player player) {
+    public Result craft(String itemName, Player player) {
         if (player.getEnergy() < 2) {
-            System.out.println("Not enough energy to craft.");
-            return false;
+            return new Result(false, "Not enough energy to craft.");
         }
 
         CraftingRecipe recipe = getRecipeByName(itemName);
-        if (recipe == null || !learnedRecipes.contains(recipe)) {
-            System.out.println("You haven't learned the recipe for: " + itemName);
-            return false;
+        if (recipe == null || !player.hasLearnedCraftingRecipe(recipe)) {
+            return new Result(false, "You haven't learned the recipe for: " + itemName);
         }
 
         Inventory inv = player.getInventory();
         if (!hasAllIngredients(inv, recipe)) {
-            System.out.println("You don't have the required ingredients.");
-            return false;
+            return new Result(false, "You don't have the required ingredients.");
         }
 
         if (!inv.hasSpace()) {
-            System.out.println("Inventory is full.");
-            return false;
+            return new Result(false, "Inventory is full.");
         }
 
-        // consume ingredients
-        for (Map.Entry<String, Integer> entry : recipe.ingredients.entrySet()) {
+        for (Map.Entry<String, Integer> entry : recipe.getIngredients().entrySet()) {
             inv.removeItem(entry.getKey(), entry.getValue());
         }
 
@@ -56,8 +43,8 @@ public class CraftingManager {
     }
 
     private boolean hasAllIngredients(Inventory inv, CraftingRecipe recipe) {
-        for (Map.Entry<String, Integer> entry : recipe.ingredients.entrySet()) {
-            if (!inv.hasItem(entry.getKey(), entry.getValue())) {
+        for (Map.Entry<String, Integer> entry : recipe.getIngredients().entrySet()) {
+            if (!inv.hasEnoughStack(entry.getKey(), entry.getValue())) {
                 return false;
             }
         }
@@ -66,14 +53,10 @@ public class CraftingManager {
 
     private CraftingRecipe getRecipeByName(String name) {
         for (CraftingRecipe recipe : CraftingRecipe.values()) {
-            if (recipe.data.getName().equalsIgnoreCase(name)) {
+            if (recipe.getItem().getName().equalsIgnoreCase(name)) {
                 return recipe;
             }
         }
         return null;
-    }
-
-    public Set<CraftingRecipe> getLearnedRecipes() {
-        return learnedRecipes;
     }
 }

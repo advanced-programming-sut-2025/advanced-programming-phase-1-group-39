@@ -119,4 +119,13 @@ public enum CraftingRecipe {
                 }
                 return null;
         }
+
+        @Override
+        public String toString() {
+                return "CraftingRecipe{" +
+                        "data=" + data +
+                        ", ingredients=" + ingredients +
+                        ", source='" + source + '\'' +
+                        '}';
+        }
 }

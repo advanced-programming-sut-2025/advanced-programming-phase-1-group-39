@@ -10,5 +10,7 @@ public enum InventoryType {
         this.capacity = capacity;
     }
 
-
+    public int getCapacity() {
+        return capacity;
+    }
 }

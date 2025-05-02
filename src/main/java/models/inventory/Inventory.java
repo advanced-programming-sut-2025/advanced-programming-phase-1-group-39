@@ -1,19 +1,60 @@
 package models.inventory;
 
 import models.Item;
+import models.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
 public class Inventory {
     InventoryType type;
     //ToDO: change
-    HashMap<Item, Integer> inventoryItems;
+    ArrayList<ItemStack> inventoryItems;
     TrashType trashType;
 
-    Item inHand;
+    ItemStack inHand;
 
     public String showInventory() {return null;}
 
     public void trashItem(Item item) {}
+
+    public boolean hasSpace() {
+        return inventoryItems.size() < type.getCapacity();
+    }
+
+    public ItemStack getItemByName(String name) {
+        for (ItemStack item : inventoryItems) {
+            if (item.getItem().getName().equalsIgnoreCase(name)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void addItem(String name, int amount) {
+    }
+    public void removeItem(String name, int amount) {
+        ItemStack item = getItemByName(name);
+        if (item != null) {
+            item.addStack(-amount); // Todo: it's not complete
+        }
+    }
+
+    public boolean hasItem(String name) {
+        for (ItemStack item : inventoryItems) {
+            if (item.getItem().getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean hasEnoughStack(String name, int amount) {
+        for (ItemStack item : inventoryItems) {
+            if (item.getItem().getName().equalsIgnoreCase(name) && item.getAmount() == amount) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -31,9 +31,30 @@ public class Player {
         return energy > 0;
     }
 
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
     public void setEnergy(int energy) {}
     public void getFish() {}
 
     public int getLevelOfFriendship(NPC npc) {return 0;}
     public void startTrade(Player player, TradeItem item) {}
+
+    public void learnCraftingRecipe(CraftingRecipe recipe) {
+        craftingRecipes.add(recipe);
+    }
+    public boolean hasLearnedCraftingRecipe(CraftingRecipe recipe) {
+        return craftingRecipes.contains(recipe);
+    }
+    public String showCraftingRecipes() {
+        StringBuilder sb = new StringBuilder();
+        for (CraftingRecipe recipe : craftingRecipes) {
+            sb.append(recipe.toString());
+        }
+        return sb.toString();
+    }
 }

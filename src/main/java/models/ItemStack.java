@@ -9,6 +9,14 @@ public class ItemStack {
         this.amount = amount;
     }
 
+    public Item getItem() {
+        return item;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
     public void addStack(int amount) {
         amount += amount;
     }

@@ -106,4 +106,29 @@ public class Tree{
             return new ItemStack(ForagingManager.getMineralByName("Coal"), 5);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Tree{" +
+                "name='" + name + '\'' +
+                ", tile=" + tile +
+                ", source=" + source +
+                ", stages=" + stages +
+                ", currentStage=" + currentStage +
+                ", daysOfCurrentStage=" + daysOfCurrentStage +
+                ", totalHarvestTime=" + totalHarvestTime +
+                ", fruitName='" + fruitName + '\'' +
+                ", fruit=" + fruit +
+                ", fruitStack=" + fruitStack +
+                ", fruitHarvestCycle=" + fruitHarvestCycle +
+                ", fruitIntervalDays=" + fruitIntervalDays +
+                ", fruitBaseSellPrice=" + fruitBaseSellPrice +
+                ", isFruitEdible=" + isFruitEdible +
+                ", fruitEnergy=" + fruitEnergy +
+                ", fruitHealth=" + fruitHealth +
+                ", seasons=" + Arrays.toString(seasons) +
+                ", isBurnt=" + isBurnt +
+                ", hasFruit=" + hasFruit +
+                '}';
+    }
 }

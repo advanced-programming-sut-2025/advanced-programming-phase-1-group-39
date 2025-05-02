@@ -14,6 +14,7 @@ import java.util.HashMap;
 public class ForagingManager {
     public static HashMap<String, ForagingCrop> foragingCrops = new HashMap<>();
     public static HashMap<String, ForagingSeed> foragingSeeds = new HashMap<>();
+    public static HashMap<String, ForagingSeed> foragingTreeSeeds = new HashMap<>();
     public static HashMap<String, ForagingMineral> foragingMinerals = new HashMap<>();
 
 
@@ -59,6 +60,24 @@ public class ForagingManager {
                         data.seasons
                 );
                 foragingSeeds.put(data.name, seed);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void loadTreeSeeds(String pathToJson) {
+        Gson gson = new Gson();
+
+        try (FileReader reader = new FileReader(pathToJson)) {
+            Type listType = new TypeToken<ArrayList<ForagingSeedJson>>() {}.getType();
+            ArrayList<ForagingSeedJson> seedList = gson.fromJson(reader, listType);
+
+            for (ForagingSeedJson data : seedList) {
+                ForagingSeed seed = new ForagingSeed(
+                        data.name,
+                        data.seasons
+                );
+                foragingTreeSeeds.put(data.name, seed);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -154,10 +173,10 @@ public class ForagingManager {
     }
 
     public static Tree getRandomTree(Season season, Tile tile) {
-        if (foragingSeeds.isEmpty()) return null;
+        if (foragingTreeSeeds.isEmpty()) return null;
 
         ArrayList<ForagingSeed> filtered = new ArrayList<>();
-        for (ForagingSeed seed : foragingSeeds.values()) {
+        for (ForagingSeed seed : foragingTreeSeeds.values()) {
             for (Season s : seed.getSeasons()) {
                 if (s == season) {
                     filtered.add(seed);
@@ -170,8 +189,8 @@ public class ForagingManager {
 
         int randomIndex = (int) (Math.random() * filtered.size());
         Tree tree = TreeManager.getTreeBySeedName(filtered.get(randomIndex).clone().getName(), tile);
-        tre
-        System.out.println(tree.toString());
+        tree.setStageToLast();
+        return tree;
     }
 
     public static ForagingMineral getRandomMineral() {

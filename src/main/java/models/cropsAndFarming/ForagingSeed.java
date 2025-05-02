@@ -9,6 +9,7 @@ public class ForagingSeed extends Seed{
     public ForagingSeed(String name, Season[] seasons) {
         super(name, seasons);
         this.source = ForagingSource.LAND_SEED;
+        this.seasons = seasons;
     }
 
     public Season[] getSeasons() {

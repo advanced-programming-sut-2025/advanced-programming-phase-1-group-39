@@ -46,6 +46,12 @@ public class SignupMenuController {
             return new Result(false, "To request a random password, please type the word 'random.");
         } else if (random != null) {
             String randomPassword = generateRandomPassword();
+            App.getApp().setRandomPassword(randomPassword);
+            if (gender.equals("male")) {
+                App.getApp().setPendingUser(new User(username, randomPassword, nickName, email, true));
+            } else {
+                App.getApp().setPendingUser(new User(username, randomPassword, nickName, email, false));
+            }
             return new Result(true , "A secure password has been generated for you: " + randomPassword +
                     "\n"+"If you wish to use this password, please type 'Yes'.\n + " +
                     "If you would like to generate another random password, please type 'random'.\n" +

@@ -1,4 +1,6 @@
 import models.Enums.Season;
+import models.ItemManager;
+import models.ItemStack;
 import models.cropsAndFarming.ForagingManager;
 import models.cropsAndFarming.TreeManager;
 import models.map.FarmType;
@@ -12,10 +14,14 @@ public class Main {
 //    }
 
     public static void main(String[] args) {
-        Map map = new Map();
-        map.addRandomFarm(FarmType.LAKE_FARM, 2);
-        map.addRandomFarm(FarmType.MINE_FARM, 1);
+//        Map map = new Map();
+//        map.addRandomFarm(FarmType.LAKE_FARM, 2);
+//        map.addRandomFarm(FarmType.MINE_FARM, 1);
 
-        System.out.println(map.printMapBySize(6,6,5));
+//        System.out.println(map.printMapBySize(6,6,5));
+        ItemManager.loadItems();
+
+
+
     }
 }

@@ -10,10 +10,10 @@ public enum SignupMenuCommand {
     UserName("[a-zA-Z0-9-]+"),
     Password("[a-zA-Z0-9?<>,\"';:/|}\\{+)=*&^%$#!]+"),
     WeakPassword("(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[?<>,\"';:\\/|}\\{+\\)=*&^%$#!]).*"),
+    Email("(?=.{1,64}@)([a-zA-Z0-9](?!.*\\.\\.)[a-zA-Z0-9._-]{0,62}[a-zA-Z0-9])@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+)"),
     Gender("(male|female)"),
 
-
-    Email("(?=.{1,64}@)([a-zA-Z0-9](?!.*\\.\\.)[a-zA-Z0-9._-]{0,62}[a-zA-Z0-9])@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+)"),
+    SecurityQuestionCommands("pick\\s+question\\s+-q\\s+(?<questionNumber>\\S+)\\s+-a\\s+(?<answer>.*?)\\s+-c\\s+(?<answerConfirm>.*?)"),
 
     ShowCurrentManu("show\\s+current\\s+manu"),
 

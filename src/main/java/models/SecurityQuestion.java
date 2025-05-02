@@ -1,6 +1,11 @@
 package models;
 
 public class SecurityQuestion {
-    String question;
-    String answer;
+    private String question;
+    private String answer;
+
+    public SecurityQuestion(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
+    }
 }

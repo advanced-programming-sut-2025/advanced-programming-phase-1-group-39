@@ -34,6 +34,8 @@ public class User {
         this.email = email;
     }
 
+    public void setSecurityQuestion(SecurityQuestion securityQuestion) { this.securityQuestion = securityQuestion; }
+
     public String getUserName() {
         return userName;
     }

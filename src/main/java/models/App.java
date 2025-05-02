@@ -12,9 +12,9 @@ public class App {
 
 
     private User loggedInUser = null;
-    private String randomUsername = null;
     private String randomPassword = null;
     private User pendingUser = null;
+    private boolean isRegisterSuccessful = false;
     private boolean stayLoggedIn = false;
 
     private Game nowGame = null;
@@ -50,24 +50,21 @@ public class App {
 
     public ArrayList<User> getUsers() { return users; }
 
-    public String getRandomUsername() { return randomUsername; }
-
     public String getRandomPassword() { return randomPassword; }
 
     public User getPendingUser() { return pendingUser; }
 
+    public boolean isRegisterSuccessful() { return isRegisterSuccessful; }
 
 
-
-
-
+    //
 
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
     }
 
-    public void setRandomUsername(String randomUsername) {
-        this.randomUsername = randomUsername;
+    public void setRegisterSuccessful(boolean registerSuccessful) {
+        isRegisterSuccessful = registerSuccessful;
     }
 
     public void setRandomPassword(String randomPassword) {

@@ -2,8 +2,10 @@ package controllers;
 
 import models.App;
 import models.Enums.Menu;
+import models.Enums.SecurityQuestionCommands;
 import models.Enums.commands.SignupMenuCommand;
 import models.Result;
+import models.SecurityQuestion;
 import models.User;
 
 import java.security.SecureRandom;
@@ -53,20 +55,96 @@ public class SignupMenuController {
                 App.getApp().setPendingUser(new User(username, randomPassword, nickName, email, false));
             }
             return new Result(true , "A secure password has been generated for you: " + randomPassword +
-                    "\n"+"If you wish to use this password, please type 'Yes'.\n + " +
+                    "\n"+"If you wish to use this password, please type 'yes'.\n + " +
                     "If you would like to generate another random password, please type 'random'.\n" +
-                    "Otherwise, type 'No' to cancel.");
+                    "Otherwise, type 'no' to cancel.");
         } else {
             if (gender.equals("male")) {
-                App.getApp().addUser(new User(username, password, nickName, email, true));
+                App.getApp().setPendingUser(new User(username, password, nickName, email, true));
             }
             else {
-                App.getApp().addUser(new User(username, password, nickName, email, false));
+                App.getApp().setPendingUser(new User(username, password, nickName, email, false));
             }
-            App.getApp().setCurrentMenu(Menu.LOGIN_MENU);
-            return new Result(true, "\"Registration successful! You are now redirected to the login menu...");
+            App.getApp().setRegisterSuccessful(true);
+            return new Result(true, "Registration was successful. now, please choose one of the security questions below and answer it:" +
+                    SecurityQuestionCommands.DREAM_JOB + "\n" + SecurityQuestionCommands.FAVORITE_TEACHER + "\n" +
+                    SecurityQuestionCommands.HISTORICAL_FIGURE + "\n" + SecurityQuestionCommands.FIRST_SCHOOL + "\n" +
+                    SecurityQuestionCommands.FIRST_SCHOOL);
         }
     }
+
+    private Result completeRegistration () {
+        if (App.getApp().getRandomPassword() != null) {
+            App.getApp().setRandomPassword(null);
+            App.getApp().setRegisterSuccessful(true);
+            return new Result(true, "Registration was successful. now, please choose one of the security questions below and answer it:" +
+                    SecurityQuestionCommands.DREAM_JOB + "\n" + SecurityQuestionCommands.FAVORITE_TEACHER + "\n" +
+                    SecurityQuestionCommands.HISTORICAL_FIGURE + "\n" + SecurityQuestionCommands.FIRST_SCHOOL + "\n" +
+                    SecurityQuestionCommands.FIRST_SCHOOL);
+        } else {
+            return new Result(false, "invalid command!");
+        }
+    }
+
+    private Result getAnotherRandomPassword () {
+        if (App.getApp().getRandomPassword() != null) {
+            String randomPassword = generateRandomPassword();
+            App.getApp().setRandomPassword(randomPassword);
+            App.getApp().getPendingUser().setPassword(randomPassword);
+            return new Result(true , "A secure password has been generated for you: " + randomPassword +
+                    "\n"+"If you wish to use this password, please type 'yes'.\n + " +
+                    "If you would like to generate another random password, please type 'random'.\n" +
+                    "Otherwise, type 'no' to cancel.");
+        } else {
+            return new Result(false, "invalid command!");
+        }
+    }
+
+    private Result cancelGetRandomPassword () {
+        if (App.getApp().getRandomPassword() != null) {
+            App.getApp().setRandomPassword(null);
+            App.getApp().setPendingUser(null);
+            return new Result(true, "You are now in signup menu.");
+        } else {
+            return new Result(false, "invalid command!");
+        }
+    }
+
+    public Result securityQuestion(Matcher matcher) {
+        String questionNumber = matcher.group("questionNumber");
+        String answer = matcher.group("answer");
+        String answerConfirm = matcher.group("answerConfirm");
+
+        if (!isNumeric(questionNumber)) {
+            return new Result(false, "the question number must be a numeric value between one and five.");
+        } else if (Integer.parseInt(questionNumber) < 1 || Integer.parseInt(questionNumber) > 5) {
+            return new Result(false, "the question number must be between one and five.");
+        } else if (!answer.equals(answerConfirm)) {
+            return new Result(false, "the answer does not match its repetition.");
+        } else {
+            SecurityQuestion question = setSecurityQuestion(questionNumber, answer);
+            App.getApp().getPendingUser().setSecurityQuestion(question);
+            App.getApp().addUser(App.getApp().getPendingUser());
+            App.getApp().setPendingUser(null);
+            App.getApp().setRegisterSuccessful(false);
+            App.getApp().setCurrentMenu(Menu.LOGIN_MENU);
+            return new Result(true, "your registration is complete! you are now in the login menu.");
+        }
+    }
+
+    public Result showCurrentManu() {
+        return new Result(true, "You are now in signup menu.");
+    }
+
+    public Result goToLoginMenu() {
+        App.getApp().setCurrentMenu(Menu.LOGIN_MENU);
+        return new Result(true, "You are now in login menu.");
+    }
+
+    public void exit() {
+        App.getApp().setCurrentMenu(Menu.ExitMenu);
+    }
+
 
 
 
@@ -164,6 +242,30 @@ public class SignupMenuController {
         }
 
         return password.toString();
+    }
+
+    private boolean isNumeric(String questionNumber) {
+        if (questionNumber == null || questionNumber.isEmpty()) return false;
+        try {
+            Integer.parseInt(questionNumber);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private SecurityQuestion setSecurityQuestion(String questionNumber, String answer) {
+        if (questionNumber.equals("1")) {
+            return new SecurityQuestion(SecurityQuestionCommands.DREAM_JOB.toString(), answer);
+        } else if (questionNumber.equals("2")) {
+            return new SecurityQuestion(SecurityQuestionCommands.FAVORITE_TEACHER.toString(), answer);
+        } else if (questionNumber.equals("3")) {
+            return new SecurityQuestion(SecurityQuestionCommands.HISTORICAL_FIGURE.toString(), answer);
+        } else if (questionNumber.equals("4")) {
+            return new SecurityQuestion(SecurityQuestionCommands.FIRST_SCHOOL.toString(), answer);
+        } else {
+            return new SecurityQuestion(SecurityQuestionCommands.FIRST_PHONE_MODEL.toString(), answer);
+        }
     }
 
 

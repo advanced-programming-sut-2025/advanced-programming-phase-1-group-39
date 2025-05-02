@@ -12,7 +12,7 @@ public class App {
     private User loggedInUser = null;
     private boolean stayLoggedIn = false;
 
-    private Game nowGame = null;
+    private Game currentGame = null;
 
     private Menu currentMenu = Menu.LOGIN_MENU;
 
@@ -37,8 +37,8 @@ public class App {
         return loggedInUser;
     }
 
-    public Game getNowGame() {
-        return nowGame;
+    public Game getCurrentGame() {
+        return currentGame;
     }
 
     public Menu getCurrentMenu() {

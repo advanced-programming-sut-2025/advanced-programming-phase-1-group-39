@@ -14,4 +14,24 @@ public class ItemManager {
         ForagingManager.loadMinerals("src/main/resources/data/ForagingMinerals.json");
         ForagingManager.loadMaterials("src/main/resources/data/ForagingMaterials.json");
     }
+
+    public static Item getItemByName(String name) {
+        if (CropManager.getCropByName(name) != null) {
+            return CropManager.getCropByName(name);
+        }
+        if (ForagingManager.getCropByName(name) != null) {
+            return ForagingManager.getCropByName(name);
+        }
+        if (ForagingManager.getSeedByName(name) != null) {
+            return ForagingManager.getSeedByName(name);
+        }
+        if (ForagingManager.getMineralByName(name) != null) {
+            return ForagingManager.getMineralByName(name);
+        }
+        if (ForagingManager.getMaterialByName(name) != null) {
+            return ForagingManager.getMaterialByName(name);
+        }
+
+        return null;
+    }
 }

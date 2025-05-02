@@ -232,6 +232,15 @@ public class ForagingManager {
         return values.get(randomIndex).clone();
     }
 
+    public static ForagingMaterial gforagingMaterial() {
+        if (foragingMaterials.isEmpty()) return null;
+
+        ArrayList<ForagingMaterial> values = new ArrayList<>(foragingMaterials.values());
+        int randomIndex = (int) (Math.random() * values.size());
+        System.out.println(values.get(randomIndex));
+        return values.get(randomIndex).clone();
+    }
+
     public static String showForagingInfo(String name) {
         if (foragingCrops.containsKey(name)) {
             return foragingCrops.get(name).toString();

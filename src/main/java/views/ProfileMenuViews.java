@@ -1,6 +1,6 @@
 package views;
 
-public class ProfileMenuViews implements View {
+public class ProfileMenuViews implements AppMenu {
 
     @Override
     public boolean checkCommand(String command) {

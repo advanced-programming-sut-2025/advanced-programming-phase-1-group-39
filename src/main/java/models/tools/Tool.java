@@ -9,9 +9,14 @@ public abstract class Tool extends Item {
     protected int usingEnergy;
 
     public Tool(String name, ToolType type) {
-        this.name = name;
+        super(name);
         this.type = type;
     }
+
+//    public Tool(String name, ToolType type) {
+//        super(name) = name;
+//        //this.type = type;
+//    }
 
     public abstract Result useTool();
 }

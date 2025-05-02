@@ -1,6 +1,6 @@
 package models.Enums;
 
-import views.View;
+import views.AppMenu;
 
 public enum Menu {
     LOGIN_MENU("login menu"),
@@ -9,7 +9,7 @@ public enum Menu {
     GAME_MENU("game menu"),
     GAME("game");
 
-    private View menuView;
+    private AppMenu menuView;
     private String name;
 
     Menu(String name) {
@@ -20,11 +20,11 @@ public enum Menu {
         return menuView.checkCommand(input);
     }
 
-    public void setMenuView(View menuView) {
+    public void setMenuView(AppMenu menuView) {
         this.menuView = menuView;
     }
 
-    public View getMenuView() {
+    public AppMenu getMenuView() {
         return menuView;
     }
 

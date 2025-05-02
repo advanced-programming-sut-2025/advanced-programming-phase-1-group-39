@@ -6,7 +6,7 @@ import models.Enums.commands.GameCommands;
 
 import java.util.regex.Matcher;
 
-public class GameMenuView implements View {
+public class GameMenuView implements AppMenu {
 
     @Override
     public boolean checkCommand(String command) {

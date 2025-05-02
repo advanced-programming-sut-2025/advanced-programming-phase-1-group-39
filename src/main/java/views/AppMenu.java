@@ -1,5 +1,5 @@
 package views;
 
-public interface View {
+public interface AppMenu {
     boolean checkCommand(String command); // exit returns false others return true
 }

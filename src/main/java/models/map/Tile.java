@@ -7,12 +7,11 @@ import models.cropsAndFarming.Plant;
 import models.cropsAndFarming.Tree;
 import models.cropsAndFarming.TreeManager;
 
-import java.util.ArrayList;
 
 public class Tile {
     int x, y;
     private TileType type = TileType.SOIL;
-    private Item itemOnTile = null;
+    private ItemStack itemOnTile = null;
 
     private Plant plant = null;
     private Tree tree = null;
@@ -103,11 +102,11 @@ public class Tile {
 
 
     // placed Items
-    public void placeItem(Item item) {
+    public void placeItem(ItemStack item) {
         this.itemOnTile = item;
     }
 
-    public Item getItemOnTile() {
+    public ItemStack getItemOnTile() {
         return itemOnTile;
     }
 

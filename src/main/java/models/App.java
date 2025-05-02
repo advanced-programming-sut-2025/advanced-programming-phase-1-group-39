@@ -40,4 +40,8 @@ public class App {
     public Game getNowGame() {
         return nowGame;
     }
+
+    public Menu getCurrentMenu() {
+        return currentMenu;
+    }
 }

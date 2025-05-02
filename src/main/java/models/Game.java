@@ -27,6 +27,7 @@ public class Game {
     public void addToHour(int amount) {
         time.addToHour(amount);
         //TODO : Update of map and plants
+        // TODO : changing weather
     }
     public void goToNextDay() {
         time.goToNextDay();

@@ -1,7 +1,12 @@
 import models.map.FarmType;
 import models.map.Map;
+import views.AppView;
 
 public class Main {
+//    public static void main(String[] args) {
+//        (new AppView()).run();
+//    }
+
     public static void main(String[] args) {
         Map map = new Map();
         map.addRandomFarm(FarmType.LAKE_FARM, 2);

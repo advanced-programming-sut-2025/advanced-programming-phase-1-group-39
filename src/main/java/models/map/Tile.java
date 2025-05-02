@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Tile {
     int x, y;
     private TileType type = TileType.SOIL;
-    private ArrayList<Item> itemsOnTile = new ArrayList<>();
+    private ItemStack itemOnTile = null;
     private Plant plant = null;
     private Tree tree = null;
 
@@ -68,5 +68,11 @@ public class Tile {
     }
     public String showPlant() {
         return plant.toString();
+    }
+
+    public void placeItem(ItemStack item) {
+        if (itemOnTile != null) {
+            itemOnTile = item;
+        }
     }
 }

@@ -2,6 +2,7 @@ package models.inventory;
 
 import models.Item;
 import models.ItemStack;
+import models.map.Tile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,5 +63,13 @@ public class Inventory {
             }
         }
         return false;
+    }
+
+    public void placeItem(String name, Tile tile) {
+        ItemStack item = getItemByName(name);
+        if (item == null) {
+            return;
+        }
+
     }
 }

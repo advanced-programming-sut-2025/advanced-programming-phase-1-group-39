@@ -73,7 +73,7 @@ public class SignupMenuController {
         }
     }
 
-    private Result completeRegistration () {
+    public Result setRandomPassword () {
         if (App.getApp().getRandomPassword() != null) {
             App.getApp().setRandomPassword(null);
             App.getApp().setRegisterSuccessful(true);
@@ -86,7 +86,7 @@ public class SignupMenuController {
         }
     }
 
-    private Result getAnotherRandomPassword () {
+   public Result getAnotherRandomPassword () {
         if (App.getApp().getRandomPassword() != null) {
             String randomPassword = generateRandomPassword();
             App.getApp().setRandomPassword(randomPassword);
@@ -100,7 +100,7 @@ public class SignupMenuController {
         }
     }
 
-    private Result cancelGetRandomPassword () {
+    public Result cancelGetRandomPassword () {
         if (App.getApp().getRandomPassword() != null) {
             App.getApp().setRandomPassword(null);
             App.getApp().setPendingUser(null);

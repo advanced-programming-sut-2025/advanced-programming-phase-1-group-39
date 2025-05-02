@@ -13,7 +13,11 @@ public enum SignupMenuCommand {
     Email("(?=.{1,64}@)([a-zA-Z0-9](?!.*\\.\\.)[a-zA-Z0-9._-]{0,62}[a-zA-Z0-9])@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+)"),
     Gender("(male|female)"),
 
-    SecurityQuestionCommands("pick\\s+question\\s+-q\\s+(?<questionNumber>\\S+)\\s+-a\\s+(?<answer>.*?)\\s+-c\\s+(?<answerConfirm>.*?)"),
+    SetRandomPassword("yse"),
+    GetAnotherRandomPassword("no"),
+    CancelGetRandomPassword("cancel"),
+
+    SecurityQuestion("pick\\s+question\\s+-q\\s+(?<questionNumber>\\S+)\\s+-a\\s+(?<answer>.*?)\\s+-c\\s+(?<answerConfirm>.*?)"),
 
     ShowCurrentManu("show\\s+current\\s+manu"),
 

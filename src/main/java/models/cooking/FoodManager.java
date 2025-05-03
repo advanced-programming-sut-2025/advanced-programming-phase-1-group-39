@@ -10,9 +10,9 @@ public class FoodManager {
 
     public static Result cook(String foodName, Player player) {
 
-        if (!player.isAtHome()) {
-            return new Result(false, "You need to be at home to cook.");
-        }
+//        if (!player.isAtHome()) {
+//            return new Result(false, "You need to be at home to cook.");
+//        }
 
         FoodRecipe recipe = getRecipeByName(foodName);
         if (recipe == null) {
@@ -46,9 +46,9 @@ public class FoodManager {
             String itemName = entry.getKey();
             int count = entry.getValue();
 
-            if (!inv.hasEnoughStack(itemName, count) && !player.getHome().getRefrigerator().getInventory().hasEnoughStack(itemName, count)) {
-                return false;
-            }
+//            if (!inv.hasEnoughStack(itemName, count) && !player.getHome().getRefrigerator().getInventory().hasEnoughStack(itemName, count)) {
+//                return false;
+//            }
         }
         return true;
     }
@@ -58,6 +58,24 @@ public class FoodManager {
             if (recipe.data.getName().equalsIgnoreCase(name)) return recipe;
         }
         return null;
+    }
+
+    public static Result eat(String foodName, Player player) {
+        Inventory inv = player.getInventory();
+        FoodRecipe recipe = getRecipeByName(foodName);
+
+        if (recipe == null || !inv.hasItem(foodName)) {
+            return new Result(false, "You don't have " + foodName + " in your inventory.");
+        }
+
+        inv.pickItem(foodName, 1);
+        player.changeEnergy(recipe.data.energy);
+
+        if (recipe.data.buff != null) {
+            //player.applyBuff(recipe.data.buff);
+        }
+
+        return new Result(true, "You ate " + foodName + " and gained " + recipe.data.energy + " energy.");
     }
 }
 

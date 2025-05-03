@@ -79,4 +79,8 @@ public class Game {
     public void resetPlayerLocation(Player player) {
         player.setLocationRelative(74, 8);
     }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 }

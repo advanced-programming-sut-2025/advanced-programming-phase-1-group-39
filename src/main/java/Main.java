@@ -1,3 +1,4 @@
+import controllers.AppControllers;
 import models.Enums.Season;
 import models.Game;
 import models.ItemManager;
@@ -38,5 +39,6 @@ public class Main {
         game.addRandomFarmForPlayer(player4, FarmType.getFarmTypeById(1));
         game.startGame();
         System.out.println(game.printColorMap());
+        System.out.println(game.getMap().printMapBySize(70, 10, 25, game.getPlayers()));
     }
 }

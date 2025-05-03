@@ -68,7 +68,7 @@ public class GameController {
         int size = Integer.parseInt(matcher.group("size"));
 
         Game game = App.getApp().getCurrentGame();
-        return new Result(true, game.getMap().printMapBySize(x, y, size));
+        return new Result(true, game.getMap().printMapBySize(x, y, size, game.getPlayers()));
     }
     public Result helpReadingMap() {
         Game game = App.getApp().getCurrentGame();

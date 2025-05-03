@@ -277,13 +277,22 @@ public class Map {
         return text.toString();
     }
 
-    public String printMapBySize(int x, int y, int size) {
+    public String printMapBySize(int x, int y, int size, ArrayList<Player> players) {
         StringBuilder text = new StringBuilder();
         for (int i = y - size/2; i < y + size - size/2; i++) {
             for (int j = x - size/2; j < x + size - size/2; j++) {
                 if (i < 0 || i > height || j < 0 || j > width) {continue;}
                 Tile tile = tiles[i][j];
-                text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
+                boolean doesSet = false;
+
+                for (Player player : players) {
+                    if (j == player.getLocation().x() && i == player.getLocation().y()) {
+                        text.append(AnsiColors.ANSI_PURPLE_BOLD + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
+                        doesSet = true;
+                    }
+                }
+                if (!doesSet)
+                    text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
             }
             text.append("\n");
         }

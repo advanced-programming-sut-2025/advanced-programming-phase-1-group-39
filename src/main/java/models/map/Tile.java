@@ -45,7 +45,7 @@ public class Tile {
             else if (itemOnTile.getItem() instanceof ForagingMaterial) {
                 if (itemOnTile.getItem().getName().equalsIgnoreCase("wood")) c = '/';
                 else if (itemOnTile.getItem().getName().equalsIgnoreCase("stone")) c = '●';
-            }
+            } else if (itemOnTile.getItem() instanceof ForagingMineral) c = 'M';
         }
         return c;
     }
@@ -66,6 +66,7 @@ public class Tile {
         else if (c == '●') return AnsiColors.ANSI_DARK_GRAY_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
 
         else if (c == 'F') return AnsiColors.ANSI_ORANGE_BACKGROUND;
+        else if (c == 'M') return AnsiColors.ANSI_SILVER_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;
         else {
             return AnsiColors.ANSI_WHITE;
         }
@@ -111,6 +112,12 @@ public class Tile {
         if (itemOnTile != null) return false;
         if (tree != null) return false;
         if (plant != null) return false;
+        return true;
+    }
+
+    public boolean canAddMineralToQuarry() {
+        if (type != TileType.QUARRY) return false;
+        if (itemOnTile != null) return false;
         return true;
     }
 

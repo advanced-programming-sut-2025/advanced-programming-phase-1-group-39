@@ -97,7 +97,7 @@ public class Map {
             }
 
             // random fill map
-            fillFarmWithRandoms(startX, startY, 0.25);
+            fillFarmWithRandoms(startX, startY, 0.25, 0.3);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,16 +158,17 @@ public class Map {
         }
     }
 
-    private void fillFarmWithRandoms(int startX, int startY, double possibility) {
+    private void fillFarmWithRandoms(int startX, int startY,
+                                     double foragingPossibility, double quarryPossibility) {
 //        Season nowSeason = App.getApp().getCurrentGame().getTime().getSeason();
+        //TODO : correct season
         Season nowSeason = Season.SPRING;
         for (int i = startX; i < startX + Constants.FARM_WIDTH; i++) {
             for (int j = startY; j < startY + Constants.FARM_HEIGHT; j++) {
                 Tile tile = tiles[j][i];
 
                 if (tile.canAddItemToTile()) {
-                    if (Math.random() < possibility) {
-                        // TODO : should be corrected in loading
+                    if (Math.random() < foragingPossibility) {
                         if (Math.random() < 0.05) {
                             ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason);
                             tile.placeItem(new ItemStack(randomCrop, 1));
@@ -175,11 +176,15 @@ public class Map {
                             Tree randomTree = ForagingManager.getRandomTree(nowSeason, tile);
                             tile.plantTree(randomTree);
                         } else {
-                            // TODO : add wood and stone
                             ForagingMaterial randomMaterial = ForagingManager.getRandomMaterial();
                             tile.placeItem(new ItemStack(randomMaterial, 1));
                         }
 
+                    }
+                } else if (tile.canAddMineralToQuarry()) {
+                    if (Math.random() < quarryPossibility) {
+                        ForagingMineral randomMineral = ForagingManager.getRandomMineral();
+                        tile.placeItem(new ItemStack(randomMineral, 1));
                     }
                 }
 

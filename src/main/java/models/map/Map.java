@@ -7,9 +7,12 @@ import com.google.gson.JsonObject;
 import models.Constants;
 import models.Enums.Season;
 import models.ItemStack;
+import models.Location;
+import models.Player;
 import models.cropsAndFarming.*;
 
 import java.io.FileReader;
+import java.util.ArrayList;
 
 public class Map {
     private final int width = Constants.WORLD_MAP_WIDTH, height = Constants.WORLD_MAP_HEIGHT;
@@ -44,7 +47,6 @@ public class Map {
         return text.toString();
     }
 
-    // player number is from 1 to 4
     public void addRandomFarm(FarmType farmType, int playerNumber) {
         try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {
             Gson gson = new Gson();
@@ -56,25 +58,9 @@ public class Map {
             }
             JsonObject farmObject = array.get(id).getAsJsonObject(); // FarmType
 
-            int startX, startY;
-            switch (playerNumber) {
-                case 1:
-                    startX = Constants.WORLD_MAP_WIDTH - Constants.FARM_WIDTH;
-                    startY = 0;
-                    break;
-                case 2:
-                    startX = 0;
-                    startY = 0;
-                    break;
-                case 3:
-                    startX = 0;
-                    startY = Constants.WORLD_MAP_HEIGHT - Constants.FARM_HEIGHT;
-                    break;
-                default:
-                    startX = Constants.WORLD_MAP_WIDTH - Constants.FARM_WIDTH;
-                    startY = Constants.WORLD_MAP_HEIGHT - Constants.FARM_HEIGHT;
-                    break;
-            }
+            Location location = Map.getStartOfFarm(playerNumber);
+            int startX = location.x(), startY = location.y();
+
             // fixeds
             JsonObject fixedElements = farmObject.getAsJsonObject("fixedElements");
             // adding cabin, greenhouse, main lake
@@ -305,13 +291,23 @@ public class Map {
         return text.toString();
     }
 
-    //Todo : Add chars to tile getColor and getSymbol
-    public String printColorMap() {
+    //Todo : Add all chars to tile getColor and getSymbol
+    public String printColorMap(ArrayList<Player> players) {
         StringBuilder text = new StringBuilder();
+
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
+                boolean doesSet = false;
                 Tile tile = tiles[i][j];
-                text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
+
+                for (Player player : players) {
+                    if (j == player.getLocation().x() && i == player.getLocation().y()) {
+                        text.append(AnsiColors.ANSI_PURPLE_BOLD + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
+                        doesSet = true;
+                    }
+                }
+                if (!doesSet)
+                    text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
             }
             text.append("\n");
         }
@@ -340,6 +336,30 @@ public class Map {
 
     public Tile getTile(int x, int y) {
         return tiles[y][x];
+    }
+
+    public static Location getStartOfFarm(int number) {
+        int startX, startY;
+        switch (number) {
+            case 1:
+                startX = Constants.WORLD_MAP_WIDTH - Constants.FARM_WIDTH;
+                startY = 0;
+                break;
+            case 2:
+                startX = 0;
+                startY = 0;
+                break;
+            case 3:
+                startX = 0;
+                startY = Constants.WORLD_MAP_HEIGHT - Constants.FARM_HEIGHT;
+                break;
+            default:
+                startX = Constants.WORLD_MAP_WIDTH - Constants.FARM_WIDTH;
+                startY = Constants.WORLD_MAP_HEIGHT - Constants.FARM_HEIGHT;
+                break;
+        }
+
+        return new Location(startX, startY);
     }
 }
 

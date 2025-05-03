@@ -1,6 +1,8 @@
 import models.Enums.Season;
+import models.Game;
 import models.ItemManager;
 import models.ItemStack;
+import models.Player;
 import models.cropsAndFarming.ForagingManager;
 import models.cropsAndFarming.TreeManager;
 import models.map.FarmType;
@@ -14,13 +16,27 @@ public class Main {
 //    }
 
     public static void main(String[] args) {
-        Map map = new Map();
+
+//        Map map = new Map();
+//        ItemManager.loadItems();
+//
+//        map.addRandomFarm(FarmType.LAKE_FARM, 2);
+//        map.addRandomFarm(FarmType.MINE_FARM, 1);
+//
+//        map.loadMap();
+//        System.out.println(map.printColorMap());
         ItemManager.loadItems();
 
-        map.addRandomFarm(FarmType.LAKE_FARM, 2);
-        map.addRandomFarm(FarmType.MINE_FARM, 1);
-
-        map.loadMap();
-        System.out.println(map.printColorMap());
+        Player player1 = new Player();
+        Player player2 = new Player();
+        Player player3 = new Player();
+        Player player4 = new Player();
+        Game game = new Game(player1, player2, player3, player4);
+        game.addRandomFarmForPlayer(player1, FarmType.getFarmTypeById(0));
+        game.addRandomFarmForPlayer(player2, FarmType.getFarmTypeById(0));
+        game.addRandomFarmForPlayer(player3, FarmType.getFarmTypeById(1));
+        game.addRandomFarmForPlayer(player4, FarmType.getFarmTypeById(1));
+        game.startGame();
+        System.out.println(game.printColorMap());
     }
 }

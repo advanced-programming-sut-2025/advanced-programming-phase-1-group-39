@@ -9,6 +9,7 @@ public enum TileType {
     QUARRY('Q', true),
     SELL_BASKET('B', false),
     DISABLE(' ', false),
+    PATH('#', true),
     ;
 
     private final char symbol;

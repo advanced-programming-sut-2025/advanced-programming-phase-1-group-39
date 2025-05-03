@@ -68,6 +68,7 @@ public class Tile {
 
         // basket
         else if (c == 'B') return AnsiColors.ANSI_YELLOW_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;
+        else if (c == '#') return AnsiColors.ANSI_LIGHT_GOLDEN_BACKGROUND;
         else {
             return AnsiColors.ANSI_WHITE;
         }

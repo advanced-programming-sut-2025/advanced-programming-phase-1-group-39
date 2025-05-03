@@ -87,6 +87,9 @@ public class Map {
             JsonObject quarry = fixedElements.getAsJsonObject("quarry");
             addObjectToMap(quarry, "quarry", startX, startY);
 
+            JsonObject sellBasket = fixedElements.getAsJsonObject("sell_basket");
+            addObjectToMap(sellBasket, "basket", startX, startY);
+
             JsonArray lakes = fixedElements.getAsJsonArray("lakes");
             JsonObject mainLake = lakes.get(0).getAsJsonObject();
             addObjectToMap(mainLake, "lake", startX, startY);
@@ -105,12 +108,14 @@ public class Map {
     }
 
     private void addObjectToMap(JsonObject object, String type, int startX, int startY) {
-        int x, y, h, w;
+        int x, y, h = 0, w = 0;
         x = object.get("x").getAsInt() + startX;
         y = object.get("y").getAsInt() + startY;
-        w = object.get("w").getAsInt();
-        h = object.get("h").getAsInt();
 
+        if (object.has("w")) {
+            w = object.get("w").getAsInt();
+            h = object.get("h").getAsInt();
+        }
         if (type.equals("building")) {
             for (int i = x; i < x + w; i++) {
                 tiles[y][i].setType(TileType.WALL);
@@ -131,13 +136,14 @@ public class Map {
             int doorX = door.get("x").getAsInt() + startX;
             int doorY = door.get("y").getAsInt() + startY;
             tiles[doorY][doorX].setType(TileType.INDOOR);
-        }
-        else if (type.equals("quarry")) {
+        } else if (type.equals("quarry")) {
             for (int i = x; i < x + w; i++) {
                 for (int j = y; j < y + h; j++) {
                     tiles[j][i].setType(TileType.QUARRY);
                 }
             }
+        } else if (type.equals("basket")) {
+            tiles[y][x].setType(TileType.SELL_BASKET);
         } else if (type.equals("lake")) {
             for (int i = x; i < x + w; i++) {
                 for (int j = y; j < y + h; j++) {

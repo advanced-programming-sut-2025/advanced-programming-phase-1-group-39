@@ -29,7 +29,7 @@ public class AnsiColors {
     public static final String ANSI_WHITE_BACKGROUND = "\u001b[47m";
     // Other colors
     public static final String ANSI_GOLDEN_BACKGROUND = getAnsiBackGround(155, 116, 0);
-    public static final String ANSI_SILVER_BACKGROUND = getAnsiBackGround(255, 215, 0);
+    public static final String ANSI_YELLOW_BACKGROUND = getAnsiBackGround(255, 215, 0);
 
 
     public static String getAnsiBackGround(int r, int g, int b) {

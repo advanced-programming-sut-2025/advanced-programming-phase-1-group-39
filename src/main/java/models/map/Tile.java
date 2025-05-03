@@ -1,6 +1,5 @@
 package models.map;
 
-import models.Item;
 import models.ItemStack;
 import models.cropsAndFarming.*;
 
@@ -59,14 +58,16 @@ public class Tile {
         else if (c == '×') return AnsiColors.ANSI_BLACK_BOLD;
         else if (c == 'Q') return AnsiColors.ANSI_GRAY_BACKGROUND;
 
-        else if (c == 'B') return AnsiColors.ANSI_YELLOW_BOLD;
         else if (c == 'P') return AnsiColors.ANSI_GREEN_BOLD;
         else if (c == 'T') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_DARK_GREEN_BACKGROUND;
         else if (c == '/') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
         else if (c == '●') return AnsiColors.ANSI_DARK_GRAY_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
 
         else if (c == 'F') return AnsiColors.ANSI_ORANGE_BACKGROUND;
-        else if (c == 'M') return AnsiColors.ANSI_SILVER_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;
+        else if (c == 'M') return AnsiColors.ANSI_YELLOW_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;
+
+        // basket
+        else if (c == 'B') return AnsiColors.ANSI_YELLOW_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;
         else {
             return AnsiColors.ANSI_WHITE;
         }

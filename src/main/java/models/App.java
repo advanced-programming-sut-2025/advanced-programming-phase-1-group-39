@@ -19,7 +19,7 @@ public class App {
 
     private Game nowGame = null;
 
-    private Menu currentMenu = Menu.LOGIN_MENU;
+    private Menu currentMenu = Menu.SIGNUP_MENU;
 
     private App() {}
 

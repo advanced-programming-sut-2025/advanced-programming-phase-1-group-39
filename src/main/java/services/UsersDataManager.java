@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class UsersDataManager {
 
-    private static final String FILE_PATH = "src/main/resources/data/users/users.json"; // آدرس فایل JSON
+    private static final String FILE_PATH = "src/main/data/users/users.json"; // آدرس فایل JSON
 
     // تابع ذخیره اطلاعات کاربران در فایل JSON
     public static void saveUsers(ArrayList<User> users) {

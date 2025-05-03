@@ -5,12 +5,13 @@ import views.*;
 import java.util.Scanner;
 
 public enum Menu {
+    SIGNUP_MENU("signup menu", new SignupMenuView()),
     LOGIN_MENU("login menu", new LoginMenuView()),
     MAIN_MENU("main menu", new MainMenuView()),
     PROFILE_MENU("profile menu", new ProfileMenuView()),
     GAME_MENU("game menu", new GameMenuView()),
     GAME("game", new GameView()),
-    ExitMenu("exit", null);
+    ExitMenu("exit", new ExitMenuView());
 
     private View menuView;
     private String name;

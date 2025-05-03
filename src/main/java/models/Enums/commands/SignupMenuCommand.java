@@ -19,17 +19,19 @@ public enum SignupMenuCommand {
 
     SecurityQuestion("pick\\s+question\\s+-q\\s+(?<questionNumber>\\S+)\\s+-a\\s+(?<answer>.*?)\\s+-c\\s+(?<answerConfirm>.*?)"),
 
-    ShowCurrentManu("show\\s+current\\s+manu"),
+    ShowCurrentManu("show\\s+current\\s+menu"),
 
-    GoToLoginMenu("manu\\s+enter\\s+login"),
+    GoToLoginMenu("menu\\s+enter\\s+login"),
 
-    ExitMenu("manu\\s+exit"),
+    ExitMenu("menu\\s+exit"),
 
     ;
 
     private final String pattern;
 
-    SignupMenuCommand(String pattern) { this.pattern = pattern; }
+    SignupMenuCommand(String pattern) {
+        this.pattern = pattern;
+    }
 
     public Matcher getMatcher(String input) {
         Matcher matcher = Pattern.compile(pattern).matcher(input);

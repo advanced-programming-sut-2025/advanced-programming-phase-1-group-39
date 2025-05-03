@@ -19,10 +19,7 @@ public class Refrigerator {
     }
 
     public boolean contains(String itemName) {
-        if(inventory.hasItem(itemName)) {
-            return true;
-        }
-        return false;
+        return inventory.hasItem(itemName);
     }
 
     public Inventory getInventory() {

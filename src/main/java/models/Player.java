@@ -3,6 +3,7 @@ package models;
 import models.NPC.NPC;
 import models.NPC.Quest;
 import models.artisan.ArtisanMachineRecipe;
+import models.cooking.FoodBuff;
 import models.cooking.FoodRecipe;
 import models.crafting.CraftingRecipe;
 import models.inventory.Inventory;
@@ -17,6 +18,7 @@ public class Player {
     Skill skills;
     Inventory inventory;
 
+    FoodBuff buff = null;
 
     ArrayList<CraftingRecipe> craftingRecipes;
     ArrayList<ArtisanMachineRecipe> artisanMachineRecipes;
@@ -29,6 +31,10 @@ public class Player {
 
     public boolean isConscious() {
         return energy > 0;
+    }
+
+    public void setBuff(FoodBuff buff) {
+        this.buff = buff;
     }
 
     public Inventory getInventory() {

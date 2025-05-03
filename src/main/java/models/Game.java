@@ -28,6 +28,11 @@ public class Game {
         todayWeather.setWeatherSunny();
     }
 
+    public void startGame() {
+        gameMap.loadMap();
+        ItemManager.loadItems();
+    }
+
     public Map getMap() {
         return gameMap;
     }

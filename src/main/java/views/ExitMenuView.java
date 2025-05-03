@@ -1,7 +1,7 @@
 package views;
 
 import models.App;
-import services.UsersDataManager;
+import models.services.UsersDataManager;
 
 public class ExitMenuView implements View {
     @Override

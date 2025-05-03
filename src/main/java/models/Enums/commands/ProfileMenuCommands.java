@@ -12,7 +12,7 @@ public enum ProfileMenuCommands {
 
     ShowUserInfo("user\\s+info"),
 
-    GotoMainMenu("menu\\s+exit"),
+    GoToMainMenu("menu\\s+exit"),
 
     ShowCurrentMenu("menu\\s+current\\s+menu"),
 

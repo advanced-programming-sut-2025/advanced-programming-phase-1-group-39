@@ -78,15 +78,6 @@ public class ProfileMenuController {
         }
     }
 
-    public Result showCurrentMenu() {
-        return new Result(true, "you are now in profile menu.");
-    }
-
-    public Result gotoMainMenu() {
-        App.getApp().setCurrentMenu(Menu.MAIN_MENU);
-        return new Result(true, "you are now in main menu.");
-    }
-
     public Result showUserInfo() {
         StringBuilder output = new StringBuilder();
         output.append("username : ").append(App.getApp().getLoggedInUser().getUserName()).append("\n");
@@ -96,15 +87,15 @@ public class ProfileMenuController {
         return new Result(true, output.toString());
     }
 
+    public Result showCurrentMenu() {
+        return new Result(true, "you are now in profile menu.");
+    }
 
+    public Result gotoMainMenu() {
+        App.getApp().setCurrentMenu(Menu.MAIN_MENU);
+        return new Result(true, "you are now in main menu.");
+    }
 
-
-//    public static void changeUsername(Matcher matcher) {}
-//    public static void changeNickname(Matcher matcher) {}
-//    public static void changePassword(Matcher matcher) {}
-//    public static void changeEmail(Matcher matcher) {}
-//
-//    public static void showUserInfo() {}
 
     // Auxiliary functions :
 

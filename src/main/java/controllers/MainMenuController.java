@@ -28,4 +28,6 @@ public class MainMenuController {
         return new Result(true, "You are now in the current menu.");
     }
 
+
+
 }

@@ -5,7 +5,7 @@ import models.Enums.Menu;
 import models.Enums.commands.SignupMenuCommands;
 import models.Result;
 import models.User;
-import services.LoginPersistence;
+import models.services.LoginPersistence;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;

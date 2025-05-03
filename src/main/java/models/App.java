@@ -1,7 +1,7 @@
 package models;
 
 import models.Enums.Menu;
-import services.UsersDataManager;
+import models.services.UsersDataManager;
 
 import java.util.ArrayList;
 

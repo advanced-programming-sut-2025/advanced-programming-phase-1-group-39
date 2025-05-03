@@ -17,7 +17,7 @@ public class AnsiColors {
     // Bold Colors (Text)
     public static final String ANSI_BLACK_BOLD = "\u001b[1;30m";
     public static final String ANSI_DARK_GRAY_BOLD = getAnsiBoldColor(64, 64, 64);
-    public static final String ANSI_YELLOW_BOLD = "\u001b[1;33m";
+    public static final String ANSI_PURPLE_BOLD = getAnsiBoldColor(73, 0, 146);
     public static final String ANSI_GREEN_BOLD = getAnsiBoldColor(0, 156, 0);
     public static final String ANSI_BROWN_BOLD = getAnsiBoldColor(102, 41, 0);
     // Background Colors

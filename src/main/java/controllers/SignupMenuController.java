@@ -3,7 +3,7 @@ package controllers;
 import models.App;
 import models.Enums.Menu;
 import models.Enums.SecurityQuestionCommands;
-import models.Enums.commands.SignupMenuCommand;
+import models.Enums.commands.SignupMenuCommands;
 import models.Result;
 import models.SecurityQuestion;
 import models.User;
@@ -31,18 +31,18 @@ public class SignupMenuController {
             String newUsername = getUniqueName(username);
             return new Result(false, "The username you want is already in use. You can use this username: " +
                     "((" + newUsername + ")). If you'd like to use it, or choose a different username.");
-        } else if ((matcher1 = SignupMenuCommand.UserName.getMatcher(username)) == null) {
+        } else if ((matcher1 = SignupMenuCommands.UserName.getMatcher(username)) == null) {
             return new Result(false, "The username format is incorrect. Please make sure it contains only letters, numbers, - ,and no spaces.");
-        } else if ((matcher1 = SignupMenuCommand.Email.getMatcher(email)) == null) {
+        } else if ((matcher1 = SignupMenuCommands.Email.getMatcher(email)) == null) {
             return new Result(false, "The email address you entered is invalid. Please enter a valid email address.");
-        } else if (password != null && (matcher1 = SignupMenuCommand.Password.getMatcher(password)) == null) {
+        } else if (password != null && (matcher1 = SignupMenuCommands.Password.getMatcher(password)) == null) {
             return new Result(false, "Invalid password format. You can use letters, numbers, and special characters in your password.");
-        } else if (password != null && (matcher1 = SignupMenuCommand.WeakPassword.getMatcher(password)) == null) {
+        } else if (password != null && (matcher1 = SignupMenuCommands.WeakPassword.getMatcher(password)) == null) {
             StringBuilder output = validatePassword(password);
             return new Result(false, output.toString());
         } else if (password != null && passwordConfirm != null && !password.equals(passwordConfirm)) {
             return new Result(false, "Password and confirmation do not match.");
-        } else if ((matcher1 = SignupMenuCommand.Gender.getMatcher(gender)) == null) {
+        } else if ((matcher1 = SignupMenuCommands.Gender.getMatcher(gender)) == null) {
             return new Result(false, "Please enter a valid gender. Accepted values are 'male' or 'female'.");
         } else if (random != null && !random.equals("random")) {
             return new Result(false, "To request a random password, please type the word 'random.");

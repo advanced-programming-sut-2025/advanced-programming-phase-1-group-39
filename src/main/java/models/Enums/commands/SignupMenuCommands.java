@@ -3,7 +3,7 @@ package models.Enums.commands;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum SignupMenuCommand {
+public enum SignupMenuCommands {
 
 
     Register("register\\s+-u\\s+(?<username>.*?)\\s+-p\\s+(?:(?<password>\\S+)\\s+(?<passwordConfirm>\\S+)|(?<random>random))\\s+-n\\s+(?<nickName>.*?)\\s+-e\\s+(?<email>.*?)\\s+-g\\s+(?<gender>\\S+)"),
@@ -29,7 +29,7 @@ public enum SignupMenuCommand {
 
     private final String pattern;
 
-    SignupMenuCommand(String pattern) {
+    SignupMenuCommands(String pattern) {
         this.pattern = pattern;
     }
 

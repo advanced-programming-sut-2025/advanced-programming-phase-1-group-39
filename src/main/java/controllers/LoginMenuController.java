@@ -2,7 +2,7 @@ package controllers;
 
 import models.App;
 import models.Enums.Menu;
-import models.Enums.commands.SignupMenuCommand;
+import models.Enums.commands.SignupMenuCommands;
 import models.Result;
 import models.User;
 import services.LoginPersistence;
@@ -70,9 +70,9 @@ public class LoginMenuController {
             return new Result(true, "our random password: " + randomPassword + "\n" +
                     "please enter the new password to log in.");
         } else {
-            if ((matcher1 = SignupMenuCommand.Password.getMatcher(newPassword)) == null) {
+            if ((matcher1 = SignupMenuCommands.Password.getMatcher(newPassword)) == null) {
                 return new Result(false, "invalid password format. You can use letters, numbers, and special characters in your password.");
-            } else if ((matcher1 = SignupMenuCommand.WeakPassword.getMatcher(newPassword)) == null) {
+            } else if ((matcher1 = SignupMenuCommands.WeakPassword.getMatcher(newPassword)) == null) {
                 StringBuilder output = validatePassword(newPassword);
                 return new Result(false, output.toString());
             } else {

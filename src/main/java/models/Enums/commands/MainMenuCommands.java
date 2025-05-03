@@ -3,25 +3,21 @@ package models.Enums.commands;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public enum LoginMenuCommands {
+public enum MainMenuCommands {
 
-    Login("login\\s+-u\\s+(?<username>.*?)\\s+-p\\s+(?<password>.*?)(\\s+(?<stayLoggedIn>-stay-logged-in))?"),
+    Logout("user\\s+logout"),
 
-    ForgetPassword("forget\\s+password\\s+-u\\s+(?<username>.*?)"),
-    Answer("answer\\s+-a\\s+(?<answer>.*?)"),
-    NewPassword("(?<newPassword>\\S+)"),
-
-    GoTOSignupMenu("menu\\s+enter\\s+signup"),
+    GoToProfileMenu("menu\\s+enter\\s+profile"),
+    GoToGameMenu("menu\\s+enter\\s+game"),
 
     ShowCurrentMenu("show\\s+current\\s+menu"),
 
-    ExitMenu("exit"),
 
     ;
 
     private final String pattern;
 
-    LoginMenuCommands(String pattern) {
+    MainMenuCommands(String pattern) {
         this.pattern = pattern;
     }
 

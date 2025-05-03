@@ -1,0 +1,63 @@
+package models.cooking;
+
+import models.Player;
+import models.Result;
+import models.inventory.Inventory;
+
+import java.util.Map;
+
+public class FoodManager {
+
+    public static Result cook(String foodName, Player player) {
+
+        if (!player.isAtHome()) {
+            return new Result(false, "You need to be at home to cook.");
+        }
+
+        FoodRecipe recipe = getRecipeByName(foodName);
+        if (recipe == null) {
+            return new Result(false, "This recipe does not exist.");
+        }
+
+        if (!player.hasLearnedFoodRecipe(recipe)) {
+            return new Result(false, "You haven't learned this recipe yet.");
+        }
+
+        if (!hasAllIngredients(player, recipe)) {
+            return new Result(false, "Missing required ingredients.");
+        }
+
+        if (!player.getInventory().hasSpace()) {
+            return new Result(false, "Inventory full.");
+        }
+
+        for (Map.Entry<String, Integer> entry : recipe.ingredients.entrySet()) {
+            player.getInventory().pickItem(entry.getKey(), entry.getValue());
+        }
+
+        player.getInventory().addItem(recipe.data, 1);
+        player.changeEnergy(-3);
+        return new Result(true, "Cooked: " + recipe.data.getName());
+    }
+
+    private static boolean hasAllIngredients(Player player, FoodRecipe recipe) {
+        Inventory inv = player.getInventory();
+        for (Map.Entry<String, Integer> entry : recipe.ingredients.entrySet()) {
+            String itemName = entry.getKey();
+            int count = entry.getValue();
+
+            if (!inv.hasEnoughStack(itemName, count) && !player.getHome().getRefrigerator().getInventory().hasEnoughStack(itemName, count)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static FoodRecipe getRecipeByName(String name) {
+        for (FoodRecipe recipe : FoodRecipe.values()) {
+            if (recipe.data.getName().equalsIgnoreCase(name)) return recipe;
+        }
+        return null;
+    }
+}
+

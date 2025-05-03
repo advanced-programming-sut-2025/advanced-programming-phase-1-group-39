@@ -59,4 +59,18 @@ public class Player {
         }
         return sb.toString();
     }
+
+    public void learnFoodRecipe(FoodRecipe recipe) {
+        foodRecipes.add(recipe);
+    }
+    public boolean hasLearnedFoodRecipe(FoodRecipe recipe) {
+        return foodRecipes.contains(recipe);
+    }
+    public String showFoodRecipes() {
+        StringBuilder sb = new StringBuilder();
+        for (FoodRecipe recipe : foodRecipes) {
+            sb.append(recipe.toString());
+        }
+        return sb.toString();
+    }
 }

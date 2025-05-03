@@ -1,17 +1,22 @@
 package models.cooking;
 
+import models.Item;
+
 import java.util.Map;
 
-public class Food {
-    String name;
+public class Food extends Item {
     int energy;
     int sellPrice;
     FoodBuff buff;
 
     public Food(String name, int energy, int sellPrice,  FoodBuff buff) {
-        this.name = name;
+        super(name);
         this.energy = energy;
         this.sellPrice = sellPrice;
         this.buff = buff;
+    }
+
+    public String getName() {
+        return name;
     }
 }

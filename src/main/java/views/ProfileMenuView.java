@@ -14,7 +14,6 @@ public class ProfileMenuView implements View {
     public void checkCommand(String command) {
         Matcher matcher;
         Result result;
-        App app = App.getApp();
         
         if ((matcher = ProfileMenuCommands.ChangeUsername.getMatcher(command)) != null) {
             result = controller.changeUsername(matcher);

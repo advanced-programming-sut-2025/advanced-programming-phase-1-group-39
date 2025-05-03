@@ -12,7 +12,6 @@ public enum MainMenuCommands {
 
     ShowCurrentMenu("show\\s+current\\s+menu"),
 
-
     ;
 
     private final String pattern;

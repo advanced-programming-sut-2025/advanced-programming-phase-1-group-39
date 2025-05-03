@@ -340,7 +340,8 @@ public class Map {
                 + "Craft : C\n"
                 + "Artisan Machine : M\n"
 
-                + "Path : #\n";
+                + "Path : #\n"
+                + "Player : @\n";
     }
 
     public Tile getTile(int x, int y) {

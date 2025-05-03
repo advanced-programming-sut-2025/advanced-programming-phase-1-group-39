@@ -41,11 +41,13 @@ public class Inventory {
             inventoryItems.add(new ItemStack(item, amount));
         }
     }
-    public void removeItem(String name, int amount) {
+    public ItemStack pickItem(String name, int amount) {
         ItemStack item = getItemByName(name);
         if (item != null) {
             item.addStack(-amount); // Todo: it's not complete
+            return new ItemStack(item.getItem(), amount);
         }
+        return null;
     }
 
     public boolean hasItem(String name) {

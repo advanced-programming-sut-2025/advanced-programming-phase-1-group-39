@@ -9,13 +9,13 @@ public enum LoginMenuCommands {
 
     ForgetPassword("forget\\s+password\\s+-u\\s+(?<username>.*?)"),
     Answer("answer\\s+-a\\s+(?<answer>.*?)"),
-    NewPassword("(?<newPassword>.*?)"),
+    NewPassword("(?<newPassword>\\S+)"),
 
     GoTOSignupMenu("go\\s+to\\s+signup\\s+menu"),
 
     ShowCurrentMenu("show\\s+current\\s+menu"),
 
-    ExitMenu("menu\\s+exit"),
+    ExitMenu("exit"),
 
     ;
 

@@ -23,7 +23,7 @@ public enum SignupMenuCommand {
 
     GoToLoginMenu("menu\\s+enter\\s+login"),
 
-    ExitMenu("menu\\s+exit"),
+    ExitMenu("exit"),
 
     ;
 

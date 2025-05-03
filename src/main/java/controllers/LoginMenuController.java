@@ -102,7 +102,7 @@ public class LoginMenuController {
         return new Result(true, "you are now in the login menu.");
     }
 
-    private Result goToSignupMenu() {
+    public Result goToSignupMenu() {
         App.getApp().setPendingUser(null);
         App.getApp().setLoggedInUser(null);
         App.getApp().setRandomPassword(null);

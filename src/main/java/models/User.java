@@ -8,6 +8,9 @@ public class User {
     private boolean isMale;
     private SecurityQuestion securityQuestion;
 
+    private int numberOfGamesPlayed;
+    private int highestMoneyEarnedInASingleGame;
+
     Player player;
 
     public User(String userName, String password, String nickname, String email, boolean isMale) {
@@ -16,6 +19,8 @@ public class User {
         this.nickname = nickname;
         this.email = email;
         this.isMale = isMale;
+        this.numberOfGamesPlayed = 0;
+        this.highestMoneyEarnedInASingleGame = 0;
     }
 
     public void setUserName(String userName) {
@@ -34,7 +39,17 @@ public class User {
         this.email = email;
     }
 
-    public void setSecurityQuestion(SecurityQuestion securityQuestion) { this.securityQuestion = securityQuestion; }
+    public void setSecurityQuestion(SecurityQuestion securityQuestion) {
+        this.securityQuestion = securityQuestion;
+    }
+
+    public void setHighestMoneyEarnedInASingleGame(int highestMoneyEarnedInASingleGame) {
+        this.highestMoneyEarnedInASingleGame = highestMoneyEarnedInASingleGame;
+    }
+
+    public void setNumberOfGamesPlayed(int numberOfGamesPlayed) {
+        this.numberOfGamesPlayed = numberOfGamesPlayed;
+    }
 
     public String getUserName() {
         return userName;
@@ -52,11 +67,21 @@ public class User {
         return email;
     }
 
-    public boolean isMale() {
+    public boolean getIsMale() {
         return isMale;
     }
 
     public SecurityQuestion getSecurityQuestion() {
         return securityQuestion;
     }
+
+    public int getHighestMoneyEarnedInASingleGame() {
+        return highestMoneyEarnedInASingleGame;
+    }
+
+    public int getNumberOfGamesPlayed() {
+        return numberOfGamesPlayed;
+    }
+
+
 }

@@ -116,6 +116,7 @@ public class Map {
             w = object.get("w").getAsInt();
             h = object.get("h").getAsInt();
         }
+
         if (type.equals("building")) {
             for (int i = x; i < x + w; i++) {
                 tiles[y][i].setType(TileType.WALL);
@@ -132,9 +133,16 @@ public class Map {
                 }
             }
 
-            JsonObject door = object.getAsJsonObject("door");
-            int doorX = door.get("x").getAsInt() + startX;
-            int doorY = door.get("y").getAsInt() + startY;
+            int doorX, doorY;
+            if (object.has("door")) {
+                JsonObject door = object.getAsJsonObject("door");
+                doorX = door.get("x").getAsInt() + startX;
+                doorY = door.get("y").getAsInt() + startY;
+            } else {
+                doorX = x + w/2;
+                doorY = y + h - 1;
+            }
+
             tiles[doorY][doorX].setType(TileType.INDOOR);
         } else if (type.equals("quarry")) {
             for (int i = x; i < x + w; i++) {
@@ -160,6 +168,12 @@ public class Map {
                 int tileY = tile.get("y").getAsInt() + startY;
 
                 tiles[tileY][tileX].setType(TileType.SOIL);
+            }
+        } else if (type.equals("path")) {
+            for (int i = x; i < x + w; i++) {
+                for (int j = y; j < y + h; j++) {
+                    tiles[j][i].setType(TileType.PATH);
+                }
             }
         }
     }
@@ -198,7 +212,73 @@ public class Map {
         }
     }
 
+    private void addNpcMap() {
+        try (FileReader reader = new FileReader("src/main/resources/data/Map/npcMap.json")) {
+            Gson gson = new Gson();
 
+            int startX = Constants.FARM_WIDTH;
+            int startY = Constants.DISABLED_HEIGHT;
+
+            JsonObject object = gson.fromJson(reader, JsonObject.class);
+
+            // buildings
+            JsonObject buildings = object.getAsJsonObject("buildings");
+
+            JsonObject blacksmith = buildings.getAsJsonObject("blacksmith");
+            addObjectToMap(blacksmith, "building", startX, startY);
+
+            JsonObject jojamart = buildings.getAsJsonObject("jojamart");
+            addObjectToMap(jojamart, "building", startX, startY);
+
+            JsonObject pierres_store = buildings.getAsJsonObject("pierres_store");
+            addObjectToMap(pierres_store, "building", startX, startY);
+
+            JsonObject carpenters_shop = buildings.getAsJsonObject("carpenters_shop");
+            addObjectToMap(carpenters_shop, "building", startX, startY);
+
+            JsonObject fish_shop = buildings.getAsJsonObject("fish_shop");
+            addObjectToMap(fish_shop, "building", startX, startY);
+
+            JsonObject marnies_ranch = buildings.getAsJsonObject("marnies_ranch");
+            addObjectToMap(marnies_ranch, "building", startX, startY);
+
+            JsonObject stardrop_saloon = buildings.getAsJsonObject("stardrop_saloon");
+            addObjectToMap(stardrop_saloon, "building", startX, startY);
+
+            // paths
+            JsonArray paths = object.getAsJsonArray("paths");
+
+            for (JsonElement element : paths) {
+                JsonObject path = element.getAsJsonObject();
+                addObjectToMap(path, "path", startX, startY);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addDisabledTiles() {
+        int width = Constants.WORLD_MAP_WIDTH - 2 * Constants.FARM_WIDTH;
+        int height = Constants.DISABLED_HEIGHT;
+
+        int x = Constants.FARM_WIDTH;
+        for (int i = x; i < x + width; i++) {
+            for (int j = 0; j < height; j++) {
+                tiles[j][i].setType(TileType.DISABLE);
+            }
+            for (int j = Constants.WORLD_MAP_HEIGHT - height; j < Constants.WORLD_MAP_HEIGHT; j++) {
+                tiles[j][i].setType(TileType.DISABLE);
+            }
+        }
+    }
+
+    public void loadMap() {
+        addDisabledTiles();
+        addNpcMap();
+    }
+
+    // printing
     public String printWholeMap() {
         StringBuilder text = new StringBuilder();
         for (int i = 0; i < height; i++) {
@@ -240,17 +320,22 @@ public class Map {
     }
 
     public String helpReadingMap() {
-        return "Soil : .\n"
+        return     "Soil : .\n"
                 + "Water : ~\n"
                 + "Wall : O\n"
                 + "Indoor : *\n"
                 + "Quarry : Q\n"
                 + "Plant : P\n"
                 + "Tree : T\n"
+                + "Stone : ●\n"
+                + "Wood : /\n"
+                + "Foragings : F\n"
+                + "Quarry Minerals : M\n"
+
                 + "Craft : C\n"
                 + "Artisan Machine : M\n"
-                + "Stone : S\n"
-                + "Wood : W\n";
+
+                + "Path : #\n";
     }
 
     public Tile getTile(int x, int y) {

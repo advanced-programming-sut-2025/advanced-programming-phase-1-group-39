@@ -16,9 +16,11 @@ public class Main {
     public static void main(String[] args) {
         Map map = new Map();
         ItemManager.loadItems();
+
         map.addRandomFarm(FarmType.LAKE_FARM, 2);
         map.addRandomFarm(FarmType.MINE_FARM, 1);
 
+        map.loadMap();
         System.out.println(map.printColorMap());
     }
 }

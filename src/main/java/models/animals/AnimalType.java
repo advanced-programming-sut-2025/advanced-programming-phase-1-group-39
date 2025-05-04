@@ -73,8 +73,8 @@ public enum AnimalType {
             this.produceCycleDays = produceCycleDays;
         }
 
-        public FarmAnimal create(String name, LivingPlace place) {
-            return new FarmAnimal(this, name, price, place, products);
+        public Animal create(String name, LivingPlace place) {
+            return new Animal(this, name, price, place, products);
         }
 
 }

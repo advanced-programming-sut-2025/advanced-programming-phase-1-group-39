@@ -1,14 +1,12 @@
 package models.buildings;
 
-import models.animals.FarmAnimal;
+import models.animals.Animal;
 import models.animals.LivingPlace;
 import java.util.ArrayList;
-import java.util.List;
-import models.animals.Animal;
 
 public class AnimalBuilding extends Building {
     protected final LivingPlace type;
-    protected final ArrayList<FarmAnimal> animals;
+    protected final ArrayList<Animal> animals;
 
     public AnimalBuilding(String name, LivingPlace type) {
         super(name);
@@ -20,12 +18,12 @@ public class AnimalBuilding extends Building {
         return type.getCapacity();
     }
 
-    public boolean addAnimal(FarmAnimal animal) {
+    public boolean addAnimal(Animal animal) {
         if (animals.size() >= getCapacity()) return false;
         return animals.add(animal);
     }
 
-    public ArrayList<FarmAnimal> getAnimals() {
+    public ArrayList<Animal> getAnimals() {
         return animals;
     }
 
@@ -34,7 +32,7 @@ public class AnimalBuilding extends Building {
     }
 
     public void endDay() {
-        for (FarmAnimal animal : animals) {
+        for (Animal animal : animals) {
             animal.endDay();
         }
     }

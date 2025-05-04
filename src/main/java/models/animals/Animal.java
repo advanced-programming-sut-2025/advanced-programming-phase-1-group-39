@@ -1,9 +1,86 @@
 package models.animals;
 
-public abstract class Animal {
-    AnimalType type;
+import java.util.ArrayList;
 
-    public Animal(AnimalType type) {
+public class Animal {
+    private AnimalType type;
+    private String name;
+    private int price;
+    private LivingPlace place;
+
+    private ArrayList<AnimalProduct> products;
+
+    private int friendship = 0;
+    private boolean pettedToday = false;
+    private boolean fedToday = false;
+    private boolean outsideToday = false;
+    private int daysSinceLastProduce = 0;
+
+    public Animal(AnimalType type, String name, int price, LivingPlace place, ArrayList<AnimalProduct> products) {
         this.type = type;
+        this.name = name;
+        this.price = price;
+        this.type = type;
+        this.place = place;
+
+        this.products = products;
+    }
+
+    public void pet() {
+        if (!pettedToday) {
+            pettedToday = true;
+            friendship += 15;
+        }
+    }
+
+    public void feedHay() {
+        fedToday = true;
+    }
+
+    public void sendOutside() {
+        outsideToday = true;
+    }
+
+    public void endDay() {
+        if (!pettedToday)
+            friendship -= Math.max(10, 200 - friendship);
+        if (!fedToday)
+            friendship -= 20;
+        if (!outsideToday)
+            friendship -= 20;
+
+
+        pettedToday = false;
+        fedToday = false;
+        outsideToday = false;
+
+        daysSinceLastProduce++;
+    }
+
+    public AnimalProduct produce() {
+        if (!fedToday) {
+            return null;
+        }
+        if (daysSinceLastProduce >= type.produceCycleDays) {
+            daysSinceLastProduce = 0;
+
+            AnimalProduct baseProduct = type.products.get(0);
+            AnimalProduct altProduct = type.products.size() > 1 ? type.products.get(1) : null;
+
+            double chance = (friendship + Math.random() * 150) / 1500.0;
+            AnimalProduct produced = (altProduct != null && chance > 0.5) ? altProduct : baseProduct;
+
+            double qualityValue = (Math.random() * 0.5 + 0.5) * friendship / 1000.0;
+            AnimalProductQuality quality;
+            if (qualityValue < 0.5) quality = AnimalProductQuality.NORMAL;
+            else if (qualityValue < 0.7) quality = AnimalProductQuality.SILVER;
+            else if (qualityValue < 0.9) quality = AnimalProductQuality.GOLD;
+            else quality = AnimalProductQuality.IRIDIUM;
+
+            produced.setQuality(quality);
+            return produced;
+        }
+
+        return null;
     }
 }

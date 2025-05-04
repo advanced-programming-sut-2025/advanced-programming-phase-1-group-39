@@ -1,16 +1,24 @@
 package models;
 
+import models.Enums.Season;
 import models.NPC.NPC;
 import models.NPC.Quest;
+import models.animals.AnimalProductQuality;
+import models.animals.Fish;
+import models.animals.FishType;
 import models.artisan.ArtisanMachineRecipe;
 import models.cooking.FoodBuff;
 import models.cooking.FoodRecipe;
 import models.crafting.CraftingRecipe;
 import models.inventory.Inventory;
+import models.tools.FishingPole;
 import models.trading.TradeItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Player {
     Location location;
@@ -79,4 +87,39 @@ public class Player {
         }
         return sb.toString();
     }
+
+    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) { // Todo: not complete
+        double M = weather.getFishingFactor();
+        double R = Math.random();
+        int skill = skills.getFishingLevel();
+
+        int count = (int) Math.ceil(2 + skill * M * R);
+        count = Math.min(count, 6);
+
+        List<FishType> seasonal = Arrays.stream(FishType.values())
+                .filter(f -> f.season == season)
+                .collect(Collectors.toList());
+
+        if (skill == skills.getMaxFishingLevel()) {
+            seasonal.addAll(Arrays.stream(FishType.values())
+                    .filter(f -> f.name().equals(f.name().toUpperCase()))
+                    .filter(f -> f.season == season)
+                    .toList());
+        }
+
+        List<Fish> result = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            FishType randomType = seasonal.get((int) (Math.random() * seasonal.size()));
+
+            //double qualityScore = Math.random() * (skill * 2) + pole.();
+            //double normalized = qualityScore / 7.0;
+            //AnimalProductQuality quality = AnimalProductQuality.fromScore(normalized);
+
+            //result.add(new Fish(randomType, quality));
+        }
+
+        return new ArrayList<>(result);
+    }
+
 }

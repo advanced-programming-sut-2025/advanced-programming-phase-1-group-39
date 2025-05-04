@@ -3,7 +3,8 @@ package models.animals;
 import models.Item;
 
 public class AnimalProduct extends Item {
-    int baseSellPrice;
+    private int baseSellPrice;
+    private AnimalProductQuality quality;
     public AnimalProduct(String name, int baseSellPrice) {
         super(name);
         this.baseSellPrice = baseSellPrice;
@@ -15,6 +16,10 @@ public class AnimalProduct extends Item {
 
     public int getBaseSellPrice() {
         return baseSellPrice;
+    }
+
+    public void setQuality(AnimalProductQuality quality) {
+        this.quality = quality;
     }
 
     @Override

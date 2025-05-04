@@ -13,9 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
-    private Location location = new Location(0,0);
+    private int id;
+
+    private Location location = new Location(0, 0);
     private Location startOfFarm;
     private Location endOfFarm;
+    private String username;
 
     FoodBuff buff = null;
 
@@ -36,7 +39,10 @@ public class Player {
     private int money = 0;
     private int nightRevenue = 0;
 
-    public Player() {}
+    public Player(String username, int id) {
+        this.username = username;
+        this.id = id;
+    }
 
 
     public boolean isConscious() {
@@ -50,19 +56,29 @@ public class Player {
     public int getEnergy() {
         return energy;
     }
+
     public void changeEnergy(int amount) {
         energy += amount;
     }
 
-    public void goFishing() {}
+    public void goFishing() {
+    }
 
-    public int getLevelOfFriendship(NPC npc) {return 0;}
+    public int getLevelOfFriendship(NPC npc) {
+        return 0;
+    }
 
-    public void startTrade(Player player, TradeItem item) {}
+    public int getId() {
+        return id;
+    }
+
+    public void startTrade(Player player, TradeItem item) {
+    }
 
     public void learnCraftingRecipe(CraftingRecipe recipe) {
         craftingRecipes.add(recipe);
     }
+
     public boolean hasLearnedCraftingRecipe(CraftingRecipe recipe) {
         return craftingRecipes.contains(recipe);
     }
@@ -78,9 +94,11 @@ public class Player {
     public void learnFoodRecipe(FoodRecipe recipe) {
         foodRecipes.add(recipe);
     }
+
     public boolean hasLearnedFoodRecipe(FoodRecipe recipe) {
         return foodRecipes.contains(recipe);
     }
+
     public String showFoodRecipes() {
         StringBuilder sb = new StringBuilder();
         for (FoodRecipe recipe : foodRecipes) {

@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Game {
     private ArrayList<Player> players;
+    private ArrayList<String> playerManagers;
     private Player mainPlayer;
     private ArrayList<TradeItem> trades = new ArrayList<>();
     private Map gameMap;
@@ -21,7 +22,7 @@ public class Game {
     private Weather tomorrowWeather = new Weather();
 
     // first player should be the mainPlayer of game
-    public Game(Player one, Player two, Player three, Player four) {
+    public Game(int gameId,Player one, Player two, Player three, Player four) {
         this.players = new ArrayList<>(List.of(one, two, three, four));
         this.mainPlayer = one;
         this.gameMap = new Map();
@@ -82,5 +83,13 @@ public class Game {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public ArrayList<String> getPlayerManagers() {
+        return playerManagers;
+    }
+
+    public void addPlayerManager(String playerManager) {
+        playerManagers.add(playerManager);
     }
 }

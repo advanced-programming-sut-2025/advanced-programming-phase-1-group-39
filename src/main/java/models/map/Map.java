@@ -28,7 +28,7 @@ public class Map {
         }
     }
 
-    public String showFarmTypesInfo() {
+    public static String showFarmTypesInfo() {
         StringBuilder text = new StringBuilder();
 
         try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {

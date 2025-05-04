@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+
 public class User {
     private String userName;
     private String password;
@@ -13,7 +15,7 @@ public class User {
 
     private Game currentGame = null;
 
-    Player player;
+    private ArrayList<Player> players ;
 
     public User(String userName, String password, String nickname, String email, boolean isMale) {
         this.userName = userName;
@@ -55,6 +57,8 @@ public class User {
 
     public void setCurrentGame(Game currentGame) { this.currentGame = currentGame; }
 
+    public void addPlayer(Player player) { players.add(player); }
+
 
 
 
@@ -91,4 +95,6 @@ public class User {
     }
 
     public Game getCurrentGame() { return currentGame; }
+
+    public ArrayList<Player> getPlayers() { return players; }
 }

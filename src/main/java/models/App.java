@@ -10,14 +10,15 @@ public class App {
     private ArrayList<User> users = UsersDataManager.loadUsers();
     private ArrayList<Game> games = new ArrayList<>();
 
-
     private User loggedInUser = null;
     private String randomPassword = null;
     private User pendingUser = null;
     private boolean isRegisterSuccessful = false;
     private boolean stayLoggedIn = false;
 
-    private Game nowGame = null;
+    private Game currentGame = null;
+    private Player currentPlayer = null;
+    private int currentGameId = 101;
 
     private Menu currentMenu = Menu.SIGNUP_MENU;
 
@@ -43,7 +44,7 @@ public class App {
     }
 
     public Game getNowGame() {
-        return nowGame;
+        return currentGame;
     }
 
     public Menu getCurrentMenu() { return currentMenu; }
@@ -57,6 +58,12 @@ public class App {
     public boolean isRegisterSuccessful() { return isRegisterSuccessful; }
 
     public ArrayList<Game> getGames() { return games; }
+
+    public int getCurrentGameId() { return currentGameId; }
+
+    public Game getCurrentGame() { return currentGame; }
+
+    public Player getCurrentPlayer() { return currentPlayer; }
 
 
 
@@ -85,5 +92,11 @@ public class App {
     public void setPendingUser(User pendingUser) {
         this.pendingUser = pendingUser;
     }
+
+    public void setCurrentGameId() { this.currentGameId += 1; }
+
+    public void setCurrentGame(Game currentGame) {}
+
+    public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
 
 }

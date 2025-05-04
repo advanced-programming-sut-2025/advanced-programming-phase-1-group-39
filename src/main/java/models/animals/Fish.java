@@ -14,7 +14,7 @@ public class Fish {
         this.type = type;
         this.price = price;
         this.season = season;
-        this.quality = AnimalProductQuality.NORMAL; // initial
+        this.quality = AnimalProductQuality.NORMAL; // initial Todo:
     }
 
     public int getEnergy() {

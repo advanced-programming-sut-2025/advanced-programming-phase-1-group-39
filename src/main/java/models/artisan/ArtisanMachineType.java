@@ -1,17 +1,18 @@
 package models.artisan;
 
 public enum ArtisanMachineType {
-    BEE_HOUSE(new ArtisanMachine()),
-    CHEESE_PRESS(new ArtisanMachine()),
-    MAYO_MACHINE(new ArtisanMachine()),
-    KEG(new ArtisanMachine()),
-    PRESERVE_JAR(new ArtisanMachine()),
-    OIL_MAKER(new ArtisanMachine()),
-    LOOM(new ArtisanMachine()),
-    CHARCOAL_KILN(new ArtisanMachine()),
-    FURNACE(new ArtisanMachine()),
-    FISH_SMOKER(new ArtisanMachine()),
-    MUSHROOM_DRIER(new ArtisanMachine());
+    CHARCOAL_KILN(new ArtisanMachine(null)),
+    FURNACE(new ArtisanMachine(null)),
+    BEE_HOUSE(new ArtisanMachine(null)),
+    CHEESE_PRESS(new ArtisanMachine(null)),
+    KEG(new ArtisanMachine(null)),
+    LOOM(new ArtisanMachine(null)),
+    MAYO_MACHINE(new ArtisanMachine(null)),
+    OIL_MAKER(new ArtisanMachine(null)),
+    PRESERVE_JAR(new ArtisanMachine(null)),
+    DEHYDRATOR(new ArtisanMachine(null)),
+    GRASS_STARTER(new ArtisanMachine(null)),
+    FISH_SMOKER(new ArtisanMachine(null));
 
     public final ArtisanMachine machine;
     ArtisanMachineType(ArtisanMachine machine) {

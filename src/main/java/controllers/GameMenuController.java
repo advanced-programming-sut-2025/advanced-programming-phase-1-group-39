@@ -60,7 +60,21 @@ public class GameMenuController {
                     FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
             App.getApp().getCurrentGame().startGame();
             App.getApp().setCurrentMenu(Menu.GAME_MENU);
+            App.getApp().getGames().set(getIndexInMaps(App.getApp().getCurrentGame().getId()), App.getApp().getCurrentGame());
             return new Result(true, "The game map has been successfully created — let the adventure begin!");
+        } else {
+            App.getApp().getCurrentGame().addRandomFarmForPlayer(App.getApp().getCurrentPlayer(),
+                    FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
+            App.getApp().setCurrentPlayer(App.getApp().getCurrentGame().getPlayers().get(App.getApp().getCurrentPlayer()
+                    .getId()));
+            return new Result(true, "the game map was successfully selected. please let the next player choose their map.");
+        }
+    }
+
+    public Result loadGame() {
+
+        if (App.getApp().getLoggedInUser().getCurrentGame() == null) {
+            return new Result(false, "You have not any game. please create a game first.");
         } else {
 
         }
@@ -69,9 +83,7 @@ public class GameMenuController {
 
 
 
-    private static Map createRandomMap() {return null;}
-    public static Result chooseMap() {return null;}
-    public static Result loadGame() {return null;}
+
     public static Result saveGame() {return null;}
     public static Result exitGame() {return null;}
     public static Result deleteGame() {return null;}
@@ -105,4 +117,15 @@ public class GameMenuController {
             return false;
         }
     }
+
+    private int getIndexInMaps (int mapId) {
+        for (int i = 0; i < App.getApp().getGames().size(); i++) {
+            if (App.getApp().getGames().get(i).getId() == mapId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private Player getPlayerFromPlayers()
 }

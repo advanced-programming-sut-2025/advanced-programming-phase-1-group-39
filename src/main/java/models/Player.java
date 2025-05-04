@@ -111,6 +111,10 @@ public class Player {
         return location;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public void setLocationAbsolut(int x, int y) {
         this.location = new Location(x, y);
     }

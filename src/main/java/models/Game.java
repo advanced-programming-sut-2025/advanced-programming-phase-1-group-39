@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    private final int id;
     private ArrayList<Player> players;
     private ArrayList<String> playerManagers;
     private Player mainPlayer;
@@ -26,9 +27,11 @@ public class Game {
         this.players = new ArrayList<>(List.of(one, two, three, four));
         this.mainPlayer = one;
         this.gameMap = new Map();
+        this.id = gameId;
 
         todayWeather.setWeatherSunny();
     }
+
 
     public void startGame() {
         gameMap.loadMap();
@@ -36,6 +39,10 @@ public class Game {
         for (Player player : players) {
             resetPlayerLocation(player);
         }
+    }
+
+    public int getId() {
+        return id;
     }
 
     // Map

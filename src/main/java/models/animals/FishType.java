@@ -3,7 +3,6 @@ package models.animals;
 import models.Enums.Season;
 
 public enum FishType {
-    // ماهی‌های معمولی
     SALMON(75, Season.FALL, 15),
     SARDINE(40, Season.FALL, 10),
     SHAD(60, Season.FALL, 12),
@@ -24,7 +23,7 @@ public enum FishType {
     SUNFISH(30, Season.SUMMER, 8),
     RAINBOW_TROUT(65, Season.SUMMER, 13),
 
-    // ماهی‌های legendary
+    // Legendary
     LEGEND(5000, Season.SPRING, 50),
     GLACIERFISH(1000, Season.WINTER, 40),
     ANGLER(900, Season.FALL, 35),

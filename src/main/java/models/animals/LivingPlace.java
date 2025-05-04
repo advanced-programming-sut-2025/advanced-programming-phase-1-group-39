@@ -8,9 +8,13 @@ public enum LivingPlace {
     BIG_BARN(8),
     DELUXE_BARN(12);
 
-    int capacity;
+    private int capacity;
 
     LivingPlace(int capacity) {
         this.capacity = capacity;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }

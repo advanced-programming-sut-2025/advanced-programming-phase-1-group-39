@@ -11,6 +11,8 @@ public class User {
     private int numberOfGamesPlayed;
     private int highestMoneyEarnedInASingleGame;
 
+    private Game currentGame = null;
+
     Player player;
 
     public User(String userName, String password, String nickname, String email, boolean isMale) {
@@ -51,6 +53,11 @@ public class User {
         this.numberOfGamesPlayed = numberOfGamesPlayed;
     }
 
+    public void setCurrentGame(Game currentGame) { this.currentGame = currentGame; }
+
+
+
+
     public String getUserName() {
         return userName;
     }
@@ -83,5 +90,5 @@ public class User {
         return numberOfGamesPlayed;
     }
 
-
+    public Game getCurrentGame() { return currentGame; }
 }

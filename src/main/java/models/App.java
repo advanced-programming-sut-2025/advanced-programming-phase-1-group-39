@@ -56,6 +56,9 @@ public class App {
 
     public boolean isRegisterSuccessful() { return isRegisterSuccessful; }
 
+    public ArrayList<Game> getGames() { return games; }
+
+
 
     //
 
@@ -82,4 +85,5 @@ public class App {
     public void setPendingUser(User pendingUser) {
         this.pendingUser = pendingUser;
     }
+
 }

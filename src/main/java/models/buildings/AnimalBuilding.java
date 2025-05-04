@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import models.animals.Animal;
 
-public abstract class AnimalBuilding extends Building {
+public class AnimalBuilding extends Building {
     protected final LivingPlace type;
     protected final ArrayList<FarmAnimal> animals;
 

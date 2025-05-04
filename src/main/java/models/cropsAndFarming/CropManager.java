@@ -19,7 +19,7 @@ public class CropManager {
             ArrayList<CropData> cropList = gson.fromJson(reader, listType);
 
             for (CropData cropData : cropList) {
-                crops.put(cropData.seedName, cropData);
+                crops.put(cropData.source, cropData);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,16 +33,16 @@ public class CropManager {
         }
 
         FarmingProduct product = new FarmingProduct(
-                data.cropName,
+                data.name,
                 data.baseSellPrice,
                 data.isEdible,
                 data.baseEnergy,
                 data.baseHealth,
-                data.season,
+                data.seasons,
                 data.canBecomeGiant
         );
 
-        Seed seed = new Seed(data.seedName);
+        Seed seed = new Seed(data.source, data.seasons);
 
         Plant plant = new Plant(product, seed, data.stages, data.oneTimeHarvest, data.regrowthTime, data.canBecomeGiant);
 

@@ -9,11 +9,10 @@ public abstract class Crop extends Item {
     boolean canBeEaten;
     int baseEnergy;
     int baseHealth;
-    Season season;
+    Season[] seasons;
 
 
     public Crop(String name) {
         super(name);
     }
 }
-

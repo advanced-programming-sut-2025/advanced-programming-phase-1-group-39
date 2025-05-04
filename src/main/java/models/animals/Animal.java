@@ -26,6 +26,30 @@ public class Animal {
         this.products = products;
     }
 
+    public AnimalType getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public LivingPlace getPlace() {
+        return place;
+    }
+
+    public ArrayList<AnimalProduct> getProducts() {
+        return products;
+    }
+
+    public int getFriendship() {
+        return friendship;
+    }
+
     public void pet() {
         if (!pettedToday) {
             pettedToday = true;

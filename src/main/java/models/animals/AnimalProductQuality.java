@@ -11,4 +11,8 @@ public enum AnimalProductQuality {
     AnimalProductQuality(double rate) {
         this.rate = rate;
     }
+
+    public double getRate() {
+        return rate;
+    }
 }

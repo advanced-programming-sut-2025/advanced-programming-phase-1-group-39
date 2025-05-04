@@ -15,4 +15,11 @@ public enum AnimalProductQuality {
     public double getRate() {
         return rate;
     }
+
+    public static AnimalProductQuality fromScore(double score) {
+        if (score < 0.5) return NORMAL;
+        if (score < 0.7) return SILVER;
+        if (score < 0.9) return GOLD;
+        return IRIDIUM;
+    }
 }

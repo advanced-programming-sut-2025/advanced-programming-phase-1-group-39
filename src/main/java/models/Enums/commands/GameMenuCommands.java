@@ -11,12 +11,6 @@ public enum GameMenuCommands {
 
     LoadGame("load\\s+game"),
 
-
-
-
-    
-    // game new -u <username_1> <username_2> <username_3>
-
     ;
 
     private final String pattern;

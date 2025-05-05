@@ -56,7 +56,8 @@ public class GameMenuController {
         }
     }
 
-    public Result choseMap(String mapNumber) {
+    public Result choseMap(Matcher matcher) {
+        String mapNumber = matcher.group("mapNumber");
         App app = App.getApp();
         if (!isInteger(mapNumber)) {
             return new Result(false, "The map number must be a number.");

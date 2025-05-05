@@ -1,14 +1,14 @@
 package models;
 
 import models.Enums.Menu;
-import models.services.UsersDataManager;
+import models.services.AppDataManager;
 
 import java.util.ArrayList;
 
 public class App {
     private static App app;
-    private ArrayList<User> users = UsersDataManager.loadUsers();
-    private ArrayList<Game> games = new ArrayList<>();
+    private ArrayList<User> users ;
+    private ArrayList<Game> games ;
 
     private User loggedInUser = null;
     private String randomPassword = null;
@@ -22,7 +22,9 @@ public class App {
 
     private Menu currentMenu = Menu.SIGNUP_MENU;
 
-    private App() {}
+    private App() {
+        AppDataManager.loadApp();
+    }
 
     public static App getApp() {
         if (app == null) {
@@ -55,7 +57,7 @@ public class App {
 
     public User getPendingUser() { return pendingUser; }
 
-    public boolean isRegisterSuccessful() { return isRegisterSuccessful; }
+    public boolean getIsRegisterSuccessful() { return isRegisterSuccessful; }
 
     public ArrayList<Game> getGames() { return games; }
 
@@ -65,7 +67,11 @@ public class App {
 
     public Player getCurrentPlayer() { return currentPlayer; }
 
+    public boolean isStayLoggedIn() { return stayLoggedIn; }
 
+    public static void setInstance(App loadedApp) {
+        app = loadedApp;
+    }
 
     //
 
@@ -93,10 +99,13 @@ public class App {
         this.pendingUser = pendingUser;
     }
 
-    public void setCurrentGameId() { this.currentGameId += 1; }
+    public void setCurrentGameId(int gameId) { this.currentGameId = gameId; }
 
-    public void setCurrentGame(Game currentGame) {}
+    public void setCurrentGame(Game currentGame) { this.currentGame = currentGame; }
 
     public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
 
+    public void setUsers(ArrayList<User> users) { this.users = users; }
+
+    public void setGames(ArrayList<Game> games) { this.games = games; }
 }

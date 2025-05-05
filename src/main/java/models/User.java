@@ -10,6 +10,8 @@ public class User {
     private final boolean isMale;
     private SecurityQuestion securityQuestion;
 
+    private boolean isStayLoggedIn = false;
+
     private int numberOfGamesPlayed;
     private int highestMoneyEarnedInASingleGame;
 
@@ -60,6 +62,8 @@ public class User {
 
     public void setSavedGame(Game savedGame) { this.savedGame = savedGame; }
 
+    public void setStayLoggedIn(boolean stayLoggedIn) { this.isStayLoggedIn = stayLoggedIn; }
+
     public void addPlayer(Player player) { players.add(player); }
 
 
@@ -100,6 +104,8 @@ public class User {
     public Game getCurrentGame() { return currentGame; }
 
     public Game getSavedGame() { return savedGame; }
+
+    public boolean getIsStayLoggedIn() { return isStayLoggedIn; }
 
     public ArrayList<Player> getPlayers() { return players; }
 }

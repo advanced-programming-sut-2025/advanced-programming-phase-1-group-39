@@ -25,8 +25,7 @@ public class LoginMenuController {
         } else if (!isPasswordCorrect(username, password)) {
             return new Result(false, "The password is incorrect.");
         } else if (stayLoggedIn != null) {
-            LoginPersistence.clearLoggedInUser();
-            LoginPersistence.saveLoggedInUser(username);
+            App.getApp().getUsers().get(getIndexInUsers(username)).setStayLoggedIn(true);
             App.getApp().setLoggedInUser(getUserByUsername(username));
             App.getApp().setCurrentMenu(Menu.MAIN_MENU);
             return new Result(true, "login was successful. you are now in the main menu.");

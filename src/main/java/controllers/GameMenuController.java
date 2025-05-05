@@ -2,15 +2,16 @@ package controllers;
 
 import models.*;
 import models.Enums.Menu;
-import models.cropsAndFarming.CropManager;
 import models.map.FarmType;
 import models.map.Map;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class GameMenuController {
 
     public Result startNewGame(Matcher matcher) {
+        App app = App.getApp();
         String username1 = matcher.group("username1");
         String username2 = matcher.group("username2");
         String username3 = matcher.group("username3");
@@ -26,6 +27,8 @@ public class GameMenuController {
             return new Result(false, "username3 not found in the system.");
         } else if (otherUsers != null) {
             return new Result(false, "You can only select three players to start the game.");
+        } else if (hasCurrentGame(app.getLoggedInUser().getUserName())) {
+            return new Result(false, "You are already in a game and you cannot start a new game.");
         } else if (hasCurrentGame(username1)) {
             return new Result(false, "username1 already has a current game.");
         } else if (hasCurrentGame(username2)) {
@@ -33,15 +36,19 @@ public class GameMenuController {
         } else if (hasCurrentGame(username3)) {
             return new Result(false, "username3 already has a current game.");
         } else {
-            Player player1 = new Player(App.getApp().getLoggedInUser().getUserName(), 1);
-            Player player2 = new Player(username1, 2);
-            Player player3 = new Player(username2, 3);
-            Player player4 = new Player(username3, 4);
-            Game newGame = new Game(App.getApp().getCurrentGameId()+1,player1, player2, player3, player4);
-            App.getApp().setCurrentGameId();
-            App.getApp().setCurrentGame(newGame);
-            App.getApp().addGame(newGame);
-            App.getApp().setCurrentPlayer(player1);
+            Player player1 = new Player(app.getLoggedInUser().getUserName(), 1, app.getCurrentGameId()+1);
+            Player player2 = new Player(username1, 2, app.getCurrentGameId()+1);
+            Player player3 = new Player(username2, 3, app.getCurrentGameId()+1);
+            Player player4 = new Player(username3, 4, app.getCurrentGameId()+1);
+            app.getUsers().get(getIndexInUsers(app.getLoggedInUser().getUserName())).addPlayer(player1);
+            app.getUsers().get(getIndexInUsers(username1)).addPlayer(player2);
+            app.getUsers().get(getIndexInUsers(username2)).addPlayer(player3);
+            app.getUsers().get(getIndexInUsers(username3)).addPlayer(player4);
+            Game newGame = new Game(app.getCurrentGameId()+1,player1, player2, player3, player4);
+            app.setCurrentGameId();
+            app.setCurrentGame(newGame);
+            app.addGame(newGame);
+            app.setCurrentPlayer(player1);
             return new Result(true, "Congratulations!!!" + "\n" +
                     " The new game has been successfully created. " + "\n" +
                     "Now, each player must choose their game map in order, starting with the first player. \n" +
@@ -50,48 +57,62 @@ public class GameMenuController {
     }
 
     public Result choseMap(String mapNumber) {
-
+        App app = App.getApp();
         if (!isInteger(mapNumber)) {
             return new Result(false, "The map number must be a number.");
         } else if (Integer.parseInt(mapNumber) != 1 || mapNumber.length() != 2) {
             return new Result(false, "The map number must be either 1 or 2.");
-        } else if (App.getApp().getCurrentPlayer().getId() == 4) {
-            App.getApp().getCurrentGame().addRandomFarmForPlayer(App.getApp().getCurrentPlayer(),
+        } else if (app.getCurrentPlayer().getId() == 4) {
+            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentPlayer(),
                     FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
-            App.getApp().getCurrentGame().startGame();
-            App.getApp().setCurrentMenu(Menu.GAME_MENU);
-            App.getApp().getGames().set(getIndexInMaps(App.getApp().getCurrentGame().getId()), App.getApp().getCurrentGame());
+            app.getCurrentGame().startGame();
+            app.setCurrentMenu(Menu.GAME_MENU);
+            app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
             return new Result(true, "The game map has been successfully created — let the adventure begin!");
         } else {
-            App.getApp().getCurrentGame().addRandomFarmForPlayer(App.getApp().getCurrentPlayer(),
+            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentPlayer(),
                     FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
-            App.getApp().setCurrentPlayer(App.getApp().getCurrentGame().getPlayers().get(App.getApp().getCurrentPlayer()
+            app.setCurrentPlayer(app.getCurrentGame().getPlayers().get(app.getCurrentPlayer()
                     .getId()));
             return new Result(true, "the game map was successfully selected. please let the next player choose their map.");
         }
     }
 
     public Result loadGame() {
-
-        if (App.getApp().getLoggedInUser().getCurrentGame() == null) {
+        App app = App.getApp();
+        if (app.getLoggedInUser().getCurrentGame() == null && app.getLoggedInUser().getSavedGame() == null) {
             return new Result(false, "You have not any game. please create a game first.");
+        } else if (app.getLoggedInUser().getCurrentGame() != null && haveOtherPlayersCurrentGame(app.getLoggedInUser().getCurrentGame().getPlayers())) {
+            return new Result(false, "to start loading a game, none of the players must have an active game.");
+        } else if (app.getLoggedInUser().getCurrentGame() != null) {
+            app.setCurrentGame(app.getLoggedInUser().getCurrentGame());
+            app.setCurrentPlayer(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
+                    app.getLoggedInUser().getUserName()));
+            app.getCurrentGame().setLoadedPlayerUsername(app.getLoggedInUser().getUserName());
+            app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
+            app.getCurrentGame().startGame();
+            app.setCurrentMenu(Menu.GAME_MENU);
+            return new Result(true, "the game was loaded successfully. you can now continue your game.");
+        } else if (app.getLoggedInUser().getSavedGame() != null && haveOtherPlayersCurrentGame(app.getLoggedInUser().getSavedGame().getPlayers())) {
+            return new Result(false, "to start loading a game, none of the players must have an active game.");
         } else {
-
+            app.setCurrentGame(app.getLoggedInUser().getSavedGame());
+            app.setCurrentPlayer(getPlayerFromPlayers(app.getCurrentGame().getPlayers(), app.getLoggedInUser().getUserName()));
+            app.getCurrentGame().setLoadedPlayerUsername(app.getLoggedInUser().getUserName());
+            app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
+            app.getCurrentGame().startGame();
+            app.setCurrentMenu(Menu.GAME_MENU);
+            return new Result(true, "the game was loaded successfully. you can continue your game.");
         }
     }
 
 
 
-
-
-    public static Result saveGame() {return null;}
-    public static Result exitGame() {return null;}
-    public static Result deleteGame() {return null;}
-
     // Auxiliary functions :
 
     private boolean isUsernameExist(String username) {
-        for (User user : App.getApp().getUsers()) {
+        App app = App.getApp();
+        for (User user : app.getUsers()) {
             if (user.getUserName().equals(username)) {
                 return true;
             }
@@ -100,7 +121,8 @@ public class GameMenuController {
     }
 
     private boolean hasCurrentGame(String username) {
-        for (User user : App.getApp().getUsers()) {
+        App app = App.getApp();
+        for (User user : app.getUsers()) {
             if (user.getUserName().equals(username)) {
                 return user.getCurrentGame() != null;
             }
@@ -118,14 +140,42 @@ public class GameMenuController {
         }
     }
 
-    private int getIndexInMaps (int mapId) {
-        for (int i = 0; i < App.getApp().getGames().size(); i++) {
-            if (App.getApp().getGames().get(i).getId() == mapId) {
+    private int getIndexInGames(int mapId) {
+        App app = App.getApp();
+        for (int i = 0; i < app.getGames().size(); i++) {
+            if (app.getGames().get(i).getId() == mapId) {
                 return i;
             }
         }
         return -1;
     }
 
-    private Player getPlayerFromPlayers()
+    private Player getPlayerFromPlayers(ArrayList<Player> players, String playerUsername) {
+        for (Player player : players) {
+            if (player.getUsername().equals(playerUsername)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    private int getIndexInUsers(String username) {
+        App app = App.getApp();
+        for (int i = 0; i < app.getUsers().size(); i++) {
+            if (app.getUsers().get(i).getUserName().equals(username)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean haveOtherPlayersCurrentGame(ArrayList<Player> players) {
+        App app = App.getApp();
+        for (Player player : players) {
+            if (app.getUsers().get(getIndexInUsers(player.getUsername())).getCurrentGame() != null) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

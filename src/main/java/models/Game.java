@@ -11,7 +11,7 @@ import java.util.List;
 public class Game {
     private final int id;
     private ArrayList<Player> players;
-    private ArrayList<String> playerManagers;
+    private String loadedPlayerUsername;
     private Player mainPlayer;
     private ArrayList<TradeItem> trades = new ArrayList<>();
     private Map gameMap;
@@ -92,11 +92,7 @@ public class Game {
         return players;
     }
 
-    public ArrayList<String> getPlayerManagers() {
-        return playerManagers;
-    }
+    public void setLoadedPlayerUsername(String PlayerUsername) { this.loadedPlayerUsername = PlayerUsername; }
 
-    public void addPlayerManager(String playerManager) {
-        playerManagers.add(playerManager);
-    }
+    public String getLoadedPlayerUsername() { return loadedPlayerUsername; }
 }

@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 public class Player {
     private int id;
+    private int gameId;
 
     private Location location = new Location(0, 0);
     private Location startOfFarm;
@@ -39,9 +40,10 @@ public class Player {
     private int money = 0;
     private int nightRevenue = 0;
 
-    public Player(String username, int id) {
+    public Player(String username, int id, int gameId) {
         this.username = username;
         this.id = id;
+        this.gameId = gameId;
     }
 
 
@@ -70,6 +72,10 @@ public class Player {
 
     public int getId() {
         return id;
+    }
+
+    public int getGameId() {
+        return gameId;
     }
 
     public void startTrade(Player player, TradeItem item) {

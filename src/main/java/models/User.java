@@ -7,13 +7,14 @@ public class User {
     private String password;
     private String nickname;
     private String email;
-    private boolean isMale;
+    private final boolean isMale;
     private SecurityQuestion securityQuestion;
 
     private int numberOfGamesPlayed;
     private int highestMoneyEarnedInASingleGame;
 
     private Game currentGame = null;
+    private Game savedGame = null;
 
     private ArrayList<Player> players ;
 
@@ -57,6 +58,8 @@ public class User {
 
     public void setCurrentGame(Game currentGame) { this.currentGame = currentGame; }
 
+    public void setSavedGame(Game savedGame) { this.savedGame = savedGame; }
+
     public void addPlayer(Player player) { players.add(player); }
 
 
@@ -95,6 +98,8 @@ public class User {
     }
 
     public Game getCurrentGame() { return currentGame; }
+
+    public Game getSavedGame() { return savedGame; }
 
     public ArrayList<Player> getPlayers() { return players; }
 }

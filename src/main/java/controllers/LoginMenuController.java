@@ -6,6 +6,7 @@ import models.Enums.commands.SignupMenuCommands;
 import models.Result;
 import models.User;
 import models.services.LoginPersistence;
+import models.services.SaveAppManager;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -110,6 +111,7 @@ public class LoginMenuController {
     }
 
     public void exit() {
+        SaveAppManager.saveApp();
         App.getApp().setCurrentMenu(Menu.ExitMenu);
     }
 

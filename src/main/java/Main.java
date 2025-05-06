@@ -1,9 +1,6 @@
 import controllers.AppControllers;
+import models.*;
 import models.Enums.Season;
-import models.Game;
-import models.ItemManager;
-import models.ItemStack;
-import models.Player;
 import models.cropsAndFarming.ForagingManager;
 import models.cropsAndFarming.TreeManager;
 import models.map.FarmType;
@@ -39,6 +36,8 @@ public class Main {
         game.addRandomFarmForPlayer(player4, FarmType.getFarmTypeById(1));
         game.startGame();
         System.out.println(game.printColorMap());
-        System.out.println(game.getMap().printMapBySize(70, 10, 25, game.getPlayers()));
+//        System.out.println(game.getMap().printMapBySize(70, 10, 25, game.getPlayers()));
+
+        game.getMap().findWalkingEnergy(player2.getLocation(), new Location(76, 8) ,player1);
     }
 }

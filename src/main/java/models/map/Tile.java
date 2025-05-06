@@ -142,5 +142,14 @@ public class Tile {
     public Plant getPlant() {
         return plant;
     }
+
+    // walk
+    public boolean canWalkOnTile() {
+        if (!type.isWalkable()) return false;
+        if (itemOnTile != null) return false; // TODO : for grass it is walkable
+        if (tree != null) return false;
+        if (plant != null) return false;
+        return true;
+    }
 }
 

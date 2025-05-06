@@ -106,4 +106,9 @@ public class Player {
         this.endOfFarm = new Location(startOfFarm.x() + Constants.FARM_WIDTH,
                 startOfFarm.y() + Constants.FARM_HEIGHT);
     }
+
+    public boolean isInPlayerFarm(Location location) {
+        return location.x() >= startOfFarm.x() && location.x() <= endOfFarm.x()
+                && location.y() >= startOfFarm.y() && location.y() <= endOfFarm.y();
+    }
 }

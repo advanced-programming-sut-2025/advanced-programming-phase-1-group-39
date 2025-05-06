@@ -11,6 +11,9 @@ import java.util.List;
 public class Game {
     private ArrayList<Player> players;
     private Player mainPlayer;
+
+    private Player playerInTurn;
+
     private ArrayList<TradeItem> trades = new ArrayList<>();
     private Map gameMap;
     private ArrayList<Building> buildings = new ArrayList<>();
@@ -24,6 +27,7 @@ public class Game {
     public Game(Player one, Player two, Player three, Player four) {
         this.players = new ArrayList<>(List.of(one, two, three, four));
         this.mainPlayer = one;
+        this.playerInTurn = one;
         this.gameMap = new Map();
 
         todayWeather.setWeatherSunny();
@@ -82,5 +86,9 @@ public class Game {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public Player getPlayerInTurn() {
+        return playerInTurn;
     }
 }

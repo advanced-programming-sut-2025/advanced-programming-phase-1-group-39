@@ -60,7 +60,17 @@ public class GameController {
     public Result cheatWeather() {return null;}
     public void buildGreenHouse() {}
 
-    public Result walkTo(Matcher matcher) {return null;}
+    public Result walkTo(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        Location end = new Location(x, y);
+
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+        Location start = player.getLocation();
+
+        return game.getMap().findWalkingEnergy(start, end, player);
+    }
 
     public Result printMap(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));

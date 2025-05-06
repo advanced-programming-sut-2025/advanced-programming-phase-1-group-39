@@ -4,15 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import models.Constants;
+import models.*;
 import models.Enums.Season;
-import models.ItemStack;
-import models.Location;
-import models.Player;
 import models.cropsAndFarming.*;
 
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 public class Map {
     private final int width = Constants.WORLD_MAP_WIDTH, height = Constants.WORLD_MAP_HEIGHT;
@@ -350,7 +348,7 @@ public class Map {
 
     public static Location getStartOfFarm(int number) {
         int startX, startY;
-        switch (number) {
+        switch (number + 1) {
             case 1:
                 startX = Constants.WORLD_MAP_WIDTH - Constants.FARM_WIDTH;
                 startY = 0;
@@ -370,6 +368,15 @@ public class Map {
         }
 
         return new Location(startX, startY);
+    }
+
+    public Result findWalkingEnergy(Location start, Location end, Player player) {
+        MapMinPathFinder pathFinder = new MapMinPathFinder();
+        if (!player.isInPlayerFarm(end))
+            return new Result(false, "The end of path is not in your farm!");
+
+        System.out.println((pathFinder.findPath(tiles, start, end)));
+        return new Result(true, "you walked!");
     }
 }
 

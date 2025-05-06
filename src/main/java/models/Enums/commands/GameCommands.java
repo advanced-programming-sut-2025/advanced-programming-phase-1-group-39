@@ -16,7 +16,10 @@ public enum GameCommands {
     SHOW_SEASON("season"),
 
     PRINT_MAP("print\\s+map\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)\\s+-s\\s+(?<size>\\d+)"),
-    HELP_READING_MAP("help\\s+reading\\s+map");
+    HELP_READING_MAP("help\\s+reading\\s+map"),
+
+    Walk("walk\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)")
+    ;
 
     private final String pattern;
 

@@ -32,6 +32,9 @@ public class GameView implements View {
             System.out.println(controller.printMap(matcher));
         } else if (GameCommands.HELP_READING_MAP.getMatcher(command) != null) {
             System.out.println(controller.helpReadingMap());
+        }
+        else if ((matcher = GameCommands.Walk.getMatcher(command)) != null) {
+            System.out.println(controller.walkTo(matcher));
         } else {
             System.out.println("invalid command.");
         }

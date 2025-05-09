@@ -18,8 +18,15 @@ public class AnsiColors {
     public static final String ANSI_BLACK_BOLD = "\u001b[1;30m";
     public static final String ANSI_DARK_GRAY_BOLD = getAnsiBoldColor(64, 64, 64);
     public static final String ANSI_PURPLE_BOLD = getAnsiBoldColor(73, 0, 146);
-    public static final String ANSI_GREEN_BOLD = getAnsiBoldColor(0, 156, 0);
     public static final String ANSI_BROWN_BOLD = getAnsiBoldColor(102, 41, 0);
+    public static final String ANSI_ORANGE_BOLD = getAnsiBoldColor(200, 79, 0);
+
+    // - energy
+    public static final String ANSI_GREEN_BOLD = getAnsiBoldColor(0, 156, 0);
+    public static final String ANSI_LIGHT_YELLOW_BOLD = getAnsiBoldColor(189, 189, 0);
+    public static final String ANSI_LIGHT_ORANGE_BOLD = getAnsiBoldColor(189, 189, 0);
+    public static final String ANSI_RED_BOLD = getAnsiBoldColor(255, 0, 0);
+
     // Background Colors
     public static final String ANSI_BLACK_BACKGROUND = getAnsiBackGround(49, 43, 43);
     public static final String ANSI_GRAY_BACKGROUND = getAnsiBackGround(104, 104, 103);

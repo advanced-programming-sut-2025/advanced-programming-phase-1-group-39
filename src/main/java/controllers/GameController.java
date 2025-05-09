@@ -90,20 +90,34 @@ public class GameController {
         );
         double energy = path.get(path.size() - 1).getEnergyCost();
         return new Result(true, "path: " + text
-                + "\nEnergy needed: " + energy
-                + "\nYour energy: " + player.getEnergy());
+                + "\nEnergy needed: " + AnsiColors.ANSI_ORANGE_BOLD + energy + AnsiColors.ANSI_RESET
+                + "\nYour energy: " + player.getColoredEnergy());
     }
     public Result walkTo() {
         Game game = App.getApp().getCurrentGame();
         Player player = game.getPlayerInTurn();
 
-        int energyCost = path.size()/Constants.EACH_TILE_ENERGY_COST;
-        Location end = path.get(path.size() - 1).location;
-        if (player.getEnergy() < energyCost) {
-            int numOfTilesCanGo = (int)(player.getEnergy() * Constants.EACH_TILE_ENERGY_COST);
-            end = path.get(numOfTilesCanGo).location;
+        MapMinPathFinder.Node endNode = path.get(path.size() - 1);
+
+        double energyNeeded = endNode.getEnergyCost();
+        Location end = endNode.location;
+        if (player.getEnergy() < energyNeeded) {
+            energyNeeded = player.getEnergy();
+            // find how many of path player can go
+            for (int i = 0; i < path.size(); i++) {
+                MapMinPathFinder.Node node = path.get(i);
+
+                if (node.getEnergyCost() > player.getEnergy()) {
+                    if (i == 0) end = node.location;
+                    else end = path.get(i-1).location;
+                    break;
+                }
+            }
         }
+
         player.setLocationAbsolut(end.x(), end.y());
+        player.changeEnergy(-energyNeeded);
+
         StringBuilder text = new StringBuilder();
         text.append("You walked to " + end);
         if (!player.isConscious()) return new Result(false, text + "\n" + AnsiColors.ANSI_RED + "Now you are not conscious!" + AnsiColors.ANSI_RESET);

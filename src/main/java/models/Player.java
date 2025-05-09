@@ -7,6 +7,7 @@ import models.cooking.FoodBuff;
 import models.cooking.FoodRecipe;
 import models.crafting.CraftingRecipe;
 import models.inventory.Inventory;
+import models.map.AnsiColors;
 import models.trading.TradeItem;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class Player {
 
     FoodBuff buff = null;
 
-    private double energy = 200;
+    private double energy = 2;
     private Skill skills = new Skill();
     private Inventory inventory = new Inventory();
 
@@ -107,10 +108,20 @@ public class Player {
 
     // energy
     public double getEnergy() {
-        return energy;
+        return Math.floor(energy*100)/100;
     }
 
-    public void changeEnergy(int amount) {
+    public String getColoredEnergy() {
+        StringBuilder sb = new StringBuilder();
+        if (energy > 150) sb.append(AnsiColors.ANSI_GREEN_BOLD);
+        else if (energy > 100) sb.append(AnsiColors.ANSI_LIGHT_YELLOW_BOLD);
+        else if (energy > 50) sb.append(AnsiColors.ANSI_LIGHT_ORANGE_BOLD);
+        else sb.append(AnsiColors.ANSI_RED_BOLD);
+
+        return sb.toString() + getEnergy() + AnsiColors.ANSI_RESET;
+    }
+
+    public void changeEnergy(double amount) {
         if (energy == Constants.INFINITY) return;
         energy += amount;
         if (energy < 0) energy = 0;

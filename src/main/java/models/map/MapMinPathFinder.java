@@ -4,10 +4,7 @@ import models.Constants;
 import models.Enums.Direction;
 import models.Location;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class MapMinPathFinder {
     public class Node implements Comparable<Node>{
@@ -40,7 +37,40 @@ public class MapMinPathFinder {
         }
     }
 
+    public boolean canReachTarget(Tile[][] map, Location start, Location end) {
+        int rows = map.length;
+        int cols = map[0].length;
+        boolean[][] visited = new boolean[rows][cols];
+        Queue<Location> queue = new LinkedList<>();
+
+        queue.add(start);
+        visited[start.y()][start.x()] = true;
+
+        int[] dx = {0, 0, -1, 1};
+        int[] dy = {-1, 1, 0, 0};
+
+        while (!queue.isEmpty()) {
+            Location current = queue.poll();
+
+            if (current.equals(end)) return true;
+
+            for (int i = 0; i < 4; i++) {
+                int newX = current.x() + dx[i];
+                int newY = current.y() + dy[i];
+                if (newX < 0 || newX >= cols || newY < 0 || newY >= rows) continue;
+                if (canGoTo(map[newY][newX]) && !visited[newY][newX]) {
+                    visited[newY][newX] = true;
+                    queue.add(new Location(newX, newY));
+                }
+            }
+        }
+
+        return false;
+    }
+
     public ArrayList<Node> findPath(Tile[][] map, Location start, Location end) {
+        if (!canReachTarget(map, start, end)) return new ArrayList<>();
+
         int rows = map.length;
         int cols = map[0].length;
 

@@ -14,6 +14,10 @@ public class NPC {
     private String job;
     private Location homeLocation;
 
+    public NPC(String name) {
+        this.name = name;
+    }
+
     private ArrayList<String> dialogues;
     private HashMap<Weather, ArrayList<String>> weatherDialogues;
     private HashMap<Season, ArrayList<String>> seasonalDialogues;

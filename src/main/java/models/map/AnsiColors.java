@@ -11,7 +11,7 @@ public class AnsiColors {
     public static final String ANSI_YELLOW = "\u001b[33m";
     public static final String ANSI_BLUE = "\u001b[34m";
     public static final String ANSI_PURPLE = "\u001b[35m";
-    public static final String ANSI_CYAN = "\u001b[36m";
+    public static final String ANSI_CYAN_BOLD = "\u001b[1;36m";
     public static final String ANSI_WHITE = "\u001b[37m";
 
     // Bold Colors (Text)

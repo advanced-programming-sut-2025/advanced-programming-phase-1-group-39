@@ -15,4 +15,16 @@ public class ArtisanRecipe {
         this.ingredients = ingredients;
         this.good = new ArtisanGood(name, sellPrice, energy);
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public HashMap<String, Integer> getIngredients() {
+        return ingredients;
+    }
+
+    public ArtisanGood getGood() {
+        return good;
+    }
 }

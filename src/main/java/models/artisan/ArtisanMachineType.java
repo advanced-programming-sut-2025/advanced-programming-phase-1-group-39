@@ -1,22 +1,23 @@
 package models.artisan;
 
-public enum ArtisanMachineType {
-    CHARCOAL_KILN(new ArtisanMachine(null)),
-    FURNACE(new ArtisanMachine(null)),
-    BEE_HOUSE(new ArtisanMachine(null)),
-    CHEESE_PRESS(new ArtisanMachine(null)),
-    KEG(new ArtisanMachine(null)),
-    LOOM(new ArtisanMachine(null)),
-    MAYO_MACHINE(new ArtisanMachine(null)),
-    OIL_MAKER(new ArtisanMachine(null)),
-    PRESERVE_JAR(new ArtisanMachine(null)),
-    DEHYDRATOR(new ArtisanMachine(null)),
-    GRASS_STARTER(new ArtisanMachine(null)),
-    FISH_SMOKER(new ArtisanMachine(null));
+import java.util.Map;
 
-    public final ArtisanMachine machine;
-    ArtisanMachineType(ArtisanMachine machine) {
-        this.machine = machine;
-    }
+public enum ArtisanMachineType {
+    CHARCOAL_KILN(),
+    FURNACE,
+    BEE_HOUSE,
+    CHEESE_PRESS,
+    KEG,
+    LOOM,
+    MAYO_MACHINE,
+    OIL_MAKER,
+    PRESERVE_JAR,
+    DEHYDRATOR,
+    FISH_SMOKER;
+//
+//    private Map<String, ArtisanRecipe> recipes;
+//    ArtisanMachineType(Map<String, ArtisanRecipe> recipes) {
+//        this.recipes = recipes;
+//    }
 }
 

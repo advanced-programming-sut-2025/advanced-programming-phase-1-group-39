@@ -1,4 +1,4 @@
-package models.buildings;
+package models.Shops;
 
 public interface ShopMenu {
     void handleCommand(String command);

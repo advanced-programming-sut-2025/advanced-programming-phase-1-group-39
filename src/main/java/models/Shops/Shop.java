@@ -11,18 +11,18 @@ public class Shop extends Building {
     private int openHour;
     private int closeHour;
     private NPC owner;
-    private HashMap<String, ShopItem> shopItems = new HashMap<>();
 
-    public Shop(String name, int openHour, int closeHour, NPC owner, HashMap<String, ShopItem> shopItems) {
+    public Shop(String name, int openHour, int closeHour, NPC owner) {
         super(name);
         this.openHour = openHour;
         this.closeHour = closeHour;
         this.owner = owner;
-        this.shopItems = shopItems;
     }
 
-    public ArrayList<ShopItem> getAllProducts() {
-        return new ArrayList<ShopItem>(shopItems.values());
-    }
+    void handleCommand(String command){}
+    String showAllProducts(){return null;}
+    String showAvailableProducts() {return null;}
+    void purchase(String product, int quantity){}
+    void addProduct(String product){}
 }
 

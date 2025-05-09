@@ -72,7 +72,15 @@ public class GameController {
         return time.getSeason().name();
     }
 
-    public Result cheatThor(Matcher matcher) {return null;}
+    public String cheatThor(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+
+        Game game = App.getApp().getCurrentGame();
+        game.getTodayWeather().cheatThor(game.getMap().getTile(x, y));
+        return "There was a thunderstorm to tile at (" + x + "," + y + ")";
+    }
+
     public String showWeather() {
         Game game = App.getApp().getCurrentGame();
         return "Weather of Today: " +

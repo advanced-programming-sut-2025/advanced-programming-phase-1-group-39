@@ -2,13 +2,23 @@ package models;
 
 import models.Enums.Season;
 import models.Enums.WeatherStatus;
+import models.map.Tile;
 
 import java.util.ArrayList;
 
 public class Weather {
     private WeatherStatus status;
 
-    public void thor() {}
+    public void thor(Tile tile) {
+        if (!status.equals(WeatherStatus.STORM)) return;
+        tile.removePlant();
+        if (tile.getTree() != null)
+            tile.burnTree();
+    }
+
+    public void cheatThor(Tile tile) {
+
+    }
 
     public void setWeatherSunny() {
         status = WeatherStatus.SUNNY;

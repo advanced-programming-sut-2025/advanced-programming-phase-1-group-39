@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class Player {
     Location location;
-    int energy;
+    double energy;
     Skill skills;
     Inventory inventory;
 
@@ -49,10 +49,10 @@ public class Player {
         return inventory;
     }
 
-    public int getEnergy() {
+    public double getEnergy() {
         return energy;
     }
-    public void changeEnergy(int amount) {
+    public void changeEnergy(double amount) {
         energy += amount;
     }
     public void getFish() {}

@@ -1,8 +1,6 @@
 package models;
 
 public class Constants {
-    public static final int INFINITY = -123456;
-
     public static final int WORLD_MAP_WIDTH = 300; // 80 140 80
     public static final int WORLD_MAP_HEIGHT = 150; // 50 50 50
 
@@ -13,7 +11,7 @@ public class Constants {
 
     public static final int EACH_TILE_ENERGY_COST = 20;
 
-    public static final double MAX_ENERGY_PER_TURN = 200;
+    public static final double MAX_ENERGY_PER_TURN = 50;
     public static final double MAX_ENERGY = 200;
 
 }

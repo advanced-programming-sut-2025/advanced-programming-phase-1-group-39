@@ -14,7 +14,7 @@ public class GameView implements View {
         GameController controller = AppControllers.gameController;
 
         Matcher matcher;
-        if ((matcher = GameCommands.NEXT_TURN.getMatcher(command)) != null) {
+        if ((GameCommands.NEXT_TURN.getMatcher(command)) != null) {
             System.out.println(controller.goNextTurn());
         } else if ((GameCommands.TIME.getMatcher(command)) != null) {
             System.out.println(controller.showTime());
@@ -35,7 +35,7 @@ public class GameView implements View {
         } else if (GameCommands.HELP_READING_MAP.getMatcher(command) != null) {
             System.out.println(controller.helpReadingMap());
         }
-        else if ((matcher = GameCommands.Walk.getMatcher(command)) != null) {
+        else if ((matcher = GameCommands.WALK.getMatcher(command)) != null) {
             Result result = controller.walkToCheck(matcher);
             System.out.println(result);
             if (result.success()) {

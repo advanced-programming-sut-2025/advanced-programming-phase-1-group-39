@@ -65,12 +65,14 @@ public class Game {
     }
     public void addToDay(int amount) {
         time.addToDay(amount);
-        // TODO : changing weather
-        // TODO : update plants
+        for (int i = 0; i < amount; i++)
+            goToNextDay();
     }
+
     public void goToNextDay() {
         time.goToNextDay();
         // TODO : changing weather
+        // TODO : update plants
     }
 
     public Time getTime() {
@@ -88,11 +90,37 @@ public class Game {
         return players;
     }
 
+    //turn
     public Player getPlayerInTurn() {
         return playerInTurn;
     }
 
     public void setPlayerInTurn(Player playerInTurn) {
         this.playerInTurn = playerInTurn;
+    }
+
+    public boolean areAllNotConscious() {
+        boolean areAllNotConscious = true;
+        for (Player player : players) {
+            if (player.isConscious()) {
+                areAllNotConscious = false;
+                break;
+            }
+        }
+        return areAllNotConscious;
+    }
+
+    public boolean nextTurn() {
+        if (areAllNotConscious()) return false;
+
+        int index = players.indexOf(playerInTurn);
+        int newIndex = index + 1;
+        if (newIndex == players.size()) {
+            newIndex = 0;
+        }
+
+        playerInTurn = players.get(newIndex);
+        if (!playerInTurn.isConscious()) return nextTurn();
+        return true;
     }
 }

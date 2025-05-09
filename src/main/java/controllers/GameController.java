@@ -16,7 +16,19 @@ public class GameController {
     public Result exitGame() {return null;}
     public Result deleteGame() {return null;}
 
-    public Result goNextTurn() {return null;}
+    public Result goNextTurn() {
+        Game game = App.getApp().getCurrentGame();
+
+        if (!game.nextTurn()) {
+            game.goToNextDay();
+            return new Result(false, "All players are not conscious!\n"
+                    + AnsiColors.ANSI_GREEN_BOLD + "Going next day!" + AnsiColors.ANSI_RESET);
+        }
+
+        Player player = game.getPlayerInTurn();
+        return new Result(true, AnsiColors.ANSI_CYAN_BOLD +
+                "Next turn: " + App.getApp().getUserByPlayer(player).getNickname() + AnsiColors.ANSI_RESET);
+    }
 
     public int showTime() {
         int h = App.getApp().getCurrentGame().getTime().getHour();

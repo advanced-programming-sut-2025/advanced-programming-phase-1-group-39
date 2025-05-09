@@ -81,6 +81,10 @@ public class Tile {
     public void removePlant() {
         plant = null;
     }
+
+    public void burnTree() {
+        tree.burn();
+    }
     public void cutDownTree() {
         ItemStack items = tree.cutDown();
         tree = null;

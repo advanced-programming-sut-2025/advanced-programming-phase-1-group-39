@@ -105,6 +105,14 @@ public class Player {
                 startOfFarm.y() + Constants.FARM_HEIGHT);
     }
 
+    public Location getStartOfFarm() {
+        return startOfFarm;
+    }
+
+    public Location getEndOfFarm() {
+        return endOfFarm;
+    }
+
     public boolean isInPlayerFarm(Location location) {
         return location.x() >= startOfFarm.x() && location.x() <= endOfFarm.x()
                 && location.y() >= startOfFarm.y() && location.y() <= endOfFarm.y();
@@ -132,6 +140,7 @@ public class Player {
         else if (energyCheated) {
             energy += amount;
             if (energy < Constants.MAX_ENERGY) resetCheatedEnergy();
+            energy = Math.max(0, energy);
             return;
         }
         energy += amount;
@@ -171,4 +180,7 @@ public class Player {
         return energy >= amount;
     }
 
+    public Location getHomeLocation() {
+        return new Location(startOfFarm.x() + 74, startOfFarm.y() + 8);
+    }
 }

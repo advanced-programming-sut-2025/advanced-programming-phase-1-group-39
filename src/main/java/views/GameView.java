@@ -36,7 +36,10 @@ public class GameView implements View {
             System.out.println(controller.helpReadingMap());
         }
         else if ((matcher = GameCommands.WALK.getMatcher(command)) != null) {
-            Result result = controller.walkToCheck(matcher);
+            int x = Integer.parseInt(matcher.group("x"));
+            int y = Integer.parseInt(matcher.group("y"));
+
+            Result result = controller.walkToCheck(x,y);
             System.out.println(result);
             if (result.success()) {
                 System.out.println("do you want to go? (y / n)");
@@ -58,11 +61,19 @@ public class GameView implements View {
             System.out.println(controller.forecastWeather());
         } else if ((matcher = GameCommands.CHEAT_WEATHER_SET.getMatcher(command)) != null) {
             System.out.println(controller.cheatWeather(matcher));
+        } else if ((matcher = GameCommands.CHEAT_THOR.getMatcher(command)) != null) {
+            System.out.println(controller.cheatThor(matcher));
         }
 
         else {
             System.out.println("invalid command.");
         }
 
+        // Time checking
+        Result result = controller.checkTime();
+        if (result.success()) {
+            System.out.println(result);
+            System.out.println(controller.goNextDay());
+        }
     }
 }

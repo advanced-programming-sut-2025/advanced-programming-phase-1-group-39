@@ -17,11 +17,9 @@ public class Weather {
     }
 
     public void cheatThor(Tile tile) {
-
-    }
-
-    public void setWeatherSunny() {
-        status = WeatherStatus.SUNNY;
+        tile.removePlant();
+        if (tile.getTree() != null)
+            tile.burnTree();
     }
 
     public void setWeatherRandom(Season season) {
@@ -38,8 +36,18 @@ public class Weather {
         this.status = status;
     }
 
+    public WeatherStatus getStatus() {
+        return status;
+    }
+
     @Override
     public String toString() {
         return status.name().toLowerCase();
+    }
+
+    public Weather clone() {
+        Weather clone = new Weather();
+        clone.status = status;
+        return clone;
     }
 }

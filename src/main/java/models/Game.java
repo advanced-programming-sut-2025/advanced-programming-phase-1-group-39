@@ -1,10 +1,12 @@
 package models;
 
+import controllers.AppControllers;
 import models.Enums.Season;
 import models.Enums.WeatherStatus;
 import models.buildings.Building;
 import models.map.FarmType;
 import models.map.Map;
+import models.map.Tile;
 import models.trading.TradeItem;
 
 import java.util.ArrayList;
@@ -72,11 +74,56 @@ public class Game {
             goToNextDay();
     }
 
-    public void goToNextDay() {
-        time.goToNextDay();
-        // TODO : changing weather
-        // TODO : update plants
+    public boolean shouldGoToNextDay() {
+        if (time.getHour() >= 22) return true;
+        return false;
     }
+
+    public void goToNextDay() {
+        playersGoHome();
+        // reset players energy
+        // adding money
+        // grow plants and trees
+        // random foragings + materials and minerals and stone
+        // change time
+        time.goToNextDay();
+
+        // change weather random
+        todayWeather.setStatus(tomorrowWeather.getStatus());
+        tomorrowWeather.setWeatherRandom(time.getSeason());
+
+        if (todayWeather.getStatus().equals(WeatherStatus.STORM))
+            thorTiles();
+    }
+    private void playersGoHome() {
+        for (Player player : players) {
+            Location homeLoc = player.getHomeLocation();
+            Result res = AppControllers.gameController.walkToCheck(homeLoc.x(), homeLoc.y());
+            if (res.success())
+                AppControllers.gameController.walkTo();
+            else
+                player.setEnergy(0);
+        }
+    }
+    private void thorTiles() {
+        ArrayList<Tile> tiles = new ArrayList<>();
+        for (Player player : players) {
+            for (int i = 0; i < 3; i++) {
+                int tileX = player.getStartOfFarm().x() + (int)(Math.random() * Constants.FARM_WIDTH);
+                int tileY = player.getStartOfFarm().y() + (int)(Math.random() * Constants.FARM_HEIGHT);
+
+                Tile tile = gameMap.getTile(tileX, tileY);
+                if (tiles.contains(tile)){
+                    i--;
+                    continue;
+                }
+
+                todayWeather.thor(tile);
+            }
+        }
+    }
+
+
 
     public Time getTime() {
         return time;

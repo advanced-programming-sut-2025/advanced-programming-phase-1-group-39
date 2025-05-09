@@ -103,9 +103,7 @@ public class GameController {
 
     public void buildGreenHouse() {}
 
-    public Result walkToCheck(Matcher matcher) {
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
+    public Result walkToCheck(int x, int y) {
         Location end = new Location(x, y);
 
         Game game = App.getApp().getCurrentGame();
@@ -267,4 +265,21 @@ public class GameController {
     public Result giftNPC(Matcher matcher) {return null;}
     public Result showFriendshipNPCList() {return null;}
     public Result finishQuest(Matcher matcher) {return null;}
+
+
+    // Time checking and handling
+    public Result checkTime() {
+        Game game = App.getApp().getCurrentGame();
+        if (game.shouldGoToNextDay())
+            return new Result(true, "The hour is 22!\nAll players should go home... .");
+        else return new Result(false, "");
+    }
+
+    public String goNextDay() {
+        // TODO : complete
+        Game game = App.getApp().getCurrentGame();
+        game.goToNextDay();
+
+        return "Next day";
+    }
 }

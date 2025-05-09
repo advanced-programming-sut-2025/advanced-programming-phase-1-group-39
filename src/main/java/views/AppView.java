@@ -10,4 +10,5 @@ public class AppView {
             App.getApp().getCurrentMenu().checkInput(Input.getNextLine());
         } while (!App.getApp().getCurrentMenu().equals(Menu.ExitMenu));
     }
+
 }

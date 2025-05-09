@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import models.Enums.WeatherStatus;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
 import models.map.AnsiColors;
@@ -72,9 +73,26 @@ public class GameController {
     }
 
     public Result cheatThor(Matcher matcher) {return null;}
-    public Result showWeather() {return null;}
-    public Result forecastWeather() {return null;}
-    public Result cheatWeather() {return null;}
+    public String showWeather() {
+        Game game = App.getApp().getCurrentGame();
+        return "Weather of Today: " +
+                AnsiColors.ANSI_CYAN_BOLD +  game.getTodayWeather() + AnsiColors.ANSI_RESET;
+    }
+    public String forecastWeather() {
+        Game game = App.getApp().getCurrentGame();
+        return "Let's forecast the weather...\n" + "Weather of Tommorow: " +
+                AnsiColors.ANSI_CYAN_BOLD +  game.getTomorrowWeather() + AnsiColors.ANSI_RESET;
+    }
+    public Result cheatWeather(Matcher matcher) {
+        Game game = App.getApp().getCurrentGame();
+        String type = matcher.group("type");
+        WeatherStatus status = WeatherStatus.getWeatherStatusByName(type);
+        if (status == null) return new Result(false, "Wrong Weather type!");
+        game.setTomorrowWeather(status);
+        return new Result(true, "You cheated the weather! Tomorrow weather is " +
+                AnsiColors.ANSI_CYAN_BOLD + type + AnsiColors.ANSI_RESET);
+    }
+
     public void buildGreenHouse() {}
 
     public Result walkToCheck(Matcher matcher) {

@@ -1,5 +1,7 @@
 package models;
 
+import models.Enums.Season;
+import models.Enums.WeatherStatus;
 import models.buildings.Building;
 import models.map.FarmType;
 import models.map.Map;
@@ -30,7 +32,8 @@ public class Game {
         this.playerInTurn = one;
         this.gameMap = new Map();
 
-        todayWeather.setWeatherSunny();
+        todayWeather.setStatus(WeatherStatus.SUNNY);
+        tomorrowWeather.setWeatherRandom(Season.SPRING);
     }
 
     public void startGame() {
@@ -122,5 +125,21 @@ public class Game {
         playerInTurn = players.get(newIndex);
         if (!playerInTurn.isConscious()) return nextTurn();
         return true;
+    }
+
+    // weather
+    public Weather getTodayWeather() {
+        return todayWeather;
+    }
+
+    public Weather getTomorrowWeather() {
+        return tomorrowWeather;
+    }
+    public void setTomorrowWeather(WeatherStatus status) {
+        tomorrowWeather.setStatus(status);
+    }
+    // TODO: each day should be called
+    public void setTomorrowWeatherRandom() {
+        tomorrowWeather.setWeatherRandom(this.time.getSeason());
     }
 }

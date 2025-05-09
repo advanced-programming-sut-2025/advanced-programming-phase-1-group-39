@@ -23,6 +23,10 @@ public enum GameCommands {
     SHOW_ENERGY("energy\\s+show"),
     CHEAT_SET_ENERGY("energy\\s+set\\s+-v\\s+(?<value>\\d+)"),
     CHEAT_ENERGY_UNLIMITED("energy\\s+unlimited"),
+
+    WEATHER("weather"),
+    WEATHER_FORECAST("weather\\s+forecast"),
+    CHEAT_WEATHER_SET("cheat\\s+weather\\s+set\\s+(?<type>\\S+)"),
     ;
 
     private final String pattern;

@@ -52,7 +52,14 @@ public class GameView implements View {
             System.out.println(controller.cheatSetEnergy(matcher));
         } else if ((GameCommands.CHEAT_ENERGY_UNLIMITED.getMatcher(command)) != null) {
             System.out.println(controller.cheatEnergyUnlimited());
+        } else if ((GameCommands.WEATHER.getMatcher(command)) != null) {
+            System.out.println(controller.showWeather());
+        } else if ((GameCommands.WEATHER_FORECAST.getMatcher(command)) != null) {
+            System.out.println(controller.forecastWeather());
+        } else if ((matcher = GameCommands.CHEAT_WEATHER_SET.getMatcher(command)) != null) {
+            System.out.println(controller.cheatWeather(matcher));
         }
+
         else {
             System.out.println("invalid command.");
         }

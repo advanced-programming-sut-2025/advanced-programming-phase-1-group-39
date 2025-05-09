@@ -20,7 +20,10 @@ public class Player {
 
     FoodBuff buff = null;
 
-    private double energy = 2;
+    private double energy = Constants.MAX_ENERGY;
+    private double turnEnergy = Constants.MAX_ENERGY_PER_TURN;
+
+
     private Skill skills = new Skill();
     private Inventory inventory = new Inventory();
 
@@ -124,6 +127,14 @@ public class Player {
     public void changeEnergy(double amount) {
         if (energy == Constants.INFINITY) return;
         energy += amount;
+        energy = energy > Constants.MAX_ENERGY ? Constants.MAX_ENERGY : (energy < 0 ? 0 : energy);
+
+        turnEnergy += amount;
+        turnEnergy = Math.min(turnEnergy, Constants.MAX_ENERGY_PER_TURN);
+        if (turnEnergy < 0) {
+            turnEnergy = 0;
+            energy = 0;
+        }
         if (energy < 0) energy = 0;
     }
 }

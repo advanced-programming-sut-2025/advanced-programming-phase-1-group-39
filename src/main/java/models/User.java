@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+
 public class User {
     private String userName;
     private String password;
@@ -8,7 +10,7 @@ public class User {
     private boolean isMale;
     private SecurityQuestion securityQuestion;
 
-    Player player = new Player();
+    private ArrayList<Player> players = new ArrayList<>();
 
     public User(String userName, String password, String nickname, String email, boolean isMale, SecurityQuestion securityQuestion) {
         this.userName = userName;
@@ -57,5 +59,10 @@ public class User {
 
     public SecurityQuestion getSecurityQuestion() {
         return securityQuestion;
+    }
+
+
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 }

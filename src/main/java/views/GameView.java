@@ -3,6 +3,8 @@ package views;
 import controllers.AppControllers;
 import controllers.GameController;
 import models.Enums.commands.GameCommands;
+import models.Input;
+import models.Result;
 
 import java.util.regex.Matcher;
 
@@ -34,7 +36,15 @@ public class GameView implements View {
             System.out.println(controller.helpReadingMap());
         }
         else if ((matcher = GameCommands.Walk.getMatcher(command)) != null) {
-            System.out.println(controller.walkTo(matcher));
+            Result result = controller.walkToCheck(matcher);
+            System.out.println(result);
+            if (result.success()) {
+                System.out.println("do you want to go? (y / n)");
+                char character = Input.getNextChar();
+                if (character == 'y' || character == 'Y') {
+                    System.out.println(controller.walkTo());
+                }
+            }
         } else {
             System.out.println("invalid command.");
         }

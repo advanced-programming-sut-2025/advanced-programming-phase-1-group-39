@@ -370,13 +370,17 @@ public class Map {
         return new Location(startX, startY);
     }
 
-    public Result findWalkingEnergy(Location start, Location end, Player player) {
+
+    public Result canWalkTo(Location start, Location end, Player player) {
         MapMinPathFinder pathFinder = new MapMinPathFinder();
         if (!player.isInPlayerFarm(end))
             return new Result(false, "The end of path is not in your farm!");
+        else return new Result(true, "");
+    }
 
-        System.out.println((pathFinder.findPath(tiles, start, end)));
-        return new Result(true, "you walked!");
+    public ArrayList<MapMinPathFinder.Node> findWalkingPath(Location start, Location end, Player player) {
+        MapMinPathFinder pathFinder = new MapMinPathFinder();
+        return pathFinder.findPath(tiles, start, end);
     }
 }
 

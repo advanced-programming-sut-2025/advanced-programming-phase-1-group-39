@@ -1,14 +1,17 @@
 package models.map;
 
+import models.Constants;
 import models.Enums.Direction;
 import models.Location;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.PriorityQueue;
 
 public class MapMinPathFinder {
-    class Node implements Comparable<Node>{
-        Location location;
+    public class Node implements Comparable<Node>{
+        public Location location;
         Node parent;
         int steps;
         int turns;
@@ -23,9 +26,17 @@ public class MapMinPathFinder {
             this.direction = direction;
         }
 
+        public int getQuantity() {
+            return this.steps + 10 * this.turns;
+        }
+
+        public double getEnergyCost() {
+            return (double)(getQuantity())/ Constants.EACH_TILE_ENERGY_COST;
+        }
+
         @Override
         public int compareTo(Node second) {
-            return Integer.compare(this.steps + 10 * this.turns, second.steps + 10 * second.turns);
+            return Integer.compare(this.getQuantity(), second.getQuantity());
         }
     }
 
@@ -33,7 +44,12 @@ public class MapMinPathFinder {
         int rows = map.length;
         int cols = map[0].length;
 
-        boolean[][][] visited = new boolean[rows][cols][4]; // visited have 4 direction for each tile
+        int[][][] minTurns = new int[rows][cols][4]; // visited have 4 direction for each tile
+        for (int[][] row : minTurns)
+            for (int[] cell : row)
+                Arrays.fill(cell, Integer.MAX_VALUE);
+
+
         PriorityQueue<Node> queue = new PriorityQueue<>();
 
         Node startNode = new Node(start, null, 0, 0, -1);
@@ -43,7 +59,7 @@ public class MapMinPathFinder {
             Node currentNode = queue.poll();
 
             if (currentNode.location.equals(end)) {
-                constructPath(currentNode);
+                return constructPath(currentNode);
             }
 
             int[] xChanges = {0, 0, -1, 1}; // up:0 down:1 right:2 left:3
@@ -52,14 +68,18 @@ public class MapMinPathFinder {
             for(int i = 0; i < 4; i++) {
                 int newX = currentNode.location.x() + xChanges[i];
                 int newY = currentNode.location.y() + yChanges[i];
+                if (newX < 0 || newX >= cols || newY < 0 || newY >= rows) continue;
+
                 int newTurns;
                 if (currentNode.direction == -1) newTurns = currentNode.turns;
                 else if (currentNode.direction == i) newTurns = currentNode.turns;
                 else newTurns = currentNode.turns + 1;
 
 
-                if (canGoTo(map[newY][newX], visited[newY][newX][i])) {
-                    visited[newY][newX][i] = true;
+                if (canGoTo(map[newY][newX])) {
+                    if (newTurns >= minTurns[newY][newX][0]) continue;
+                    minTurns[newY][newX][i] = newTurns;
+
                     queue.add(new Node(new Location(newX, newY), currentNode, currentNode.steps+1, newTurns, i));
                 }
             }
@@ -78,12 +98,11 @@ public class MapMinPathFinder {
 
             path.add(currentNode);
         }
-
+        Collections.reverse(path);
         return path;
     }
 
-    private boolean canGoTo(Tile tile, boolean visited) {
-        if (visited) return false;
+    private boolean canGoTo(Tile tile) {
         if (!tile.canWalkOnTile()) return false;
         return true;
     }

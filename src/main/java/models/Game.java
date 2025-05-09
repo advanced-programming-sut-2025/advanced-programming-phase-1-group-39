@@ -91,4 +91,8 @@ public class Game {
     public Player getPlayerInTurn() {
         return playerInTurn;
     }
+
+    public void setPlayerInTurn(Player playerInTurn) {
+        this.playerInTurn = playerInTurn;
+    }
 }

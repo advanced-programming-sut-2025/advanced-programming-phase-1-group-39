@@ -44,4 +44,12 @@ public class App {
     public Menu getCurrentMenu() {
         return currentMenu;
     }
+
+    public void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
+    }
+
+    public void setCurrentMenu(Menu currentMenu) {
+        this.currentMenu = currentMenu;
+    }
 }

@@ -10,4 +10,6 @@ public class Constants {
     public static final int FARM_HEIGHT = 50;
 
     public static final int DISABLED_HEIGHT = 25;
+
+    public static final int EACH_TILE_ENERGY_COST = 20;
 }

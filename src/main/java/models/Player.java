@@ -19,7 +19,7 @@ public class Player {
 
     FoodBuff buff = null;
 
-    private int energy = 200;
+    private double energy = 200;
     private Skill skills = new Skill();
     private Inventory inventory = new Inventory();
 
@@ -106,7 +106,7 @@ public class Player {
     }
 
     // energy
-    public int getEnergy() {
+    public double getEnergy() {
         return energy;
     }
 

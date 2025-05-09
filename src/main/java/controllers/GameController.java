@@ -3,10 +3,15 @@ package controllers;
 import models.*;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
+import models.map.AnsiColors;
+import models.map.MapMinPathFinder;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class GameController {
+    public ArrayList<MapMinPathFinder.Node> path;
+
     public Result saveGame() {return null;}
     public Result exitGame() {return null;}
     public Result deleteGame() {return null;}
@@ -60,7 +65,7 @@ public class GameController {
     public Result cheatWeather() {return null;}
     public void buildGreenHouse() {}
 
-    public Result walkTo(Matcher matcher) {
+    public Result walkToCheck(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         Location end = new Location(x, y);
@@ -68,8 +73,41 @@ public class GameController {
         Game game = App.getApp().getCurrentGame();
         Player player = game.getPlayerInTurn();
         Location start = player.getLocation();
+        Result result;
+        if (!(result = game.getMap().canWalkTo(start, end, player)).success()) {
+            return result;
+        }
 
-        return game.getMap().findWalkingEnergy(start, end, player);
+        this.path = game.getMap().findWalkingPath(start, end, player);
+
+        StringBuilder text = new StringBuilder();
+        if(path.isEmpty()) return new Result(false, "No path found to "+end+"!");
+
+        path.forEach(
+                (n)-> {
+                    text.append(n.location + " ");
+                }
+        );
+        double energy = path.get(path.size() - 1).getEnergyCost();
+        return new Result(true, "path: " + text
+                + "\nEnergy needed: " + energy
+                + "\nYour energy: " + player.getEnergy());
+    }
+    public Result walkTo() {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+
+        int energyCost = path.size()/Constants.EACH_TILE_ENERGY_COST;
+        Location end = path.get(path.size() - 1).location;
+        if (player.getEnergy() < energyCost) {
+            int numOfTilesCanGo = (int)(player.getEnergy() * Constants.EACH_TILE_ENERGY_COST);
+            end = path.get(numOfTilesCanGo).location;
+        }
+        player.setLocationAbsolut(end.x(), end.y());
+        StringBuilder text = new StringBuilder();
+        text.append("You walked to " + end);
+        if (!player.isConscious()) return new Result(false, text + "\n" + AnsiColors.ANSI_RED + "Now you are not conscious!" + AnsiColors.ANSI_RESET);
+        return new Result(true, text.toString());
     }
 
     public Result printMap(Matcher matcher) {

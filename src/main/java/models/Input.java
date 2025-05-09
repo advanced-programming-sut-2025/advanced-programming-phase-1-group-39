@@ -8,4 +8,7 @@ public class Input {
     public static String getNextLine() {
         return scanner.nextLine().trim();
     }
+    public static char getNextChar() {
+        return scanner.nextLine().charAt(0);
+    }
 }

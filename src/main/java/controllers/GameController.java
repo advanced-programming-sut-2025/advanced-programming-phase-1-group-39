@@ -150,9 +150,23 @@ public class GameController {
     }
 
 
-    public Result showEnergy() {return null;}
-    public Result cheatSetEnergy(Matcher matcher) {return null;}
-    public Result cheatEnergyUnlimited(Matcher matcher) {return null;}
+    public String showEnergy() {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        return "Your Energy: " + player.getColoredEnergy();
+    }
+    public String cheatSetEnergy(Matcher matcher) {
+        int value = Integer.parseInt(matcher.group("value"));
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        player.setCheatedEnergy();
+        player.resetEnergyUnlimited();
+        player.setEnergy(value);
+        return "now your energy is " + player.getColoredEnergy();
+    }
+    public String cheatEnergyUnlimited() {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        player.setEnergyUnlimited();
+        return "now your energy is " + AnsiColors.ANSI_GREEN_BOLD + "UNLIMITED" + AnsiColors.ANSI_RESET;
+    }
 
     public Result showInventory(Matcher matcher) {return null;}
     public Result throwToInventoryTrash(Matcher matcher) {return null;}

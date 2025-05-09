@@ -18,7 +18,11 @@ public enum GameCommands {
     PRINT_MAP("print\\s+map\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)\\s+-s\\s+(?<size>\\d+)"),
     HELP_READING_MAP("help\\s+reading\\s+map"),
 
-    WALK("walk\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)")
+    WALK("walk\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)"),
+
+    SHOW_ENERGY("energy\\s+show"),
+    CHEAT_SET_ENERGY("energy\\s+set\\s+-v\\s+(?<value>\\d+)"),
+    CHEAT_ENERGY_UNLIMITED("energy\\s+unlimited"),
     ;
 
     private final String pattern;

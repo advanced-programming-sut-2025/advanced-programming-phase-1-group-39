@@ -22,7 +22,8 @@ public class Player {
 
     private double energy = Constants.MAX_ENERGY;
     private double turnEnergy = Constants.MAX_ENERGY_PER_TURN;
-
+    private boolean energyCheated = false;
+    private boolean energyUnlimited = false;
 
     private Skill skills = new Skill();
     private Inventory inventory = new Inventory();
@@ -115,6 +116,7 @@ public class Player {
     }
 
     public String getColoredEnergy() {
+        if (energyUnlimited) return (AnsiColors.ANSI_GREEN_BOLD + "UNLIMITED" + AnsiColors.ANSI_RESET);
         StringBuilder sb = new StringBuilder();
         if (energy > 150) sb.append(AnsiColors.ANSI_GREEN_BOLD);
         else if (energy > 100) sb.append(AnsiColors.ANSI_LIGHT_YELLOW_BOLD);
@@ -125,7 +127,13 @@ public class Player {
     }
 
     public void changeEnergy(double amount) {
-        if (energy == Constants.INFINITY) return;
+        if (energyUnlimited) return;
+
+        else if (energyCheated) {
+            energy += amount;
+            if (energy < Constants.MAX_ENERGY) resetCheatedEnergy();
+            return;
+        }
         energy += amount;
         energy = energy > Constants.MAX_ENERGY ? Constants.MAX_ENERGY : (energy < 0 ? 0 : energy);
 
@@ -135,6 +143,32 @@ public class Player {
             turnEnergy = 0;
             energy = 0;
         }
-        if (energy < 0) energy = 0;
     }
+
+    public void setEnergy(double energy) {
+        this.energy = energy;
+        if (energyCheated) return;
+        this.energy = Math.min(energy, Constants.MAX_ENERGY);
+        this.energy = Math.max(0, this.energy);
+    }
+
+    public void setCheatedEnergy() {
+        energyCheated = true;
+    }
+    public void resetCheatedEnergy() {
+        energyCheated = false;
+    }
+
+    public void setEnergyUnlimited() {
+        energyUnlimited = true;
+    }
+    public void resetEnergyUnlimited() {
+        energyUnlimited = false;
+    }
+
+    public boolean hasEnoughEnergy(double amount) {
+        if (energyUnlimited) return true;
+        return energy >= amount;
+    }
+
 }

@@ -59,6 +59,12 @@ public class FoodManager {
         }
         return null;
     }
+    private static Food getFoodByName(String name) {
+        for (FoodRecipe recipe : FoodRecipe.values()) {
+            if (recipe.data.getName().equalsIgnoreCase(name)) return recipe.data;
+        }
+        return null;
+    }
 
     public static Result eat(String foodName, Player player) {
         Inventory inv = player.getInventory();

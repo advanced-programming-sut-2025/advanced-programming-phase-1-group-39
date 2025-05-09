@@ -47,13 +47,6 @@ public class Player {
         return inventory;
     }
 
-    public int getEnergy() {
-        return energy;
-    }
-    public void changeEnergy(int amount) {
-        energy += amount;
-    }
-
     public void goFishing() {}
 
     public int getLevelOfFriendship(NPC npc) {return 0;}
@@ -110,5 +103,16 @@ public class Player {
     public boolean isInPlayerFarm(Location location) {
         return location.x() >= startOfFarm.x() && location.x() <= endOfFarm.x()
                 && location.y() >= startOfFarm.y() && location.y() <= endOfFarm.y();
+    }
+
+    // energy
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void changeEnergy(int amount) {
+        if (energy == Constants.INFINITY) return;
+        energy += amount;
+        if (energy < 0) energy = 0;
     }
 }

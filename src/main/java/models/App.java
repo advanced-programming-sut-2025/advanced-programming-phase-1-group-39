@@ -52,4 +52,13 @@ public class App {
     public void setCurrentMenu(Menu currentMenu) {
         this.currentMenu = currentMenu;
     }
+
+    public User getUserByPlayer(Player player) {
+        for (User user : users) {
+            for (Player p : user.getPlayers()) {
+                if (player.equals(p)) return user;
+            }
+        }
+        return null;
+    }
 }

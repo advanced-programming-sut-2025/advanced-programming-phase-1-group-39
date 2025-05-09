@@ -277,10 +277,16 @@ public class Map {
 
     public String printMapBySize(int x, int y, int size, ArrayList<Player> players) {
         StringBuilder text = new StringBuilder();
-        for (int i = y - size/2; i < y + size - size/2; i++) {
-            for (int j = x - size/2; j < x + size - size/2; j++) {
-                if (i < 0 || i > height || j < 0 || j > width) {continue;}
+        int i1 = Math.max(y - size/2, 0);
+        int i2 = Math.min(y + size - size/2, height);
+
+        int j1 = Math.max(x - size/2, 0);
+        int j2 = Math.min(x + size - size/2, width);
+
+        for (int i = i1; i < i2; i++) {
+            for (int j = j1; j < j2; j++) {
                 Tile tile = tiles[i][j];
+                if (tile.getType().equals(TileType.DISABLE)) continue;
                 boolean doesSet = false;
 
                 for (Player player : players) {
@@ -306,7 +312,6 @@ public class Map {
             for (int j = 0; j < width; j++) {
                 boolean doesSet = false;
                 Tile tile = tiles[i][j];
-
                 for (Player player : players) {
                     if (j == player.getLocation().x() && i == player.getLocation().y()) {
                         text.append(AnsiColors.ANSI_PURPLE_BOLD + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);

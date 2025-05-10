@@ -110,7 +110,12 @@ public class User {
     public ArrayList<Player> getPlayers() { return players; }
 
     //
+
     public void ensureInitialized() {
         if (players == null) players = new ArrayList<>();
+    }
+
+    public void addNumberOfGamesPlayed() {
+        this.numberOfGamesPlayed++;
     }
 }

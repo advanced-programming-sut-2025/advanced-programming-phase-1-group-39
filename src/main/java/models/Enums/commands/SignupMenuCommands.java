@@ -1,5 +1,5 @@
 package models.Enums.commands;
-
+// register    -u   mostafa   -p paSS12#$   paSS12#$  -n mosi  -e mostafa@gmail.com -g male
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

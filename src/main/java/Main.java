@@ -1,5 +1,11 @@
+import models.App;
+import models.services.AppDataManager;
+import views.AppView;
+
 public class Main {
+
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+        AppDataManager.loadApp();
+        new AppView().run();
     }
 }

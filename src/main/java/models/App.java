@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class App {
     private static App app;
-    private ArrayList<User> users ;
-    private ArrayList<Game> games ;
+    private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<Game> games = new ArrayList<>();
 
     private User loggedInUser = null;
     private String randomPassword = null;
@@ -23,7 +23,7 @@ public class App {
     private Menu currentMenu = Menu.SIGNUP_MENU;
 
     private App() {
-        AppDataManager.loadApp();
+
     }
 
     public static App getApp() {
@@ -49,25 +49,45 @@ public class App {
         return currentGame;
     }
 
-    public Menu getCurrentMenu() { return currentMenu; }
+    public Menu getCurrentMenu() {
+        return currentMenu;
+    }
 
-    public ArrayList<User> getUsers() { return users; }
+    public ArrayList<User> getUsers() {
+        return users;
+    }
 
-    public String getRandomPassword() { return randomPassword; }
+    public String getRandomPassword() {
+        return randomPassword;
+    }
 
-    public User getPendingUser() { return pendingUser; }
+    public User getPendingUser() {
+        return pendingUser;
+    }
 
-    public boolean getIsRegisterSuccessful() { return isRegisterSuccessful; }
+    public boolean getIsRegisterSuccessful() {
+        return isRegisterSuccessful;
+    }
 
-    public ArrayList<Game> getGames() { return games; }
+    public ArrayList<Game> getGames() {
+        return games;
+    }
 
-    public int getCurrentGameId() { return currentGameId; }
+    public int getCurrentGameId() {
+        return currentGameId;
+    }
 
-    public Game getCurrentGame() { return currentGame; }
+    public Game getCurrentGame() {
+        return currentGame;
+    }
 
-    public Player getCurrentPlayer() { return currentPlayer; }
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
 
-    public boolean isStayLoggedIn() { return stayLoggedIn; }
+    public boolean isStayLoggedIn() {
+        return stayLoggedIn;
+    }
 
     public static void setInstance(App loadedApp) {
         app = loadedApp;
@@ -99,13 +119,23 @@ public class App {
         this.pendingUser = pendingUser;
     }
 
-    public void setCurrentGameId(int gameId) { this.currentGameId = gameId; }
+    public void setCurrentGameId(int gameId) {
+        this.currentGameId = gameId;
+    }
 
-    public void setCurrentGame(Game currentGame) { this.currentGame = currentGame; }
+    public void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
+    }
 
-    public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 
-    public void setUsers(ArrayList<User> users) { this.users = users; }
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
+    }
 
-    public void setGames(ArrayList<Game> games) { this.games = games; }
+    public void setGames(ArrayList<Game> games) {
+        this.games = games;
+    }
 }

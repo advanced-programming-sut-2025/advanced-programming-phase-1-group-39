@@ -93,7 +93,7 @@ public class SignupMenuController {
             App.getApp().setRandomPassword(randomPassword);
             App.getApp().getPendingUser().setPassword(randomPassword);
             return new Result(true , "A secure password has been generated for you: " + randomPassword +
-                    "\n"+"If you wish to use this password, please type 'yes'.\n + " +
+                    "\n"+"If you wish to use this password, please type 'yes'.\n" +
                     "If you would like to generate another random password, please type 'random'.\n" +
                     "Otherwise, type 'no' to cancel.");
         } else {

@@ -1,0 +1,8 @@
+{
+  "users": [],
+  "games": [],
+  "isRegisterSuccessful": false,
+  "stayLoggedIn": false,
+  "currentGameId": 101,
+  "currentMenu": "SIGNUP_MENU"
+}

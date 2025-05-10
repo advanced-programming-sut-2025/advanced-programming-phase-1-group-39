@@ -12,7 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class AppDataManager {
-    private static final String APP_FILE_PATH = "src/main/resources/data/app/appData.json";
+    private static final String APP_FILE_PATH = "src/main/data/app/appData.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void saveApp(App app) {
@@ -26,7 +26,6 @@ public class AppDataManager {
     public static void loadApp() {
         File file = new File(APP_FILE_PATH);
         if (!file.exists() || file.length() == 0) {
-
             App app = App.getApp();
             initializeDefaults(app);
             saveApp(app);

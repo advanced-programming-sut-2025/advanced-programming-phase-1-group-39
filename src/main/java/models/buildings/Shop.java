@@ -1,6 +1,7 @@
 package models.buildings;
 
 import models.Item;
+import models.Location;
 import models.NPC.NPC;
 
 import java.util.*;
@@ -13,8 +14,8 @@ public class Shop extends Building {
 
     NPC owner;
 
-    public Shop(String name) {
-        super(name);
+    public Shop(String name, Location startLocation, int width, int height) {
+        super(name, startLocation, width, height);
     }
 
     public HashMap<Item, Integer> getAllProducts() {

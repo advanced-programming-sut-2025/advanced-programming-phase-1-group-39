@@ -31,9 +31,8 @@ public class GameController {
                 "Next turn: " + App.getApp().getUserByPlayer(player).getNickname() + AnsiColors.ANSI_RESET);
     }
 
-    public int showTime() {
-        int h = App.getApp().getCurrentGame().getTime().getHour();
-        return h;
+    public String showTime() {
+        return App.getApp().getCurrentGame().getTime().getHourText();
     }
     public String showDate() {
         Time time = App.getApp().getCurrentGame().getTime();

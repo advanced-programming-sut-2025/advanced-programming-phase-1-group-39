@@ -36,7 +36,7 @@ public class Time {
     }
 
     public void addToSeason(int number) {
-        addToYear(number / 4);
+        addToYear((season.number + number) / 4);
         this.season = Season.getSeasonByNumber((season.number + number)%4);
     }
 
@@ -47,6 +47,10 @@ public class Time {
 
     public int getHour() {
         return hour;
+    }
+    public String getHourText() {
+        String end = hour <= 12 ? " AM" : " PM";
+        return hour + end;
     }
 
     public int getDay() {

@@ -36,7 +36,8 @@ public class Main {
         App.getApp().addGame(game);
         App.getApp().setCurrentGame(game);
         game.setPlayerInTurn(player2);
-        Menu.GAME.checkInput("print map -l 74,8 -s 39");
+        System.out.println(game.getMap().printColorMap(players));
+//        Menu.GAME.checkInput("print map -l 74,8 -s 39");
         while (true) {
             Menu.GAME.checkInput(Input.getNextLine());
         }

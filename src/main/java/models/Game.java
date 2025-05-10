@@ -69,7 +69,6 @@ public class Game {
         //TODO : Update of map and plants
     }
     public void addToDay(int amount) {
-        time.addToDay(amount);
         for (int i = 0; i < amount; i++)
             goToNextDay();
     }

@@ -2,6 +2,7 @@ package models.Shops;
 
 import models.ItemStack;
 import models.NPC.NPC;
+import models.Result;
 import models.buildings.Building;
 
 import java.util.*;
@@ -19,10 +20,10 @@ public class Shop extends Building {
         this.owner = owner;
     }
 
-    void handleCommand(String command){}
-    String showAllProducts(){return null;}
-    String showAvailableProducts() {return null;}
-    void purchase(String product, int quantity){}
-    void addProduct(String product){}
+    public void handleCommand(String command){}
+    public String showAllProducts(){return null;}
+    public String showAvailableProducts() {return null;}
+    //public Result purchase(String product, int quantity){return null;}
+    public void endDay() {};
 }
 

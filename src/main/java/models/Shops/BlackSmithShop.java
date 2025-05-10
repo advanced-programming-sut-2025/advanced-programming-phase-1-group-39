@@ -100,13 +100,8 @@ public class BlackSmithShop extends Shop{
         return "";
     }
 
-    @Override
     public void purchase(String product, int quantity) {
 
     }
 
-    @Override
-    public void addProduct(String product) {
-
-    }
 }

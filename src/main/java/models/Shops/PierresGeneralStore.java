@@ -1,8 +1,8 @@
 package models.Shops;
 
-package models.Shops;
-
 import models.NPC.NPC;
+import models.Result;
+
 import java.util.*;
 
 public class PierresGeneralStore extends Shop {
@@ -15,7 +15,7 @@ public class PierresGeneralStore extends Shop {
     public PierresGeneralStore(String name, int openHour, int closeHour, NPC owner) {
         super(name, openHour, closeHour, owner);
         loadPermanentStock();
-        loadSeasonalStock();
+        //loadSeasonalStock();
     }
 
     private void loadPermanentStock() {
@@ -23,13 +23,13 @@ public class PierresGeneralStore extends Shop {
         permanentStock.put("Deluxe Pack", new ShopItem("Deluxe Pack", 10000, 1));
     }
 
-    private void loadSeasonalStock() {
+    /*private void loadSeasonalStock() {
         seasonalStock.put("Spring", new ArrayList<>());
         seasonalStock.put("Summer", new ArrayList<>());
         seasonalStock.put("Fall", new ArrayList<>());
 
-        seasonalStock.get("Spring").add(new ShopItem("Parsnip Seeds", "Plant these in the spring. Takes 4 days to mature.", 20, 30, 5));
-        seasonalStock.get("Spring").add(new ShopItem("Bean Starter", "Plant these in the spring. Takes 10 days to mature...", 60, 90, 5));
+        seasonalStock.get("Spring").add(new ShopItem("Parsnip Seeds", 20, 30, 5));
+        seasonalStock.get("Spring").add(new ShopItem("Bean Starter", 60, 90, 5));
         // Add the rest...
 
         seasonalStock.get("Summer").add(new ShopItem("Melon Seeds", "Plant these in the summer...", 80, 120, 5));
@@ -37,7 +37,7 @@ public class PierresGeneralStore extends Shop {
 
         seasonalStock.get("Fall").add(new ShopItem("Pumpkin Seeds", "Plant these in the fall...", 100, 150, 5));
         // Add rest...
-    }
+    }*/
 
     @Override
     public void handleCommand(String command) {
@@ -70,15 +70,11 @@ public class PierresGeneralStore extends Shop {
         return showAllProducts(); // You could filter based on purchaseTracker if needed
     }
 
-    @Override
-    public void purchase(String product, int quantity) {
+    public Result purchase(String product, int quantity) {
         // TODO: implement quantity check, season check, and daily limit logic
+        return null;
     }
 
-    @Override
-    public void addProduct(String product) {
-        // Optional: not needed unless modifiable by player
-    }
 
     private String getCurrentSeason() {
         // TODO: replace with actual game logic

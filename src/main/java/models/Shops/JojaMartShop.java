@@ -134,8 +134,5 @@ public class JojaMartShop extends Shop {
         // TODO: parse commands like: "buy Parsnip Seeds 3"
     }
 
-    @Override
-    public void addProduct(String product) {
-    }
 }
 

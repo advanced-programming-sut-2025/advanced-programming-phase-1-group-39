@@ -2,11 +2,12 @@ package models.Shops;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import models.Constants;
+import models.*;
 import models.Enums.Season;
-import models.Location;
 import models.NPC.NPC;
-import models.Result;
+import models.buildings.AnimalBuilding;
+import models.buildings.Building;
+import models.buildings.Well;
 
 import java.io.FileReader;
 import java.lang.reflect.Type;
@@ -60,6 +61,18 @@ public class JojaMartShop extends Shop {
             e.printStackTrace();
         }
     }
+    // Data holder classes for JSON parsing
+    public static class JojaMartData {
+        List<ShopItemData> permanentStock;
+        Map<String, List<ShopItemData>> seasonalStock;
+    }
+
+    public static class ShopItemData {
+        String name;
+        int price;
+        int limit;
+    }
+
 
     private void setupSeasonalStock(Season season) {
         seasonalStock = seasonalStockBySeason.getOrDefault(season, new HashMap<>());
@@ -76,10 +89,12 @@ public class JojaMartShop extends Shop {
             return new Result(false, "Item not found.");
 
         int alreadyBought = dailyPurchases.getOrDefault(itemName, 0);
-        if (item.getDailyLimit() != Constants.INFINITY && alreadyBought + quantity > item.getDailyLimit())
+        if (alreadyBought + quantity > item.getDailyLimit())
             return new Result(false, "You can't buy that many today.");
 
         dailyPurchases.put(itemName, alreadyBought + quantity);
+        Item itemToAdd = ItemManager.getItemByName(itemName);
+        App.getApp().getCurrentGame().getPlayerInTurn().getInventory().addItem(itemToAdd, 1);
         return new Result(true, "Successfully bought " + quantity + " x " + itemName + " for " +
                 (item.getPrice() * quantity) + "g.");
     }
@@ -111,15 +126,4 @@ public class JojaMartShop extends Shop {
         // TODO: parse commands like: "buy Parsnip Seeds 3"
     }
 
-    // Data holder classes for JSON parsing
-    public static class JojaMartData {
-        List<ShopItemData> permanentStock;
-        Map<String, List<ShopItemData>> seasonalStock;
-    }
-
-    public static class ShopItemData {
-        String name;
-        int price;
-        int limit;
-    }
 }

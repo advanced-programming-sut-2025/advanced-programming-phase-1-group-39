@@ -9,7 +9,7 @@ public enum LoginMenuCommands {
 
     ForgetPassword("forget\\s+password\\s+-u\\s+(?<username>.*?)"),
     Answer("answer\\s+-a\\s+(?<answer>.*?)"),
-    NewPassword("(?<newPassword>\\S+)"),
+    NewPassword("-p\\s+(?<newPassword>\\S+)"),
 
     GoTOSignupMenu("menu\\s+enter\\s+signup"),
 

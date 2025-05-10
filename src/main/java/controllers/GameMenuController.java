@@ -18,7 +18,7 @@ public class GameMenuController {
         String otherUsers = matcher.group("otherUsers");
 
         if (username1 == null || username2 == null || username3 == null) {
-            return new Result(false, "Invalid username or password");
+            return new Result(false, "you must enter the usernames of three users.");
         } else if (!isUsernameExist(username1)) {
             return new Result(false, "username1 not found in the system.");
         } else if (!isUsernameExist(username2)) {
@@ -50,7 +50,7 @@ public class GameMenuController {
             app.addGame(newGame);
             app.setCurrentPlayer(player1);
             return new Result(true, "Congratulations!!!" + "\n" +
-                    " The new game has been successfully created. " + "\n" +
+                    "The new game has been successfully created. " + "\n" +
                     "Now, each player must choose their game map in order, starting with the first player. \n" +
                     "The available map types are as follows: \n" + Map.showFarmTypesInfo());
         }
@@ -61,7 +61,7 @@ public class GameMenuController {
         App app = App.getApp();
         if (!isInteger(mapNumber)) {
             return new Result(false, "The map number must be a number.");
-        } else if (Integer.parseInt(mapNumber) != 1 || mapNumber.length() != 2) {
+        } else if (Integer.parseInt(mapNumber) >= 3) {
             return new Result(false, "The map number must be either 1 or 2.");
         } else if (app.getCurrentPlayer().getId() == 4) {
             app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentPlayer(),
@@ -105,6 +105,11 @@ public class GameMenuController {
             app.setCurrentMenu(Menu.GAME_MENU);
             return new Result(true, "the game was loaded successfully. you can continue your game.");
         }
+    }
+
+    public Result goMainMenu() {
+        App.getApp().setCurrentMenu(Menu.MAIN_MENU);
+        return new Result(true, "you are now in main menu.");
     }
 
 

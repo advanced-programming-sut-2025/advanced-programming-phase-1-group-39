@@ -1,7 +1,5 @@
 package models.Enums.commands;
-// register    -u   mostafa   -p paSS12#$   paSS12#$  -n mosi  -e mostafa@gmail.com -g male
-//  register    -u   mostafa   -p random  -n mosi  -e mostafa@gmail.com -g male
-// pick question -q 1 -a salam -c salam
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,3 +43,11 @@ public enum SignupMenuCommands {
     }
 
 }
+
+// register    -u   mostafa   -p paSS12#$   paSS12#$  -n mosi  -e mostafa@gmail.com -g male
+// register   -u ahmad -p paSS12#$ paSS12#$ -n ahi -e ahamd@gmail.com -g male
+// register -u reza -p paSS12#$ paSS12#$ -n reza -e reza@gmail.com -g male
+// register -u mohsen -p paSS12#$ paSS12#$ -n mohsen -e mohsen@gmail.com -g male
+//  register    -u   mostafa   -p random  -n mosi  -e mostafa@gmail.com -g male
+// pick question -q 1 -a salam -c salam
+// login -u mostafa -p paSS12#$

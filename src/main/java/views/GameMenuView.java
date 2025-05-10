@@ -23,8 +23,11 @@ public class GameMenuView implements View {
         } else if ((matcher = GameMenuCommands.LoadGame.getMatcher(command)) != null) {
             result = controller.loadGame();
             System.out.println(result.message());
+        } else if ((matcher = GameMenuCommands.GoMainMenu.getMatcher(command)) != null) {
+            result = controller.goMainMenu();
+            System.out.println(result.message());
         } else {
-            result = new Result(false, "Invalid command.");
+            System.out.println("invalid command!");
         }
     }
 }

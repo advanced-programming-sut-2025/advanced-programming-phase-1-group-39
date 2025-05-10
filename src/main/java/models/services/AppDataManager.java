@@ -34,6 +34,9 @@ public class AppDataManager {
             try (FileReader reader = new FileReader(file)) {
                 App loadedApp = gson.fromJson(reader, App.class);
                 App.setInstance(loadedApp);
+                for (User user : App.getApp().getUsers()) {
+                    user.ensureInitialized();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

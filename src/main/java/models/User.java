@@ -18,7 +18,7 @@ public class User {
     private Game currentGame = null;
     private Game savedGame = null;
 
-    private ArrayList<Player> players ;
+    private ArrayList<Player> players = new ArrayList<>();
 
     public User(String userName, String password, String nickname, String email, boolean isMale) {
         this.userName = userName;
@@ -108,4 +108,9 @@ public class User {
     // public boolean getIsStayLoggedIn() { return isStayLoggedIn; }
 
     public ArrayList<Player> getPlayers() { return players; }
+
+    //
+    public void ensureInitialized() {
+        if (players == null) players = new ArrayList<>();
+    }
 }

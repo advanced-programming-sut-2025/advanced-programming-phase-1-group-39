@@ -46,7 +46,8 @@ public class LoginMenuController {
             return new Result(false, "Username not found.");
         } else {
             App.getApp().setPendingUser(getUserByUsername(username));
-            return new Result(true, "please enter the answer to your security question.");
+            return new Result(true, "please enter the answer to your security question: \n" +
+                    App.getApp().getUsers().get(getIndexInUsers(username)).getSecurityQuestion().getQuestion());
         }
     }
 
@@ -85,11 +86,14 @@ public class LoginMenuController {
     }
 
     public Result interNewPassword(Matcher matcher) {
+        Matcher matcher1;
         String newPassword = matcher.group("newPassword");
 
-        if (!newPassword.equals(App.getApp().getPendingUser().getPassword())) {
-            App.getApp().setPendingUser(null);
-            return new Result(false, "the new password entered is incorrect. to log in, you must start over.");
+        if ((matcher1 = SignupMenuCommands.Password.getMatcher(newPassword)) == null) {
+            return new Result(false, "invalid password format. You can use letters, numbers, and special characters in your password.");
+        } else if ((matcher1 = SignupMenuCommands.WeakPassword.getMatcher(newPassword)) == null) {
+            StringBuilder output = validatePassword(newPassword);
+            return new Result(false, output.toString());
         } else {
             App.getApp().getPendingUser().setPassword(HashSHA256.hashPassword(newPassword));
             App.getApp().getUsers().set(getIndexInUsers(App.getApp().getPendingUser().getUserName()),
@@ -99,6 +103,20 @@ public class LoginMenuController {
             App.getApp().setCurrentMenu(Menu.MAIN_MENU);
             return new Result(true, "login was successful. you are now in the main menu.");
         }
+
+
+//        if (!newPassword.equals(App.getApp().getPendingUser().getPassword())) {
+//            App.getApp().setPendingUser(null);
+//            return new Result(false, "the new password entered is incorrect. to log in, you must start over.");
+//        } else {
+//            App.getApp().getPendingUser().setPassword(HashSHA256.hashPassword(newPassword));
+//            App.getApp().getUsers().set(getIndexInUsers(App.getApp().getPendingUser().getUserName()),
+//                    App.getApp().getPendingUser());
+//            App.getApp().setLoggedInUser(getUserByUsername(App.getApp().getPendingUser().getUserName()));
+//            App.getApp().setPendingUser(null);
+//            App.getApp().setCurrentMenu(Menu.MAIN_MENU);
+//            return new Result(true, "login was successful. you are now in the main menu.");
+//        }
     }
 
     public Result showCurrentMenu() {

@@ -116,6 +116,10 @@ public class GameMenuController {
         return new Result(true, "you are now in main menu.");
     }
 
+    public Result showCurrentMenu() {
+        return new Result(true, "you are now in game menu.");
+    }
+
 
 
     // Auxiliary functions :

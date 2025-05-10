@@ -29,8 +29,11 @@ public class MainMenuController {
         return new Result(true, "You are now in the main menu.");
     }
 
-    public void exit() {
-        App.getApp().setCurrentMenu(Menu.ExitMenu);
+    public Result exit() {
+        App.getApp().setLoggedInUser(null);
+        App.getApp().setStayLoggedIn(false);
+        App.getApp().setCurrentMenu(Menu.SIGNUP_MENU);
+        return new Result(true, "You have been logged out of your account. You are now in the signup menu.");
     }
 
 

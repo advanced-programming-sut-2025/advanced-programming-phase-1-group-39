@@ -241,15 +241,15 @@ public class SignupMenuController {
 
     private SecurityQuestion setSecurityQuestion(String questionNumber, String answer) {
         if (questionNumber.equals("1")) {
-            return new SecurityQuestion(SecurityQuestionCommands.DREAM_JOB.toString(), answer);
+            return new SecurityQuestion(SecurityQuestionCommands.DREAM_JOB.getQuestion(), answer);
         } else if (questionNumber.equals("2")) {
-            return new SecurityQuestion(SecurityQuestionCommands.FAVORITE_TEACHER.toString(), answer);
+            return new SecurityQuestion(SecurityQuestionCommands.FAVORITE_TEACHER.getQuestion(), answer);
         } else if (questionNumber.equals("3")) {
-            return new SecurityQuestion(SecurityQuestionCommands.HISTORICAL_FIGURE.toString(), answer);
+            return new SecurityQuestion(SecurityQuestionCommands.HISTORICAL_FIGURE.getQuestion(), answer);
         } else if (questionNumber.equals("4")) {
-            return new SecurityQuestion(SecurityQuestionCommands.FIRST_SCHOOL.toString(), answer);
+            return new SecurityQuestion(SecurityQuestionCommands.FIRST_SCHOOL.getQuestion(), answer);
         } else {
-            return new SecurityQuestion(SecurityQuestionCommands.FIRST_PHONE_MODEL.toString(), answer);
+            return new SecurityQuestion(SecurityQuestionCommands.FIRST_PHONE_MODEL.getQuestion(), answer);
         }
     }
 

@@ -11,7 +11,9 @@ public enum GameMenuCommands {
 
     LoadGame("load\\s+game"),
 
-    GoMainMenu("menu\\s+enter\\s+main")
+    GoMainMenu("menu\\s+enter\\s+main"),
+
+    ShowCurrentMenu("show\\s+current\\s+menu")
 
     ;
 

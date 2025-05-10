@@ -1,7 +1,6 @@
 package models;
 
 import models.Enums.Menu;
-import models.services.AppDataManager;
 
 import java.util.ArrayList;
 
@@ -18,8 +17,7 @@ public class App {
     private boolean stayLoggedIn = false;
 
     private Game currentGame = null;
-    private Player currentPlayer = null;
-    private int currentGameId = 101;
+    private int lastGameId = 101;
 
     private Menu currentMenu = Menu.SIGNUP_MENU;
 
@@ -78,17 +76,14 @@ public class App {
         return games;
     }
 
-    public int getCurrentGameId() {
-        return currentGameId;
+    public int getLastGameId() {
+        return lastGameId;
     }
 
     public Game getCurrentGame() {
         return currentGame;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
 
     public boolean isStayLoggedIn() {
         return stayLoggedIn;
@@ -124,17 +119,14 @@ public class App {
         this.pendingUser = pendingUser;
     }
 
-    public void setCurrentGameId(int gameId) {
-        this.currentGameId = gameId;
+    public void setLastGameId(int gameId) {
+        this.lastGameId = gameId;
     }
 
     public void setCurrentGame(Game currentGame) {
         this.currentGame = currentGame;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
 
     public void setUsers(ArrayList<User> users) {
         this.users = users;

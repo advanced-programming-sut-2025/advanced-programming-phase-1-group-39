@@ -21,7 +21,6 @@ public class SaveAppManager {
             app.setPendingUser(null);
             app.setRegisterSuccessful(false);
             app.setCurrentGame(null);
-            app.setCurrentPlayer(null);
             app.setCurrentMenu(Menu.SIGNUP_MENU);
             AppDataManager.saveApp(app);
         }

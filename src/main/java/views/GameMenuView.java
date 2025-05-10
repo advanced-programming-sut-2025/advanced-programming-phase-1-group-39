@@ -26,6 +26,9 @@ public class GameMenuView implements View {
         } else if ((matcher = GameMenuCommands.GoMainMenu.getMatcher(command)) != null) {
             result = controller.goMainMenu();
             System.out.println(result.message());
+        } else if ((matcher = GameMenuCommands.ShowCurrentMenu.getMatcher(command)) != null) {
+            result = controller.showCurrentMenu();
+            System.out.println(result.message());
         } else {
             System.out.println("invalid command!");
         }

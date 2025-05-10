@@ -49,8 +49,7 @@ public class AppDataManager {
         app.setPendingUser(null);
         app.setRegisterSuccessful(false);
         app.setCurrentGame(null);
-        app.setCurrentPlayer(null);
-        app.setCurrentGameId(101);
+        app.setLastGameId(101);
         app.setCurrentMenu(Menu.SIGNUP_MENU);
         app.setUsers(new ArrayList<>());
         app.setGames(new ArrayList<>());

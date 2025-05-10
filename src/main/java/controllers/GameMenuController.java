@@ -36,10 +36,10 @@ public class GameMenuController {
         } else if (hasCurrentGame(username3)) {
             return new Result(false, "username3 already has a current game.");
         } else {
-            Player player1 = new Player(app.getLoggedInUser().getUserName(), 1, app.getCurrentGameId()+1);
-            Player player2 = new Player(username1, 2, app.getCurrentGameId()+1);
-            Player player3 = new Player(username2, 3, app.getCurrentGameId()+1);
-            Player player4 = new Player(username3, 4, app.getCurrentGameId()+1);
+            Player player1 = new Player(app.getLoggedInUser().getUserName(), 1, app.getLastGameId()+1);
+            Player player2 = new Player(username1, 2, app.getLastGameId()+1);
+            Player player3 = new Player(username2, 3, app.getLastGameId()+1);
+            Player player4 = new Player(username3, 4, app.getLastGameId()+1);
             app.getUsers().get(getIndexInUsers(app.getLoggedInUser().getUserName())).addPlayer(player1);
             app.getUsers().get(getIndexInUsers(app.getLoggedInUser().getUserName())).addNumberOfGamesPlayed();
             app.getUsers().get(getIndexInUsers(username1)).addPlayer(player2);
@@ -48,11 +48,11 @@ public class GameMenuController {
             app.getUsers().get(getIndexInUsers(username2)).addNumberOfGamesPlayed();
             app.getUsers().get(getIndexInUsers(username3)).addPlayer(player4);
             app.getUsers().get(getIndexInUsers(username3)).addNumberOfGamesPlayed();
-            Game newGame = new Game(app.getCurrentGameId()+1,player1, player2, player3, player4);
-            app.setCurrentGameId(app.getCurrentGameId()+1);
+            Game newGame = new Game(app.getLastGameId()+1,player1, player2, player3, player4);
+            app.setLastGameId(app.getLastGameId()+1);
             app.setCurrentGame(newGame);
             app.addGame(newGame);
-            app.setCurrentPlayer(player1);
+            app.getCurrentGame().setCurrentPlayer(player1);
             return new Result(true, "Congratulations!!!" + "\n" +
                     "The new game has been successfully created. " + "\n" +
                     "Now, each player must choose their game map in order, starting with the first player. \n" +
@@ -67,19 +67,18 @@ public class GameMenuController {
             return new Result(false, "The map number must be a number.");
         } else if (Integer.parseInt(mapNumber) >= 3) {
             return new Result(false, "The map number must be either 1 or 2.");
-        } else if (app.getCurrentPlayer().getId() == 4) {
-            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentPlayer(),
+        } else if (app.getCurrentGame().getPlayers().indexOf(app.getCurrentGame().getCurrentPlayer()) == 4) {
+            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentGame().getCurrentPlayer(),
                     FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
             app.getCurrentGame().startGame();
             app.setCurrentMenu(Menu.GAME_MENU);
             app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
             return new Result(true, "The game map has been successfully created — let the adventure begin!");
         } else {
-            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentPlayer(),
+            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentGame().getCurrentPlayer(),
                     FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
-            app.setCurrentPlayer(app.getCurrentGame().getPlayers().get(app.getCurrentPlayer()
-                    .getId()));
-            return new Result(true, "the game map was successfully selected. please let the next player choose their map.");
+            app.getCurrentGame().setCurrentPlayer(app.getCurrentGame().getPlayers().get(app.getCurrentGame().getPlayers().indexOf(app.getCurrentGame().getCurrentPlayer())+1));
+            return new Result(true, "the game map was successfully selected. please " + app.getCurrentGame().getCurrentPlayer().getUsername() + " choose their map.");
         }
     }
 
@@ -91,7 +90,7 @@ public class GameMenuController {
             return new Result(false, "to start loading a game, none of the players must have an active game.");
         } else if (app.getLoggedInUser().getCurrentGame() != null) {
             app.setCurrentGame(app.getLoggedInUser().getCurrentGame());
-            app.setCurrentPlayer(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
+            app.getCurrentGame().setCurrentPlayer(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
                     app.getLoggedInUser().getUserName()));
             app.getCurrentGame().setLoadedPlayerUsername(app.getLoggedInUser().getUserName());
             app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
@@ -102,7 +101,7 @@ public class GameMenuController {
             return new Result(false, "to start loading a game, none of the players must have an active game.");
         } else {
             app.setCurrentGame(app.getLoggedInUser().getSavedGame());
-            app.setCurrentPlayer(getPlayerFromPlayers(app.getCurrentGame().getPlayers(), app.getLoggedInUser().getUserName()));
+            app.getCurrentGame().setCurrentPlayer(getPlayerFromPlayers(app.getCurrentGame().getPlayers(), app.getLoggedInUser().getUserName()));
             app.getCurrentGame().setLoadedPlayerUsername(app.getLoggedInUser().getUserName());
             app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
             app.getCurrentGame().startGame();

@@ -22,6 +22,8 @@ public class Game {
     private Weather todayWeather = new Weather();
     private Weather tomorrowWeather = new Weather();
 
+    private Player currentPlayer;
+
     // first player should be the mainPlayer of game
     public Game(int gameId,Player one, Player two, Player three, Player four) {
         this.players = new ArrayList<>(List.of(one, two, three, four));
@@ -95,4 +97,8 @@ public class Game {
     public void setLoadedPlayerUsername(String PlayerUsername) { this.loadedPlayerUsername = PlayerUsername; }
 
     public String getLoadedPlayerUsername() { return loadedPlayerUsername; }
+
+    public Player getCurrentPlayer() { return currentPlayer; }
+
+    public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
 }

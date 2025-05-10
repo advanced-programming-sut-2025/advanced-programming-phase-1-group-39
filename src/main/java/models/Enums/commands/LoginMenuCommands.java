@@ -15,7 +15,7 @@ public enum LoginMenuCommands {
 
     ShowCurrentMenu("show\\s+current\\s+menu"),
 
-    ExitMenu("exit"),
+    ExitMenu("menu\\s+exit"),
 
     ;
 

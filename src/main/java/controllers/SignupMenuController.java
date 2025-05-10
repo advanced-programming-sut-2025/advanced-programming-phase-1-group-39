@@ -164,18 +164,14 @@ public class SignupMenuController {
 
     // Function to get a unique name
     private String getUniqueName(String baseName) {
-        int counter = 1;
-        String uniqueName = baseName;
         Random random = new Random();
+        String uniqueName = baseName;
 
         while (!isUsernameUnique(uniqueName)) {
-            if (random.nextBoolean()) {
-                uniqueName = baseName + counter;
-            } else {
-                uniqueName = baseName + "-" + counter;
-            }
-            counter++;
+            int randNum = random.nextInt(100) + 1;
+            uniqueName = baseName + "-" + randNum;
         }
+
         return uniqueName;
     }
 

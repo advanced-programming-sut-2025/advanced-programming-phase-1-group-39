@@ -66,7 +66,7 @@ public class Map {
             addObjectToMap(cabin, "building", startX, startY);
 
             JsonObject greenhouse = fixedElements.getAsJsonObject("greenhouse");
-            addObjectToMap(greenhouse, "building", startX, startY);
+            addObjectToMap(greenhouse, "building_greenhouse", startX, startY);
 
             JsonObject quarry = fixedElements.getAsJsonObject("quarry");
             addObjectToMap(quarry, "quarry", startX, startY);
@@ -159,6 +159,33 @@ public class Map {
                     tiles[j][i].setType(TileType.PATH);
                 }
             }
+        } else if (type.equals("building_greenhouse")) {
+            for (int i = x; i < x + w; i++) {
+                tiles[y][i].setType(TileType.WALL);
+                tiles[y + h - 1][i].setType(TileType.WALL);
+            }
+            for (int j = y ; j < y + h ; j++) {
+                tiles[j][x].setType(TileType.WALL);
+                tiles[j][x + w - 1].setType(TileType.WALL);
+            }
+
+            for (int i = x + 1; i < x + w - 1; i++) {
+                for (int j = y + 1; j < y + h - 1; j++) {
+                    tiles[j][i].setType(TileType.DESTROYED);
+                }
+            }
+
+            int doorX, doorY;
+            if (object.has("door")) {
+                JsonObject door = object.getAsJsonObject("door");
+                doorX = door.get("x").getAsInt() + startX;
+                doorY = door.get("y").getAsInt() + startY;
+            } else {
+                doorX = x + w/2;
+                doorY = y + h - 1;
+            }
+
+            tiles[doorY][doorX].setType(TileType.DESTROYED);
         }
     }
 

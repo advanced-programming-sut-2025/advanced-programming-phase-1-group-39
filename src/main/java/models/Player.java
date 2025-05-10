@@ -155,11 +155,12 @@ public class Player {
         energy += amount;
         energy = energy > Constants.MAX_ENERGY ? Constants.MAX_ENERGY : (energy < 0 ? 0 : energy);
 
-        turnEnergy += amount;
-        turnEnergy = Math.min(turnEnergy, Constants.MAX_ENERGY_PER_TURN);
-        if (turnEnergy < 0) {
-            turnEnergy = 0;
-            energy = 0;
+        if (amount < 0) {
+            turnEnergy += amount;
+            if (turnEnergy < 0) {
+                turnEnergy = 0;
+                energy = 0;
+            }
         }
     }
 
@@ -189,6 +190,10 @@ public class Player {
         return energy >= amount;
     }
 
+    public void resetHourlyEnergyLimit() {
+        turnEnergy = Math.min(Constants.MAX_ENERGY_PER_TURN, energy);
+    }
+    // home location
     public Location getHomeLocation() {
         return new Location(startOfFarm.x() + 74, startOfFarm.y() + 8);
     }

@@ -66,8 +66,21 @@ public class Game {
     // time
     public void addToHour(int amount) {
         time.addToHour(amount);
-        //TODO : Update map and plants, food buffs
     }
+
+    public void goToNextHour() {
+        addToHour(1);
+        //TODO : food buffs,
+
+        // reset players energiesHourLimit
+
+    }
+    public void resetPlayersHourlyEnergyLimit() {
+        for (Player player : players) {
+            player.resetHourlyEnergyLimit();
+        }
+    }
+
     public void addToDay(int amount) {
         for (int i = 0; i < amount; i++)
             goToNextDay();
@@ -201,6 +214,8 @@ public class Game {
         int newIndex = index + 1;
         if (newIndex == players.size()) {
             newIndex = 0;
+            // adding to hour
+            goToNextHour();
         }
 
         playerInTurn = players.get(newIndex);

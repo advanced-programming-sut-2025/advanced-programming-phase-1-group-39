@@ -28,6 +28,7 @@ public class Main {
         Player player4 = new Player();
         ArrayList<Player> players = new ArrayList<>(List.of(player1, player2, player3, player4));
         Game game = new Game(player1, player2, player3, player4);
+
         game.addRandomFarmForPlayer(player1, FarmType.getFarmTypeById(0));
         game.addRandomFarmForPlayer(player2, FarmType.getFarmTypeById(0));
         game.addRandomFarmForPlayer(player3, FarmType.getFarmTypeById(1));

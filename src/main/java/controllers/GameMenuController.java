@@ -41,9 +41,13 @@ public class GameMenuController {
             Player player3 = new Player(username2, 3, app.getCurrentGameId()+1);
             Player player4 = new Player(username3, 4, app.getCurrentGameId()+1);
             app.getUsers().get(getIndexInUsers(app.getLoggedInUser().getUserName())).addPlayer(player1);
+            app.getUsers().get(getIndexInUsers(app.getLoggedInUser().getUserName())).addNumberOfGamesPlayed();
             app.getUsers().get(getIndexInUsers(username1)).addPlayer(player2);
+            app.getUsers().get(getIndexInUsers(username1)).addNumberOfGamesPlayed();
             app.getUsers().get(getIndexInUsers(username2)).addPlayer(player3);
+            app.getUsers().get(getIndexInUsers(username2)).addNumberOfGamesPlayed();
             app.getUsers().get(getIndexInUsers(username3)).addPlayer(player4);
+            app.getUsers().get(getIndexInUsers(username3)).addNumberOfGamesPlayed();
             Game newGame = new Game(app.getCurrentGameId()+1,player1, player2, player3, player4);
             app.setCurrentGameId(app.getCurrentGameId()+1);
             app.setCurrentGame(newGame);

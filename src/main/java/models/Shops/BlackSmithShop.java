@@ -1,11 +1,14 @@
 package models.Shops;
 
+import com.google.gson.Gson;
 import models.Constants;
 import models.NPC.NPC;
 import models.Result;
 import models.tools.Tool;
 
+import java.io.FileReader;
 import java.util.HashMap;
+import java.util.List;
 
 public class BlackSmithShop extends Shop{
 
@@ -14,21 +17,39 @@ public class BlackSmithShop extends Shop{
 
     public BlackSmithShop(String name, int openHour, int closeHour, NPC owner) {
         super(name, openHour, closeHour, owner);
-
-        shopItems.put("Copper Ore", new ShopItem("Copper Ore", 75, Constants.INFINITY));
-        shopItems.put("Iron Ore", new ShopItem("Iron Ore", 150, Constants.INFINITY));
-        shopItems.put("Coal", new ShopItem("Coal", 150, Constants.INFINITY));
-        shopItems.put("Gold Ore", new ShopItem("Gold Ore", 400, Constants.INFINITY));
-
-        toolUpgrade.put("Copper Tool", true);
-        toolUpgrade.put("Steel Tool", true);
-        toolUpgrade.put("Gold Tool", true);
-        toolUpgrade.put("Iridium Tool", true);
-        toolUpgrade.put("Copper Trash Can", true);
-        toolUpgrade.put("Steel Trash Can", true);
-        toolUpgrade.put("Gold Trash Can", true);
-        toolUpgrade.put("Iridium Trash Can", true);
+        loadFromJson("src/main/resources/data/BlackSmithShop.json");
     }
+
+    public void loadFromJson(String path) {
+        try {
+            Gson gson = new Gson();
+            FileReader reader = new FileReader(path);
+            BlackSmithShopData data = gson.fromJson(reader, BlackSmithShopData.class);
+
+            for (ShopItemData item : data.items) {
+                shopItems.put(item.name, new ShopItem(item.name, item.price, item.limit));
+            }
+
+            for (String upgrade : data.toolUpgrades) {
+                toolUpgrade.put(upgrade, true);
+            }
+
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public class BlackSmithShopData {
+        List<ShopItemData> items;
+        List<String> toolUpgrades;
+    }
+    public class ShopItemData {
+        public String name;
+        public int price;
+        public int limit;
+    }
+
+
 
     public Result upgradeTool(Tool tool, String type) {
         Boolean available = toolUpgrade.get(type);

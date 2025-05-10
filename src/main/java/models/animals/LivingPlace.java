@@ -17,4 +17,13 @@ public enum LivingPlace {
     public int getCapacity() {
         return capacity;
     }
+
+    public static LivingPlace fromString(String name) {
+        for (LivingPlace type : values()) {
+            if (name.equalsIgnoreCase(type.name())) {
+                return type;
+            }
+        }
+        return null;
+    }
 }

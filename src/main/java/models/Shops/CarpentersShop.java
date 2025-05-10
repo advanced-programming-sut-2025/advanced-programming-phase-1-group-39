@@ -1,11 +1,12 @@
 package models.Shops;
 
 import com.google.gson.Gson;
-import models.ItemManager;
-import models.Location;
+import models.*;
 import models.NPC.NPC;
-import models.Player;
-import models.Result;
+import models.animals.LivingPlace;
+import models.buildings.AnimalBuilding;
+import models.buildings.ShippingBin;
+import models.buildings.Well;
 import models.inventory.Inventory;
 
 import java.io.FileReader;
@@ -75,27 +76,55 @@ public class CarpentersShop extends Shop{
         }
     }
 
-    public Result purchase(String product, int count, Player player) {
+    public Result purchase(String product, int count) {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         ShopItem item = shopItems.get(product);
         if (item == null) {
             return new Result(false, "We don't have any " + product + " in our shop ):");
         }
-        //if () {} Todo: check enough money
+        if (!player.hasEnoughMoney(item.getPrice() * count)) {
+            return new Result(false, "Sorry you don't have enough money ):");
+        }
 
-        //Todo: decrease money
+        player.changeMoney(-(item.getPrice() * count));
         Inventory inv = player.getInventory();
         inv.addItem(ItemManager.getItemByName(product), count);
-        return new Result(true, "You bought " + product + " x1 successfully. Thank You (:");
+        return new Result(true, "You bought " + product + " x" + count + " successfully. Thank You (:");
     }
-    public Result buildFarmBuilding(String name, int x, int y, Player player) {
+    public Result buildFarmBuilding(String name, int x, int y) {
+        Game game = App.getApp().getCurrentGame();
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        Inventory inv = player.getInventory();
+
         //Todo: check validate build building for player
         BuildingData data = buildings.get(name);
         if (data == null) {
             return new Result(false, name + " isn't in our services!");
         }
-        //Todo: check ingredients and complete method
+        if (!player.hasEnoughMoney(data.goldCost)) {
+            return new Result(false, "Sorry you doesn't have enough money ):");
+        }
+        if (!inv.hasEnoughStack("Wood", data.woodCost) || !inv.hasEnoughStack("Stone", data.stoneCost)) {
+            return new Result(false, "Sorry you don't have enough ingredients ):");
+        }
 
-        return null;
+        player.changeMoney(data.goldCost);
+        inv.pickItem("Wood", data.woodCost);
+        inv.pickItem("Stone", data.stoneCost);
+
+        if (name.equalsIgnoreCase("Well")) {
+            Well newWell = new Well("Well", new Location(x,y), data.width, data.height);
+            game.addBuilding(newWell);
+        } else if (name.equalsIgnoreCase("Shipping Bin")) {
+            ShippingBin bin = new ShippingBin("Shipping Bin", new Location(x,y), data.width, data.height);
+            game.addBuilding(bin);
+        } else {
+            LivingPlace type = LivingPlace.fromString(name);
+            AnimalBuilding building = new AnimalBuilding(name, new Location(x, y), data.width, data.height, type);
+            game.addBuilding(building);
+        }
+
+        return new Result(true, name + " successfully created!");
     }
 
     @Override

@@ -7,8 +7,18 @@ import models.trading.TradeItem;
 import java.util.ArrayList;
 
 public class Game {
-    ArrayList<Player> players;
-    ArrayList<TradeItem> trades;
-    Map gameMap;
-    ArrayList<Building> buildings;
+    private ArrayList<Player> players;
+    private ArrayList<TradeItem> trades;
+    private Map gameMap;
+    private ArrayList<Building> buildings;
+
+    private Player playerInTurn;
+
+    public Player getPlayerInTurn() {
+        return playerInTurn;
+    }
+
+    public void addBuilding(Building building) {
+        buildings.add(building);
+    }
 }

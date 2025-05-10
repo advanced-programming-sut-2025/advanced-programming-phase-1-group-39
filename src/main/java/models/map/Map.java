@@ -210,7 +210,7 @@ public class Map {
                                 tile.placeItem(new ItemStack(randomMaterial, 1));
                             }
                         } else {
-                            if (Math.random() < 0.5) {
+                            if (Math.random() < 0.3) {
                                 ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason);
                                 tile.placeItem(new ItemStack(randomCrop, 1));
                             } else {

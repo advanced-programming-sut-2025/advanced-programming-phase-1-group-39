@@ -21,9 +21,9 @@ public class GameController {
         Game game = App.getApp().getCurrentGame();
 
         if (!game.nextTurn()) {
-            game.goToNextDay();
             return new Result(false, "All players are not conscious!\n"
-                    + AnsiColors.ANSI_GREEN_BOLD + "Going next day!" + AnsiColors.ANSI_RESET);
+                    + AnsiColors.ANSI_GREEN_BOLD + "Going next day!" + AnsiColors.ANSI_RESET
+            + game.goToNextDay());
         }
 
         Player player = game.getPlayerInTurn();
@@ -277,8 +277,7 @@ public class GameController {
     public String goNextDay() {
         // TODO : complete
         Game game = App.getApp().getCurrentGame();
-        game.goToNextDay();
 
-        return "Next day";
+        return "Next day\n" + game.goToNextDay();
     }
 }

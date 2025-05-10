@@ -78,13 +78,23 @@ public class Game {
         return false;
     }
 
-    public void goToNextDay() {
+    public String goToNextDay() {
+        StringBuilder lastDayReport = new StringBuilder("Last day Report");
+        // TODO : complete report
+
         playersGoHome();
         // reset players energy
+        resetPlayersEnergies();
+
         // adding money
+        addPlayersRevenueToMoney();
+
         // grow plants and trees
+        // TODO : add to plants and trees stages
+
         // random foragings + materials and minerals and stone
         fillFarmsWithRandoms();
+
         // change time
         time.goToNextDay();
 
@@ -94,6 +104,8 @@ public class Game {
 
         if (todayWeather.getStatus().equals(WeatherStatus.STORM))
             thorTiles();
+
+        return lastDayReport.toString();
     }
     private void playersGoHome() {
         for (Player player : players) {
@@ -129,15 +141,29 @@ public class Game {
                     0.01, 0.05, time.getSeason(), false);
         }
     }
+    private void resetPlayersEnergies() {
+        for (Player player : players) {
+            if (!player.isConscious()) player.setEnergy(0.75 * Constants.MAX_ENERGY);
+            else if (player.haveBadDay()) {
+                player.setEnergy(0.5 * Constants.MAX_ENERGY);
+                player.changeBadDays(-1);
+            }
+            else player.setEnergy(Constants.MAX_ENERGY);
 
+            player.resetEnergyUnlimited();
+            player.resetCheatedEnergy();
+        }
+    } public void addPlayersRevenueToMoney() {
+        for (Player player : players) {
+            player.addNightRevenueToMoney();
+        }
+    }
 
 
 
     public Time getTime() {
         return time;
     }
-
-
 
     // player
     public void resetPlayerLocation(Player player) {

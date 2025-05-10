@@ -25,6 +25,8 @@ public class Player {
     private boolean energyCheated = false;
     private boolean energyUnlimited = false;
 
+    private int numOfBadDays = 0;
+
     private Skill skills = new Skill();
     private Inventory inventory = new Inventory();
 
@@ -46,6 +48,13 @@ public class Player {
 
     public boolean isConscious() {
         return energy > 0;
+    }
+
+    public boolean haveBadDay() {
+        return numOfBadDays > 0;
+    }
+    public void changeBadDays(int amount) {
+        numOfBadDays += amount;
     }
 
     public Inventory getInventory() {
@@ -182,5 +191,14 @@ public class Player {
 
     public Location getHomeLocation() {
         return new Location(startOfFarm.x() + 74, startOfFarm.y() + 8);
+    }
+
+    // Money handling
+    public void addNightRevenueToMoney() {
+        money += nightRevenue;
+        nightRevenue = 0;
+    }
+    public void addToRevenue(int amount) {
+        nightRevenue += amount;
     }
 }

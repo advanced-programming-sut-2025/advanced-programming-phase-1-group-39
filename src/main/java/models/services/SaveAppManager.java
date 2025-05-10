@@ -13,6 +13,7 @@ public class SaveAppManager {
             app.setRandomPassword(null);
             app.setPendingUser(null);
             app.setRegisterSuccessful(false);
+            app.setCurrentMenu(Menu.MAIN_MENU);
             AppDataManager.saveApp(app);
         } else {
             app.setLoggedInUser(null);
@@ -22,8 +23,6 @@ public class SaveAppManager {
             app.setCurrentGame(null);
             app.setCurrentPlayer(null);
             app.setCurrentMenu(Menu.SIGNUP_MENU);
-            app.setUsers(new ArrayList<>());
-            app.setGames(new ArrayList<>());
             AppDataManager.saveApp(app);
         }
     }

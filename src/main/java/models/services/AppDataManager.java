@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.App;
 import models.Enums.Menu;
+import models.User;
 
 import java.io.FileReader;
 import java.io.FileWriter;

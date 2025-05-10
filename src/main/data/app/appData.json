@@ -1,5 +1,19 @@
 {
-  "users": [],
+  "users": [
+    {
+      "userName": "mostafa",
+      "password": "j\\5?RrP?f[oM+6DhHQt7",
+      "nickname": "mosi",
+      "email": "mostafa@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "DREAM_JOB",
+        "answer": "salam"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0
+    }
+  ],
   "games": [],
   "isRegisterSuccessful": false,
   "stayLoggedIn": false,

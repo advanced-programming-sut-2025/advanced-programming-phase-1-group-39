@@ -12,6 +12,8 @@ public enum MainMenuCommands {
 
     ShowCurrentMenu("show\\s+current\\s+menu"),
 
+    ExitMenu("exit"),
+
     ;
 
     private final String pattern;

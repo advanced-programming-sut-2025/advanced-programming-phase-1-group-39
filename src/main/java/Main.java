@@ -7,11 +7,12 @@ import views.AppView;
 public class Main {
 
     public static void main(String[] args) {
-        UsersDataManager.loadUsers();
         AppDataManager.loadApp();
+        UsersDataManager.loadUsers();
         new AppView().run();
-        SaveAppManager.saveApp();
         UsersDataManager.saveUsers(App.getApp().getUsers());
+        SaveAppManager.saveApp();
+
     }
 
 }

@@ -10,6 +10,7 @@ public class MainMenuController {
 
     public Result logout() {
         App.getApp().setLoggedInUser(null);
+        App.getApp().setStayLoggedIn(false);
         App.getApp().setCurrentMenu(Menu.SIGNUP_MENU);
         return new Result(true, "You have been logged out of your account. You are now in the signup menu.");
     }
@@ -25,7 +26,11 @@ public class MainMenuController {
     }
 
     public Result showCurrentMenu() {
-        return new Result(true, "You are now in the current menu.");
+        return new Result(true, "You are now in the main menu.");
+    }
+
+    public void exit() {
+        App.getApp().setCurrentMenu(Menu.ExitMenu);
     }
 
 

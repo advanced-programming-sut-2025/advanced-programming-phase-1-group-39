@@ -6,6 +6,7 @@ import models.services.AppDataManager;
 import java.util.ArrayList;
 
 public class App {
+
     private static App app;
     private ArrayList<User> users = new ArrayList<>();
     private ArrayList<Game> games = new ArrayList<>();

@@ -60,7 +60,7 @@ public class Inventory {
     }
     public boolean hasEnoughStack(String name, int amount) {
         for (ItemStack item : inventoryItems) {
-            if (item.getItem().getName().equalsIgnoreCase(name) && item.getAmount() == amount) {
+            if (item.getItem().getName().equalsIgnoreCase(name) && item.getAmount() >= amount) {
                 return true;
             }
         }

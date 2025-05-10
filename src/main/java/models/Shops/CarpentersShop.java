@@ -16,8 +16,8 @@ public class CarpentersShop extends Shop{
     private HashMap<String, ShopItem> shopItems = new HashMap<>();
     private HashMap<String, BuildingData> buildings = new HashMap<>();
 
-    public CarpentersShop(String name, Location location, int width, int height, int openHour, int closeHour, NPC owner) {
-        super(name, location, width, height, openHour, closeHour, owner);
+    public CarpentersShop(String name, int openHour, int closeHour, NPC owner) {
+        super(name, new Location(0,0), 0, 0, openHour, closeHour, owner);
         loadFromJson("src/main/resources/data/CarpentersShop.json");
     }
 

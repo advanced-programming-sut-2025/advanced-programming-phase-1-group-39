@@ -1,0 +1,58 @@
+{
+  "permanentStock": [
+    { "name": "Joja Cola", "price": 75, "limit": -1 },
+    { "name": "Ancient Seed", "price": 500, "limit": 1 },
+    { "name": "Grass Starter", "price": 125, "limit": -1 },
+    { "name": "Sugar", "price": 125, "limit": -1 },
+    { "name": "Wheat Flour", "price": 125, "limit": -1 },
+    { "name": "Rice", "price": 250, "limit": -1 }
+  ],
+  "seasonalStock": {
+    "SPRING": [
+      { "name": "Parsnip Seeds", "price": 25, "limit": 5 },
+      { "name": "Bean Starter", "price": 75, "limit": 5 },
+      { "name": "Cauliflower Seeds", "price": 100, "limit": 5 },
+      { "name": "Potato Seeds", "price": 62, "limit": 5 },
+      { "name": "Strawberry Seeds", "price": 100, "limit": 5 },
+      { "name": "Tulip Bulb", "price": 25, "limit": 5 },
+      { "name": "Kale Seeds", "price": 87, "limit": 5 },
+      { "name": "Coffee Beans", "price": 200, "limit": 1 },
+      { "name": "Carrot Seeds", "price": 5, "limit": 10 },
+      { "name": "Rhubarb Seeds", "price": 100, "limit": 5 },
+      { "name": "Jazz Seeds", "price": 37, "limit": 5 }
+    ],
+    "SUMMER": [
+      { "name": "Tomato Seeds", "price": 62, "limit": 5 },
+      { "name": "Pepper Seeds", "price": 50, "limit": 5 },
+      { "name": "Wheat Seeds", "price": 12, "limit": 10 },
+      { "name": "Summer Squash Seeds", "price": 10, "limit": 10 },
+      { "name": "Radish Seeds", "price": 50, "limit": 5 },
+      { "name": "Melon Seeds", "price": 100, "limit": 5 },
+      { "name": "Hops Starter", "price": 75, "limit": 5 },
+      { "name": "Poppy Seeds", "price": 125, "limit": 5 },
+      { "name": "Spangle Seeds", "price": 62, "limit": 5 },
+      { "name": "Starfruit Seeds", "price": 400, "limit": 5 },
+      { "name": "Coffee Beans", "price": 200, "limit": 1 },
+      { "name": "Sunflower Seeds", "price": 125, "limit": 5 }
+    ],
+    "FALL": [
+      { "name": "Corn Seeds", "price": 187, "limit": 5 },
+      { "name": "Eggplant Seeds", "price": 25, "limit": 5 },
+      { "name": "Pumpkin Seeds", "price": 125, "limit": 5 },
+      { "name": "Broccoli Seeds", "price": 15, "limit": 5 },
+      { "name": "Amaranth Seeds", "price": 87, "limit": 5 },
+      { "name": "Grape Starter", "price": 75, "limit": 5 },
+      { "name": "Beet Seeds", "price": 20, "limit": 5 },
+      { "name": "Yam Seeds", "price": 75, "limit": 5 },
+      { "name": "Bok Choy Seeds", "price": 62, "limit": 5 },
+      { "name": "Cranberry Seeds", "price": 300, "limit": 5 },
+      { "name": "Sunflower Seeds", "price": 125, "limit": 5 },
+      { "name": "Fairy Seeds", "price": 250, "limit": 5 },
+      { "name": "Rare Seed", "price": 1000, "limit": 1 },
+      { "name": "Wheat Seeds", "price": 12, "limit": 5 }
+    ],
+    "WINTER": [
+      { "name": "Powdermelon Seeds", "price": 20, "limit": 10 }
+    ]
+  }
+}

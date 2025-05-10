@@ -33,7 +33,7 @@ public class CraftingManager {
         }
 
         for (Map.Entry<String, Integer> entry : recipe.getIngredients().entrySet()) {
-            inv.removeItem(entry.getKey(), entry.getValue());
+            inv.pickItem(entry.getKey(), entry.getValue());
         }
 
         inv.addItem(recipe.getItem(), 1);

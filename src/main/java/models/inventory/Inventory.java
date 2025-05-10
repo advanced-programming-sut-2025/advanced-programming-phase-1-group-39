@@ -2,6 +2,8 @@ package models.inventory;
 
 import models.Item;
 import models.ItemStack;
+import models.map.AnsiColors;
+import models.map.Tile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +17,17 @@ public class Inventory {
 
     ItemStack inHand;
 
-    public String showInventory() {return null;}
+    public String showInventory() {
+        StringBuilder text = new StringBuilder();
+        text.append("Your inventory:\n--------------\n");
+        for (ItemStack item : inventoryItems) {
+            text.append(AnsiColors.ANSI_ORANGE_BOLD + "\"" + item.getItem().getName() +"\""+AnsiColors.ANSI_RESET);
+            text.append(" : " + item.getAmount());
+            text.append("\n");
+        }
+
+        return text.toString();
+    }
 
     public void trashItem(Item item) {}
 
@@ -34,17 +46,22 @@ public class Inventory {
 
     public void addItem(Item item, int amount) {
         ItemStack itemStack = getItemByName(item.getName());
-        if (item != null) {
-            itemStack.addStack(-amount); // Todo: it's not complete
+        if (itemStack != null) {
+            itemStack.addStack(-amount);
+            if(!hasEnoughStack(item.getName(), 1)){
+                inventoryItems.remove(itemStack);
+            }
         } else {
             inventoryItems.add(new ItemStack(item, amount));
         }
     }
-    public void removeItem(String name, int amount) {
+    public ItemStack pickItem(String name, int amount) {
         ItemStack item = getItemByName(name);
         if (item != null) {
             item.addStack(-amount); // Todo: it's not complete
+            return new ItemStack(item.getItem(), amount);
         }
+        return null;
     }
 
     public boolean hasItem(String name) {
@@ -57,10 +74,18 @@ public class Inventory {
     }
     public boolean hasEnoughStack(String name, int amount) {
         for (ItemStack item : inventoryItems) {
-            if (item.getItem().getName().equalsIgnoreCase(name) && item.getAmount() == amount) {
+            if (item.getItem().getName().equalsIgnoreCase(name) && item.getAmount() >= amount) {
                 return true;
             }
         }
         return false;
+    }
+
+    public void placeItem(String name, Tile tile) {
+        ItemStack item = getItemByName(name);
+        if (item == null) {
+            return;
+        }
+        tile.placeItem(item);
     }
 }

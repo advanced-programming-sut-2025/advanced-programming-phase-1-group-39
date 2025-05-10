@@ -61,6 +61,9 @@ public class Tile {
         else if (c == 'P') return AnsiColors.ANSI_GREEN_BOLD;
         else if (c == 'T') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_DARK_GREEN_BACKGROUND;
         else if (c == '/') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
+
+        else if (c == '●' && type.equals(TileType.QUARRY))
+            return AnsiColors.ANSI_DARK_GRAY_BOLD + AnsiColors.ANSI_GRAY_BACKGROUND;
         else if (c == '●') return AnsiColors.ANSI_DARK_GRAY_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
 
         else if (c == 'F') return AnsiColors.ANSI_ORANGE_BACKGROUND;

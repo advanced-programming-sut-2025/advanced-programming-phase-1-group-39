@@ -66,7 +66,7 @@ public class Game {
     // time
     public void addToHour(int amount) {
         time.addToHour(amount);
-        //TODO : Update of map and plants
+        //TODO : Update map and plants, food buffs
     }
     public void addToDay(int amount) {
         for (int i = 0; i < amount; i++)
@@ -84,6 +84,7 @@ public class Game {
         // adding money
         // grow plants and trees
         // random foragings + materials and minerals and stone
+        fillFarmsWithRandoms();
         // change time
         time.goToNextDay();
 
@@ -118,9 +119,17 @@ public class Game {
                 }
 
                 todayWeather.thor(tile);
+                tiles.add(tile);
             }
         }
     }
+    private void fillFarmsWithRandoms() {
+        for (Player player : players) {
+            gameMap.fillFarmWithRandoms(player.getStartOfFarm().x(), player.getStartOfFarm().y(),
+                    0.01, 0.05, time.getSeason(), false);
+        }
+    }
+
 
 
 

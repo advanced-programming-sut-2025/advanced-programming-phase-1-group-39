@@ -2,6 +2,7 @@ package models.Shops;
 
 import com.google.gson.Gson;
 import models.Constants;
+import models.Location;
 import models.NPC.NPC;
 import models.Result;
 
@@ -14,7 +15,7 @@ public class StardropSaloon extends Shop {
     HashMap<String, ShopItem> recipes = new HashMap<>();
 
     public StardropSaloon(String name, int openHour, int closeHour, NPC owner) {
-        super(name, openHour, closeHour, owner);
+        super(name, new Location(0,0), 0,0, openHour, closeHour, owner);
         loadFromJson("src/main/resources/data/StardropSaloon.json");
     }
 

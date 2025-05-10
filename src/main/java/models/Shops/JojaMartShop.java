@@ -2,6 +2,7 @@ package models.Shops;
 
 import models.Constants;
 import models.Enums.Season;
+import models.Location;
 import models.NPC.NPC;
 import models.Result;
 
@@ -16,7 +17,7 @@ public class JojaMartShop extends Shop {
     private Season currentSeason;
 
     public JojaMartShop(String name, int openHour, int closeHour, NPC owner, Season currentSeason) {
-        super(name, openHour, closeHour, owner);
+        super(name, new Location(0,0), 0, 0, openHour, closeHour, owner);
         this.currentSeason = currentSeason;
 
         setupPermanentStock();

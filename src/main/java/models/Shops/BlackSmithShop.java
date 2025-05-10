@@ -2,6 +2,7 @@ package models.Shops;
 
 import com.google.gson.Gson;
 import models.Constants;
+import models.Location;
 import models.NPC.NPC;
 import models.Result;
 import models.tools.Tool;
@@ -16,7 +17,7 @@ public class BlackSmithShop extends Shop{
     HashMap<String, Boolean> toolUpgrade = new HashMap<>();
 
     public BlackSmithShop(String name, int openHour, int closeHour, NPC owner) {
-        super(name, openHour, closeHour, owner);
+        super(name, new Location(0,0), 0, 0, openHour, closeHour, owner);
         loadFromJson("src/main/resources/data/BlackSmithShop.json");
     }
 

@@ -1,5 +1,6 @@
 package models.buildings;
 
+import models.Location;
 import models.animals.Animal;
 import models.animals.LivingPlace;
 import java.util.ArrayList;
@@ -8,8 +9,8 @@ public class AnimalBuilding extends Building {
     protected final LivingPlace type;
     protected final ArrayList<Animal> animals;
 
-    public AnimalBuilding(String name, LivingPlace type) {
-        super(name);
+    public AnimalBuilding(String name, Location location, int width, int height, LivingPlace type) {
+        super(name, location, width, height);
         this.type = type;
         this.animals = new ArrayList<>();
     }

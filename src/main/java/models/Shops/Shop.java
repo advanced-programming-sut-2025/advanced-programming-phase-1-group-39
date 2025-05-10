@@ -1,6 +1,7 @@
 package models.Shops;
 
 import models.ItemStack;
+import models.Location;
 import models.NPC.NPC;
 import models.Result;
 import models.buildings.Building;
@@ -13,8 +14,9 @@ public class Shop extends Building {
     private int closeHour;
     private NPC owner;
 
-    public Shop(String name, int openHour, int closeHour, NPC owner) {
-        super(name);
+    // Todo: location and width and width in every shop is not true, must be initialized
+    public Shop(String name, Location location, int width, int height, int openHour, int closeHour, NPC owner) {
+        super(name, location, width, height);
         this.openHour = openHour;
         this.closeHour = closeHour;
         this.owner = owner;

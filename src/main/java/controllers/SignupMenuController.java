@@ -7,6 +7,7 @@ import models.Enums.commands.SignupMenuCommands;
 import models.Result;
 import models.SecurityQuestion;
 import models.User;
+import models.services.HashSHA256;
 import models.services.SaveAppManager;
 import models.services.UsersDataManager;
 
@@ -126,6 +127,8 @@ public class SignupMenuController {
         } else {
             SecurityQuestion question = setSecurityQuestion(questionNumber, answer);
             App.getApp().getPendingUser().setSecurityQuestion(question);
+            String hashPass = HashSHA256.hashPassword(App.getApp().getPendingUser().getPassword());
+            App.getApp().getPendingUser().setPassword(hashPass);
             App.getApp().addUser(App.getApp().getPendingUser());
             App.getApp().setPendingUser(null);
             App.getApp().setRegisterSuccessful(false);

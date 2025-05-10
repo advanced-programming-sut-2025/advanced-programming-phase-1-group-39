@@ -5,6 +5,7 @@ import models.Enums.Menu;
 import models.Enums.commands.SignupMenuCommands;
 import models.Result;
 import models.User;
+import models.services.HashSHA256;
 import models.services.LoginPersistence;
 import models.services.SaveAppManager;
 import models.services.UsersDataManager;
@@ -24,7 +25,7 @@ public class LoginMenuController {
 
         if (!isUsernameExist(username)) {
             return new Result(false, "Username not found.");
-        } else if (!isPasswordCorrect(username, password)) {
+        } else if (!HashSHA256.checkPassword(password, App.getApp().getUsers().get(getIndexInUsers(username)).getPassword())) {
             return new Result(false, "The password is incorrect.");
         } else if (stayLoggedIn != null) {
             App.getApp().setStayLoggedIn(true);
@@ -90,6 +91,7 @@ public class LoginMenuController {
             App.getApp().setPendingUser(null);
             return new Result(false, "the new password entered is incorrect. to log in, you must start over.");
         } else {
+            App.getApp().getPendingUser().setPassword(HashSHA256.hashPassword(newPassword));
             App.getApp().getUsers().set(getIndexInUsers(App.getApp().getPendingUser().getUserName()),
                     App.getApp().getPendingUser());
             App.getApp().setLoggedInUser(getUserByUsername(App.getApp().getPendingUser().getUserName()));
@@ -127,14 +129,14 @@ public class LoginMenuController {
         return false;
     }
 
-    private boolean isPasswordCorrect(String username, String password) {
-        for (User user : App.getApp().getUsers()) {
-            if (user.getUserName().equals(username) && user.getPassword().equals(password)) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    private boolean isPasswordCorrect(String username, String password) {
+//        for (User user : App.getApp().getUsers()) {
+//            if (user.getUserName().equals(username) && user.getPassword().equals(password)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     private User getUserByUsername(String username) {
         for (User user : App.getApp().getUsers()) {

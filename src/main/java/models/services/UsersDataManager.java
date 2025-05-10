@@ -34,9 +34,12 @@ public class UsersDataManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (User user : users) {
-            user.ensureInitialized();
+        if (users != null) {
+            for (User user : users) {
+                user.ensureInitialized();
+            }
         }
+
         return users;
     }
 }

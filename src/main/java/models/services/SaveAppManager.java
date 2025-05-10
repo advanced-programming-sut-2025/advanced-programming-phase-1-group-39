@@ -9,7 +9,7 @@ public class SaveAppManager {
 
     public static void saveApp() {
         App app = App.getApp();
-        if (app.getLoggedInUser().getIsStayLoggedIn()) {
+        if (app.isStayLoggedIn()) {
             app.setRandomPassword(null);
             app.setPendingUser(null);
             app.setRegisterSuccessful(false);

@@ -7,6 +7,7 @@ import models.Result;
 import models.User;
 import models.services.LoginPersistence;
 import models.services.SaveAppManager;
+import models.services.UsersDataManager;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class LoginMenuController {
         } else if (!isPasswordCorrect(username, password)) {
             return new Result(false, "The password is incorrect.");
         } else if (stayLoggedIn != null) {
-            App.getApp().getUsers().get(getIndexInUsers(username)).setStayLoggedIn(true);
+            App.getApp().setStayLoggedIn(true);
             App.getApp().setLoggedInUser(getUserByUsername(username));
             App.getApp().setCurrentMenu(Menu.MAIN_MENU);
             return new Result(true, "login was successful. you are now in the main menu.");
@@ -112,6 +113,7 @@ public class LoginMenuController {
 
     public void exit() {
         SaveAppManager.saveApp();
+        UsersDataManager.saveUsers(App.getApp().getUsers());
         App.getApp().setCurrentMenu(Menu.ExitMenu);
     }
 

@@ -1,5 +1,6 @@
 package models.Enums.commands;
 // register    -u   mostafa   -p paSS12#$   paSS12#$  -n mosi  -e mostafa@gmail.com -g male
+//  register    -u   mostafa   -p random  -n mosi  -e mostafa@gmail.com -g male
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,9 +14,9 @@ public enum SignupMenuCommands {
     Email("(?=.{1,64}@)([a-zA-Z0-9](?!.*\\.\\.)[a-zA-Z0-9._-]{0,62}[a-zA-Z0-9])@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9](?:\\.[a-zA-Z]{2,})+)"),
     Gender("(male|female)"),
 
-    SetRandomPassword("yse"),
-    GetAnotherRandomPassword("no"),
-    CancelGetRandomPassword("cancel"),
+    SetRandomPassword("yes"),
+    GetAnotherRandomPassword("random"),
+    CancelGetRandomPassword("no"),
 
     SecurityQuestion("pick\\s+question\\s+-q\\s+(?<questionNumber>\\S+)\\s+-a\\s+(?<answer>.*?)\\s+-c\\s+(?<answerConfirm>.*?)"),
 

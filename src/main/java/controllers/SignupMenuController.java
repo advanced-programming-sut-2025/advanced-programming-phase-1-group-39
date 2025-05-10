@@ -8,6 +8,7 @@ import models.Result;
 import models.SecurityQuestion;
 import models.User;
 import models.services.SaveAppManager;
+import models.services.UsersDataManager;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class SignupMenuController {
                 App.getApp().setPendingUser(new User(username, randomPassword, nickName, email, false));
             }
             return new Result(true , "A secure password has been generated for you: " + randomPassword +
-                    "\n"+"If you wish to use this password, please type 'yes'.\n + " +
+                    "\n"+"If you wish to use this password, please type 'yes'.\n" +
                     "If you would like to generate another random password, please type 'random'.\n" +
                     "Otherwise, type 'no' to cancel.");
         } else {
@@ -78,7 +79,7 @@ public class SignupMenuController {
         if (App.getApp().getRandomPassword() != null) {
             App.getApp().setRandomPassword(null);
             App.getApp().setRegisterSuccessful(true);
-            return new Result(true, "Registration was successful. now, please choose one of the security questions below and answer it:" +
+            return new Result(true, "Registration was successful. now, please choose one of the security questions below and answer it:\n" +
                     SecurityQuestionCommands.DREAM_JOB + "\n" + SecurityQuestionCommands.FAVORITE_TEACHER + "\n" +
                     SecurityQuestionCommands.HISTORICAL_FIGURE + "\n" + SecurityQuestionCommands.FIRST_SCHOOL + "\n" +
                     SecurityQuestionCommands.FIRST_SCHOOL);
@@ -144,6 +145,7 @@ public class SignupMenuController {
 
     public void exit() {
         SaveAppManager.saveApp();
+        UsersDataManager.saveUsers(App.getApp().getUsers());
         App.getApp().setCurrentMenu(Menu.ExitMenu);
     }
 

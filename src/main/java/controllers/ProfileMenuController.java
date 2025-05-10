@@ -5,6 +5,7 @@ import models.Enums.Menu;
 import models.Enums.commands.SignupMenuCommands;
 import models.Result;
 import models.User;
+import models.services.HashSHA256;
 
 import java.util.regex.Matcher;
 
@@ -62,9 +63,9 @@ public class ProfileMenuController {
         String oldPassword = matcher.group("oldPassword");
         Matcher matcher1;
 
-        if (!oldPassword.equals(App.getApp().getLoggedInUser().getPassword())) {
+        if (!HashSHA256.checkPassword(oldPassword, App.getApp().getLoggedInUser().getPassword())) {
             return new Result(false, "The old password you entered is incorrect.");
-        } else if (App.getApp().getLoggedInUser().getPassword().equals(password)) {
+        } else if (HashSHA256.checkPassword(password, App.getApp().getLoggedInUser().getPassword())) {
             return new Result(false, "the new password is the same as the previous one.");
         } else if ((matcher1 = SignupMenuCommands.Password.getMatcher(password)) == null) {
             return new Result(false, "the password format is invalid.");
@@ -72,7 +73,7 @@ public class ProfileMenuController {
             StringBuilder output = validatePassword(password);
             return new Result(false, output.toString());
         } else {
-            App.getApp().getLoggedInUser().setPassword(password);
+            App.getApp().getLoggedInUser().setPassword(HashSHA256.hashPassword(password));
             App.getApp().getUsers().get(getIndexInUsers(App.getApp().getLoggedInUser().getUserName())).setPassword(password);
             return new Result(true, "password changed successfully.");
         }

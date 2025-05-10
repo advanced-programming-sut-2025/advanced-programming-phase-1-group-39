@@ -263,18 +263,6 @@ public class Map {
     }
 
     // printing
-    public String printWholeMap() {
-        StringBuilder text = new StringBuilder();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                text.append(tiles[i][j].getSymbol() + " ");
-            }
-            text.append("\n");
-        }
-
-        return text.toString();
-    }
-
     public String printMapBySize(int x, int y, int size, ArrayList<Player> players) {
         StringBuilder text = new StringBuilder();
         int i1 = Math.max(y - size/2, 0);
@@ -386,6 +374,33 @@ public class Map {
     public ArrayList<MapMinPathFinder.Node> findWalkingPath(Location start, Location end, Player player) {
         MapMinPathFinder pathFinder = new MapMinPathFinder();
         return pathFinder.findPath(tiles, start, end);
+    }
+
+    // player place check
+    public boolean isNearWater(Player player) {
+        int startX = player.getLocation().x() - 1;
+        int startY = player.getLocation().y() - 1;
+
+        for (int i = startX; i < startX + 3; i++) {
+            for (int j = startY; j < startY + 3; j++) {
+                Tile tile = tiles[i][j];
+                if (tile.getType() == TileType.WATER) return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isNearGreenHouse(Player player) {
+        int startX = player.getLocation().x() - 1;
+        int startY = player.getLocation().y() - 1;
+
+        for (int i = startX; i < startX + 3; i++) {
+            for (int j = startY; j < startY + 3; j++) {
+                Tile tile = tiles[i][j];
+                // TODO : complete near building
+            }
+        }
+        return false;
     }
 }
 

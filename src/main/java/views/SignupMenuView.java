@@ -27,7 +27,8 @@ public class SignupMenuView implements View {
         } else if ((matcher = SignupMenuCommands.CancelGetRandomPassword.getMatcher(command)) != null && !App.getApp().getIsRegisterSuccessful()) {
             result = controller.cancelGetRandomPassword();
             System.out.println(result.message());
-        } else if ((matcher = SignupMenuCommands.SecurityQuestion.getMatcher(command)) != null && App.getApp().getIsRegisterSuccessful()) {
+        } else if ((matcher = SignupMenuCommands.SecurityQuestion.getMatcher(command)) != null && App.getApp().getIsRegisterSuccessful()
+                    && App.getApp().getPendingUser() != null) {
             result = controller.securityQuestion(matcher);
             System.out.println(result.message());
         } else if ((matcher = SignupMenuCommands.ShowCurrentManu.getMatcher(command)) != null && !App.getApp().getIsRegisterSuccessful()) {

@@ -1,6 +1,7 @@
 package models.Enums.commands;
 // register    -u   mostafa   -p paSS12#$   paSS12#$  -n mosi  -e mostafa@gmail.com -g male
 //  register    -u   mostafa   -p random  -n mosi  -e mostafa@gmail.com -g male
+// pick question -q 1 -a salam -c salam
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

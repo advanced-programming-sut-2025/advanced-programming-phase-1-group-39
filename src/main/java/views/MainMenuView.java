@@ -17,6 +17,9 @@ public class MainMenuView implements View {
         if ((matcher = MainMenuCommands.Logout.getMatcher(command)) != null) {
             result = controller.logout();
             System.out.println(result.message());
+        } else if ((matcher = MainMenuCommands.GoToProfileMenu.getMatcher(command)) != null) {
+            result = controller.goProfileMenu();
+            System.out.println(result.message());
         } else if ((matcher = MainMenuCommands.GoToGameMenu.getMatcher(command)) != null) {
             result = controller.goGameMenu();
             System.out.println(result.message());

@@ -112,8 +112,6 @@ public class LoginMenuController {
     }
 
     public void exit() {
-        SaveAppManager.saveApp();
-        UsersDataManager.saveUsers(App.getApp().getUsers());
         App.getApp().setCurrentMenu(Menu.ExitMenu);
     }
 

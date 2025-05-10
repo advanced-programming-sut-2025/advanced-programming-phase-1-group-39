@@ -68,10 +68,10 @@ public class SignupMenuController {
                 App.getApp().setPendingUser(new User(username, password, nickName, email, false));
             }
             App.getApp().setRegisterSuccessful(true);
-            return new Result(true, "Registration was successful. now, please choose one of the security questions below and answer it:" +
-                    SecurityQuestionCommands.DREAM_JOB + "\n" + SecurityQuestionCommands.FAVORITE_TEACHER + "\n" +
-                    SecurityQuestionCommands.HISTORICAL_FIGURE + "\n" + SecurityQuestionCommands.FIRST_SCHOOL + "\n" +
-                    SecurityQuestionCommands.FIRST_SCHOOL);
+            return new Result(true, "Registration was successful. now, please choose one of the security questions below and answer it:\n" +
+                    SecurityQuestionCommands.DREAM_JOB.getQuestion() + "\n" + SecurityQuestionCommands.FAVORITE_TEACHER.getQuestion() + "\n" +
+                    SecurityQuestionCommands.HISTORICAL_FIGURE .getQuestion()+ "\n" + SecurityQuestionCommands.FIRST_SCHOOL.getQuestion() + "\n" +
+                    SecurityQuestionCommands.FIRST_PHONE_MODEL.getQuestion());
         }
     }
 
@@ -80,9 +80,9 @@ public class SignupMenuController {
             App.getApp().setRandomPassword(null);
             App.getApp().setRegisterSuccessful(true);
             return new Result(true, "Registration was successful. now, please choose one of the security questions below and answer it:\n" +
-                    SecurityQuestionCommands.DREAM_JOB + "\n" + SecurityQuestionCommands.FAVORITE_TEACHER + "\n" +
-                    SecurityQuestionCommands.HISTORICAL_FIGURE + "\n" + SecurityQuestionCommands.FIRST_SCHOOL + "\n" +
-                    SecurityQuestionCommands.FIRST_SCHOOL);
+                    SecurityQuestionCommands.DREAM_JOB.getQuestion() + "\n" + SecurityQuestionCommands.FAVORITE_TEACHER.getQuestion() + "\n" +
+                    SecurityQuestionCommands.HISTORICAL_FIGURE .getQuestion()+ "\n" + SecurityQuestionCommands.FIRST_SCHOOL.getQuestion() + "\n" +
+                    SecurityQuestionCommands.FIRST_PHONE_MODEL.getQuestion());
         } else {
             return new Result(false, "invalid command!");
         }
@@ -144,8 +144,6 @@ public class SignupMenuController {
     }
 
     public void exit() {
-        SaveAppManager.saveApp();
-        UsersDataManager.saveUsers(App.getApp().getUsers());
         App.getApp().setCurrentMenu(Menu.ExitMenu);
     }
 

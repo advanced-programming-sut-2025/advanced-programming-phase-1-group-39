@@ -10,12 +10,16 @@ import java.util.HashMap;
 
 
 public class Inventory {
-    InventoryType type;
-    //ToDO: change
-    ArrayList<ItemStack> inventoryItems;
-    TrashType trashType;
+    InventoryType type = InventoryType.BASIC;
+    ArrayList<ItemStack> inventoryItems = new ArrayList<>();
+    TrashType trashType = TrashType.BASIC;
 
-    ItemStack inHand;
+    // TODO : set item in hand to first
+    ItemStack inHand = null;
+//
+//    public Inventory(ArrayList<ItemStack>) {
+//
+//    }
 
     public String showInventory() {
         StringBuilder text = new StringBuilder();

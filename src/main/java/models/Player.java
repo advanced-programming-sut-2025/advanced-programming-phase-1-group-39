@@ -241,7 +241,7 @@ public class Player {
     }
     public Building getBuildingByName(String name) {
         for (Building building : playerFarmBuildings) {
-            if (building.getName().equals(name)) return building;
+            if (building.getName().equalsIgnoreCase(name)) return building;
         }
         return null;
     }

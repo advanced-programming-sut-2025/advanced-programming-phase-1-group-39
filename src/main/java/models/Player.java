@@ -21,25 +21,28 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Player {
-    Location location;
-    double energy;
-    Skill skills;
-    Inventory inventory;
+    private Location location;
+    private double energy;
+    private Skill skills;
+    private Inventory inventory;
 
-    FoodBuff buff = null;
+    private FoodBuff buff = null;
 
-    ArrayList<CraftingRecipe> craftingRecipes;
-    ArrayList<ArtisanMachineRecipe> artisanMachineRecipes;
-    ArrayList<FoodRecipe> foodRecipes;
+    private ArrayList<CraftingRecipe> craftingRecipes;
+    private ArrayList<ArtisanMachineRecipe> artisanMachineRecipes;
+    private ArrayList<FoodRecipe> foodRecipes;
 
-    HashMap<Player, Integer> playersFriendship;
-    HashMap<NPC, Integer> NPCsFriendship;
+    private HashMap<Player, Integer> playersFriendship;
+    private HashMap<NPC, Integer> NPCsFriendship;
 
-    ArrayList<Quest> activeQuests;
+    private ArrayList<Quest> activeQuests;
 
     public boolean isConscious() {
         return energy > 0;
     }
+
+    private int money = 0;
+    private int nightRevenue = 0;
 
     public void setBuff(FoodBuff buff) {
         this.buff = buff;
@@ -47,6 +50,22 @@ public class Player {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+    public void changeMoney(int amount) {
+        this.money += amount;
+        if (money < 0) {
+            this.money = 0;
+        }
+    }
+    public void addToRevenue(int amount) {
+        this.nightRevenue += amount;
+    }
+    public boolean hasEnoughMoney(int amount) {
+        return money >= amount;
     }
 
     public double getEnergy() {

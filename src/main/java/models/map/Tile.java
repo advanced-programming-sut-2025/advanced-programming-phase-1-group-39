@@ -8,15 +8,10 @@ public class Tile {
     int x, y;
     private TileType type = TileType.SOIL;
     private ItemStack itemOnTile = null;
-
     private Plant plant = null;
     private Tree tree = null;
+
 //    private PlacedObject placedObject = null;
-
-
-    private boolean canPlant = false;
-    private boolean isWatered = false;
-    private boolean isFertilized = false;
 
     public Tile(int x, int y) {
         this.x = x;
@@ -31,9 +26,7 @@ public class Tile {
         return type;
     }
 
-    // symbol
-    public char getSymbol() {
-        char c = type.getSymbol();
+    public char getSymbol() {        char c = type.getSymbol();
         if (plant != null) {
             c = 'P';
         } else if (tree != null) {
@@ -49,6 +42,55 @@ public class Tile {
         return c;
     }
 
+    public void plow() {
+        type.setCanPlant();
+    }
+
+    public void removePlant() {
+        plant = null;
+    }
+    public void cutDownTree() {
+        ItemStack items = tree.cutDown();
+        tree = null;
+    }
+
+    public boolean canPlant() {
+        return type.canPlant();
+    }
+
+    public void plantSeed(String seedName) {
+        Plant newPlant = CropManager.createPlantBySeed(seedName, this);
+        Tree newTree = TreeManager.getTreeBySeedName(seedName, this);
+        if (newPlant != null) {
+            this.plant = newPlant;
+        } else if (newTree != null) {
+            this.tree = newTree;
+        }
+    }
+    public String showPlant() {
+        return plant.toString();
+    }
+
+    public void placeItem(ItemStack item) {
+        if (itemOnTile != null) {
+            itemOnTile = item;
+        }
+    }
+    public ItemStack pickItem() {
+        ItemStack result = itemOnTile;
+        itemOnTile = null;
+        return result;
+    }
+
+
+
+    //
+
+
+    private boolean canPlant = false;
+    private boolean isWatered = false;
+    private boolean isFertilized = false;
+
     public String getTileColor() {
         char c = getSymbol();
         if (c == '.') return AnsiColors.ANSI_GOLDEN_BACKGROUND;
@@ -61,6 +103,9 @@ public class Tile {
         else if (c == 'P') return AnsiColors.ANSI_GREEN_BOLD;
         else if (c == 'T') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_DARK_GREEN_BACKGROUND;
         else if (c == '/') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
+
+        else if (c == '●' && type.equals(TileType.QUARRY))
+            return AnsiColors.ANSI_DARK_GRAY_BOLD + AnsiColors.ANSI_GRAY_BACKGROUND;
         else if (c == '●') return AnsiColors.ANSI_DARK_GRAY_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
 
         else if (c == 'F') return AnsiColors.ANSI_ORANGE_BACKGROUND;
@@ -74,41 +119,12 @@ public class Tile {
         }
     }
 
-    public void plow() {
-        canPlant = true;
+    public boolean canAddMineralToQuarry() {
+        if (type != TileType.QUARRY) return false;
+        if (itemOnTile != null) return false;
+        return true;
     }
 
-    public void removePlant() {
-        plant = null;
-    }
-    public void cutDownTree() {
-        ItemStack items = tree.cutDown();
-        tree = null;
-    }
-
-    public void setIsFertilized() { isFertilized = true; }
-    public void setIsWatered() { isWatered = true; }
-
-    public boolean canPlant() { return canPlant; }
-    public boolean isFertilized() { return isFertilized; }
-    public boolean isWatered() { return isWatered; }
-
-    //planting
-    public void plantSeed(String seedName) {
-        Plant newPlant = CropManager.createPlantBySeed(seedName);
-        Tree newTree = TreeManager.getTreeBySeedName(seedName, this);
-        if (newPlant != null) {
-            this.plant = newPlant;
-        } else if (newTree != null) {
-            this.tree = newTree;
-        }
-    }
-    public String showPlant() {
-        return plant.toString();
-    }
-
-
-    // placed Items
     public boolean canAddItemToTile() {
         if (type != TileType.SOIL) return false;
         if (itemOnTile != null) return false;
@@ -117,29 +133,7 @@ public class Tile {
         return true;
     }
 
-    public boolean canAddMineralToQuarry() {
-        if (type != TileType.QUARRY) return false;
-        if (itemOnTile != null) return false;
-        return true;
-    }
-
-    public void placeItem(ItemStack item) {
-        this.itemOnTile = item;
-    }
-
     public void plantTree(Tree tree) {
         this.tree = tree;
-    }
-
-    public ItemStack getItemOnTile() {
-        return itemOnTile;
-    }
-
-    public Tree getTree() {
-        return tree;
-    }
-
-    public Plant getPlant() {
-        return plant;
     }
 }

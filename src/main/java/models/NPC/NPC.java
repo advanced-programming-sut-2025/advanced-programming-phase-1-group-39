@@ -2,39 +2,30 @@ package models.NPC;
 
 import models.Item;
 import models.Location;
+import models.Result;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NPC {
+public abstract class NPC {
 
     private String name;
-    private String job;
+    private  String job;
     private String personalityTraits;
     private Location location;
-    private List<Item> favoriteItems;
-    private List<Quest> quests = new ArrayList<>();
+    private ArrayList<Item> favoriteItems;
 
-    // سازنده و متدهای مورد نیاز
-
-    public NPC(String name, String job, String personality, Location location) {
+    public NPC(String name, String job, String personalityTraits, Location location, ArrayList<Item> favoriteItems) {
         this.name = name;
         this.job = job;
-        this.personalityTraits = personality;
+        this.personalityTraits = personalityTraits;
         this.location = location;
-        this.favoriteItems = new ArrayList<>();
-        this.quests = new ArrayList<>();
+        this.favoriteItems = favoriteItems;
+
     }
 
-    public void addFavoriteItem(Item item) {
-        this.favoriteItems.add(item);
-    }
+    //public Result getRewardLevel1{}
 
-    public void addQuest(Quest quest) {
-        this.quests.add(quest);
-    }
-
-    // متدهای getter و setter
 
 
 
@@ -44,19 +35,5 @@ public class NPC {
 
 
 
-
-//    private String name;
-//    private String job;
-//    private Location homeLocation;
-//
-//    private ArrayList<String> dialogues;
-//    private HashMap<Weather, ArrayList<String>> weatherDialogues;
-//    private HashMap<Season, ArrayList<String>> seasonalDialogues;
-//
-//    private Set<Item> favoriteItems;
-//    private int friendshipPoints;
-//    private int friendshipLevel;
-//
-//    private ArrayList<Quest> quests;
 
 

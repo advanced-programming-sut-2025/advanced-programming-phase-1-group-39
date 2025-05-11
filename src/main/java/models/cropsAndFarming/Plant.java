@@ -27,10 +27,9 @@ public class Plant {
 
     boolean hasCrop;
 
-    // TODO : delete tile
-    public Plant(Crop product, Seed seed, ArrayList<Integer> stages,
+    public Plant(Tile tile, Crop product, Seed seed, ArrayList<Integer> stages,
                  boolean oneTimeHarvest, int regrowthTime, boolean canBecomeGiant) {
-        //this.tile = tile;
+        this.tile = tile;
         this.product = product;
         this.productStack = 0;
         this.seed = seed;
@@ -93,5 +92,4 @@ public class Plant {
             return new ItemStack(product, productStack);
         }
     }
-
 }

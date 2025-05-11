@@ -43,7 +43,6 @@ public class Game {
 
         for (Player player : players) {
             resetPlayerLocation(player);
-            player.addFirstBuildingObjects();
         }
     }
 
@@ -61,7 +60,8 @@ public class Game {
         if (number == -1) {return;}
 
         player.setFarmBound(Map.getStartOfFarm(number));
-        gameMap.addRandomFarm(farmType, number);
+        player.addFirstBuildingObjects();
+        gameMap.addRandomFarm(farmType, number, player);
     }
 
     // time

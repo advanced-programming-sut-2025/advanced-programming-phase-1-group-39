@@ -6,6 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import models.*;
 import models.Enums.Season;
+import models.buildings.Building;
+import models.buildings.GreenHouse;
 import models.cropsAndFarming.*;
 
 import java.io.FileReader;
@@ -45,7 +47,8 @@ public class Map {
         return text.toString();
     }
 
-    public void addRandomFarm(FarmType farmType, int playerNumber) {
+
+    public void addRandomFarm(FarmType farmType, int playerNumber, Player player) {
         try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {
             Gson gson = new Gson();
             JsonArray array = gson.fromJson(reader, JsonArray.class);
@@ -61,18 +64,20 @@ public class Map {
 
             // fixeds
             JsonObject fixedElements = farmObject.getAsJsonObject("fixedElements");
-            // adding cabin, greenhouse, main lake
-            JsonObject cabin = fixedElements.getAsJsonObject("cabin");
-            addObjectToMap(cabin, "building", startX, startY);
+            // adding buildings
+            Building cabin = player.getBuildingByName("cabin");
+            addObjectToMap(cabin, "cabin");
 
-            JsonObject greenhouse = fixedElements.getAsJsonObject("greenhouse");
-            addObjectToMap(greenhouse, "building_greenhouse", startX, startY);
+            Building greenhouse = player.getBuildingByName("greenhouse");
+            addObjectToMap(greenhouse, "greenhouse");
 
+            Building shippingBin = player.getBuildingByName("shippingBin");
+            addObjectToMap(shippingBin, "shippingBin");
+
+
+            // adding main lake and quarry from json
             JsonObject quarry = fixedElements.getAsJsonObject("quarry");
             addObjectToMap(quarry, "quarry", startX, startY);
-
-            JsonObject sellBasket = fixedElements.getAsJsonObject("sell_basket");
-            addObjectToMap(sellBasket, "basket", startX, startY);
 
             JsonArray lakes = fixedElements.getAsJsonArray("lakes");
             JsonObject mainLake = lakes.get(0).getAsJsonObject();
@@ -134,8 +139,6 @@ public class Map {
                     tiles[j][i].setType(TileType.QUARRY);
                 }
             }
-        } else if (type.equals("basket")) {
-            tiles[y][x].setType(TileType.SELL_BASKET);
         } else if (type.equals("lake")) {
             for (int i = x; i < x + w; i++) {
                 for (int j = y; j < y + h; j++) {
@@ -159,7 +162,16 @@ public class Map {
                     tiles[j][i].setType(TileType.PATH);
                 }
             }
-        } else if (type.equals("building_greenhouse")) {
+        }
+    }
+
+    private void addObjectToMap(Building building, String name) {
+        int x = building.getLocation().x();
+        int y = building.getLocation().y();
+        int w = building.getWidth();
+        int h = building.getHeight();
+
+        if (name.equals("cabin") || name.equals("greenhouse")) {
             for (int i = x; i < x + w; i++) {
                 tiles[y][i].setType(TileType.WALL);
                 tiles[y + h - 1][i].setType(TileType.WALL);
@@ -168,24 +180,25 @@ public class Map {
                 tiles[j][x].setType(TileType.WALL);
                 tiles[j][x + w - 1].setType(TileType.WALL);
             }
-
-            for (int i = x + 1; i < x + w - 1; i++) {
-                for (int j = y + 1; j < y + h - 1; j++) {
-                    tiles[j][i].setType(TileType.DESTROYED);
+            if (name.equals("greenhouse") && !((GreenHouse)building).isBuild()) {
+                for (int i = x + 1; i < x + w - 1; i++) {
+                    for (int j = y + 1; j < y + h - 1; j++) {
+                        tiles[j][i].setType(TileType.DESTROYED);
+                    }
+                }
+            } else {
+                for (int i = x + 1; i < x + w - 1; i++) {
+                    for (int j = y + 1; j < y + h - 1; j++) {
+                        tiles[j][i].setType(TileType.INDOOR);
+                    }
                 }
             }
-
-            int doorX, doorY;
-            if (object.has("door")) {
-                JsonObject door = object.getAsJsonObject("door");
-                doorX = door.get("x").getAsInt() + startX;
-                doorY = door.get("y").getAsInt() + startY;
-            } else {
-                doorX = x + w/2;
-                doorY = y + h - 1;
-            }
-
-            tiles[doorY][doorX].setType(TileType.DESTROYED);
+            int doorX = x + w/2 - 1;
+            int doorY = y + h - 1;
+            tiles[doorY][doorX].setType(TileType.INDOOR);
+            if (name.equals("greenhouse")) tiles[doorY][doorX].setType(TileType.DESTROYED);
+        } else if (name.equals("shippingBin")) {
+            tiles[y][x].setType(TileType.SELL_BASKET);
         }
     }
 

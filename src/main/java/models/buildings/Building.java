@@ -18,4 +18,16 @@ public abstract class Building {
     public String getName() {
         return name;
     }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

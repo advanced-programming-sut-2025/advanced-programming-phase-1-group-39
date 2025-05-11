@@ -6,6 +6,7 @@ import models.artisan.ArtisanMachineRecipe;
 import models.buildings.Building;
 import models.buildings.Cabin;
 import models.buildings.GreenHouse;
+import models.buildings.ShippingBin;
 import models.cooking.FoodBuff;
 import models.cooking.FoodRecipe;
 import models.crafting.CraftingRecipe;
@@ -229,7 +230,19 @@ public class Player {
     }
 
     public void addFirstBuildingObjects() {
-        Cabin cabin = new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5));
-        GreenHouse greenHouse = new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0));
+        addToBuildings(new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5)));
+        addToBuildings(new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0)));
+        addToBuildings(new ShippingBin(new Location(startOfFarm.x() + 77, startOfFarm.y() + 10)));
+
+    }
+
+    public void addToBuildings(Building building) {
+        playerFarmBuildings.add(building);
+    }
+    public Building getBuildingByName(String name) {
+        for (Building building : playerFarmBuildings) {
+            if (building.getName().equals(name)) return building;
+        }
+        return null;
     }
 }

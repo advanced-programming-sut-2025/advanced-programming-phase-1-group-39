@@ -12,4 +12,7 @@ public class GreenHouse extends Building {
     public void build() {
         isBuild = true;
     }
+    public boolean isBuild() {
+        return isBuild;
+    }
 }

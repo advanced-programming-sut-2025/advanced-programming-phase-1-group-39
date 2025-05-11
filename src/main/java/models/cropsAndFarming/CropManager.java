@@ -59,7 +59,7 @@ public class CropManager {
                 data.seasons,
                 data.canBecomeGiant
         );
-
+        // Todo: check season
         Seed seed = new Seed(data.source, data.seasons);
 
         Plant plant = new Plant(tile, product, seed, data.stages, data.oneTimeHarvest, data.regrowthTime, data.canBecomeGiant);

@@ -94,7 +94,9 @@ public class Tile {
     }
 
     public void setIsFertilized() { isFertilized = true; }
+
     public void setIsWatered() { isWatered = true; }
+    public void setNotWatered() { isWatered = false; }
 
     public boolean canPlant() { return canPlant; }
     public boolean isFertilized() { return isFertilized; }

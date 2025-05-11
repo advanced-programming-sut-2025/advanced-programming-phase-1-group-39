@@ -248,6 +248,30 @@ public class Map {
         }
     }
 
+    public void growWateredPlantsAndTrees() {
+        for(int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Tile tile = tiles[j][i];
+                if (tile.getType() == TileType.SOIL) {
+                    if (tile.getPlant() != null) {
+                        tile.getPlant().updateDaily();
+                    } else if (tile.getTree() != null) {
+                        tile.getTree().updateDaily();
+                    }
+                }
+            }
+        }
+    }
+
+    public void dryWateredTiles() {
+        for(int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Tile tile = tiles[j][i];
+                tile.setNotWatered();
+            }
+        }
+    }
+
     private void addNpcMap() {
         try (FileReader reader = new FileReader("src/main/resources/data/Map/npcMap.json")) {
             Gson gson = new Gson();
@@ -419,7 +443,7 @@ public class Map {
         return new Location(startX, startY);
     }
 
-
+    // walking
     public Result canWalkTo(Location start, Location end, Player player) {
         MapMinPathFinder pathFinder = new MapMinPathFinder();
         if (!player.isInPlayerFarm(end))

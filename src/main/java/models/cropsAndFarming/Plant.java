@@ -78,6 +78,10 @@ public class Plant {
         isWateredToday = false;
     }
 
+    public void setIsWateredToday() {
+        isWateredToday = true;
+    }
+
     public ItemStack harvest() {
         if (!hasCrop) {return null;}
 

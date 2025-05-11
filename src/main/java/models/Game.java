@@ -74,7 +74,7 @@ public class Game {
         //TODO : food buffs,
 
         // reset players energiesHourLimit
-
+        resetPlayersHourlyEnergyLimit();
     }
     public void resetPlayersHourlyEnergyLimit() {
         for (Player player : players) {
@@ -104,7 +104,8 @@ public class Game {
         addPlayersRevenueToMoney();
 
         // grow plants and trees
-        // TODO : add to plants and trees stages
+        gameMap.growWateredPlantsAndTrees();
+        gameMap.dryWateredTiles();
 
         // random foragings + materials and minerals and stone
         fillFarmsWithRandoms();

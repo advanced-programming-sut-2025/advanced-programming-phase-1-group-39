@@ -1,11 +1,8 @@
 package models.artisan;
 
-import models.App;
 import models.Player;
 import models.Result;
 import models.Time;
-
-import java.util.ArrayList;
 
 public class BeeHouse extends ArtisanMachine{
     public BeeHouse(String name, int sellPrice) {
@@ -24,20 +21,20 @@ public class BeeHouse extends ArtisanMachine{
     }
 
     @Override
-    public Result use(String name, Time time, Player player) {
+    public Result use(String itemName, String ingredient, Time time, Player player) {
         if (processingRecipe != null) {
             return new Result(false, "Machine is busy now!");
         }
-        ArtisanRecipe recipe = getRecipeByName(name);
+        ArtisanRecipe recipe = getRecipeByName(itemName);
         if (recipe == null) {
-            return new Result(false, name + " not found");
+            return new Result(false, itemName + " not found");
         }
 
         processTime = time.clone();
         processTime.addToHour(recipe.getProcessingTime());
         processingRecipe = recipe;
 
-        return new Result(true, "Machine started to creating " + name);
+        return new Result(true, "Machine started to creating " + itemName);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class ShopItem extends Item {
         return dailyLimit;
     }
 
-    public void resetDailyLimit(int quantity) {
+    public void resetDailyLimit() {
         availableQuantity = dailyLimit;
     }
 
@@ -42,9 +42,6 @@ public class ShopItem extends Item {
         if (dailyLimit > 500000) { // Todo: kheili randome haji shayad bug bokhore
             return;
         }
-        dailyLimit -= amount;
-        if (dailyLimit < 0) {
-            dailyLimit = 0;
-        }
+        decreaseQuantity(amount);
     }
 }

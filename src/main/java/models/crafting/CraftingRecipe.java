@@ -29,11 +29,11 @@ public enum CraftingRecipe {
                 Map.of("Gold Bar", 1, "Iridium Bar", 1),
                 "Farming Level 3"),
 
-        CHARCOAL_KILN(new Furnace("Charcoal Kiln", 0),
+        CHARCOAL_KILN(new ArtisanMachine("Charcoal Kiln", 0),
                 Map.of("Wood", 20, "Copper Bar", 2),
                 "Foraging Level 1"),
 
-        FURNACE(new ArtisanMachine("Furnace", 0),
+        FURNACE(new Furnace("Furnace", 0),
                 Map.of("Copper Ore", 20, "Stone", 25),
                 "-"),
 
@@ -53,7 +53,7 @@ public enum CraftingRecipe {
                 Map.of("Wood", 45, "Stone", 45, "Copper Bar", 1),
                 "Farming Level 2"),
 
-        KEG(new ArtisanMachine("Keg", 0),
+        KEG(new Keg("Keg", 0),
                 Map.of("Wood", 30, "Copper Bar", 1, "Iron Bar", 1),
                 "Farming Level 3"),
 

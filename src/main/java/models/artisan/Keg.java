@@ -1,0 +1,121 @@
+package models.artisan;
+
+import models.Player;
+import models.Result;
+import models.Time;
+
+import java.util.HashMap;
+
+public class Keg extends ArtisanMachine {
+    public Keg(String name, int sellPrice) {
+        super(name, sellPrice);
+
+        HashMap<String, Integer> beerIngredients = new HashMap<>();
+        beerIngredients.put("Wheat", 1);
+        recipes.add(new ArtisanRecipe("Beer", "Drink in moderation.", beerIngredients,
+                24, 50, 200));
+
+
+        HashMap<String, Integer> vinegarIngredients = new HashMap<>();
+        vinegarIngredients.put("Rice", 1);
+        recipes.add(new ArtisanRecipe("Vinegar", "An aged fermented liquid used in many cooking recipes.",
+                vinegarIngredients, 10, 13, 100));
+
+
+        HashMap<String, Integer> coffeeIngredients = new HashMap<>();
+        coffeeIngredients.put("Coffee Bean", 5);
+        recipes.add(new ArtisanRecipe("Coffee", "It smells delicious. This is sure to give you a boost.",
+                coffeeIngredients, 2, 75, 150));
+
+
+        HashMap<String, Integer> CarrotJuiceIngredients = new HashMap<>();
+        CarrotJuiceIngredients.put("Carrot", 1);
+        recipes.add(new ArtisanRecipe("Carrot Juice", "A sweet, nutritious beverage.",
+                CarrotJuiceIngredients, 96, 150, 80));
+        HashMap<String, Integer> CornJuiceIngredients = new HashMap<>();
+        CornJuiceIngredients.put("Corn", 1);
+        recipes.add(new ArtisanRecipe("Corn Juice", "A sweet, nutritious beverage.",
+                CornJuiceIngredients, 96, 40, 120));
+        HashMap<String, Integer> EggplantJuiceIngredients = new HashMap<>();
+        EggplantJuiceIngredients.put("Eggplant", 1);
+        recipes.add(new ArtisanRecipe("Eggplant Juice", "A sweet, nutritious beverage.",
+                EggplantJuiceIngredients, 96, 150, 80));
+
+
+        HashMap<String, Integer> meadIngredients = new HashMap<>();
+        meadIngredients.put("Honey", 1);
+        recipes.add(new ArtisanRecipe("Mead", "A fermented beverage made from honey.\nDrink in moderation.",
+                meadIngredients, 10, 100, 300));
+
+
+        HashMap<String, Integer> paleAleIngredients = new HashMap<>();
+        paleAleIngredients.put("Hops", 1);
+        recipes.add(new ArtisanRecipe("Pale Ale", "Drink in moderation.", paleAleIngredients,
+                72, 50, 300));
+
+
+        HashMap<String, Integer> AppleWineIngredients = new HashMap<>();
+        AppleWineIngredients.put("Apple", 1);
+        recipes.add(new ArtisanRecipe("Wine", "Drink in moderation.", AppleWineIngredients,
+                168, 80, 300));
+        HashMap<String, Integer> BananaWineIngredients = new HashMap<>();
+        BananaWineIngredients.put("Banana", 1);
+        recipes.add(new ArtisanRecipe("Wine", "Drink in moderation.", BananaWineIngredients,
+                168, 150, 450));
+        HashMap<String, Integer> OrangeWineIngredients = new HashMap<>();
+        OrangeWineIngredients.put("Orange", 1);
+        recipes.add(new ArtisanRecipe("Wine", "Drink in moderation.", OrangeWineIngredients,
+                168, 80, 300));
+    }
+
+    public ArtisanRecipe getRecipeByNameAndIngredient(String name, String ingredient) {
+        for (ArtisanRecipe recipe : recipes) {
+            if (name.equalsIgnoreCase(recipe.getName()) && recipe.getIngredients().containsKey(ingredient)) {
+                return recipe;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Result use(String productName, String ingredientName, Time time, Player player) {
+        if (processingRecipe != null) {
+            return new Result(false, "Machine is currently busy!");
+        }
+
+        ArtisanRecipe recipe = getRecipeByNameAndIngredient(productName, ingredientName);
+        if (recipe == null) {
+            return new Result(false, "Recipe not found for: " + productName);
+        }
+        if (!recipe.getIngredients().containsKey(ingredientName)) {
+            return new Result(false, ingredientName + " isn't the product's ingredient");
+        }
+
+        if (!player.getInventory().hasEnoughStack(ingredientName, recipe.getIngredients().get(ingredientName))) {
+            return new Result(false, "Not enough " + ingredientName);
+        }
+
+        processingRecipe = recipe;
+        processTime = time.clone();
+        processTime.addToHour(recipe.getProcessingTime());
+        player.getInventory().pickItem(ingredientName, recipe.getIngredients().get(ingredientName));
+
+        return new Result(true, "Started processing " + productName);
+    }
+
+    @Override
+    public ArtisanGood getReadyGoods(String name, Time time) {
+        if (processingRecipe == null || !processingRecipe.getName().equalsIgnoreCase(name)) {
+            return null;
+        }
+
+        if (!time.isGreater(processTime)) {
+            return null;
+        }
+
+        readyGood = processingRecipe.getGood();
+        processingRecipe = null;
+        processTime = null;
+        return readyGood;
+    }
+}

@@ -115,7 +115,7 @@ public class GameController {
         Game game = App.getApp().getCurrentGame();
         Player player = game.getPlayerInTurn();
         player.buildGreenHouse();
-        // TODO : complete map
+        player.getBuildingByName("greenhouse").updateMap(game.getMap());
         return "your green house was built!";
     }
 

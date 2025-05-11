@@ -94,7 +94,7 @@ public class Game {
 
     public String goToNextDay() {
         StringBuilder lastDayReport = new StringBuilder("Last day Report");
-        // TODO : complete report
+        // TODO (OPTIONAL) : complete report
 
         playersGoHome();
         // reset players energy

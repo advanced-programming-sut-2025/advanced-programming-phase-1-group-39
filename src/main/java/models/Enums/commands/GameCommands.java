@@ -30,6 +30,14 @@ public enum GameCommands {
     CHEAT_THOR("cheat\\s+Thor\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)"),
 
     BUILD_GREENHOUSE("greenhouse\\s+build"),
+    // Tools
+    // TODO : complete tools in View and Controller
+    TOOLS_EQUIP("tools\\s+equip\\s+(?<name>\\S+)"),
+    TOOL_SHOW_CURRENT("tools\\s+show\\s+current"),
+    TOOL_SHOW_AVAILABLE("tools\\s+show\\s+available"),
+
+    TOOLS_UPGRADE("tools\\s+upgrade\\s+(?<name>\\S+)"),
+    TOOL_USE("tools\\s+use\\s+-d\\s+(?<direction>\\S+)"),
     ;
 
     private final String pattern;

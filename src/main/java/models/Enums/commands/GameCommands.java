@@ -28,6 +28,8 @@ public enum GameCommands {
     WEATHER_FORECAST("weather\\s+forecast"),
     CHEAT_WEATHER_SET("cheat\\s+weather\\s+set\\s+(?<type>\\S+)"),
     CHEAT_THOR("cheat\\s+Thor\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)"),
+
+    BUILD_GREENHOUSE("greenhouse\\s+build"),
     ;
 
     private final String pattern;

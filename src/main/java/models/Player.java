@@ -3,6 +3,9 @@ package models;
 import models.NPC.NPC;
 import models.NPC.Quest;
 import models.artisan.ArtisanMachineRecipe;
+import models.buildings.Building;
+import models.buildings.Cabin;
+import models.buildings.GreenHouse;
 import models.cooking.FoodBuff;
 import models.cooking.FoodRecipe;
 import models.crafting.CraftingRecipe;
@@ -43,8 +46,9 @@ public class Player {
     private int money = 0;
     private int nightRevenue = 0;
 
-    public Player() {}
+    private ArrayList<Building> playerFarmBuildings = new ArrayList<>();
 
+    public Player() {}
 
     public boolean isConscious() {
         return energy > 0;
@@ -205,5 +209,27 @@ public class Player {
     }
     public void addToRevenue(int amount) {
         nightRevenue += amount;
+    }
+
+    public void changeMoney(int amount) {
+        money += amount;
+        if (money < 0) money = 0;
+    }
+
+    public boolean canBuildGreenHouse() {
+        return inventory.hasEnoughStack("wood", 500) && money >= 1000;
+    }
+
+    public void buildGreenHouse() {
+        inventory.pickItem("wood", 500);
+        changeMoney(1000);
+        for (Building building : playerFarmBuildings) {
+            if (building.getName().equals("greenhouse")) ((GreenHouse)building).build();
+        }
+    }
+
+    public void addFirstBuildingObjects() {
+        Cabin cabin = new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5));
+        GreenHouse greenHouse = new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0));
     }
 }

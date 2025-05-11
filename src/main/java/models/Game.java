@@ -43,6 +43,7 @@ public class Game {
 
         for (Player player : players) {
             resetPlayerLocation(player);
+            player.addFirstBuildingObjects();
         }
     }
 

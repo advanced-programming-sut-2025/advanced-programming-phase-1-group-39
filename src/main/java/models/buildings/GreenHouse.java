@@ -3,7 +3,13 @@ package models.buildings;
 import models.Location;
 
 public class GreenHouse extends Building {
+    boolean isBuild = false;
+
     public GreenHouse(Location startLocation) {
-        super("Green House", startLocation, 8, 7);
+        super("greenhouse", startLocation, 8, 7);
+    }
+
+    public void build() {
+        isBuild = true;
     }
 }

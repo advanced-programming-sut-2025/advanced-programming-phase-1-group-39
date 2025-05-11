@@ -100,7 +100,24 @@ public class GameController {
                 AnsiColors.ANSI_CYAN_BOLD + type + AnsiColors.ANSI_RESET);
     }
 
-    public void buildGreenHouse() {}
+    public Result buildGreenHouseRequest() {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+
+        if (player.canBuildGreenHouse()) {
+            return new Result(true, "You are already building a green house!\ndo you want to build it? (y / n)");
+        } else {
+            return new Result(false, AnsiColors.ANSI_RED +  "You don't have enough resources to build a green house!\n" + AnsiColors.ANSI_RESET
+             + "Needed resources: \n\t500 woods\n\t1000 G money");
+        }
+    }
+    public String buildGreenHouse() {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+        player.buildGreenHouse();
+        // TODO : complete map
+        return "your green house was built!";
+    }
 
     public Result walkToCheck(int x, int y) {
         Location end = new Location(x, y);

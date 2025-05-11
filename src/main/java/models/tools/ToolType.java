@@ -12,4 +12,30 @@ public enum ToolType {
     public int getBaseEnergyCost() {
         return baseEnergyCost;
     }
+
+    public static ToolType getNext(ToolType type) {
+        switch (type) {
+            case BASIC -> {
+                return COPPER;
+            }
+            case COPPER -> {
+                return IRON;
+            }
+            case IRON -> {
+                return GOLD;
+            }
+            case GOLD, IRIDIUM -> {
+                return IRIDIUM;
+            }
+        }
+        return null;
+    }
+    public static ToolType fromString(String input) {
+        for (ToolType type : values()) {
+            if (input.equalsIgnoreCase(type.name())) {
+                return type;
+            }
+        }
+        return null;
+    }
 }

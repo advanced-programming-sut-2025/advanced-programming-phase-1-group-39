@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import models.*;
 import models.NPC.NPC;
 import models.tools.Tool;
+import models.tools.ToolType;
 
 import java.io.FileReader;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.List;
 public class BlackSmithShop extends Shop{
 
     HashMap<String, ShopItem> shopItems = new HashMap<>();
-    HashMap<String, Boolean> toolUpgrade = new HashMap<>();
+    HashMap<ToolType, Boolean> toolUpgrade = new HashMap<>();
 
     public BlackSmithShop(String name, int openHour, int closeHour, NPC owner) {
         super(name, new Location(0,0), 0, 0, openHour, closeHour, owner);
@@ -30,7 +31,7 @@ public class BlackSmithShop extends Shop{
             }
 
             for (String upgrade : data.toolUpgrades) {
-                toolUpgrade.put(upgrade, true);
+                toolUpgrade.put(ToolType.fromString(upgrade), true);
             }
 
             reader.close();
@@ -70,7 +71,9 @@ public class BlackSmithShop extends Shop{
     }
 
 
-    public Result upgradeTool(Tool tool, String type) {
+    public Result upgradeTool(Tool tool) {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        ToolType type = ToolType.getNext(tool.getType());
         Boolean available = toolUpgrade.get(type);
         if (available == null) {
             return new Result(false, "No such upgrade available.");
@@ -78,43 +81,41 @@ public class BlackSmithShop extends Shop{
             return new Result (false, "You already upgraded To " + type + " today.");
         } else {
             switch (type) {
-                // TODO: handle upgrade logic (remove money, etc.)
-                case "Copper Tool" : {
-
+                case COPPER -> {
+                    if (!player.getInventory().hasEnoughStack("Copper Bar", 5)
+                            || !player.hasEnoughMoney(2000)) {
+                        return new Result(false, "You can't upgrade your tool");
+                    }
                 }
-                case "Steel Tool" : {
-
+                case IRON -> {
+                    if (!player.getInventory().hasEnoughStack("Steel Bar", 5)
+                            || !player.hasEnoughMoney(5000)) {
+                        return new Result(false, "You can't upgrade your tool");
+                    }
+                }
+                case GOLD -> {
+                    if (!player.getInventory().hasEnoughStack("Gold Bar", 5)
+                            || !player.hasEnoughMoney(10000)) {
+                        return new Result(false, "You can't upgrade your tool");
+                    }
+                }
+                case IRIDIUM -> {
+                    if (!player.getInventory().hasEnoughStack("Iridium Bar", 5)
+                            || !player.hasEnoughMoney(25000)) {
+                        return new Result(false, "You can't upgrade your tool");
+                    }
                 }
             }
+            tool.upgradeType();
         }
 
         toolUpgrade.put(type, false);
         return new Result (true, "Successfully upgraded to" + type + ".");
     }
-    public Result upgradeTrashCan(String type) {
-        Boolean available = toolUpgrade.get(type);
-        if (available == null) {
-            return new Result(false, "No such upgrade available.");
-        } else if (!available) {
-            return new Result (false, "You already upgraded To " + type + " today.");
-        } else {
-            switch (type) {
-                // TODO: handle upgrade logic (remove money, etc.)
-                case "Copper Tool" : {
-
-                }
-                case "Steel Tool" : {
-
-                }
-            }
-        }
-
-        toolUpgrade.put(type, false);
-        return new Result (true, "Successfully upgraded to" + type + ".");
-    }
+    // upgrade trash can has been removed
 
     public void endDay() { // Todo: must be called each day
-        for (String key : toolUpgrade.keySet()) {
+        for (ToolType key : toolUpgrade.keySet()) {
             toolUpgrade.put(key, true);
         }
     }

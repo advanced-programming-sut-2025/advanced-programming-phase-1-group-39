@@ -14,7 +14,10 @@ public abstract class Tool extends Item {
     }
 
     public abstract Result useTool();
-    public void changeType(ToolType type) {
-        this.type = type;
+    public ToolType getType() {
+        return type;
+    }
+    public void upgradeType() {
+        this.type = ToolType.getNext(type);
     }
 }

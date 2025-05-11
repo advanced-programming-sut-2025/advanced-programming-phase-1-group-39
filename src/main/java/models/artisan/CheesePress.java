@@ -67,6 +67,7 @@ public class CheesePress extends ArtisanMachine {
         processingRecipe = recipe;
         processTime = time.clone();
         processTime.addToHour(recipe.getProcessingTime());
+        player.getInventory().pickItem(ingredient, recipe.getIngredients().get(ingredient));
 
         return new Result(true, "Started processing: " + itemName);
     }

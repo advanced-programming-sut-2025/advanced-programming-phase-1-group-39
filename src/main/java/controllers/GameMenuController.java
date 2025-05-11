@@ -60,14 +60,14 @@ public class GameMenuController {
         }
     }
 
-    public Result choseMap(Matcher matcher) {
+    public Result chooseMap(Matcher matcher) {
         String mapNumber = matcher.group("mapNumber");
         App app = App.getApp();
         if (!isInteger(mapNumber)) {
             return new Result(false, "The map number must be a number.");
         } else if (Integer.parseInt(mapNumber) >= 3) {
             return new Result(false, "The map number must be either 1 or 2.");
-        } else if (app.getCurrentGame().getPlayers().indexOf(app.getCurrentGame().getCurrentPlayer()) == 4) {
+        } else if (app.getCurrentGame().getPlayers().indexOf(app.getCurrentGame().getCurrentPlayer()) == 3) {
             app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentGame().getCurrentPlayer(),
                     FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
             app.getCurrentGame().startGame();

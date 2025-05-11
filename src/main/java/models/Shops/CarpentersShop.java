@@ -122,7 +122,7 @@ public class CarpentersShop extends Shop{
             LivingPlace type = LivingPlace.fromString(name);
             AnimalBuilding building = new AnimalBuilding(name, new Location(x, y), data.width, data.height, type);
             game.addBuilding(building);
-        }
+        } // Todo: add to player
 
         return new Result(true, name + " successfully created!");
     }

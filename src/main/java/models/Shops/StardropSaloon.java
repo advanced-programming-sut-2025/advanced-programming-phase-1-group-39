@@ -78,9 +78,9 @@ public class StardropSaloon extends Shop {
             return new Result(false, "Item \"" + product + "\" not found in this shop.");
         }
 
-        if (count > item.getDailyLimit()) {
+        if (count > item.getAvailableQuantity()) {
             return new Result(false, "Purchase limit exceeded for \""
-                    + product + "\". Limit: " + item.getDailyLimit());
+                    + product + "\". Limit: " + item.getAvailableQuantity());
         }
 
         item.purchase(count);

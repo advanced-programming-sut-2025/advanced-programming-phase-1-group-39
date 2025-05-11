@@ -20,7 +20,6 @@ public class JojaMartShop extends Shop {
     private HashMap<String, ShopItem> permanentStock = new HashMap<>();
     private Map<Season, HashMap<String, ShopItem>> seasonalStockBySeason = new HashMap<>();
     private HashMap<String, ShopItem> seasonalStock = new HashMap<>();
-    private HashMap<String, Integer> dailyPurchases = new HashMap<>();
 
     private Season currentSeason;
 
@@ -88,11 +87,9 @@ public class JojaMartShop extends Shop {
         if (item == null)
             return new Result(false, "Item not found.");
 
-        int alreadyBought = dailyPurchases.getOrDefault(itemName, 0);
-        if (alreadyBought + quantity > item.getDailyLimit())
+        if (quantity > item.getAvailableQuantity())
             return new Result(false, "You can't buy that many today.");
 
-        dailyPurchases.put(itemName, alreadyBought + quantity);
         Item itemToAdd = ItemManager.getItemByName(itemName);
         App.getApp().getCurrentGame().getPlayerInTurn().getInventory().addItem(itemToAdd, 1);
         return new Result(true, "Successfully bought " + quantity + " x " + itemName + " for " +
@@ -100,7 +97,12 @@ public class JojaMartShop extends Shop {
     }
 
     public void endDay() {
-        dailyPurchases.clear();
+        for (ShopItem item : permanentStock.values()) {
+            item.resetDailyLimit();
+        }
+        for (ShopItem item : seasonalStock.values()) {
+            item.resetDailyLimit();
+        }
     }
 
     @Override

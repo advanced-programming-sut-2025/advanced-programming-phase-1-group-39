@@ -1,10 +1,8 @@
 package models.Shops;
 
 import com.google.gson.Gson;
-import models.Constants;
-import models.Location;
+import models.*;
 import models.NPC.NPC;
-import models.Result;
 import models.tools.Tool;
 
 import java.io.FileReader;
@@ -50,6 +48,26 @@ public class BlackSmithShop extends Shop{
         public int limit;
     }
 
+    public Result purchase(String product, int quantity) {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        ShopItem item = shopItems.get(product);
+        if (item == null) {
+            return new Result(false, "We don't have any " + product + " ):");
+        }
+
+        if (item.getAvailableQuantity() < quantity) {
+            return new Result(false, "We don't have enough stock of " + product);
+        }
+
+        if (!player.hasEnoughMoney(item.getPrice() * quantity)) {
+            return new Result(false, "Oops, you doesn't have enough money ):");
+        }
+
+        player.changeMoney(-(item.getPrice() * quantity));
+        item.purchase(quantity);
+        return new Result(true, "You have successfully bought " + quantity + "x of " + product);
+    }
 
 
     public Result upgradeTool(Tool tool, String type) {
@@ -120,10 +138,6 @@ public class BlackSmithShop extends Shop{
     @Override
     public String showAvailableProducts() {
         return "";
-    }
-
-    public void purchase(String product, int quantity) {
-
     }
 
 }

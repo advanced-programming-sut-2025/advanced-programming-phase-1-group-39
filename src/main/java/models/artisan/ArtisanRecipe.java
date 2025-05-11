@@ -12,14 +12,15 @@ public class ArtisanRecipe {
 
     private ArtisanGood good;
 
-    public ArtisanRecipe(String name, String description, HashMap<String, Integer> ingredients, int processingTime, int sellPrice, int energy) {
+    public ArtisanRecipe(String name, String description, HashMap<String, Integer> ingredients,
+                         int processingTime, int energy, int sellPrice) {
         this.name = name;
         this.description = description;
         this.ingredients = ingredients;
         this.processingTime = processingTime;
         this.sellPrice = sellPrice;
         this.energy = energy;
-        this.good = new ArtisanGood(name, description, sellPrice, energy);
+        this.good = new ArtisanGood(name, description, energy, sellPrice);
     }
 
     public String getName() {

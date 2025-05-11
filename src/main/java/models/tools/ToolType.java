@@ -1,16 +1,16 @@
 package models.tools;
 
 public enum ToolType {
-    BASIC(5), COPPER(4), IRON(3), GOLD(2), IRIDIUM(1);
+    BASIC(0), COPPER(1), IRON(2), GOLD(3), IRIDIUM(4);
 
-    private final int baseEnergyCost;
+    private final int energyReduce;
 
-    ToolType(int baseEnergyCost) {
-        this.baseEnergyCost = baseEnergyCost;
+    ToolType(int energyReduce) {
+        this.energyReduce = energyReduce;
     }
 
-    public int getBaseEnergyCost() {
-        return baseEnergyCost;
+    public int getEnergyReduce() {
+        return energyReduce;
     }
 
     public static ToolType getNext(ToolType type) {

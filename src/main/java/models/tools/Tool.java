@@ -8,9 +8,10 @@ public abstract class Tool extends Item {
     protected ToolType type;
     protected int baseUsingEnergy;
 
-    public Tool(String name, ToolType type) {
+    public Tool(String name, ToolType type, int baseUsingEnergy) {
         super(name);
         this.type = type;
+        this.baseUsingEnergy = baseUsingEnergy;
     }
 
     public abstract Result useTool();
@@ -20,4 +21,6 @@ public abstract class Tool extends Item {
     public void upgradeType() {
         this.type = ToolType.getNext(type);
     }
+
+    public abstract int getUsingEnergy();
 }

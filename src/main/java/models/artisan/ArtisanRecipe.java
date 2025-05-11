@@ -3,10 +3,29 @@ package models.artisan;
 import java.util.HashMap;
 
 public class ArtisanRecipe {
-    String name;
-    String description;
-    HashMap<String, Integer> ingredients;
+    private String name;
+    private HashMap<String, Integer> ingredients;
+    private int sellPrice;
+    private int energy;
 
-    ArtisanGood good;
+    private ArtisanGood good;
+
+    public ArtisanRecipe(String name, HashMap<String, Integer> ingredients, int sellPrice, int energy) {
+        this.name = name;
+        this.ingredients = ingredients;
+        this.good = new ArtisanGood(name, sellPrice, energy);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public HashMap<String, Integer> getIngredients() {
+        return ingredients;
+    }
+
+    public ArtisanGood getGood() {
+        return good;
+    }
 
 }

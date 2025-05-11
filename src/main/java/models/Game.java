@@ -1,5 +1,6 @@
 package models;
 
+import models.NPC.NPC;
 import models.buildings.Building;
 import models.map.FarmType;
 import models.map.Map;
@@ -101,4 +102,13 @@ public class Game {
     public Player getCurrentPlayer() { return currentPlayer; }
 
     public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
+
+    // NPC
+    NPC sebastian;
+    NPC abigail;
+    NPC harvey;
+    NPC leah;
+    NPC robin;
+
+    public void initializeNPCs() {}
 }

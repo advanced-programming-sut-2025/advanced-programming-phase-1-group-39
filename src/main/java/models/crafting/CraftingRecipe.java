@@ -1,8 +1,6 @@
 package models.crafting;
 
-import models.artisan.ArtisanMachine;
-import models.artisan.ArtisanMachineType;
-import models.artisan.BeeHouse;
+import models.artisan.*;
 
 import java.util.Map;
 
@@ -31,7 +29,7 @@ public enum CraftingRecipe {
                 Map.of("Gold Bar", 1, "Iridium Bar", 1),
                 "Farming Level 3"),
 
-        CHARCOAL_KILN(new ArtisanMachine("Charcoal Kiln", 0),
+        CHARCOAL_KILN(new Furnace("Charcoal Kiln", 0),
                 Map.of("Wood", 20, "Copper Bar", 2),
                 "Foraging Level 1"),
 
@@ -51,7 +49,7 @@ public enum CraftingRecipe {
                 Map.of("Wood", 40, "Coal", 8, "Iron Bar", 1),
                 "Farming Level 1"),
 
-        CHEESE_PRESS(new ArtisanMachine("Cheese Press", 0),
+        CHEESE_PRESS(new CheesePress("Cheese Press", 0),
                 Map.of("Wood", 45, "Stone", 45, "Copper Bar", 1),
                 "Farming Level 2"),
 

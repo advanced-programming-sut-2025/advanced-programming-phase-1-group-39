@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class Inventory {
     InventoryType type;
     //ToDO: change
-    ArrayList<ItemStack> inventoryItems;
+    ArrayList<ItemStack> inventoryItems = new ArrayList<>();
     TrashType trashType;
 
     ItemStack inHand;

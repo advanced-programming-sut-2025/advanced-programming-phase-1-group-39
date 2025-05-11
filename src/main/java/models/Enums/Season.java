@@ -9,13 +9,13 @@ public enum Season {
     WINTER;
 
     public static Season getSeason(String name) {
-        if (Objects.equals(name, "Spring")) {
+        if (name.equalsIgnoreCase("spring")) {
             return SPRING;
-        } else if (Objects.equals(name, "Summer")) {
+        } else if (name.equalsIgnoreCase("summer")) {
             return SUMMER;
-        } else if (Objects.equals(name, "Fall")) {
+        } else if (name.equalsIgnoreCase("fall")) {
             return FALL;
-        } else if (Objects.equals(name, "Winter")) {
+        } else if (name.equalsIgnoreCase("winter")) {
             return WINTER;
         }
 

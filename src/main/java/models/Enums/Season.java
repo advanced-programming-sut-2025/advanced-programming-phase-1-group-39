@@ -1,13 +1,25 @@
 package models.Enums;
 
-import java.util.Objects;
-
 public enum Season {
-    SPRING,
-    SUMMER,
-    FALL,
-    WINTER;
+    SPRING (0),
+    SUMMER (1),
+    FALL (2),
+    WINTER (3);
 
+    public int number;
+
+    Season(int number) {
+        this.number = number;
+    }
+
+    public static Season getSeasonByNumber(int number) {
+        for (Season season : Season.values()) {
+            if (season.number == number) {
+                return season;
+            }
+        }
+        return null;
+    }
     public static Season getSeason(String name) {
         if (name.equalsIgnoreCase("spring")) {
             return SPRING;

@@ -2,6 +2,7 @@ package models.crafting;
 
 import models.artisan.ArtisanMachine;
 import models.artisan.ArtisanMachineType;
+import models.artisan.BeeHouse;
 
 import java.util.Map;
 
@@ -30,11 +31,11 @@ public enum CraftingRecipe {
                 Map.of("Gold Bar", 1, "Iridium Bar", 1),
                 "Farming Level 3"),
 
-        CHARCOAL_KILN(new ArtisanMachine("Charcoal Kiln", 0, ArtisanMachineType.CHARCOAL_KILN),
+        CHARCOAL_KILN(new ArtisanMachine("Charcoal Kiln", 0),
                 Map.of("Wood", 20, "Copper Bar", 2),
                 "Foraging Level 1"),
 
-        FURNACE(new ArtisanMachine("Furnace", 0, ArtisanMachineType.FURNACE),
+        FURNACE(new ArtisanMachine("Furnace", 0),
                 Map.of("Copper Ore", 20, "Stone", 25),
                 "-"),
 
@@ -46,39 +47,39 @@ public enum CraftingRecipe {
                 Map.of("Wood", 50, "Coal", 1, "Fiber", 20, "Iridium Ore", 1),
                 "Farming Level 2"),
 
-        BEE_HOUSE(new ArtisanMachine("Bee House", 0, ArtisanMachineType.BEE_HOUSE),
+        BEE_HOUSE(new BeeHouse("Bee House", 0),
                 Map.of("Wood", 40, "Coal", 8, "Iron Bar", 1),
                 "Farming Level 1"),
 
-        CHEESE_PRESS(new ArtisanMachine("Cheese Press", 0, ArtisanMachineType.CHEESE_PRESS),
+        CHEESE_PRESS(new ArtisanMachine("Cheese Press", 0),
                 Map.of("Wood", 45, "Stone", 45, "Copper Bar", 1),
                 "Farming Level 2"),
 
-        KEG(new ArtisanMachine("Keg", 0, ArtisanMachineType.KEG),
+        KEG(new ArtisanMachine("Keg", 0),
                 Map.of("Wood", 30, "Copper Bar", 1, "Iron Bar", 1),
                 "Farming Level 3"),
 
-        LOOM(new ArtisanMachine("Loom", 0, ArtisanMachineType.LOOM),
+        LOOM(new ArtisanMachine("Loom", 0),
                 Map.of("Wood", 60, "Fiber", 30),
                 "Farming Level 3"),
 
-        MAYONNAISE_MACHINE(new ArtisanMachine("Mayonnaise Machine", 0, ArtisanMachineType.MAYO_MACHINE),
+        MAYONNAISE_MACHINE(new ArtisanMachine("Mayonnaise Machine", 0),
                 Map.of("Wood", 15, "Stone", 15, "Copper Bar", 1),
                 "-"),
 
-        OIL_MAKER(new ArtisanMachine("Oil Maker", 0, ArtisanMachineType.OIL_MAKER),
+        OIL_MAKER(new ArtisanMachine("Oil Maker", 0),
                 Map.of("Wood", 100, "Gold Bar", 1, "Iron Bar", 1),
                 "Farming Level 3"),
 
-        PRESERVES_JAR(new ArtisanMachine("Preserves Jar", 0, ArtisanMachineType.PRESERVE_JAR),
+        PRESERVES_JAR(new ArtisanMachine("Preserves Jar", 0),
                 Map.of("Wood", 50, "Stone", 40, "Coal", 8),
                 "Farming Level 2"),
 
-        DEHYDRATOR(new ArtisanMachine("Dehydrator", 0, ArtisanMachineType.DEHYDRATOR),
+        DEHYDRATOR(new ArtisanMachine("Dehydrator", 0),
                 Map.of("Wood", 30, "Stone", 20, "Fiber", 30),
                 "Pierre's General Store"),
 
-        FISH_SMOKER(new ArtisanMachine("Fish Smoker", 0, ArtisanMachineType.FISH_SMOKER),
+        FISH_SMOKER(new ArtisanMachine("Fish Smoker", 0),
                 Map.of("Wood", 50, "Iron Bar", 3, "Coal", 10),
                 "Fish Shop"),
 

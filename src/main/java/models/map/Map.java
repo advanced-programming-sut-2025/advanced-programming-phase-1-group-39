@@ -201,6 +201,24 @@ public class Map {
             tiles[y][x].setType(TileType.SELL_BASKET);
         }
     }
+    // updating map
+    public void updateMap(Building building) {
+        int x = building.getLocation().x();
+        int y = building.getLocation().y();
+        int w = building.getWidth();
+        int h = building.getHeight();
+
+        if (building instanceof GreenHouse) {
+            if (((GreenHouse) building).isBuild()) {
+                for (int i = x + 1; i < x + w - 1; i++) {
+                    for (int j = y + 2; j < y + h - 1; j++) {
+                        tiles[j][i].setType(TileType.SOIL);
+                    }
+                }
+            }
+        }
+    }
+
 
     public void fillFarmWithRandoms(int startX, int startY,
                                      double foragingPossibility, double quarryPossibility,

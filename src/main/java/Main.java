@@ -2,6 +2,7 @@ import controllers.AppControllers;
 import models.*;
 import models.Enums.Menu;
 import models.Enums.Season;
+import models.buildings.GreenHouse;
 import models.cropsAndFarming.ForagingManager;
 import models.cropsAndFarming.TreeManager;
 import models.map.FarmType;
@@ -33,6 +34,8 @@ public class Main {
         game.addRandomFarmForPlayer(player2, FarmType.getFarmTypeById(0));
         game.addRandomFarmForPlayer(player3, FarmType.getFarmTypeById(1));
         game.addRandomFarmForPlayer(player4, FarmType.getFarmTypeById(1));
+        ((GreenHouse)player2.getBuildingByName("greenhouse")).build();
+        game.getMap().updateMap((GreenHouse)player2.getBuildingByName("greenhouse"));
         game.startGame();
         App.getApp().addGame(game);
         App.getApp().setCurrentGame(game);

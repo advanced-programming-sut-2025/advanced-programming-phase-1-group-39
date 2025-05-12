@@ -40,4 +40,15 @@ public class Fish extends Item {
     public int getFinalPrice() {
         return (int) (price * quality.getRate());
     }
+
+    @Override
+    public String toString() {
+        return "Fish{" +
+                "type=" + type +
+                ", price=" + price +
+                ", season=" + season +
+                ", quality=" + quality +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

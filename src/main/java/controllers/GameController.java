@@ -1,10 +1,16 @@
 package controllers;
 
-import models.Item;
-import models.Result;
+import models.*;
+import models.animals.Animal;
+import models.animals.Fish;
+import models.artisan.ArtisanGood;
+import models.artisan.ArtisanMachine;
+import models.artisan.Furnace;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
+import models.tools.FishingPole;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class GameController {
@@ -70,18 +76,87 @@ public class GameController {
 
     public Result build(Matcher matcher) {return null;}
     public Result buyAnimal(Matcher matcher) {return null;}
-    public Result petAnimal(Matcher matcher) {return null;}
-    public Result showAnimalsInfo(Matcher matcher) {return null;}
+    public Result petAnimal(Matcher matcher) {
+        String name = matcher.group(1);
+        Animal animal = App.getApp().getCurrentGame().getPlayerInTurn().getAnimal(name);
+
+        if (animal == null) {
+            return new Result(false, "You doesn't have this animal ):");
+        }
+        animal.pet();
+
+        return new Result(false, "\"Thank you (:\" said " + name +
+                ". Your frienship: " + animal.getFriendship());
+    }
+    public Result showAnimalsInfo(Matcher matcher) {
+        ArrayList<Animal> animals = App.getApp().getCurrentGame().getPlayerInTurn().getAnimals();
+        StringBuilder sb = new StringBuilder();
+        sb.append("Your Animals: \n");
+        for (Animal animal : animals) {
+            sb.append(animal.toString());
+        }
+
+        return new Result(true, sb.toString());
+    }
     public Result shepherdAnimals(Matcher matcher) {return null;}
     public Result feedHayAnimal (Matcher matcher) {return null;}
     public Result showAnimalsProducts(Matcher matcher) {return null;}
     public Result collectProducts(Matcher matcher) {return null;}
     public Result sellAnimal(Matcher matcher) {return null;}
 
-    public Result fishing(Matcher matcher) {return null;}
+    public Result fishing(Matcher matcher) {
+        Game currentGame = App.getApp().getCurrentGame();
+        String pole = matcher.group(1);
+        //Todo: check karadan name pole to inv
+        FishingPole fishingPole = null;
+        ArrayList<Fish> gotFishes = currentGame.getPlayerInTurn().goFishing(fishingPole, currentGame.getTodayWeather(),
+                currentGame.getTime().getSeason());
+        if (gotFishes == null) {
+            return new Result(false, "You didn't get any fishes ):");
+        }
 
-    public Result artisanUse(Matcher matcher) {return null;}
-    public Result artisanGet(Matcher matcher) {return null;}
+        StringBuilder sb = new StringBuilder();
+        sb.append("You have got this fishes:    \n");
+        for (Fish fish : gotFishes) {
+            sb.append(fish.toString());
+        }
+
+        return new Result(true, sb.toString());
+    }
+
+    public Result artisanUse(Matcher matcher) {
+        String itemName = matcher.group(1);
+        String ingredients = matcher.group(2);
+        String[] ingredientsParts = ingredients.split(" ");
+
+        ArtisanMachine machine = App.getApp().getCurrentGame().getMap()
+                .getNearArtisanMachine(App.getApp().getCurrentGame().getPlayerInTurn(), ItemManager.getArtisanMachineByGood(itemName));
+        if (machine == null) {
+            return new Result(false, "You aren't near the machine now!");
+        }
+
+        Result result = machine.use(itemName, ingredientsParts, App.getApp().getCurrentGame().getTime(),
+                App.getApp().getCurrentGame().getPlayerInTurn());
+
+        return result;
+    }
+    public Result artisanGet(Matcher matcher) {
+        String itemName = matcher.group(1);
+
+        ArtisanMachine machine = App.getApp().getCurrentGame().getMap()
+                .getNearArtisanMachine(App.getApp().getCurrentGame().getPlayerInTurn(), ItemManager.getArtisanMachineByGood(itemName));
+        if (machine == null) {
+            return new Result(false, "You aren't near the machine now!");
+        }
+
+        ArtisanGood good = machine.getReadyGoods(itemName, App.getApp().getCurrentGame().getTime());
+        if (good == null) {
+            return new Result(false, "The product has not produced by machine (yet or never)");
+        }
+        App.getApp().getCurrentGame().getPlayerInTurn().getInventory().addItem(good, 1);
+
+        return new Result(true, "You have got " + itemName + " successfully");
+    }
 
     public Result showAllProducts() {return null;}
     public Result showAllAvailableProducts() {return null;}

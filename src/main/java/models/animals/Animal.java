@@ -1,5 +1,7 @@
 package models.animals;
 
+import models.Location;
+
 import java.util.ArrayList;
 
 public class Animal {
@@ -7,6 +9,7 @@ public class Animal {
     private String name;
     private int price;
     private LivingPlace place;
+    private Location location;
 
     private ArrayList<AnimalProduct> products;
 
@@ -22,7 +25,6 @@ public class Animal {
         this.price = price;
         this.type = type;
         this.place = place;
-
         this.products = products;
     }
 
@@ -46,6 +48,12 @@ public class Animal {
         return products;
     }
 
+    public Location getLocation() {
+        return location;
+    }
+    public void setLocation(Location location) {
+        this.location = location;
+    }
     public int getFriendship() {
         return friendship;
     }
@@ -106,5 +114,22 @@ public class Animal {
         }
 
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Animal{" +
+                "type=" + type +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", place=" + place +
+                ", location=" + location +
+                ", products=" + products +
+                ", friendship=" + friendship +
+                ", pettedToday=" + pettedToday +
+                ", fedToday=" + fedToday +
+                ", outsideToday=" + outsideToday +
+                ", daysSinceLastProduce=" + daysSinceLastProduce +
+                '}';
     }
 }

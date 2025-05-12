@@ -5,7 +5,13 @@ import java.util.regex.Pattern;
 
 public enum GameCommands {
     PRINT_MAP("print\\s+map\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)\\s+-s\\s+(?<size>\\d+)"),
-    HELP_READING_MAP("help\\s+reading\\s+map");
+    HELP_READING_MAP("help\\s+reading\\s+map"),
+
+    PET("pet\\s+-n\\s+(.+?)"),
+    FISHING("fishing -p (.+?)"),
+
+    ARTISAN_USE("artisan\\s+use\\s+\"(.*?)\"(?:\\s+\"(.*?)\")+"),
+    ARTISAN_GET("artisan\\s+get\\s+(.+?)");
 
     private final String pattern;
 

@@ -63,6 +63,10 @@ public class Dehydrator extends ArtisanMachine {
             return new Result(false, "Recipe not found for: " + productName);
         }
 
+        if (!recipe.getIngredients().containsKey(ingredientName)) {
+            return new Result(false, ingredientName + " isn't the product's ingredient");
+        }
+
         int requiredAmount = recipe.getIngredients().get(ingredientName);
         if (!player.getInventory().hasEnoughStack(ingredientName, requiredAmount)) {
             return new Result(false, "Not enough " + ingredientName);

@@ -5,7 +5,7 @@ import models.Skill;
 import models.Weather;
 
 public class WateringCan extends Tool {
-    int tilesWaterNumRemaining;
+    private int tilesWaterNumRemaining;
 
     public WateringCan() {
         super("watering can", ToolType.BASIC, 5);
@@ -17,7 +17,16 @@ public class WateringCan extends Tool {
     }
 
     public void fillWateringCan() {
-
+        tilesWaterNumRemaining = switch (type) {
+            case BASIC -> 40;
+            case COPPER -> 55;
+            case IRON -> 70;
+            case GOLD -> 85;
+            case IRIDIUM -> 100;
+        };
+    }
+    public boolean haveWater() {
+        return tilesWaterNumRemaining > 0;
     }
 
     public int getSkillEnergyReduce(Skill skill) {

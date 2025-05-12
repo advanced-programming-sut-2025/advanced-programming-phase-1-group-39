@@ -8,6 +8,7 @@ import models.artisan.ArtisanMachine;
 import models.artisan.Furnace;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
+import models.inventory.Inventory;
 import models.tools.FishingPole;
 
 import java.util.ArrayList;
@@ -99,7 +100,21 @@ public class GameController {
         return new Result(true, sb.toString());
     }
     public Result shepherdAnimals(Matcher matcher) {return null;}
-    public Result feedHayAnimal (Matcher matcher) {return null;}
+    public Result feedHayAnimal (Matcher matcher) {
+        String animalName = matcher.group(1);
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        Inventory inv = player.getInventory();
+        if (!inv.hasItem("Hay")) {
+            return new Result(false, "You doesn't have any hay to feed animal");
+        }
+        Animal animal = player.getAnimal(animalName);
+        if (animal == null) {
+            return new Result(false, "You doesn't have this animal");
+        }
+
+        animal.feedHay();
+        return new Result(true, "You have successfully feeded the " + animalName);
+    }
     public Result showAnimalsProducts(Matcher matcher) {return null;}
     public Result collectProducts(Matcher matcher) {return null;}
     public Result sellAnimal(Matcher matcher) {return null;}

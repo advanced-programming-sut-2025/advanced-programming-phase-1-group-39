@@ -57,9 +57,9 @@ public enum CraftingRecipe {
                 Map.of("Wood", 30, "Copper Bar", 1, "Iron Bar", 1),
                 "Farming Level 3"),
 
-//        LOOM(new ArtisanMachine("Loom", 0),
-//                Map.of("Wood", 60, "Fiber", 30),
-//                "Farming Level 3"),
+        LOOM(new Loom("Loom", 0),
+                Map.of("Wood", 60, "Fiber", 30),
+                "Farming Level 3"),
 
 //        MAYONNAISE_MACHINE(new ArtisanMachine("Mayonnaise Machine", 0),
 //                Map.of("Wood", 15, "Stone", 15, "Copper Bar", 1),

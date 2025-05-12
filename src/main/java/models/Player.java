@@ -107,12 +107,12 @@ public class Player {
         return sb.toString();
     }
 
-    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) { // Todo: not complete
+    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) { // Todo: not complete (legendary + type fishing pole)
         double M = weather.getFishingFactor();
         double R = Math.random();
         int skill = skills.getFishingLevel();
 
-        int count = (int) Math.ceil(2 + skill * M * R);
+        int count = (int) Math.ceil((2 + skill) * M * R);
         count = Math.min(count, 6);
 
         List<FishType> seasonal = Arrays.stream(FishType.values())
@@ -131,11 +131,11 @@ public class Player {
         for (int i = 0; i < count; i++) {
             FishType randomType = seasonal.get((int) (Math.random() * seasonal.size()));
 
-            //double qualityScore = Math.random() * (skill * 2) + pole.();
-            //double normalized = qualityScore / 7.0;
-            //AnimalProductQuality quality = AnimalProductQuality.fromScore(normalized);
-
-            //result.add(new Fish(randomType, quality));
+//            double qualityScore = Math.random() * (skill * 2) + pole.getType().;
+//            double normalized = qualityScore / 7.0;
+//            AnimalProductQuality quality = AnimalProductQuality.fromScore(normalized);
+//
+//            result.add(new Fish(randomType, quality));
         }
 
         return new ArrayList<>(result);

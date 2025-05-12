@@ -69,9 +69,9 @@ public enum CraftingRecipe {
                 Map.of("Wood", 100, "Gold Bar", 1, "Iron Bar", 1),
                 "Farming Level 3"),
 
-//        PRESERVES_JAR(new ArtisanMachine("Preserves Jar", 0),
-//                Map.of("Wood", 50, "Stone", 40, "Coal", 8),
-//                "Farming Level 2"),
+        PRESERVES_JAR(new PreservesJar("Preserves Jar", 0),
+                Map.of("Wood", 50, "Stone", 40, "Coal", 8),
+                "Farming Level 2"),
 
         DEHYDRATOR(new Dehydrator("Dehydrator", 0),
                 Map.of("Wood", 30, "Stone", 20, "Fiber", 30),

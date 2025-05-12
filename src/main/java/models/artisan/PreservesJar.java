@@ -6,39 +6,40 @@ import models.Time;
 
 import java.util.HashMap;
 
-public class OilMaker extends ArtisanMachine {
-    public OilMaker(String name, int sellPrice) {
+public class PreservesJar extends ArtisanMachine{
+    public PreservesJar(String name, int sellPrice) {
         super(name, sellPrice);
+        addPicklesRecipe("Broccoli", 70, 63);
+        addPicklesRecipe("Carrot", 35, 75);
+        addPicklesRecipe("Corn", 50, 25);
 
 
-        HashMap<String, Integer> truffleIngredients = new HashMap<>();
-        truffleIngredients.put("Truffle", 1);
-        recipes.add(new ArtisanRecipe("Truffle Oil", "A gourmet cooking ingredient.",
-                truffleIngredients, 6, 38, 1065));
+        addJellyRecipe("Apple", 100, 38);
+        addJellyRecipe("Banana", 150, 75);
+        addJellyRecipe("Orange", 100, 38);
+    }
 
+    private void addPicklesRecipe(String mushroomName, int basePrice, int baseEnergy) {
+        HashMap<String, Integer> ingredients = new HashMap<>();
+        ingredients.put(mushroomName, 5);
+        int sellPrice = (int) (basePrice * 2 + 50);
+        int energy = (int) (baseEnergy * 1.75);
+        recipes.add(new ArtisanRecipe("Pickles", "A jar of your home-made pickles.",
+                ingredients, 6, energy, sellPrice));
+    }
 
-        HashMap<String, Integer> cornIngredients = new HashMap<>();
-        cornIngredients.put("Corn", 1);
-        recipes.add(new ArtisanRecipe("Oil", "All purpose cooking oil.",
-                cornIngredients, 6, 13, 100));
-
-
-        HashMap<String, Integer> seedIngredients = new HashMap<>();
-        seedIngredients.put("Sunflower Seeds", 1);
-        recipes.add(new ArtisanRecipe("Oil", "All purpose cooking oil.",
-                seedIngredients, 48, 13, 100));
-
-
-        HashMap<String, Integer> flowerIngredients = new HashMap<>();
-        flowerIngredients.put("Sunflower", 1);
-        recipes.add(new ArtisanRecipe("Oil", "All purpose cooking oil.",
-                flowerIngredients, 1, 13, 100));
+    private void addJellyRecipe(String fruitName, int basePrice, int baseEnergy) {
+        HashMap<String, Integer> ingredients = new HashMap<>();
+        ingredients.put(fruitName, 5);
+        int sellPrice = (int) (basePrice * 2 + 50);
+        int energy = (int) (baseEnergy * 2);
+        recipes.add(new ArtisanRecipe("Jelly", "Gooey.",
+                ingredients, 24, energy, sellPrice));
     }
 
     public ArtisanRecipe getRecipeByNameAndIngredient(String name, String ingredient) {
         for (ArtisanRecipe recipe : recipes) {
-            if (name.equalsIgnoreCase(recipe.getName()) &&
-                    recipe.getIngredients().containsKey(ingredient)) {
+            if (name.equalsIgnoreCase(recipe.getName()) && recipe.getIngredients().containsKey(ingredient)) {
                 return recipe;
             }
         }

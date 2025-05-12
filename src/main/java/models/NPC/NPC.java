@@ -36,11 +36,9 @@ public abstract class NPC {
         return name;
     }
 
-    //public Result getRewardLevel1{}
-
-
-
-
+    public HashMap<String, String> getDialogues() {
+        return dialogues;
+    }
 }
 
 

@@ -11,7 +11,7 @@ public class AbigailNPC extends NPC {
 
     public AbigailNPC() {
         super(
-                "Abigail",
+                "abigail",
                 "Explorer ",
                 "Abigail is a free-spirited, adventurous soul with a love for exploration and risk-taking.\nShe's very passionate about coffee and pumpkins and enjoys anything that challenges the status quo.\nShe’s bold, independent, and always ready for new experiences, which makes her an exciting NPC to befriend.",
                 new Location(95, 22),

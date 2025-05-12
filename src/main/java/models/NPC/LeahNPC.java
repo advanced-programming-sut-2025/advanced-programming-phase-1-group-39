@@ -10,7 +10,7 @@ import java.util.List;
 public class LeahNPC extends NPC {
     public LeahNPC() {
         super(
-                "Leah",
+                "leah",
                 "Artist",
                 "Leia is an artist with a deep appreciation for nature and beauty.\nShe enjoys quiet moments surrounded by the beauty of the world and values peace.\nHer preferences lean toward fine food like salads and wine, and she loves the simple joy of creating beautiful things, whether it's art or nurturing the environment.",
                 new Location(40,82),

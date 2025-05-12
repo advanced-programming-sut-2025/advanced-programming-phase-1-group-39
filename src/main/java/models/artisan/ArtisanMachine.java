@@ -8,7 +8,7 @@ import models.crafting.CraftingItem;
 import java.util.ArrayList;
 
 public abstract class ArtisanMachine extends CraftingItem {
-    protected ArrayList<ArtisanRecipe> recipes;
+    protected ArrayList<ArtisanRecipe> recipes = new ArrayList<>();
 
     protected ArtisanRecipe processingRecipe;
     protected ArtisanGood readyGood;

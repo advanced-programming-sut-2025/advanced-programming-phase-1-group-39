@@ -29,9 +29,9 @@ public enum CraftingRecipe {
                 Map.of("Gold Bar", 1, "Iridium Bar", 1),
                 "Farming Level 3"),
 
-        CHARCOAL_KILN(new ArtisanMachine("Charcoal Kiln", 0),
-                Map.of("Wood", 20, "Copper Bar", 2),
-                "Foraging Level 1"),
+//        CHARCOAL_KILN(new ArtisanMachine("Charcoal Kiln", 0),
+//                Map.of("Wood", 20, "Copper Bar", 2),
+//                "Foraging Level 1"),
 
         FURNACE(new Furnace("Furnace", 0),
                 Map.of("Copper Ore", 20, "Stone", 25),
@@ -57,27 +57,27 @@ public enum CraftingRecipe {
                 Map.of("Wood", 30, "Copper Bar", 1, "Iron Bar", 1),
                 "Farming Level 3"),
 
-        LOOM(new ArtisanMachine("Loom", 0),
-                Map.of("Wood", 60, "Fiber", 30),
-                "Farming Level 3"),
+//        LOOM(new ArtisanMachine("Loom", 0),
+//                Map.of("Wood", 60, "Fiber", 30),
+//                "Farming Level 3"),
 
-        MAYONNAISE_MACHINE(new ArtisanMachine("Mayonnaise Machine", 0),
-                Map.of("Wood", 15, "Stone", 15, "Copper Bar", 1),
-                "-"),
+//        MAYONNAISE_MACHINE(new ArtisanMachine("Mayonnaise Machine", 0),
+//                Map.of("Wood", 15, "Stone", 15, "Copper Bar", 1),
+//                "-"),
 
-        OIL_MAKER(new ArtisanMachine("Oil Maker", 0),
-                Map.of("Wood", 100, "Gold Bar", 1, "Iron Bar", 1),
-                "Farming Level 3"),
+//        OIL_MAKER(new ArtisanMachine("Oil Maker", 0),
+//                Map.of("Wood", 100, "Gold Bar", 1, "Iron Bar", 1),
+//                "Farming Level 3"),
 
-        PRESERVES_JAR(new ArtisanMachine("Preserves Jar", 0),
-                Map.of("Wood", 50, "Stone", 40, "Coal", 8),
-                "Farming Level 2"),
+//        PRESERVES_JAR(new ArtisanMachine("Preserves Jar", 0),
+//                Map.of("Wood", 50, "Stone", 40, "Coal", 8),
+//                "Farming Level 2"),
 
-        DEHYDRATOR(new ArtisanMachine("Dehydrator", 0),
+        DEHYDRATOR(new Dehydrator("Dehydrator", 0),
                 Map.of("Wood", 30, "Stone", 20, "Fiber", 30),
                 "Pierre's General Store"),
 
-        FISH_SMOKER(new ArtisanMachine("Fish Smoker", 0),
+        FISH_SMOKER(new Dehydrator("Fish Smoker", 0), // Todo:
                 Map.of("Wood", 50, "Iron Bar", 3, "Coal", 10),
                 "Fish Shop"),
 

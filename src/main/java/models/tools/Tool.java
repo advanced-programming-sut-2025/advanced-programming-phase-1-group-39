@@ -4,6 +4,7 @@ import models.Item;
 import models.Result;
 import models.Skill;
 import models.Weather;
+import models.map.Tile;
 
 public abstract class Tool extends Item {
     protected String name;
@@ -16,7 +17,7 @@ public abstract class Tool extends Item {
         this.baseUsingEnergy = baseUsingEnergy;
     }
 
-    public abstract Result useTool();
+    public abstract Result useTool(Tile tile);
     public ToolType getType() {
         return type;
     }

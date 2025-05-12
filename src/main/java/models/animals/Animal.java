@@ -69,8 +69,10 @@ public class Animal {
         fedToday = true;
     }
 
-    public void sendOutside() {
+    public void sendOutside(int x, int y) {
         outsideToday = true;
+        fedToday = true;
+        setLocation(new Location(x, y));
     }
 
     public void endDay() {

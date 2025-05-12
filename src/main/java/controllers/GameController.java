@@ -84,6 +84,7 @@ public class GameController {
         if (animal == null) {
             return new Result(false, "You doesn't have this animal ):");
         }
+        //Todo: check is near animal
         animal.pet();
 
         return new Result(false, "\"Thank you (:\" said " + name +
@@ -99,7 +100,22 @@ public class GameController {
 
         return new Result(true, sb.toString());
     }
-    public Result shepherdAnimals(Matcher matcher) {return null;}
+    public Result shepherdAnimals(Matcher matcher) {
+        String animalName = matcher.group(1);
+        int x = Integer.parseInt(matcher.group(2));
+        int y = Integer.parseInt(matcher.group(3));
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        //Todo: check x and y validate
+        Animal animal = player.getAnimal(animalName);
+        if (animal == null) {
+            return new Result(false, "You doesn't have this animal");
+        }
+        animal.sendOutside(x, y);
+
+        return new Result(true, "You shepherd your animal, congrats!");
+    }
     public Result feedHayAnimal (Matcher matcher) {
         String animalName = matcher.group(1);
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
@@ -112,6 +128,7 @@ public class GameController {
             return new Result(false, "You doesn't have this animal");
         }
 
+        inv.pickItem("Hay", 1);
         animal.feedHay();
         return new Result(true, "You have successfully feeded the " + animalName);
     }

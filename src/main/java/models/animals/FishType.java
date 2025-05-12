@@ -38,6 +38,6 @@ public enum FishType {
     }
 
     public Fish create() {
-        return new Fish(this, basePrice, season);
+        return new Fish(this.name(), this, basePrice, season);
     }
 }

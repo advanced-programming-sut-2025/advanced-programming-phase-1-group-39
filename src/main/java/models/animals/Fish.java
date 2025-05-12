@@ -1,14 +1,16 @@
 package models.animals;
 
 import models.Enums.Season;
+import models.Item;
 
-public class Fish {
+public class Fish extends Item {
     private FishType type;
     private int price;
     private Season season;
     private AnimalProductQuality quality;
 
-    public Fish(FishType type, int price, Season season) {
+    public Fish(String name, FishType type, int price, Season season) {
+        super(name);
         this.type = type;
         this.price = price;
         this.season = season;

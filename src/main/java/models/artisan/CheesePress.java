@@ -48,26 +48,26 @@ public class CheesePress extends ArtisanMachine {
     }
 
     @Override
-    public Result use(String itemName, String ingredient, Time time, Player player) {
+    public Result use(String itemName, String[] ingredients, Time time, Player player) {
         if (processingRecipe != null) {
             return new Result(false, "Machine is currently busy!");
         }
 
-        ArtisanRecipe recipe = getRecipeByNameAndIngredient(itemName, ingredient);
+        ArtisanRecipe recipe = getRecipeByNameAndIngredient(itemName, ingredients[0]);
         if (recipe == null) {
             return new Result(false, itemName + " not found.");
         }
-        if (!recipe.getIngredients().containsKey(ingredient)) {
-            return new Result(false, ingredient + " isn't the product's ingredient");
+        if (!recipe.getIngredients().containsKey(ingredients[0])) {
+            return new Result(false, ingredients[0] + " isn't the product's ingredient");
         }
-        if (!player.getInventory().hasEnoughStack(ingredient, recipe.getIngredients().get(ingredient))) {
-            return new Result(false, "You doesn't have enough ingredients ):");
+        if (!player.getInventory().hasEnoughStack(ingredients[0], recipe.getIngredients().get(ingredients[0]))) {
+            return new Result(false, "You doesn't have enough ingredients[0 ):");
         }
 
         processingRecipe = recipe;
         processTime = time.clone();
         processTime.addToHour(recipe.getProcessingTime());
-        player.getInventory().pickItem(ingredient, recipe.getIngredients().get(ingredient));
+        player.getInventory().pickItem(ingredients[0], recipe.getIngredients().get(ingredients[0]));
 
         return new Result(true, "Started processing: " + itemName);
     }

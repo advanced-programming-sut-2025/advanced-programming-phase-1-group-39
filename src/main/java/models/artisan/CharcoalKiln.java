@@ -26,7 +26,7 @@ public class CharcoalKiln extends ArtisanMachine{
     }
 
     @Override
-    public Result use(String itemName, String ingredient, Time time, Player player) {
+    public Result use(String itemName, String[] ingredients, Time time, Player player) {
         if (processingRecipe != null) {
             return new Result(false, "Machine is currently busy!");
         }
@@ -36,16 +36,16 @@ public class CharcoalKiln extends ArtisanMachine{
             return new Result(false, "Recipe not found for: " + itemName);
         }
 
-        if (!recipe.getIngredients().containsKey(ingredient)) {
-            return new Result(false, ingredient + " isn't the product's ingredient");
+        if (!recipe.getIngredients().containsKey(ingredients[0])) {
+            return new Result(false, ingredients[0] + " isn't the product's ingredient");
         }
 
-        int requiredAmount = recipe.getIngredients().get(ingredient);
-        if (!player.getInventory().hasEnoughStack(ingredient, requiredAmount)) {
-            return new Result(false, "Not enough " + ingredient);
+        int requiredAmount = recipe.getIngredients().get(ingredients[0]);
+        if (!player.getInventory().hasEnoughStack(ingredients[0], requiredAmount)) {
+            return new Result(false, "Not enough " + ingredients[0]);
         }
 
-        player.getInventory().pickItem(ingredient, requiredAmount);
+        player.getInventory().pickItem(ingredients[0], requiredAmount);
         processingRecipe = recipe;
         processTime = time.clone();
         processTime.addToHour(recipe.getProcessingTime());

@@ -1,7 +1,10 @@
 package models;
 
+import models.Enums.Season;
 import models.NPC.NPC;
 import models.NPC.Quest;
+import models.animals.Fish;
+import models.animals.FishType;
 import models.artisan.ArtisanMachineRecipe;
 import models.buildings.Building;
 import models.buildings.Cabin;
@@ -12,10 +15,14 @@ import models.cooking.FoodRecipe;
 import models.crafting.CraftingRecipe;
 import models.inventory.Inventory;
 import models.map.AnsiColors;
+import models.tools.FishingPole;
 import models.trading.TradeItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Player {
     private Location location = new Location(0,0);
@@ -71,35 +78,6 @@ public class Player {
     public int getLevelOfFriendship(NPC npc) {return 0;}
 
     public void startTrade(Player player, TradeItem item) {}
-
-    public void learnCraftingRecipe(CraftingRecipe recipe) {
-        craftingRecipes.add(recipe);
-    }
-    public boolean hasLearnedCraftingRecipe(CraftingRecipe recipe) {
-        return craftingRecipes.contains(recipe);
-    }
-
-    public String showCraftingRecipes() {
-        StringBuilder sb = new StringBuilder();
-        for (CraftingRecipe recipe : craftingRecipes) {
-            sb.append(recipe.toString());
-        }
-        return sb.toString();
-    }
-
-    public void learnFoodRecipe(FoodRecipe recipe) {
-        foodRecipes.add(recipe);
-    }
-    public boolean hasLearnedFoodRecipe(FoodRecipe recipe) {
-        return foodRecipes.contains(recipe);
-    }
-    public String showFoodRecipes() {
-        StringBuilder sb = new StringBuilder();
-        for (FoodRecipe recipe : foodRecipes) {
-            sb.append(recipe.toString());
-        }
-        return sb.toString();
-    }
 
     public Location getLocation() {
         return location;
@@ -244,5 +222,72 @@ public class Player {
             if (building.getName().equalsIgnoreCase(name)) return building;
         }
         return null;
+    }
+
+
+
+    public void getFish() {}
+
+
+    public void learnCraftingRecipe(CraftingRecipe recipe) {
+        craftingRecipes.add(recipe);
+    }
+    public boolean hasLearnedCraftingRecipe(CraftingRecipe recipe) {
+        return craftingRecipes.contains(recipe);
+    }
+    public String showCraftingRecipes() {
+        StringBuilder sb = new StringBuilder();
+        for (CraftingRecipe recipe : craftingRecipes) {
+            sb.append(recipe.toString());
+        }
+        return sb.toString();
+    }
+
+    public void learnFoodRecipe(FoodRecipe recipe) {
+        foodRecipes.add(recipe);
+    }
+    public boolean hasLearnedFoodRecipe(FoodRecipe recipe) {
+        return foodRecipes.contains(recipe);
+    }
+    public String showFoodRecipes() {
+        StringBuilder sb = new StringBuilder();
+        for (FoodRecipe recipe : foodRecipes) {
+            sb.append(recipe.toString());
+        }
+        return sb.toString();
+    }
+
+    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) { // Todo: not complete (legendary + type fishing pole)
+        double M = weather.getFishingFactor();
+        double R = Math.random();
+        int skill = skills.getFishingLevel();
+
+        int count = (int) Math.ceil((2 + skill) * M * R);
+        count = Math.min(count, 6);
+
+        List<FishType> seasonal = Arrays.stream(FishType.values())
+                .filter(f -> f.season == season)
+                .collect(Collectors.toList());
+
+        if (skill == 4) {
+            seasonal.addAll(Arrays.stream(FishType.values())
+                    .filter(f -> f.name().equals(f.name().toUpperCase()))
+                    .filter(f -> f.season == season)
+                    .toList());
+        }
+
+        List<Fish> result = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            FishType randomType = seasonal.get((int) (Math.random() * seasonal.size()));
+
+//            double qualityScore = Math.random() * (skill * 2) + pole.getType().;
+//            double normalized = qualityScore / 7.0;
+//            AnimalProductQuality quality = AnimalProductQuality.fromScore(normalized);
+//
+//            result.add(new Fish(randomType, quality));
+        }
+
+        return new ArrayList<>(result);
     }
 }

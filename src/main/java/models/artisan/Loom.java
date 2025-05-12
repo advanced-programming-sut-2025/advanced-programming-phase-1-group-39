@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -14,6 +15,10 @@ public class Loom extends ArtisanMachine{
         ingredients.put("Wool", 1);
         recipes.add(new ArtisanRecipe("Cloth", "A bolt of fine wool cloth.",
                 ingredients, 4, 0, 470));
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
     public ArtisanRecipe getRecipeByName(String name) {

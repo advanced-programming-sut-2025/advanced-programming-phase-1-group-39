@@ -1,10 +1,16 @@
 package models;
 
+import models.artisan.ArtisanGood;
+import models.artisan.ArtisanMachine;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.ForagingManager;
 import models.cropsAndFarming.TreeManager;
 
+import java.util.HashMap;
+
 public class ItemManager {
+    static HashMap<ArtisanGood, String> artisanItems = new HashMap<>();
+
     public static void loadItems() {
         CropManager.loadCrops("src/main/resources/data/crops.json");
         TreeManager.loadTrees("src/main/resources/data/trees.json");
@@ -13,6 +19,26 @@ public class ItemManager {
         ForagingManager.loadTreeSeeds("src/main/resources/data/ForagingTrees.json");
         ForagingManager.loadMinerals("src/main/resources/data/ForagingMinerals.json");
         ForagingManager.loadMaterials("src/main/resources/data/ForagingMaterials.json");
+    }
+
+    public static void addArtisanGood(ArtisanGood good, String machineName) {
+        artisanItems.put(good, machineName);
+    }
+    public static String getArtisanMachineByGood(String goodName) {
+        for (ArtisanGood good : artisanItems.keySet()) {
+            if (goodName.equalsIgnoreCase(good.getName())) {
+                return artisanItems.get(good);
+            }
+        }
+        return null;
+    }
+    public static ArtisanGood getArtisanGood(String name) {
+        for (ArtisanGood good : artisanItems.keySet()) {
+            if (name.equalsIgnoreCase(good.getName())) {
+                return good;
+            }
+        }
+        return null;
     }
 
     public static Item getItemByName(String name) {
@@ -31,6 +57,10 @@ public class ItemManager {
         if (ForagingManager.getMaterialByName(name) != null) {
             return ForagingManager.getMaterialByName(name);
         }
+        if (getArtisanGood(name) != null) {
+            return getArtisanGood(name);
+        }
+
 
         return null;
     }

@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -25,13 +26,17 @@ public class Dehydrator extends ArtisanMachine {
         raisinsIngredients.put("Grapes", 5);
         recipes.add(new ArtisanRecipe("Raisins", "It's said to be the Junimos' favorite food.",
                 raisinsIngredients, 24, 125, 600));
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
     private void addDriedMushroomRecipe(String mushroomName, int basePrice) {
         HashMap<String, Integer> ingredients = new HashMap<>();
         ingredients.put(mushroomName, 5);
         int sellPrice = (int) (basePrice * 7.5 + 25);
-        recipes.add(new ArtisanRecipe("Dried Mushrooms", "A package of gourmet mushrooms.",
+        recipes.add(new ArtisanRecipe("Dried " + mushroomName + " Mushroom", "A package of gourmet mushrooms.",
                 ingredients, 24, 50, sellPrice));
     }
 
@@ -39,7 +44,7 @@ public class Dehydrator extends ArtisanMachine {
         HashMap<String, Integer> ingredients = new HashMap<>();
         ingredients.put(fruitName, 5);
         int sellPrice = (int) (basePrice * 7.5 + 25);
-        recipes.add(new ArtisanRecipe("Dried Fruit", "Chewy pieces of dried fruit.",
+        recipes.add(new ArtisanRecipe("Dried " + fruitName, "Chewy pieces of dried fruit.",
                 ingredients, 24, 75, sellPrice));
     }
 

@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -17,14 +18,18 @@ public class PreservesJar extends ArtisanMachine{
         addJellyRecipe("Apple", 100, 38);
         addJellyRecipe("Banana", 150, 75);
         addJellyRecipe("Orange", 100, 38);
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
-    private void addPicklesRecipe(String mushroomName, int basePrice, int baseEnergy) {
+    private void addPicklesRecipe(String name, int basePrice, int baseEnergy) {
         HashMap<String, Integer> ingredients = new HashMap<>();
-        ingredients.put(mushroomName, 5);
+        ingredients.put(name, 5);
         int sellPrice = (int) (basePrice * 2 + 50);
         int energy = (int) (baseEnergy * 1.75);
-        recipes.add(new ArtisanRecipe("Pickles", "A jar of your home-made pickles.",
+        recipes.add(new ArtisanRecipe(name + " Pickle", "A jar of your home-made pickles.",
                 ingredients, 6, energy, sellPrice));
     }
 
@@ -33,7 +38,7 @@ public class PreservesJar extends ArtisanMachine{
         ingredients.put(fruitName, 5);
         int sellPrice = (int) (basePrice * 2 + 50);
         int energy = (int) (baseEnergy * 2);
-        recipes.add(new ArtisanRecipe("Jelly", "Gooey.",
+        recipes.add(new ArtisanRecipe(fruitName + " Jelly", "Gooey.",
                 ingredients, 24, energy, sellPrice));
     }
 

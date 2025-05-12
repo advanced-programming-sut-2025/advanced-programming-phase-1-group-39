@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -19,7 +20,7 @@ public class MayonnaiseMachine extends ArtisanMachine {
 
         HashMap<String, Integer> largeEggIngredients = new HashMap<>();
         largeEggIngredients.put("Large Egg", 1);
-        recipes.add(new ArtisanRecipe("Mayonnaise", "It looks spreadable.",
+        recipes.add(new ArtisanRecipe("Large Mayonnaise", "It looks spreadable.",
                 largeEggIngredients, 3, 50, 237));
 
 
@@ -34,6 +35,10 @@ public class MayonnaiseMachine extends ArtisanMachine {
         recipes.add(new ArtisanRecipe("Dinosaur Mayonnaise",
                 "It's thick and creamy, with a vivid green hue.\nIt smells like grass and leather.",
                 dinoIngredients, 3, 125, 800));
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
     public ArtisanRecipe getRecipeByNameAndIngredient(String name, String ingredient) {

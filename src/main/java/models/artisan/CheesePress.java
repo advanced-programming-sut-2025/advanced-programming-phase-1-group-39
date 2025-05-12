@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -19,7 +20,7 @@ public class CheesePress extends ArtisanMachine {
 
         HashMap<String, Integer> largeMilkCheeseIngredients = new HashMap<>();
         largeMilkCheeseIngredients.put("Large Milk", 1);
-        recipes.add(new ArtisanRecipe("Cheese",
+        recipes.add(new ArtisanRecipe("Large Cheese",
                 "It's your basic cheese (from large milk).",
                 largeMilkCheeseIngredients, 3, 100, 345));
 
@@ -33,9 +34,13 @@ public class CheesePress extends ArtisanMachine {
 
         HashMap<String, Integer> largeGoatCheeseIngredients = new HashMap<>();
         largeGoatCheeseIngredients.put("Large Goat Milk", 1);
-        recipes.add(new ArtisanRecipe("Goat Cheese",
+        recipes.add(new ArtisanRecipe("Large Goat Cheese",
                 "Soft cheese made from goat's milk. (large milk)",
                 largeGoatCheeseIngredients, 3, 100, 600));
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
     public ArtisanRecipe getRecipeByNameAndIngredient(String name, String ingredient) {

@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -10,12 +11,13 @@ public class Furnace extends ArtisanMachine {
     public Furnace(String name, int sellPrice) {
         super(name, sellPrice);
 
-        // Copper Bar
+
         HashMap<String, Integer> copperIngredients = new HashMap<>();
         copperIngredients.put("Copper", 5);
         copperIngredients.put("Coal", 1);
         recipes.add(new ArtisanRecipe("Copper Bar", "Turns Copper Ore and Coal into a bar.",
                 copperIngredients, 4, 0, 50));
+
 
         HashMap<String, Integer> ironIngredients = new HashMap<>();
         ironIngredients.put("Iron", 5);
@@ -23,17 +25,23 @@ public class Furnace extends ArtisanMachine {
         recipes.add(new ArtisanRecipe("Iron Bar", "Turns Iron Ore and Coal into a bar.",
                 ironIngredients, 4, 0, 100));
 
+
         HashMap<String, Integer> goldIngredients = new HashMap<>();
         goldIngredients.put("Gold", 5);
         goldIngredients.put("Coal", 1);
         recipes.add(new ArtisanRecipe("Gold Bar", "Turns Gold Ore and Coal into a bar.",
                 goldIngredients, 4, 0, 250));
 
+
         HashMap<String, Integer> iridiumIngredients = new HashMap<>();
-        goldIngredients.put("Gold", 5);
-        goldIngredients.put("Coal", 1);
-        recipes.add(new ArtisanRecipe("Gold Bar", "Turns Gold Ore and Coal into a bar.",
-                goldIngredients, 4, 0, 250));
+        iridiumIngredients.put("Iridium", 5);
+        iridiumIngredients.put("Coal", 1);
+        recipes.add(new ArtisanRecipe("Iridium Bar", "Turns Iridium Ore and Coal into a bar.",
+                iridiumIngredients, 4, 0, 1000));
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
     public ArtisanRecipe getRecipeByOre(String oreName) {
@@ -46,31 +54,45 @@ public class Furnace extends ArtisanMachine {
     }
 
     @Override
-    public Result use(String oreName, String ingredient, Time time, Player player) {
+    public Result use(String oreName, String[] inputIngredients, Time time, Player player) {
+        if (processingRecipe != null) {
+            return new Result(false, "Machine is currently busy!");
+        }
+
         ArtisanRecipe recipe = getRecipeByOre(oreName);
         if (recipe == null) {
             return new Result(false, "No recipe found for ore: " + oreName);
         }
-        if (!recipe.getIngredients().containsKey(ingredient)) {
-            return new Result(false, ingredient + " isn't product's ingredient");
+
+        HashMap<String, Integer> requiredIngredients = recipe.getIngredients();
+        HashMap<String, Integer> inputMap = new HashMap<>();
+
+        for (String ing : inputIngredients) {
+            inputMap.put(ing, inputMap.getOrDefault(ing, 0) + 1);
         }
 
-        for (String ing : recipe.getIngredients().keySet()) {
-            int required = recipe.getIngredients().get(ing);
-            if (!player.getInventory().hasEnoughStack(ing, required)) {
-                return new Result(false, "Not enough " + ing);
+        for (String required : requiredIngredients.keySet()) {
+            int requiredAmount = requiredIngredients.get(required);
+            int providedAmount = inputMap.getOrDefault(required, 0);
+
+            if (providedAmount < requiredAmount) {
+                return new Result(false, "Missing or insufficient ingredient: " + required);
             }
+
+            if (!player.getInventory().hasEnoughStack(required, requiredAmount)) {
+                return new Result(false, "Not enough " + required + " in inventory");
+            }
+        }
+
+        for (String required : requiredIngredients.keySet()) {
+            player.getInventory().pickItem(required, requiredIngredients.get(required));
         }
 
         processingRecipe = recipe;
         processTime = time.clone();
         processTime.addToHour(recipe.getProcessingTime());
 
-        for (String ing : recipe.getIngredients().keySet()) {
-            player.getInventory().pickItem(ing, recipe.getIngredients().get(ing));
-        }
-
-        return new Result(true, "Processing " + recipe.getName());
+        return new Result(true, "Started processing " + recipe.getName());
     }
 
     @Override

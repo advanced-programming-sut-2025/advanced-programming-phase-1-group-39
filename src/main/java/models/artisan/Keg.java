@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -56,16 +57,20 @@ public class Keg extends ArtisanMachine {
 
         HashMap<String, Integer> AppleWineIngredients = new HashMap<>();
         AppleWineIngredients.put("Apple", 1);
-        recipes.add(new ArtisanRecipe("Wine", "Drink in moderation.", AppleWineIngredients,
+        recipes.add(new ArtisanRecipe("Apple Wine", "Drink in moderation.", AppleWineIngredients,
                 168, 80, 300));
         HashMap<String, Integer> BananaWineIngredients = new HashMap<>();
         BananaWineIngredients.put("Banana", 1);
-        recipes.add(new ArtisanRecipe("Wine", "Drink in moderation.", BananaWineIngredients,
+        recipes.add(new ArtisanRecipe("Banana Wine", "Drink in moderation.", BananaWineIngredients,
                 168, 150, 450));
         HashMap<String, Integer> OrangeWineIngredients = new HashMap<>();
         OrangeWineIngredients.put("Orange", 1);
-        recipes.add(new ArtisanRecipe("Wine", "Drink in moderation.", OrangeWineIngredients,
+        recipes.add(new ArtisanRecipe("Orange Wine", "Drink in moderation.", OrangeWineIngredients,
                 168, 80, 300));
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
     public ArtisanRecipe getRecipeByNameAndIngredient(String name, String ingredient) {

@@ -1,13 +1,14 @@
 package models.artisan;
 
-public class ArtisanGood {
-    private final String name;
+import models.Item;
+
+public class ArtisanGood extends Item {
     private final String description;
     private final int energy;
     private final int sellPrice;
 
     public ArtisanGood(String name, String description, int energy, int sellPrice) {
-        this.name = name;
+        super(name);
         this.description = description;
         this.energy = energy;
         this.sellPrice = sellPrice;

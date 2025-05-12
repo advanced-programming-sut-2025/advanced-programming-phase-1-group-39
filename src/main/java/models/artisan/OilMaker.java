@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -19,20 +20,24 @@ public class OilMaker extends ArtisanMachine {
 
         HashMap<String, Integer> cornIngredients = new HashMap<>();
         cornIngredients.put("Corn", 1);
-        recipes.add(new ArtisanRecipe("Oil", "All purpose cooking oil.",
+        recipes.add(new ArtisanRecipe("Corn Oil", "All purpose cooking oil.",
                 cornIngredients, 6, 13, 100));
 
 
         HashMap<String, Integer> seedIngredients = new HashMap<>();
         seedIngredients.put("Sunflower Seeds", 1);
-        recipes.add(new ArtisanRecipe("Oil", "All purpose cooking oil.",
+        recipes.add(new ArtisanRecipe("Sunflower Seed Oil", "All purpose cooking oil.",
                 seedIngredients, 48, 13, 100));
 
 
         HashMap<String, Integer> flowerIngredients = new HashMap<>();
         flowerIngredients.put("Sunflower", 1);
-        recipes.add(new ArtisanRecipe("Oil", "All purpose cooking oil.",
+        recipes.add(new ArtisanRecipe("Sunflower Oil", "All purpose cooking oil.",
                 flowerIngredients, 1, 13, 100));
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
     public ArtisanRecipe getRecipeByNameAndIngredient(String name, String ingredient) {

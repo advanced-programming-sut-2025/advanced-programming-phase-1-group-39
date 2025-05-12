@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -32,6 +33,10 @@ public class FishSmoker extends ArtisanMachine {
         addSmokedFish("Glacierfish", 1000);
         addSmokedFish("Angler", 900);
         addSmokedFish("Crimsonfish", 1500);
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
     private void addSmokedFish(String fishName, int basePrice) {
@@ -39,10 +44,10 @@ public class FishSmoker extends ArtisanMachine {
         ingredients.put(fishName, 1);
         ingredients.put("Coal", 1);
 
-        int energy = basePrice; // از رابطه بالا
+        int energy = basePrice;
         int sellPrice = basePrice * 2;
 
-        recipes.add(new ArtisanRecipe("Smoked Fish", "A whole fish, smoked to perfection.",
+        recipes.add(new ArtisanRecipe("Smoked " + fishName + " Fish", "A whole fish, smoked to perfection.",
                 ingredients, 1, energy, sellPrice));
     }
 
@@ -56,26 +61,45 @@ public class FishSmoker extends ArtisanMachine {
     }
 
     @Override
-    public Result use(String fishName, String ingredient, Time time, Player player) {
+    public Result use(String fishName, String[] inputIngredients, Time time, Player player) {
         if (processingRecipe != null) {
             return new Result(false, "Machine is currently busy!");
         }
 
         ArtisanRecipe recipe = getRecipeByFish(fishName);
-        if (recipe == null || !recipe.getIngredients().containsKey(ingredient)) {
-            return new Result(false, "Invalid ingredient: " + ingredient);
+        if (recipe == null) {
+            return new Result(false, "No recipe found for fish: " + fishName);
         }
 
-        for (String ing : recipe.getIngredients().keySet()) {
-            int amount = recipe.getIngredients().get(ing);
-            if (!player.getInventory().hasEnoughStack(ing, amount)) {
-                return new Result(false, "Not enough " + ing);
+        HashMap<String, Integer> requiredIngredients = recipe.getIngredients();
+        HashMap<String, Integer> inputMap = new HashMap<>();
+
+
+        for (String ing : inputIngredients) {
+            inputMap.put(ing, inputMap.getOrDefault(ing, 0) + 1);
+        }
+
+
+        for (String required : requiredIngredients.keySet()) {
+            int requiredAmount = requiredIngredients.get(required);
+            int providedAmount = inputMap.getOrDefault(required, 0);
+
+            if (providedAmount < requiredAmount) {
+                return new Result(false, "Missing or insufficient ingredient: " + required);
+            }
+
+
+            if (!player.getInventory().hasEnoughStack(required, requiredAmount)) {
+                return new Result(false, "Not enough " + required + " in inventory");
             }
         }
 
-        for (String ing : recipe.getIngredients().keySet()) {
-            player.getInventory().pickItem(ing, recipe.getIngredients().get(ing));
+
+        for (String required : requiredIngredients.keySet()) {
+            int amount = requiredIngredients.get(required);
+            player.getInventory().pickItem(required, amount);
         }
+
 
         processingRecipe = recipe;
         processTime = time.clone();
@@ -83,6 +107,7 @@ public class FishSmoker extends ArtisanMachine {
 
         return new Result(true, "Started smoking " + fishName);
     }
+
 
     @Override
     public ArtisanGood getReadyGoods(String name, Time time) {

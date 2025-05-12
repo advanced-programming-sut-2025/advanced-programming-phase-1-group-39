@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -14,6 +15,10 @@ public class CharcoalKiln extends ArtisanMachine{
         ingredients.put("Wood", 10);
         recipes.add(new ArtisanRecipe("Coal", "Turns 10 pieces of wood into one piece of coal.",
                 ingredients, 1, 0, 50));
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
     public ArtisanRecipe getRecipeByName(String name) {

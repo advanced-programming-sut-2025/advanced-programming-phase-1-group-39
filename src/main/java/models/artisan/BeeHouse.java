@@ -1,5 +1,6 @@
 package models.artisan;
 
+import models.ItemManager;
 import models.Player;
 import models.Result;
 import models.Time;
@@ -9,6 +10,10 @@ public class BeeHouse extends ArtisanMachine{
         super(name, sellPrice);
         recipes.add(new ArtisanRecipe("Honey",
                 "It's a sweet syrup produced by bees.", null, 4, 75, 350));
+
+        for (ArtisanRecipe recipe : recipes) {
+            ItemManager.addArtisanGood(recipe.getGood(), name);
+        }
     }
 
     public ArtisanRecipe getRecipeByName(String name) {

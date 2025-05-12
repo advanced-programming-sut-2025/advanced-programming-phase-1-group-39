@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import models.*;
 import models.Enums.Season;
+import models.artisan.ArtisanMachine;
 import models.buildings.Building;
 import models.buildings.GreenHouse;
 import models.cropsAndFarming.*;
@@ -491,6 +492,24 @@ public class Map {
             }
         }
         return false;
+    }
+
+    public ArtisanMachine getNearArtisanMachine(Player player, String name) {
+        int startX = player.getLocation().x() - 1;
+        int startY = player.getLocation().y() - 1;
+
+        for (int i = startX; i < startX + 3; i++) {
+            for (int j = startY; j < startY + 3; j++) {
+                Tile tile = tiles[i][j];
+                Item machine = tile.getItemOnTile().getItem();
+                if (machine instanceof ArtisanMachine
+                && machine.getName().equalsIgnoreCase(name)) {
+                    return (ArtisanMachine) machine;
+                }
+            }
+        }
+
+        return null;
     }
 }
 

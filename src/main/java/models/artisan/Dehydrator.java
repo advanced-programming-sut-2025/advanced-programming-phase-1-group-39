@@ -53,26 +53,26 @@ public class Dehydrator extends ArtisanMachine {
     }
 
     @Override
-    public Result use(String productName, String ingredientName, Time time, Player player) {
+    public Result use(String productName, String[] ingredients, Time time, Player player) {
         if (processingRecipe != null) {
             return new Result(false, "Machine is currently busy!");
         }
 
-        ArtisanRecipe recipe = getRecipeByNameAndIngredient(productName, ingredientName);
+        ArtisanRecipe recipe = getRecipeByNameAndIngredient(productName, ingredients[0]);
         if (recipe == null) {
             return new Result(false, "Recipe not found for: " + productName);
         }
 
-        if (!recipe.getIngredients().containsKey(ingredientName)) {
-            return new Result(false, ingredientName + " isn't the product's ingredient");
+        if (!recipe.getIngredients().containsKey(ingredients[0])) {
+            return new Result(false, ingredients[0] + " isn't the product's ingredient");
         }
 
-        int requiredAmount = recipe.getIngredients().get(ingredientName);
-        if (!player.getInventory().hasEnoughStack(ingredientName, requiredAmount)) {
-            return new Result(false, "Not enough " + ingredientName);
+        int requiredAmount = recipe.getIngredients().get(ingredients[0]);
+        if (!player.getInventory().hasEnoughStack(ingredients[0], requiredAmount)) {
+            return new Result(false, "Not enough " + ingredients[0]);
         }
 
-        player.getInventory().pickItem(ingredientName, requiredAmount);
+        player.getInventory().pickItem(ingredients[0], requiredAmount);
         processingRecipe = recipe;
         processTime = time.clone();
         processTime.addToHour(recipe.getProcessingTime());

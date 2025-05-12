@@ -21,7 +21,7 @@ public class BeeHouse extends ArtisanMachine{
     }
 
     @Override
-    public Result use(String itemName, String ingredient, Time time, Player player) {
+    public Result use(String itemName, String[] ingredients, Time time, Player player) {
         if (processingRecipe != null) {
             return new Result(false, "Machine is busy now!");
         }

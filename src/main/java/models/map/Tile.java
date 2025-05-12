@@ -80,6 +80,11 @@ public class Tile {
     public void plow() {
         canPlant = true;
     }
+    public void setNotPlow() {
+        canPlant = false;
+    }
+
+    public boolean canPlant() { return canPlant; }
 
     public void removePlant() {
         plant = null;
@@ -98,7 +103,6 @@ public class Tile {
     public void setIsWatered() { isWatered = true; }
     public void setNotWatered() { isWatered = false; }
 
-    public boolean canPlant() { return canPlant; }
     public boolean isFertilized() { return isFertilized; }
     public boolean isWatered() { return isWatered; }
 
@@ -106,6 +110,7 @@ public class Tile {
     public void plantSeed(String seedName) {
         Plant newPlant = CropManager.createPlantBySeed(seedName, this);
         Tree newTree = TreeManager.getTreeBySeedName(seedName, this);
+        if (!canPlant) return;
         if (newPlant != null) {
             this.plant = newPlant;
         } else if (newTree != null) {

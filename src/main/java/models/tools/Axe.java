@@ -1,6 +1,8 @@
 package models.tools;
 
 import models.Result;
+import models.Skill;
+import models.Weather;
 
 public class Axe extends Tool {
     public Axe() {
@@ -13,13 +15,13 @@ public class Axe extends Tool {
     }
 
 
-    public int getSkillEnergyReduce() {
-        return 0;
-        // TODO : complete
+    public int getSkillEnergyReduce(Skill skill) {
+        return skill.isForagingLevelMax() ? 1 : 0;
     }
 
     @Override
-    public int getUsingEnergy() {
-        return baseUsingEnergy - type.getEnergyReduce() - getSkillEnergyReduce();
+    public int getUsingEnergy(Skill skill, Weather weather) {
+        return (int)((baseUsingEnergy - type.getEnergyReduce() - getSkillEnergyReduce(skill))
+                * getWeatherMultiplier(weather));
     }
 }

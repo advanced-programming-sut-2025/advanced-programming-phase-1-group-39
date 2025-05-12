@@ -2,6 +2,8 @@ package models.tools;
 
 import models.Item;
 import models.Result;
+import models.Skill;
+import models.Weather;
 
 public abstract class Tool extends Item {
     protected String name;
@@ -22,5 +24,14 @@ public abstract class Tool extends Item {
         this.type = ToolType.getNext(type);
     }
 
-    public abstract int getUsingEnergy();
+    public double getWeatherMultiplier(Weather weather) {
+        return switch (weather.getStatus()) {
+            case SUNNY -> 1;
+            case RAIN -> 1.5;
+            case STORM -> 1.5;
+            default -> 2;
+        };
+    }
+
+    public abstract int getUsingEnergy(Skill skill, Weather weather);
 }

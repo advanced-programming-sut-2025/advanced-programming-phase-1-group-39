@@ -1,10 +1,12 @@
 package models.tools;
 
 import models.Result;
+import models.Skill;
+import models.Weather;
 
 public class Pickaxe extends Tool {
-    public Pickaxe(String name, ToolType type) {
-        super(name, type, 5);
+    public Pickaxe() {
+        super("pickaxe", ToolType.BASIC, 5);
     }
 
     @Override
@@ -12,8 +14,13 @@ public class Pickaxe extends Tool {
         return null;
     }
 
+    public int getSkillEnergyReduce(Skill skill) {
+        return skill.isMiningLevelMax() ? 1 : 0;
+    }
+
     @Override
-    public int getUsingEnergy() {
-        return 0;
+    public int getUsingEnergy(Skill skill, Weather weather) {
+        return (int)((baseUsingEnergy - type.getEnergyReduce() - getSkillEnergyReduce(skill))
+                * getWeatherMultiplier(weather));
     }
 }

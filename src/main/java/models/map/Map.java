@@ -263,13 +263,23 @@ public class Map {
         }
     }
 
-    public void dryWateredTiles() {
-        for(int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                Tile tile = tiles[j][i];
-                tile.setNotWatered();
+    public void setWaterAllTiles(boolean isWatered) {
+        if (isWatered) {
+            for(int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    Tile tile = tiles[j][i];
+                    tile.setIsWatered();
+                }
+            }
+        } else {
+            for(int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    Tile tile = tiles[j][i];
+                    tile.setNotWatered();
+                }
             }
         }
+
     }
 
     private void addNpcMap() {

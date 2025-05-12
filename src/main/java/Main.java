@@ -36,7 +36,6 @@ public class Main {
         game.addRandomFarmForPlayer(player4, FarmType.getFarmTypeById(1));
 
         game.startGame();
-        System.out.println(game.getMap().printColorMap(players));
         ((GreenHouse)player2.getBuildingByName("greenhouse")).build();
         player2.getBuildingByName("greenhouse").updateMap(game.getMap());
         App.getApp().addGame(game);

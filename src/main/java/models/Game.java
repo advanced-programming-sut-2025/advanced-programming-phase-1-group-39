@@ -105,7 +105,6 @@ public class Game {
 
         // grow plants and trees
         gameMap.growWateredPlantsAndTrees();
-        gameMap.dryWateredTiles();
 
         // random foragings + materials and minerals and stone
         fillFarmsWithRandoms();
@@ -119,6 +118,15 @@ public class Game {
 
         if (todayWeather.getStatus().equals(WeatherStatus.STORM))
             thorTiles();
+
+        // if weather rain or storm should water all tiles
+        if (todayWeather.getStatus().equals(WeatherStatus.STORM)
+        || todayWeather.getStatus().equals(WeatherStatus.RAIN)) {
+            gameMap.setWaterAllTiles(true);
+        } else {
+            gameMap.setWaterAllTiles(false);
+        }
+
 
         return lastDayReport.toString();
     }

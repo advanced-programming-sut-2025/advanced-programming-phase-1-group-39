@@ -3,6 +3,9 @@ package models.tools;
 import models.Result;
 import models.Skill;
 import models.Weather;
+import models.map.AnsiColors;
+import models.map.Tile;
+import models.map.TileType;
 
 public class WateringCan extends Tool {
     private int tilesWaterNumRemaining;
@@ -12,8 +15,20 @@ public class WateringCan extends Tool {
     }
 
     @Override
-    public Result useTool() {
-        return null;
+    public Result useTool(Tile tile) {
+        tilesWaterNumRemaining--;
+        if (tile.getType() == TileType.SOIL) {
+            if (tile.isPlowed() || tile.getPlant() != null)
+                tile.setIsWatered();
+            return new Result(true, AnsiColors.ANSI_BLUE + "Watered" + AnsiColors.ANSI_RESET);
+        } else if (tile.getType() == TileType.WATER) {
+            fillWateringCan();
+            return new Result(true, "Your watering can filled up!");
+        }
+
+        else {
+            return new Result(true, "Nothing watered!");
+        }
     }
 
     public void fillWateringCan() {

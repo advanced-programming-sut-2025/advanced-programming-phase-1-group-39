@@ -40,6 +40,8 @@ public class Player {
     private int money = 0;
     private int nightRevenue = 0;
 
+    private ArrayList<PlayerNPCInteraction> friendships = initialPlayersFriendship();
+
     public Player(String username, int id, int gameId) {
         this.username = username;
         this.id = id;
@@ -133,5 +135,26 @@ public class Player {
         this.startOfFarm = startOfFarm;
         this.endOfFarm = new Location(startOfFarm.x() + Constants.FARM_WIDTH,
                 startOfFarm.y() + Constants.FARM_HEIGHT);
+    }
+
+    // NPC
+
+    public ArrayList<PlayerNPCInteraction> initialPlayersFriendship() {
+        ArrayList<PlayerNPCInteraction> friendship = new ArrayList<>();
+        friendship.add(new PlayerNPCInteraction("sebastian"));
+        friendship.add(new PlayerNPCInteraction("abigail"));
+        friendship.add(new PlayerNPCInteraction("harvey"));
+        friendship.add(new PlayerNPCInteraction("leah"));
+        friendship.add(new PlayerNPCInteraction("robin"));
+        return friendship;
+    }
+
+    public PlayerNPCInteraction getFriendship(String NPCName) {
+        for (PlayerNPCInteraction friendshipInteraction : friendships) {
+            if (friendshipInteraction.getNPCName().equals(NPCName)) {
+                return friendshipInteraction;
+            }
+        }
+        return null;
     }
 }

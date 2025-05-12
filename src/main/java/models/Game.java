@@ -1,6 +1,7 @@
 package models;
 
-import models.NPC.NPC;
+import models.Enums.WeatherStatus;
+import models.NPC.*;
 import models.buildings.Building;
 import models.map.FarmType;
 import models.map.Map;
@@ -17,6 +18,7 @@ public class Game {
     private ArrayList<TradeItem> trades = new ArrayList<>();
     private Map gameMap;
     private ArrayList<Building> buildings = new ArrayList<>();
+    ArrayList<NPC> npcs = initializeNPCs();
 
     private Time time = new Time();
 
@@ -26,12 +28,11 @@ public class Game {
     private Player currentPlayer;
 
     // first player should be the mainPlayer of game
-    public Game(int gameId,Player one, Player two, Player three, Player four) {
+    public Game(int gameId, Player one, Player two, Player three, Player four) {
         this.players = new ArrayList<>(List.of(one, two, three, four));
         this.mainPlayer = one;
         this.gameMap = new Map();
         this.id = gameId;
-
         todayWeather.setWeatherSunny();
     }
 
@@ -59,10 +60,18 @@ public class Game {
 
     public void addRandomFarmForPlayer(Player player, FarmType farmType) {
         int number = players.indexOf(player);
-        if (number == -1) {return;}
+        if (number == -1) {
+            return;
+        }
 
         player.setFarmBound(Map.getStartOfFarm(number));
         gameMap.addRandomFarm(farmType, number);
+    }
+    // weather
+
+
+    public Weather getTodayWeather() {
+        return todayWeather;
     }
 
     // time
@@ -70,11 +79,13 @@ public class Game {
         time.addToHour(amount);
         //TODO : Update of map and plants
     }
+
     public void addToDay(int amount) {
         time.addToDay(amount);
         // TODO : changing weather
         // TODO : update plants
     }
+
     public void goToNextDay() {
         time.goToNextDay();
         // TODO : changing weather
@@ -83,7 +94,6 @@ public class Game {
     public Time getTime() {
         return time;
     }
-
 
 
     // player
@@ -95,20 +105,43 @@ public class Game {
         return players;
     }
 
-    public void setLoadedPlayerUsername(String PlayerUsername) { this.loadedPlayerUsername = PlayerUsername; }
+    public void setLoadedPlayerUsername(String PlayerUsername) {
+        this.loadedPlayerUsername = PlayerUsername;
+    }
 
-    public String getLoadedPlayerUsername() { return loadedPlayerUsername; }
+    public String getLoadedPlayerUsername() {
+        return loadedPlayerUsername;
+    }
 
-    public Player getCurrentPlayer() { return currentPlayer; }
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
 
-    public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 
     // NPC
-    NPC sebastian;
-    NPC abigail;
-    NPC harvey;
-    NPC leah;
-    NPC robin;
 
-    public void initializeNPCs() {}
+    public ArrayList<NPC> initializeNPCs() {
+        ArrayList<NPC> npcs = new ArrayList<>();
+        npcs.add(new SebastianNPC());
+        npcs.add(new AbigailNPC());
+        npcs.add(new HarveyNPC());
+        npcs.add(new LeahNPC());
+        npcs.add(new RobinNPC());
+        return npcs;
+    }
+
+    public NPC getNPC(String NPCName) {
+        for (NPC npc : npcs) {
+            if (npc.getName().equalsIgnoreCase(NPCName)) {
+                return npc;
+            }
+        }
+        return null;
+    }
+
+
+
 }

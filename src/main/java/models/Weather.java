@@ -14,4 +14,8 @@ public class Weather {
     public void setStatus(WeatherStatus status) {
         this.status = status;
     }
+
+    public WeatherStatus getStatus() {
+        return status;
+    }
 }

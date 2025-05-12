@@ -6,10 +6,10 @@ import models.Location;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LeiaNPC extends NPC {
-    public LeiaNPC() {
+public class LeahNPC extends NPC {
+    public LeahNPC() {
         super(
-                "Leia",
+                "Leah",
                 "Artist",
                 "Leia is an artist with a deep appreciation for nature and beauty.\nShe enjoys quiet moments surrounded by the beauty of the world and values peace.\nHer preferences lean toward fine food like salads and wine, and she loves the simple joy of creating beautiful things, whether it's art or nurturing the environment.",
                 new Location(40,82),

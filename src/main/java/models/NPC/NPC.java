@@ -14,6 +14,7 @@ public abstract class NPC {
     private String personalityTraits;
     private Location location;
     private ArrayList<Item> favoriteItems;
+    private ArrayList<String> dialogues;
 
     public NPC(String name, String job, String personalityTraits, Location location, ArrayList<Item> favoriteItems) {
         this.name = name;
@@ -21,8 +22,13 @@ public abstract class NPC {
         this.personalityTraits = personalityTraits;
         this.location = location;
         this.favoriteItems = favoriteItems;
-
     }
+
+    public void setDialogues(ArrayList<String> dialogues) {
+        this.dialogues = dialogues;
+    }
+
+    public void initializeDialogues(ArrayList<String> dialogues) {}
 
     //public Result getRewardLevel1{}
 

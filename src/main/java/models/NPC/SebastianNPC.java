@@ -9,6 +9,7 @@ import java.util.List;
 
 public class SebastianNPC extends NPC {
 
+
     public SebastianNPC() {
         super(
                 "Sebastian",
@@ -18,5 +19,10 @@ public class SebastianNPC extends NPC {
                 new ArrayList<>(List.of(ItemManager.getItemByName("pumpkin pie"), ItemManager.getItemByName("Wool"),
                                         ItemManager.getItemByName("pizza")))
         );
+    }
+
+    @Override
+    public void setDialogues(ArrayList<String> dialogues) {
+        super.setDialogues(dialogues);
     }
 }

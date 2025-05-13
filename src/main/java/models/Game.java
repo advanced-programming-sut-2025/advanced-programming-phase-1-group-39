@@ -135,7 +135,7 @@ public class Game {
         return npcs;
     }
 
-    private NPC getNPC(String NPCName) {
+    public NPC getNPC(String NPCName) {
         for (NPC npc : npcs) {
             if (npc.getName().equalsIgnoreCase(NPCName)) {
                 return npc;

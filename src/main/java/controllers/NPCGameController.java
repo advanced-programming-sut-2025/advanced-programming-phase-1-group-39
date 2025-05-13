@@ -130,21 +130,26 @@ public class NPCGameController {
         }
     }
 
-//    Player player = game.getCurrentPlayer();
-//        if (!player.getInventory().hasItem(giftName)) {
-//        return 0;
-//    } else {
-//        ItemStack stack = player.getInventory().getItemByName(giftName);
-//        if (stack.getItem() instanceof Tool) {
-//            return 1;
-//        } else if (stack.getItem() instanceof ArtisanMachine) {
-//            return 2;
-//        } else if (game.getNPC(NPCName).getFavoriteItems().contains(stack.getItem())) {
-//            return 3;
-//        } else {
-//            return 4;
-//        }
-//    }
+    public Result showFriendship() {
+        StringBuilder output = new StringBuilder();
+        output.append("Sebastian ->\n").append("friendShip level : ");
+        output.append(currentPlayer.getFriendship("sebastian").getFriendshipLevel()).append("\n");
+        output.append("friendShip score : ").append(currentPlayer.getFriendship("sebastian").getFriendshipScore()).append("\n");
+        output.append("Abigail ->\n").append("friendShip level : ");
+        output.append(currentPlayer.getFriendship("abigail").getFriendshipLevel()).append("\n");
+        output.append("friendShip score : ").append(currentPlayer.getFriendship("abigail").getFriendshipScore()).append("\n");
+        output.append("Harvey ->\n").append("friendShip level : ");
+        output.append(currentPlayer.getFriendship("harvey").getFriendshipLevel()).append("\n");
+        output.append("friendShip score : ").append(currentPlayer.getFriendship("harvey").getFriendshipScore()).append("\n");
+        output.append("Leah ->\n").append("friendShip level : ");
+        output.append(currentPlayer.getFriendship("leah").getFriendshipLevel()).append("\n");
+        output.append("friendShip score : ").append(currentPlayer.getFriendship("leah").getFriendshipScore()).append("\n");
+        output.append("Robbin ->\n").append("friendShip level : ");
+        output.append(currentPlayer.getFriendship("robin").getFriendshipLevel()).append("\n");
+        output.append("friendShip score : ").append(currentPlayer.getFriendship("robin").getFriendshipScore()).append("\n");
+        return new Result(true, output.toString());
+    }
+
 
 
     // Auxiliary functions :

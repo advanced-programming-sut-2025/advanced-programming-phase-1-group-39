@@ -3,6 +3,7 @@ package models;
 import controllers.AppControllers;
 import models.Enums.Season;
 import models.Enums.WeatherStatus;
+import models.animals.Animal;
 import models.buildings.Building;
 import models.map.FarmType;
 import models.map.Map;
@@ -127,6 +128,8 @@ public class Game {
             gameMap.setWaterAllTiles(false);
         }
 
+        // animals
+        generateAllAnimalsProduct();
 
         return lastDayReport.toString();
     }
@@ -181,7 +184,14 @@ public class Game {
             player.addNightRevenueToMoney();
         }
     }
-
+    public void generateAllAnimalsProduct() {
+        for (Player player : players) {
+            for (Animal animal : player.getAnimals()) {
+                animal.endDay();
+                animal.generateProductForNextDay();
+            }
+        }
+    }
 
 
     public Time getTime() {

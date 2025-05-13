@@ -64,14 +64,22 @@ public class GameController {
     public Result fertilize(Matcher matcher) {return null;}
     public Result howMuchWater() {return null;}
 
-    public Result showCraftingRecipes() {return null;}
+    public Result showCraftingRecipes() {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        return new Result(true, player.showCraftingRecipes());
+    }
     public Result Craft(Matcher matcher) {return null;}
     public Result placeItem(Matcher matcher) {return null;}
     public Result cheatAddToInventory(Matcher matcher) {return null;}
     public Result manageRefrigerator(Matcher matcher) {return null;}
     private Result putInRefrigerator(Item item, int amount) {return null;}
     private Result pickFromRefrigerator(Item item, int amount) {return null;}
-    public Result showCookingRecipes() {return null;}
+    public Result showCookingRecipes() {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        return new Result(true, player.showFoodRecipes());
+    }
     public Result cook(Matcher matcher) {return null;}
 
     public Result eatFood(Matcher matcher) {return null;}

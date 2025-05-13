@@ -7,6 +7,10 @@ public enum GameCommands {
     PRINT_MAP("print\\s+map\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)\\s+-s\\s+(?<size>\\d+)"),
     HELP_READING_MAP("help\\s+reading\\s+map"),
 
+    SHOW_CRAFTING_RECIPES("show\\s+crafting\\s+recipes"),
+
+    SHOW_FOOD_RECIPES("show\\s+food\\s+recipes"),
+
     PET("pet\\s+-n\\s+(.+?)"),
     CHEAT_FRIENDSHIP_ANIMAL("cheat\\s+set\\s+friendship\\s+-n\\s+(.+?)\\s+-c\\s+(\\d+)"),
     SHOW_ANIMALS("animals"),

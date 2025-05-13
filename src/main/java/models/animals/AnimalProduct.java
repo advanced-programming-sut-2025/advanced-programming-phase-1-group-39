@@ -18,9 +18,14 @@ public class AnimalProduct extends Item {
         return baseSellPrice;
     }
 
+    public AnimalProductQuality getQuality() {
+        return quality;
+    }
+
     public void setQuality(AnimalProductQuality quality) {
         this.quality = quality;
     }
+
 
     @Override
     public String toString() {
@@ -28,5 +33,11 @@ public class AnimalProduct extends Item {
                 "baseSellPrice=" + baseSellPrice +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public AnimalProduct clone() {
+        AnimalProduct newProduct = new AnimalProduct(this.name, this.baseSellPrice);
+        newProduct.setQuality(this.quality);
+        return newProduct;
     }
 }

@@ -2,6 +2,7 @@ package controllers;
 
 import models.*;
 import models.animals.Animal;
+import models.animals.AnimalProduct;
 import models.animals.Fish;
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
@@ -130,12 +131,32 @@ public class GameController {
 
         inv.pickItem("Hay", 1);
         animal.feedHay();
-        return new Result(true, "You have successfully feeded the " + animalName);
+        return new Result(true, "You have successfully fed the " + animalName);
     }
     public Result showAnimalsProducts(Matcher matcher) {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        ArrayList<Animal> animals = player.getAnimals();
 
+        StringBuilder sb = new StringBuilder();
+        sb.append("Your animals and their products: \n");
+        for (Animal animal : animals) {
+            sb.append(animal.listProductStatus()).append("\n");
+        }
+        return new Result(true, sb.toString());
     }
-    public Result collectProducts(Matcher matcher) {return null;}
+    public Result collectProducts(Matcher matcher) {
+        String animalName = matcher.group(1);
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        Animal animal = player.getAnimal(animalName);
+        if (animal == null) {
+            return new Result(false, "You doesn't have this animal");
+        }
+
+        AnimalProduct product = animal.collectProduct();
+        player.getInventory().addItem(product, 1);
+        return new Result(true, "You have collected " + product.getName() + " from " + animalName);
+    }
     public Result sellAnimal(Matcher matcher) {
         String animalName = matcher.group(1);
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();

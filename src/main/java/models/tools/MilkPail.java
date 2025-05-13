@@ -2,6 +2,7 @@ package models.tools;
 
 import models.*;
 import models.animals.Animal;
+import models.animals.AnimalProduct;
 import models.animals.AnimalType;
 import models.animals.LivingPlace;
 import models.map.Tile;
@@ -22,6 +23,14 @@ public class MilkPail extends Tool {
                 || animal.getType() != AnimalType.COW || animal.getType() != AnimalType.GOAT) {
             return new Result(false, "This Animal can't produce Milk!");
         } else {
+            AnimalProduct product = animal.getProduct();
+            if (!player.getInventory().hasSpace(new ItemStack(product, 1)))
+                return new Result(false, "You don't have enough space to get Animal products!");
+            player.getInventory().addItem(product, 1);
+
+            animal.changeFriendShip(5);
+            ItemStack products = new ItemStack(animal.collectProduct(), 1);
+            player.getInventory().addItem(products.getItem(), 1);
             return new Result(true, "You got Milk of Your "+animal.getName()+" !");
         }
     }

@@ -89,9 +89,8 @@ public class Tile {
         canPlant = false;
     }
     public boolean isPlowed() {return canPlant;}
-    public boolean canPlant() { return canPlant
-            && itemOnTile == null && plant == null
-            && tree == null;
+    public boolean canPlant() {
+        return canPlant && itemOnTile == null && plant == null && tree == null;
     }
 
     public void removePlant() {

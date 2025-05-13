@@ -37,7 +37,7 @@ public class Animal {
     public void setLocation(Location location) { this.location = location; }
     public int getFriendship() { return friendship; }
 
-    public void setFriendship(int amount) {
+    public void changeFriendShip(int amount) {
         friendship += amount;
     }
 
@@ -94,6 +94,10 @@ public class Animal {
 
     public boolean hasProductReady() {
         return todayProduct != null;
+    }
+
+    public AnimalProduct getProduct() {
+        return todayProduct;
     }
 
     public AnimalProduct collectProduct() {

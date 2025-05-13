@@ -20,6 +20,7 @@ public class ItemManager {
 
     public static void loadItems() {
         CropManager.loadCrops("src/main/resources/data/crops.json");
+        CropManager.loadMixedSeeds("src/main/resources/data/MixSeeds.json");
         TreeManager.loadTrees("src/main/resources/data/trees.json");
         ForagingManager.loadCrops("src/main/resources/data/ForagingCrops.json");
         ForagingManager.loadSeeds("src/main/resources/data/ForagingSeeds.json");

@@ -10,6 +10,16 @@ public class Time {
     private DayOfWeek dayOfWeek = DayOfWeek.SATURDAY;
     private int hour = 9;
 
+    public Time() {}
+
+    public Time(int day, int year, Season season, DayOfWeek dayOfWeek, int hour) {
+        this.day = day;
+        this.year = year;
+        this.season = season;
+        this.dayOfWeek = dayOfWeek;
+        this.hour = hour;
+    }
+
     public void goToNextDay() {
         addToDay(1);
         hour = 9;
@@ -74,5 +84,17 @@ public class Time {
     }
     public String getDateDetail() {
         return "Year " + year + "  " + season.name();
+    }
+
+    public int allTimeByHour() {
+        return (year-1)*(4 * 28 * 24) + (season.number - 1)*28*24 + (day - 1)*24 + hour;
+    }
+
+    public boolean isGreater(Time time) {
+        return allTimeByHour() >= time.allTimeByHour();
+    }
+
+    public Time clone() {
+        return new Time(this.day, this.year, this.season, this.dayOfWeek, this.hour);
     }
 }

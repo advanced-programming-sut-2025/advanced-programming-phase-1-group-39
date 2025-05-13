@@ -104,9 +104,7 @@ public class Inventory {
     }
 
     public int trashItem(ItemStack item, int number) {
-        int itemPrice = 0;
-//      TODO :
-//        itemPrice = item.getPrice();
+        int itemPrice = item.getItem().getItemPrice() * number;
         return (int)(trashType.quantifier * itemPrice);
     }
 

@@ -1,5 +1,6 @@
 package models;
 
+import models.animals.AnimalProduct;
 import models.animals.FishType;
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 
 public class ItemManager {
     static HashMap<ArtisanGood, String> artisanItems = new HashMap<>();
+    private static HashMap<String, AnimalProduct> animalProducts = new HashMap<>();
+
 
     public static void loadItems() {
         CropManager.loadCrops("src/main/resources/data/Crops/crops.json");
@@ -72,6 +75,10 @@ public class ItemManager {
         if (FishType.getFishByName(name) != null) {
             return FishType.getFishByName(name);
         }
+        if (animalProducts.containsKey(name)) {
+            return animalProducts.get(name);
+        }
+
 
 
         return null;

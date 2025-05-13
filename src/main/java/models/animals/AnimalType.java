@@ -66,15 +66,24 @@ public enum AnimalType {
         public final int produceCycleDays;
 
         AnimalType(String displayName, int price, LivingPlace livingPlace, List<AnimalProduct> products, int produceCycleDays) {
-                this.displayName = displayName;
-                this.price = price;
-                this.livingPlace = livingPlace;
-                this.products = new ArrayList<>(products);
-                this.produceCycleDays = produceCycleDays;
+            this.displayName = displayName;
+            this.price = price;
+            this.livingPlace = livingPlace;
+            this.products = new ArrayList<>(products);
+            this.produceCycleDays = produceCycleDays;
         }
 
         public Animal create(String name, LivingPlace place) {
-                return new Animal(this, name, price, place, products);
+            return new Animal(this, name, price, place, products);
         }
+
+        public static List<AnimalProduct> getAllAnimalProducts() {
+                List<AnimalProduct> all = new ArrayList<>();
+                for (AnimalType type : AnimalType.values()) {
+                        all.addAll(type.products);
+                }
+                return all;
+        }
+
 
 }

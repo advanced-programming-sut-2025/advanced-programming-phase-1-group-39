@@ -1,8 +1,6 @@
 package models.NPC;
 
-import models.ItemManager;
-import models.ItemStack;
-import models.Location;
+import models.*;
 import models.cropsAndFarming.CropManager;
 import models.services.DialogueLoader;
 import models.services.MissionsLoader;
@@ -31,5 +29,41 @@ public class HarveyNPC extends NPC {
                      , new ItemStack(ItemManager.getItemByName("Wine"), 1)));
         super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/harveyMissions.json");
         super.quests = generateNPCQuests(tasks, missions);
+    }
+
+    @Override
+    public void getRewardMission1(int friendShip, Game game) {
+        Player currentPlayer = game.getCurrentPlayer();
+        currentPlayer.getInventory().pickItem(getQuest(1).getTask().getItem().getName(),
+                getQuest(1).getTask().getAmount());
+        if (friendShip == 2) {
+            currentPlayer.addMoney(1500);
+        } else {
+            currentPlayer.addMoney(750);
+        }
+    }
+
+    @Override
+    public void getRewardMission2(int friendShip, Game game) {
+        Player currentPlayer = game.getCurrentPlayer();
+        currentPlayer.getInventory().pickItem(getQuest(2).getTask().getItem().getName(),
+                getQuest(2).getTask().getAmount());
+        if (friendShip == 2) {
+            currentPlayer.getFriendship("harvey").setFriendshipLevel(3);
+        } else if (friendShip == 1) {
+            currentPlayer.getFriendship("harvey").setFriendshipLevel(2);
+        }
+    }
+
+    @Override
+    public void getRewardMission3(int friendShip, Game game) {
+        Player currentPlayer = game.getCurrentPlayer();
+        currentPlayer.getInventory().pickItem(getQuest(3).getTask().getItem().getName(),
+                getQuest(3).getTask().getAmount());
+        if (friendShip == 2) {
+            currentPlayer.getInventory().addItem(ItemManager.getItemByName("Salad"), 10);
+        } else {
+            currentPlayer.getInventory().addItem(ItemManager.getItemByName("Salad"), 5);
+        }
     }
 }

@@ -321,4 +321,11 @@ public class Player {
         }
         return null;
     }
+
+    public boolean isNearLocation(Location location) {
+        int dx = this.location.x() - location.x();
+        int dy = this.location.y() - location.y();
+
+        return dx <= 1 && dy <= 1 && dx >= -1 && dy >= -1;
+    }
 }

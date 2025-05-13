@@ -115,9 +115,15 @@ public enum CraftingRecipe {
                 return data.getSellPrice();
         }
 
-        public static CraftingRecipe getByName(String name) {
+        public static CraftingRecipe getRecipeByName(String name) {
                 for (CraftingRecipe recipe : values()) {
                         if (recipe.getName().equalsIgnoreCase(name)) return recipe;
+                }
+                return null;
+        }
+        public static CraftingItem getItemByName(String name) {
+                for (CraftingRecipe recipe : values()) {
+                        if (recipe.getName().equalsIgnoreCase(name)) return recipe.data;
                 }
                 return null;
         }

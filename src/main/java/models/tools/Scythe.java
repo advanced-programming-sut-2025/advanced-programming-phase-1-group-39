@@ -1,9 +1,6 @@
 package models.tools;
 
-import models.Player;
-import models.Result;
-import models.Skill;
-import models.Weather;
+import models.*;
 import models.cropsAndFarming.Plant;
 import models.map.Tile;
 import models.map.TileType;
@@ -18,13 +15,22 @@ public class Scythe extends Tool {
         if (tile.getType() == TileType.SOIL) {
             Plant plant = tile.getPlant();
             if (plant != null) {
-                if (plant.hasCrop())
-                    return new Result(true, "crop");
+                if (plant.hasCrop()) {
+                    ItemStack product = plant.harvest();
+                    if (!player.getInventory().hasSpace(product))
+                        return new Result(false, "You don't have enough space to get objects!");
+                    player.getInventory().addItem(product.getItem(), product.getAmount());
+                    return new Result(true, "You have gotten products!");
+                }
                 else
                     return new Result(false, "Nothing to harvest.");
             }
             if (tile.getItemOnTile().getItem().getName().equals("grass")) {
-                return new Result(true, "grass");
+                ItemStack item = tile.getItemOnTile();
+                if (!player.getInventory().hasSpace(item))
+                    return new Result(false, "You don't have enough space to get objects!");
+                player.getInventory().addItem(item.getItem(), item.getAmount());
+                return new Result(true, "You cut the grasses!");
             }
         }
         return new Result(false, "ِYou did nothing!");

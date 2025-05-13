@@ -6,26 +6,26 @@ import models.map.Tile;
 import java.util.ArrayList;
 
 public class Plant {
-    Tile tile;
+    private Tile tile;
 
-    Seed seed;
-    Crop product;
-    int productStack;
+    private Seed seed;
+    private Crop product;
+    private int productStack;
 
-    ArrayList<Integer> stages;
-    int currentStage;
-    int daysOfCurrentStage;
+    private ArrayList<Integer> stages;
+    private int currentStage;
+    private int daysOfCurrentStage;
 
-    int daysWithoutWater;
-    boolean isWateredToday;
-    boolean hasFertilizer;
+    private int daysWithoutWater;
+    private boolean isWateredToday;
+    private boolean hasFertilizer;
 
-    boolean oneTimeHarvest;
-    Integer regrowthTime;
-    int cropIntervalDays;
-    boolean canBecomeGiant;
+    private boolean oneTimeHarvest;
+    private Integer regrowthTime;
+    private int cropIntervalDays;
+    private boolean canBecomeGiant;
 
-    boolean hasCrop;
+    private boolean hasCrop;
 
     public Plant(Tile tile, Crop product, Seed seed, ArrayList<Integer> stages,
                  boolean oneTimeHarvest, int regrowthTime, boolean canBecomeGiant) {
@@ -97,4 +97,7 @@ public class Plant {
         }
     }
 
+    public boolean hasCrop() {
+        return hasCrop;
+    }
 }

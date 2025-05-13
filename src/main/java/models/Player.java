@@ -3,6 +3,7 @@ package models;
 import models.Enums.Season;
 import models.NPC.NPC;
 import models.NPC.Quest;
+import models.animals.Animal;
 import models.animals.Fish;
 import models.animals.FishType;
 import models.artisan.ArtisanMachineRecipe;
@@ -50,6 +51,9 @@ public class Player {
     private HashMap<NPC, Integer> NPCsFriendship;
 
     private ArrayList<Quest> activeQuests;
+
+    // animals
+    private HashMap<String, Animal> animals = new HashMap<>();
 
     private int money = 0;
     private int nightRevenue = 0;
@@ -289,5 +293,22 @@ public class Player {
         }
 
         return new ArrayList<>(result);
+    }
+
+
+    public void addAnimal(Animal animal) {
+        animals.put(animal.getName(), animal);
+    }
+    public ArrayList<Animal> getAnimals() {
+        return new ArrayList<>(animals.values());
+    }
+    public Animal getAnimal(String name) {
+        return animals.get(name);
+    }
+    public Animal getAnimalByLocation(Location location) {
+        for (Animal animal : animals.values()) {
+            if (animal.getLocation().equals(location)) return animal;
+        }
+        return null;
     }
 }

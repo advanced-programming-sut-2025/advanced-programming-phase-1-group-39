@@ -285,29 +285,26 @@ public class GameController {
         if (itemStack == null || !(itemStack.getItem() instanceof Tool))
             return new Result(false, "You did not equip any tool!");
 
+
         Tool tool = (Tool) itemStack.getItem();
-        Result toolResult = tool.useTool(tile, player);
 
         int energyConsumed = tool.getUsingEnergy(player.getSkills(), game.getTodayWeather());
+        if (player.getTurnEnergy() <= energyConsumed) {
+            return new Result(false, AnsiColors.ANSI_ORANGE_BOLD + "You don't have enough energy!😓" + AnsiColors.ANSI_RESET);
+        }
+
+        Result toolResult = tool.useTool(tile, player);
+
         if (!toolResult.success()) {
             if (tool instanceof Pickaxe || tool instanceof Axe)
                 energyConsumed -= 1;
-            if (player.getTurnEnergy() <= energyConsumed) {
-                return new Result(false, AnsiColors.ANSI_ORANGE_BOLD + "You don't have enough energy!😓" + AnsiColors.ANSI_RESET);
-            }
             player.changeEnergy(energyConsumed);
             return new Result(true, toolResult +
                     AnsiColors.ANSI_ORANGE_BOLD + "\nConsumed Energy: " + energyConsumed + AnsiColors.ANSI_RESET);
         } else {
-            if (player.getTurnEnergy() <= energyConsumed) {
-                return new Result(false, "You don't have enough energy!");
-            }
             player.changeEnergy(energyConsumed);
-
-            if (tool instanceof Pickaxe) {
-
-            }
-            return new Result(true, "");
+            return new Result(true, toolResult +
+                    AnsiColors.ANSI_ORANGE_BOLD + "\nConsumed Energy: " + energyConsumed + AnsiColors.ANSI_RESET);
         }
     }
 

@@ -1,9 +1,6 @@
 package models.NPC;
 
-import models.Item;
-import models.ItemManager;
-import models.ItemStack;
-import models.Location;
+import models.*;
 import models.services.DialogueLoader;
 import models.services.MissionsLoader;
 
@@ -34,4 +31,42 @@ public class SebastianNPC extends NPC {
         super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/sebastianMissions.json");
         super.quests = generateNPCQuests(tasks, missions);
     }
+
+    @Override
+    public void getRewardMission1(int friendShipLevel, Game game) {
+        Player currentPlayer = game.getCurrentPlayer();
+        currentPlayer.getInventory().pickItem(getQuest(1).getTask().getItem().getName(),
+                getQuest(1).getTask().getAmount());
+        if (friendShipLevel == 2) {
+            currentPlayer.getInventory().addItem(ItemManager.getItemByName("Diamond"), 4);
+        } else {
+            currentPlayer.getInventory().addItem(ItemManager.getItemByName("Diamond"), 2);
+        }
+    }
+
+    @Override
+    public void getRewardMission2(int friendShipLevel, Game game) {
+        Player currentPlayer = game.getCurrentPlayer();
+        currentPlayer.getInventory().pickItem(getQuest(2).getTask().getItem().getName(),
+                getQuest(2).getTask().getAmount());
+        if (friendShipLevel == 2) {
+            currentPlayer.addMoney(10000);
+        } else {
+            currentPlayer.addMoney(5000);
+        }
+    }
+
+    @Override
+    public void getRewardMission3(int friendShipLevel, Game game) {
+        Player currentPlayer = game.getCurrentPlayer();
+        currentPlayer.getInventory().pickItem(getQuest(3).getTask().getItem().getName(),
+                getQuest(3).getTask().getAmount());
+        if (friendShipLevel == 2) {
+            currentPlayer.getInventory().addItem(ItemManager.getItemByName("Quartz"), 100);
+        } else {
+            currentPlayer.getInventory().addItem(ItemManager.getItemByName("Quartz"), 50);
+        }
+    }
+
+
 }

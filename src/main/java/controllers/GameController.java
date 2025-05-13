@@ -113,9 +113,35 @@ public class GameController {
         inv.addItem(itemT0oAdd, count);
         return new Result(true, "You have successfully add " + name + " " + count + "x to your inventory");
     }
-    public Result manageRefrigerator(Matcher matcher) {return null;}
-    private Result putInRefrigerator(Item item, int amount) {return null;}
-    private Result pickFromRefrigerator(Item item, int amount) {return null;}
+    public Result manageRefrigerator(Matcher matcher) {
+        String method = matcher.group(1);
+        String itemName = matcher.group(2);
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        // Todo: fridge bayad az khoone biad
+        Refrigerator refrigerator = new Refrigerator();
+        Inventory inv = player.getInventory();
+        Item item = ItemManager.getItemByName(itemName);
+        if (method.equalsIgnoreCase("pick")) {
+            if (!refrigerator.contains(itemName)) {
+                return new Result(false, "You doesn't have this item");
+            }
+            if (!inv.hasSpace(new ItemStack(item, 1))) {
+                return new Result(false, "Your inventory has not space anymore");
+            }
+            ItemStack itemToPick = refrigerator.pickItem(itemName, 1);
+            inv.addItem(itemToPick.getItem(), itemToPick.getAmount());
+            return new Result(true, "You picked up " + itemName + " from refrigerator");
+        } else if (method.equalsIgnoreCase("put")) {
+            if (!inv.hasItem(itemName)) {
+                return new Result(false, "You doesn't have this item");
+            }
+            refrigerator.addItem(item, 1);
+            return new Result(true, "You put " + itemName + " from your inventory to refrigerator");
+        } else {
+            return new Result(false, "invalid command");
+        }
+    }
     public Result showCookingRecipes() {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
 

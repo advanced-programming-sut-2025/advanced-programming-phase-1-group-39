@@ -18,6 +18,10 @@ public class Refrigerator {
         return null;
     }
 
+    public void addItem(Item item, int amount) {
+        inventory.addItem(item, amount);
+    }
+
     public boolean contains(String itemName) {
         return inventory.hasItem(itemName);
     }

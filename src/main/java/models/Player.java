@@ -125,6 +125,10 @@ public class Player {
     }
 
     // energy
+    public double getTurnEnergy() {
+        return turnEnergy;
+    }
+
     public double getEnergy() {
         return Math.floor(energy*100)/100;
     }

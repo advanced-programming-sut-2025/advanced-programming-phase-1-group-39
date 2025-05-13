@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import models.Enums.Direction;
 import models.Enums.WeatherStatus;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
@@ -8,6 +9,9 @@ import models.inventory.Inventory;
 import models.inventory.TrashType;
 import models.map.AnsiColors;
 import models.map.MapMinPathFinder;
+import models.map.Tile;
+import models.tools.Axe;
+import models.tools.Pickaxe;
 import models.tools.Tool;
 
 import java.util.ArrayList;
@@ -262,8 +266,50 @@ public class GameController {
 
         return player.getInventory().showTools();
     }
-    public Result upgradeTool(Matcher matcher) {return null;}
-    public Result useTool(Matcher matcher) {return null;}
+    public Result upgradeTool(Matcher matcher) {
+        return null;
+    }
+    public Result useTool(Matcher matcher) {
+        String dir = matcher.group("direction");
+        Direction direction = Direction.getDirection(dir);
+        if (direction == null)
+            return new Result(false, "Invalid direction!");
+
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+        Tile tile = game.getMap().getTile(player.getLocation().x() + direction.dx,
+                player.getLocation().y() + direction.dy);
+        if (tile == null) return new Result(false, "Use on which tile?!");
+
+        ItemStack itemStack = player.getInventory().getInHand();
+        if (itemStack == null || !(itemStack.getItem() instanceof Tool))
+            return new Result(false, "You did not equip any tool!");
+
+        Tool tool = (Tool) itemStack.getItem();
+        Result toolResult = tool.useTool(tile, player);
+
+        int energyConsumed = tool.getUsingEnergy(player.getSkills(), game.getTodayWeather());
+        if (!toolResult.success()) {
+            if (tool instanceof Pickaxe || tool instanceof Axe)
+                energyConsumed -= 1;
+            if (player.getTurnEnergy() <= energyConsumed) {
+                return new Result(false, AnsiColors.ANSI_ORANGE_BOLD + "You don't have enough energy!😓" + AnsiColors.ANSI_RESET);
+            }
+            player.changeEnergy(energyConsumed);
+            return new Result(true, toolResult +
+                    AnsiColors.ANSI_ORANGE_BOLD + "\nConsumed Energy: " + energyConsumed + AnsiColors.ANSI_RESET);
+        } else {
+            if (player.getTurnEnergy() <= energyConsumed) {
+                return new Result(false, "You don't have enough energy!");
+            }
+            player.changeEnergy(energyConsumed);
+
+            if (tool instanceof Pickaxe) {
+
+            }
+            return new Result(true, "");
+        }
+    }
 
     public Result showCraftInfo(Matcher matcher) {
         return new Result(true, CropManager.getCropInfo(matcher.group(1)));

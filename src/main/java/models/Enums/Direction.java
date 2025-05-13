@@ -17,4 +17,11 @@ public enum Direction {
         this.dx = dx;
         this.dy = dy;
     }
+
+    public static Direction getDirection(String name) {
+        for (Direction dir : Direction.values()) {
+            if (dir.name().equalsIgnoreCase(name)) return dir;
+        }
+        return null;
+    }
 }

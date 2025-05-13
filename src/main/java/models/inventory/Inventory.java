@@ -125,6 +125,7 @@ public class Inventory {
 
     public void addItem(Item item, int amount) {
         ItemStack itemStack = getItemByName(item.getName());
+        if (!hasSpace()) return;
         if (itemStack != null) {
             itemStack.addStack(-amount);
             if(!hasEnoughStack(item.getName(), 1)){

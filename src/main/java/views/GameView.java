@@ -83,6 +83,12 @@ public class GameView implements View {
             System.out.println(controller.showAvailableTools());
         }
 
+        else if ((matcher = GameCommands.TOOL_USE.getMatcher(command)) != null) {
+            System.out.println(controller.useTool(matcher));
+        } else if ((matcher = GameCommands.TOOLS_UPGRADE.getMatcher(command)) != null) {
+            System.out.println(controller.upgradeTool(matcher));
+        }
+
         else {
             System.out.println("invalid command.");
         }

@@ -113,6 +113,9 @@ public class Inventory {
     public boolean hasSpace() {
         return inventoryItems.size() < type.getCapacity();
     }
+    public boolean hasSpace(int num) {
+        return inventoryItems.size() + num < type.getCapacity();
+    }
 
     public ItemStack getItemByName(String name) {
         for (ItemStack item : inventoryItems) {

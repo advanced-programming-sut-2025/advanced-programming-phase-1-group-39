@@ -12,7 +12,6 @@ import models.map.Tile;
 import models.tools.Tool;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -21,11 +20,11 @@ public class Inventory {
     ArrayList<ItemStack> inventoryItems = new ArrayList<>();
     TrashType trashType = TrashType.BASIC;
 
-    // TODO : set item in hand to first
     ItemStack inHand = null;
 
     public Inventory(List<ItemStack> firstItems) {
         inventoryItems.addAll(firstItems);
+        inHand = firstItems.get(0);
     }
 
     public String getItemAndColor(ItemStack itemStack) {
@@ -78,7 +77,20 @@ public class Inventory {
         return text.toString();
     }
 
-    public void trashItem(Item item) {}
+    public String getTrashTypeName() {
+        return trashType.name();
+    }
+
+    public TrashType getTrashType() {
+        return trashType;
+    }
+
+    public int trashItem(ItemStack item, int number) {
+        int itemPrice = 0;
+//      TODO :
+//        itemPrice = item.getPrice();
+        return (int)(trashType.quantifier * itemPrice);
+    }
 
     public boolean hasSpace() {
         return inventoryItems.size() < type.getCapacity();
@@ -136,5 +148,10 @@ public class Inventory {
             return;
         }
         tile.placeItem(item);
+    }
+
+    public void setInHand(ItemStack itemStack) {
+        if (inventoryItems.contains(itemStack))
+            inHand = itemStack;
     }
 }

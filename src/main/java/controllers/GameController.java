@@ -4,6 +4,8 @@ import models.*;
 import models.Enums.WeatherStatus;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
+import models.inventory.Inventory;
+import models.inventory.TrashType;
 import models.map.AnsiColors;
 import models.map.MapMinPathFinder;
 
@@ -214,7 +216,27 @@ public class GameController {
 
         return player.getInventory().showInventory();
     }
-    public Result throwToInventoryTrash(Matcher matcher) {return null;}
+    public Result throwToInventoryTrash(Matcher matcher) {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+
+        String itemName = matcher.group("itemName");
+        int number = Integer.parseInt(matcher.group("number"));
+
+        Inventory inventory = player.getInventory();
+        ItemStack itemStack = inventory.getItemByName(itemName);
+        if (itemStack == null)
+            return new Result(false, "No item found with name " + itemName);
+
+        int priceBacked = inventory.trashItem(itemStack, number);
+        player.changeMoney(priceBacked);
+
+        StringBuilder text = new StringBuilder("You trashed item " + itemName + " x" + number);
+        if (inventory.getTrashType() != TrashType.BASIC)
+           text.append(text + AnsiColors.ANSI_YELLOW + "\nYour trash is " + inventory.getTrashTypeName() + " and you saved " + priceBacked + "G !!");
+
+        return new Result(true, text.toString());
+    }
 
     public Result equipTool(Matcher matcher) {return null;}
     public Result showCurrentTool() {return null;}

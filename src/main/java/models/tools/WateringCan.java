@@ -56,4 +56,10 @@ public class WateringCan extends Tool {
         return (int)((baseUsingEnergy - type.getEnergyReduce() - getSkillEnergyReduce(skill))
                 * getWeatherMultiplier(weather));
     }
+
+    public void upgradeToNext() {}
+
+    public void upgradeTo(ToolType type) {
+        this.type = type;
+    }
 }

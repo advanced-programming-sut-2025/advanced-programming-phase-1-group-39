@@ -16,7 +16,7 @@ import models.cooking.FoodRecipe;
 import models.crafting.CraftingRecipe;
 import models.inventory.Inventory;
 import models.map.AnsiColors;
-import models.tools.FishingPole;
+import models.tools.*;
 import models.trading.TradeItem;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class Player {
     private int numOfBadDays = 0;
 
     private Skill skills = new Skill();
-    private Inventory inventory = new Inventory();
+    private Inventory inventory;
 
 
     private ArrayList<CraftingRecipe> craftingRecipes;
@@ -60,7 +60,17 @@ public class Player {
 
     private ArrayList<Building> playerFarmBuildings = new ArrayList<>();
 
-    public Player() {}
+    public Player() {
+        ItemStack hoe = new ItemStack(new Hoe(), 1);
+        ItemStack pickaxe = new ItemStack(new Pickaxe(), 1);
+        ItemStack axe = new ItemStack(new Axe(), 1);
+        ItemStack scythe = new ItemStack(new Scythe(), 1);
+        ItemStack wateringCan = new ItemStack(new WateringCan(), 1);
+
+        this.inventory = new Inventory(
+                List.of(hoe, pickaxe, axe, scythe, wateringCan)
+        );
+    }
 
     public boolean isConscious() {
         return energy > 0;

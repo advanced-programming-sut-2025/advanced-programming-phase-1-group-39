@@ -208,7 +208,12 @@ public class GameController {
         return "now your energy is " + AnsiColors.ANSI_GREEN_BOLD + "UNLIMITED" + AnsiColors.ANSI_RESET;
     }
 
-    public Result showInventory(Matcher matcher) {return null;}
+    public String showInventory() {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+
+        return player.getInventory().showInventory();
+    }
     public Result throwToInventoryTrash(Matcher matcher) {return null;}
 
     public Result equipTool(Matcher matcher) {return null;}

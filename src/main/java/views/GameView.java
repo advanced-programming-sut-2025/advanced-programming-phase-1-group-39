@@ -64,12 +64,14 @@ public class GameView implements View {
         } else if ((matcher = GameCommands.CHEAT_THOR.getMatcher(command)) != null) {
             System.out.println(controller.cheatThor(matcher));
         }
-        else if ((matcher = GameCommands.BUILD_GREENHOUSE.getMatcher(command)) != null) {
+        else if ((GameCommands.BUILD_GREENHOUSE.getMatcher(command)) != null) {
             Result res;
             System.out.println((res = controller.buildGreenHouseRequest()));
             if (res.success()) {
                 System.out.println(controller.buildGreenHouse());
             }
+        } else if ((GameCommands.INVENTORY_SHOW.getMatcher(command)) != null) {
+            System.out.println(controller.showInventory());
         }
 
         else {

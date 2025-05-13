@@ -30,6 +30,10 @@ public enum GameCommands {
     CHEAT_THOR("cheat\\s+Thor\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)"),
 
     BUILD_GREENHOUSE("greenhouse\\s+build"),
+
+    INVENTORY_SHOW("inventory\\s+show"),
+    INVENTORY_TRASH("inventory\\s+trash\\s+-i\\s+(?<itemName>.+)(\\s+-n\\s+(?<number>\\d+)?)"),
+
     // Tools
     // TODO : complete tools in View and Controller
     TOOLS_EQUIP("tools\\s+equip\\s+(?<name>\\S+)"),

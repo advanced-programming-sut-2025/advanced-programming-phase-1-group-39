@@ -15,5 +15,9 @@ public abstract class Crop extends Item {
     public Crop(String name) {
         super(name);
     }
+
+    public int getBaseSellPrice() {
+        return baseSellPrice;
+    }
 }
 

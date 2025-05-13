@@ -9,6 +9,10 @@ public class ForagingMaterial extends Item {
         this.baseSellPrice = baseSellPrice;
     }
 
+    public int getBaseSellPrice() {
+        return baseSellPrice;
+    }
+
     public ForagingMaterial clone() {
         return new ForagingMaterial(this.getName(), this.baseSellPrice);
     }

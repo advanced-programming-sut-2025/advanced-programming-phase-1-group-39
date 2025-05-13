@@ -328,4 +328,8 @@ public class Player {
 
         return dx <= 1 && dy <= 1 && dx >= -1 && dy >= -1;
     }
+
+    public Skill getSkills() {
+        return skills;
+    }
 }

@@ -132,4 +132,8 @@ public class Animal {
                 ", daysSinceLastProduce=" + daysSinceLastProduce +
                 '}';
     }
+
+    public void generateProductForNextDay() {
+
+    }
 }

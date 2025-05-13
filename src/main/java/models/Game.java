@@ -248,4 +248,8 @@ public class Game {
 //    public void setTomorrowWeatherRandom() {
 //        tomorrowWeather.setWeatherRandom(this.time.getSeason());
 //    }
+
+    public void addBuilding(Building building) {
+        buildings.add(building);
+    }
 }

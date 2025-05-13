@@ -7,11 +7,9 @@ import models.animals.AnimalProduct;
 import models.animals.Fish;
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
-import models.artisan.Furnace;
 import models.cooking.FoodManager;
 import models.crafting.CraftingManager;
-import models.cropsAndFarming.CropManager;
-import models.cropsAndFarming.TreeManager;
+import models.cropsAndFarming.*;
 import models.inventory.Inventory;
 import models.map.Tile;
 import models.tools.FishingPole;
@@ -63,9 +61,85 @@ public class GameController {
         return new Result(true, TreeManager.getTreeInfo(matcher.group(1)));
     }
 
-    public Result plant(Matcher matcher) {return null;}
-    public Result showPlant(Matcher matcher) {return null;}
-    public Result fertilize(Matcher matcher) {return null;}
+    public Result plant(Matcher matcher) {
+        String seedName = matcher.group(1);
+        String dir = matcher.group(2);
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        Direction direction = Direction.getDirection(dir);
+        if (direction == null) {
+            return new Result(false, "Wrong direction");
+        }
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(player.getLocation().x() + direction.dx,
+                player.getLocation().y() + direction.dy);
+        if (tile  == null) {
+            return new Result(false, "tile doesn't exist");
+        }
+        if(!tile.canPlant()) {
+            return new Result(false, "You can't plant anything on this tile!");
+        }
+        if (!player.getInventory().hasItem(seedName)) {
+            return new Result(false, "You don't have " + seedName);
+        }
+        tile.plantSeed(seedName);
+        return new Result(false, "You have successfully planted " + seedName);
+    }
+    public Result showPlant(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group(1));
+        int y = Integer.parseInt(matcher.group(2));
+
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(x, y);
+        if (tile  == null) {
+            return new Result(false, "tile doesn't exist");
+        }
+        Plant plant = tile.getPlant();
+        if (plant == null) {
+            return new Result(false, "There is no plant here");
+        }
+        return new Result(true, plant.toString());
+    }
+    public Result showTree(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group(1));
+        int y = Integer.parseInt(matcher.group(2));
+
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(x, y);
+        if (tile  == null) {
+            return new Result(false, "tile doesn't exist");
+        }
+        Tree tree = tile.getTree();
+        if (tree == null) {
+            return new Result(false, "There is no tree here");
+        }
+        return new Result(true, tree.toString());
+    }
+    public Result fertilize(Matcher matcher) {
+        String fertilizerName = matcher.group(1);
+        String dir = matcher.group(2);
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        Direction direction = Direction.getDirection(dir);
+        if (direction == null) {
+            return new Result(false, "Wrong direction");
+        }
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(player.getLocation().x() + direction.dx,
+                player.getLocation().y() + direction.dy);
+        if (tile  == null) {
+            return new Result(false, "tile doesn't exist");
+        }
+        if (!tile.isPlowed()) {
+            return new Result(false, "You must plow tile first!");
+        }
+        if (!player.getInventory().hasItem(fertilizerName)) {
+            return new Result(false, "You don't have any " + fertilizerName);
+        }
+        FertilizerType fertilizerType = FertilizerType.getType(fertilizerName);
+        if (fertilizerType == null) {
+            return new Result(false, fertilizerName + " isn't a fertilizer!");
+        }
+        tile.setFertilizer(fertilizerType);
+        return new Result(true, fertilizerName + " has set as tile fertilizer");
+    }
     public Result howMuchWater() {return null;}
 
     public Result showCraftingRecipes() {
@@ -86,7 +160,7 @@ public class GameController {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         Inventory inv = player.getInventory();
         if (!inv.hasItem(itemName)) {
-            return new Result(false, "You doesn't have this item in your inventory");
+            return new Result(false, "You don't have this item in your inventory");
         }
         Direction direction = Direction.getDirection(dir);
         if (direction == null) {
@@ -95,6 +169,9 @@ public class GameController {
         Location playerLocation = player.getLocation();
         Tile tile = App.getApp().getCurrentGame().getMap().getTile(playerLocation.x() + direction.dx,
                 playerLocation.y() + direction.dy);
+        if (tile  == null) {
+            return new Result(false, "tile doesn't exist");
+        }
         if (!tile.canAddItemToTile()) {
             return new Result(false, "You can't add item to this tile");
         }
@@ -125,7 +202,7 @@ public class GameController {
         Item item = ItemManager.getItemByName(itemName);
         if (method.equalsIgnoreCase("pick")) {
             if (!refrigerator.contains(itemName)) {
-                return new Result(false, "You doesn't have this item");
+                return new Result(false, "You don't have this item");
             }
             if (!inv.hasSpace(new ItemStack(item, 1))) {
                 return new Result(false, "Your inventory has not space anymore");
@@ -135,7 +212,7 @@ public class GameController {
             return new Result(true, "You picked up " + itemName + " from refrigerator");
         } else if (method.equalsIgnoreCase("put")) {
             if (!inv.hasItem(itemName)) {
-                return new Result(false, "You doesn't have this item");
+                return new Result(false, "You don't have this item");
             }
             refrigerator.addItem(item, 1);
             return new Result(true, "You put " + itemName + " from your inventory to refrigerator");
@@ -166,7 +243,7 @@ public class GameController {
         Animal animal = App.getApp().getCurrentGame().getPlayerInTurn().getAnimal(name);
 
         if (animal == null) {
-            return new Result(false, "You doesn't have this animal ):");
+            return new Result(false, "You don't have this animal ):");
         }
         //Todo: check is near animal
         animal.pet();
@@ -181,10 +258,10 @@ public class GameController {
 
         Animal animal = player.getAnimal(animalName);
         if (animal == null) {
-            return new Result(false, "You doesn't have this animal ):");
+            return new Result(false, "You don't have this animal ):");
         }
 
-        animal.setFriendship(amount);
+        animal.changeFriendship(amount);
         return new Result(true, "You changed friendship with " + animalName + " by amount " + amount);
     }
     public Result showAnimalsInfo(Matcher matcher) {
@@ -207,7 +284,7 @@ public class GameController {
         //Todo: check x and y validate
         Animal animal = player.getAnimal(animalName);
         if (animal == null) {
-            return new Result(false, "You doesn't have this animal");
+            return new Result(false, "You don't have this animal");
         }
         animal.sendOutside(x, y);
 
@@ -218,11 +295,11 @@ public class GameController {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         Inventory inv = player.getInventory();
         if (!inv.hasItem("Hay")) {
-            return new Result(false, "You doesn't have any hay to feed animal");
+            return new Result(false, "You don't have any hay to feed animal");
         }
         Animal animal = player.getAnimal(animalName);
         if (animal == null) {
-            return new Result(false, "You doesn't have this animal");
+            return new Result(false, "You don't have this animal");
         }
 
         inv.pickItem("Hay", 1);
@@ -246,7 +323,7 @@ public class GameController {
 
         Animal animal = player.getAnimal(animalName);
         if (animal == null) {
-            return new Result(false, "You doesn't have this animal");
+            return new Result(false, "You don't have this animal");
         }
 
         AnimalProduct product = animal.collectProduct();
@@ -261,7 +338,7 @@ public class GameController {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         Animal animal = player.getAnimal(animalName);
         if (animal == null) {
-            return new Result(false, "You doesn't have this animal");
+            return new Result(false, "You don't have this animal");
         }
 
         int money = player.sellAnimal(animal);

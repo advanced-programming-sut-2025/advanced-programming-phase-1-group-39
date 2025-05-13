@@ -7,6 +7,14 @@ public enum GameCommands {
     PRINT_MAP("print\\s+map\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)\\s+-s\\s+(?<size>\\d+)"),
     HELP_READING_MAP("help\\s+reading\\s+map"),
 
+    SHOW_CRAFT_INFO("craft\\s+info\\s+-n\\s+(.+?)"),
+    SHOW_TREE_INFO("tree\\s+info\\s+-n\\s+(.+?)"),
+    SHOW_PLANT("show\\s+plant\\s+-l\\s+(\\d+)\\s+(\\d+)"),
+    SHOW_TREE("show\\s+tree\\s+-l\\s+(\\d+)\\s+(\\d+)"),
+    FERTILIZE("fertilize\\s+-f\\s+(.+?)\\s+-d\\+s(.+?)"),
+
+    PLANT("plant\\s+-s\\s+(.+?)\\s+-d\\s+(.+?)"),
+
     SHOW_CRAFTING_RECIPES("show\\s+crafting\\s+recipes"),
     CRAFT("crafting\\s+craft\\s+(.+?)"),
     CHEAT_ADD_ITEM("cheat\\s+add\\s+item\\s+-n\\s+(.+?)\\s+-c\\s+(\\d+)"),

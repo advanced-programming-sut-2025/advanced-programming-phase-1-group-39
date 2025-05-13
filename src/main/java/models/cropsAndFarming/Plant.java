@@ -48,13 +48,21 @@ public class Plant {
 
 
     public void updateDaily() {
-        if (!isWateredToday) {
+        FertilizerType type = tile.getFertilizer();
+
+        boolean needsWater = (type != FertilizerType.QUALITY);
+        boolean isWateredEnough = !needsWater || isWateredToday;
+
+        if (!isWateredEnough) {
             daysWithoutWater++;
             return;
         }
 
         if (currentStage < stages.size()) {
-            daysOfCurrentStage--;
+            int speedBonus = (type == FertilizerType.SPEED) ? 2 : 1;
+
+            daysOfCurrentStage -= speedBonus;
+
             if (daysOfCurrentStage <= 0) {
                 if (currentStage + 1 < stages.size()) {
                     currentStage++;
@@ -75,8 +83,11 @@ public class Plant {
             productStack = 1;
         }
 
-        isWateredToday = false;
+        if (needsWater) {
+            isWateredToday = false;
+        }
     }
+
 
     public ItemStack harvest() {
         if (!hasCrop) {return null;}

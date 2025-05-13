@@ -1,6 +1,7 @@
 package models.map;
 
 import models.ItemStack;
+import models.Location;
 import models.cropsAndFarming.*;
 
 
@@ -21,6 +22,10 @@ public class Tile {
     public Tile(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Location getLocation() {
+        return new Location(x, y);
     }
 
     public void setType(TileType type) {
@@ -83,8 +88,11 @@ public class Tile {
     public void setNotPlow() {
         canPlant = false;
     }
-
-    public boolean canPlant() { return canPlant; }
+    public boolean isPlowed() {return canPlant;}
+    public boolean canPlant() { return canPlant
+            && itemOnTile == null && plant == null
+            && tree == null;
+    }
 
     public void removePlant() {
         plant = null;

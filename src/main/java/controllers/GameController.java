@@ -167,6 +167,9 @@ public class GameController {
         }
 
         AnimalProduct product = animal.collectProduct();
+        if (!player.getInventory().hasSpace()) {
+            return new Result(false, "Your inventory has not space anymore!");
+        }
         player.getInventory().addItem(product, 1);
         return new Result(true, "You have collected " + product.getName() + " from " + animalName);
     }
@@ -230,6 +233,9 @@ public class GameController {
         ArtisanGood good = machine.getReadyGoods(itemName, App.getApp().getCurrentGame().getTime());
         if (good == null) {
             return new Result(false, "The product has not produced by machine (yet or never)");
+        }
+        if (!App.getApp().getCurrentGame().getPlayerInTurn().getInventory().hasSpace()) {
+            return new Result(false, "Your inventory has not space anymore!");
         }
         App.getApp().getCurrentGame().getPlayerInTurn().getInventory().addItem(good, 1);
 

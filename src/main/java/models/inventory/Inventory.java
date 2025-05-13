@@ -110,11 +110,9 @@ public class Inventory {
         return (int)(trashType.quantifier * itemPrice);
     }
 
-    public boolean hasSpace() {
+    public boolean hasSpace(ItemStack itemStack) {
+        if (inventoryItems.contains(itemStack)) return true;
         return inventoryItems.size() < type.getCapacity();
-    }
-    public boolean hasSpace(int num) {
-        return inventoryItems.size() + num < type.getCapacity();
     }
 
     public ItemStack getItemByName(String name) {
@@ -128,7 +126,7 @@ public class Inventory {
 
     public void addItem(Item item, int amount) {
         ItemStack itemStack = getItemByName(item.getName());
-        if (!hasSpace()) return;
+        if (!hasSpace(new ItemStack(item, amount))) return;
         if (itemStack != null) {
             itemStack.addStack(-amount);
             if(!hasEnoughStack(item.getName(), 1)){
@@ -169,7 +167,8 @@ public class Inventory {
         if (item == null) {
             return;
         }
-        tile.placeItem(item);
+        if (tile.getItemOnTile() == null)
+            tile.placeItem(item);
     }
 
     public void setInHand(ItemStack itemStack) {

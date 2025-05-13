@@ -17,8 +17,9 @@ public class MilkPail extends Tool {
         Animal animal = player.getAnimalByLocation(location);
         if (animal == null)
             return new Result(false, "Animal not found");
-        else if (animal.getPlace() != LivingPlace.BARN ||
-                animal.getType() != AnimalType.COW || animal.getType() != AnimalType.GOAT) {
+        else if (animal.getPlace() != LivingPlace.BARN || animal.getPlace() != LivingPlace.BIG_BARN
+                || animal.getPlace() != LivingPlace.DELUXE_BARN
+                || animal.getType() != AnimalType.COW || animal.getType() != AnimalType.GOAT) {
             return new Result(false, "This Animal can't produce Milk!");
         } else {
             return new Result(true, "You got Milk of Your "+animal.getName()+" !");

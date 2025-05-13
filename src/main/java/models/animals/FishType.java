@@ -40,4 +40,13 @@ public enum FishType {
     public Fish create() {
         return new Fish(this.name(), this, basePrice, season);
     }
+
+    public static Fish getFishByName(String name) {
+        for (FishType type : values()) {
+            if (name.equalsIgnoreCase(type.name())) {
+                return type.create();
+            }
+        }
+        return null;
+    }
 }

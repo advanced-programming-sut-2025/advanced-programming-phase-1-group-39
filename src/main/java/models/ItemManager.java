@@ -1,5 +1,6 @@
 package models;
 
+import models.animals.FishType;
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
 import models.cooking.FoodManager;
@@ -67,6 +68,9 @@ public class ItemManager {
         }
         if (CraftingRecipe.getItemByName(name) != null) {
             return CraftingRecipe.getItemByName(name);
+        }
+        if (FishType.getFishByName(name) != null) {
+            return FishType.getFishByName(name);
         }
 
 

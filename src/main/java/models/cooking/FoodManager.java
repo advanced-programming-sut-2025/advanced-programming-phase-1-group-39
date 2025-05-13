@@ -41,7 +41,7 @@ public class FoodManager {
         return new Result(true, "Cooked: " + recipe.data.getName());
     }
 
-    private static boolean hasAllIngredients(Player player, FoodRecipe recipe) {
+    public static boolean hasAllIngredients(Player player, FoodRecipe recipe) {
         Inventory inv = player.getInventory();
         for (Map.Entry<String, Integer> entry : recipe.ingredients.entrySet()) {
             String itemName = entry.getKey();
@@ -54,13 +54,13 @@ public class FoodManager {
         return true;
     }
 
-    private static FoodRecipe getRecipeByName(String name) {
+    public static FoodRecipe getRecipeByName(String name) {
         for (FoodRecipe recipe : FoodRecipe.values()) {
             if (recipe.data.getName().equalsIgnoreCase(name)) return recipe;
         }
         return null;
     }
-    private static Food getFoodByName(String name) {
+    public static Food getFoodByName(String name) {
         for (FoodRecipe recipe : FoodRecipe.values()) {
             if (recipe.data.getName().equalsIgnoreCase(name)) return recipe.data;
         }

@@ -2,6 +2,7 @@ package models;
 
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
+import models.cooking.FoodManager;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.ForagingManager;
 import models.cropsAndFarming.TreeManager;
@@ -59,6 +60,9 @@ public class ItemManager {
         }
         if (getArtisanGood(name) != null) {
             return getArtisanGood(name);
+        }
+        if (FoodManager.getFoodByName(name) != null) {
+            return FoodManager.getFoodByName(name);
         }
 
 

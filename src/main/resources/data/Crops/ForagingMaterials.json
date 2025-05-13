@@ -6,5 +6,9 @@
   {
     "name": "stone",
     "sellPrice": 50
+  },
+  {
+    "name": "Grass",
+    "sellPrice": 50
   }
 ]

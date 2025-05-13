@@ -283,7 +283,7 @@ public class Map {
 
     }
 
-    private void addNpcMap() {
+    private void addNpcMap(ArrayList<Shop> shops) {
         try (FileReader reader = new FileReader("src/main/resources/data/Map/npcMap.json")) {
             Gson gson = new Gson();
 

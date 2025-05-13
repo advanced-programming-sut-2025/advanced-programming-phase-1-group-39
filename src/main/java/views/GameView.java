@@ -72,6 +72,15 @@ public class GameView implements View {
             }
         } else if ((GameCommands.INVENTORY_SHOW.getMatcher(command)) != null) {
             System.out.println(controller.showInventory());
+        } else if ((matcher = GameCommands.INVENTORY_TRASH.getMatcher(command)) != null) {
+            System.out.println(controller.throwToInventoryTrash(matcher));
+        }
+        else if ((matcher = GameCommands.TOOLS_EQUIP.getMatcher(command)) != null) {
+            System.out.println(controller.equipTool(matcher));
+        } else if ((GameCommands.TOOL_SHOW_CURRENT.getMatcher(command)) != null) {
+            System.out.println(controller.showCurrentTool());
+        } else if ((GameCommands.TOOL_SHOW_AVAILABLE.getMatcher(command)) != null) {
+            System.out.println(controller.showAvailableTools());
         }
 
         else {

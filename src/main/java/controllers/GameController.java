@@ -8,6 +8,7 @@ import models.inventory.Inventory;
 import models.inventory.TrashType;
 import models.map.AnsiColors;
 import models.map.MapMinPathFinder;
+import models.tools.Tool;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -238,9 +239,29 @@ public class GameController {
         return new Result(true, text.toString());
     }
 
-    public Result equipTool(Matcher matcher) {return null;}
-    public Result showCurrentTool() {return null;}
-    public Result showAvailableTools() {return null;}
+    public Result equipTool(Matcher matcher) {
+        String toolName = matcher.group("toolName");
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        ItemStack item = player.getInventory().getItemByName(toolName);
+        if (item == null || !(item.getItem() instanceof Tool))
+            return new Result(false, "No Tool found with name " + toolName);
+        player.getInventory().setInHand(item);
+        return new Result(true, "You equipped " + toolName);
+    }
+    public Result showCurrentTool() {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        ItemStack item = player.getInventory().getInHand();
+        if (item == null || !(item.getItem() instanceof Tool))
+            return new Result(false, "You did not equip any tool!");
+
+        return new Result(true, "Your tool in hand is :" + item.getItem().getName());
+    }
+    public String showAvailableTools() {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        return player.getInventory().showTools();
+    }
     public Result upgradeTool(Matcher matcher) {return null;}
     public Result useTool(Matcher matcher) {return null;}
 

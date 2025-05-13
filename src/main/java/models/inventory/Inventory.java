@@ -77,6 +77,24 @@ public class Inventory {
         return text.toString();
     }
 
+    public String showTools() {
+        StringBuilder text = new StringBuilder();
+        text.append(AnsiColors.ANSI_GREEN_BOLD + "Your Tools:\n--------------\n" + AnsiColors.ANSI_RESET);
+
+        boolean added = false;
+        for (ItemStack itemStack : inventoryItems) {
+            if (itemStack.getItem() instanceof Tool) {
+                text.append(getItemAndColor(itemStack));
+                added = true;
+            }
+        }
+        if (!added) {
+            return "You don't have any tools in hand!";
+        }
+
+        return text.toString();
+    }
+
     public String getTrashTypeName() {
         return trashType.name();
     }
@@ -153,5 +171,9 @@ public class Inventory {
     public void setInHand(ItemStack itemStack) {
         if (inventoryItems.contains(itemStack))
             inHand = itemStack;
+    }
+
+    public ItemStack getInHand() {
+        return inHand;
     }
 }

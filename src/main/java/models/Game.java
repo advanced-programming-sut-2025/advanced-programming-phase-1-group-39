@@ -61,7 +61,7 @@ public class Game {
         if (number == -1) {return;}
 
         player.setFarmBound(Map.getStartOfFarm(number));
-        player.addFirstBuildingObjects();
+        player.addFirstBuildingObjects(this);
         gameMap.addRandomFarm(farmType, number, player);
     }
 
@@ -72,7 +72,7 @@ public class Game {
 
     public void goToNextHour() {
         addToHour(1);
-        //TODO : food buffs,
+        //TODO : food buffs
 
         // reset players energiesHourLimit
         resetPlayersHourlyEnergyLimit();
@@ -257,5 +257,9 @@ public class Game {
     // TODO: each day should be called
     public void setTomorrowWeatherRandom() {
         tomorrowWeather.setWeatherRandom(this.time.getSeason());
+    }
+
+    public void addToBuildings(Building building) {
+        buildings.add(building);
     }
 }

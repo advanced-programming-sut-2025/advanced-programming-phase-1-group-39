@@ -225,11 +225,13 @@ public class Player {
         }
     }
 
-    public void addFirstBuildingObjects() {
-        addToBuildings(new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5)));
-        addToBuildings(new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0)));
-        addToBuildings(new ShippingBin(new Location(startOfFarm.x() + 77, startOfFarm.y() + 10)));
-
+    public void addFirstBuildingObjects(Game game) {
+        Building cabin = new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5));
+        Building greenhouse = new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0));
+        Building shippingBin = new ShippingBin(new Location(startOfFarm.x() + 77, startOfFarm.y() + 10));
+        addToBuildings(cabin);
+        addToBuildings(greenhouse);
+        addToBuildings(shippingBin);
     }
 
     public void addToBuildings(Building building) {

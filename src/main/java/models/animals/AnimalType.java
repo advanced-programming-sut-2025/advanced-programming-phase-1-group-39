@@ -77,4 +77,13 @@ public enum AnimalType {
             return new Animal(this, name, price, place, products);
         }
 
+        public static List<AnimalProduct> getAllAnimalProducts() {
+                List<AnimalProduct> all = new ArrayList<>();
+                for (AnimalType type : AnimalType.values()) {
+                        all.addAll(type.products);
+                }
+                return all;
+        }
+
+
 }

@@ -87,7 +87,7 @@ public class Animal {
         else if (qualityValue < 0.9) quality = AnimalProductQuality.GOLD;
         else quality = AnimalProductQuality.IRIDIUM;
 
-        produced = produced.clone(); // clone to avoid altering original
+        produced = produced.clone();
         produced.setQuality(quality);
         todayProduct = produced;
     }

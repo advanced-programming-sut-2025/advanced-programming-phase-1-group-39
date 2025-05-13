@@ -98,6 +98,10 @@ public class Tile {
         plant = null;
     }
 
+    public void removeTree() {
+        tree = null;
+    }
+
     public void burnTree() {
         tree.burn();
     }

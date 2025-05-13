@@ -101,11 +101,12 @@ public class Tree{
     public void burn() {isBurnt = true;}
     public ItemStack cutDown() {
         if (!isBurnt) {
-            return new ItemStack(source, 1); // Todo: add wood
+            return new ItemStack(source, 1);
         } else {
             return new ItemStack(ForagingManager.getMineralByName("Coal"), 5);
         }
     }
+
 
     @Override
     public String toString() {
@@ -130,5 +131,9 @@ public class Tree{
                 ", isBurnt=" + isBurnt +
                 ", hasFruit=" + hasFruit +
                 '}';
+    }
+
+    public int getCurrentStage() {
+        return currentStage;
     }
 }

@@ -11,4 +11,8 @@ public class WateringCan extends Tool {
     public Result useTool() {
         return null;
     }
+
+    public void upgradeTo(ToolType type) {
+        this.type = type;
+    }
 }

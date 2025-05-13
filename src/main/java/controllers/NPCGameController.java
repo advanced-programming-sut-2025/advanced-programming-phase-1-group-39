@@ -109,7 +109,7 @@ public class NPCGameController {
         } else {
             int mode = canGiveGift(itemName, game, npcName);
             if (mode == 0) {
-                return new Result(false, "The " + itemName +" does not exist in your inventory.");
+                return new Result(false, "The " + itemName + " does not exist in your inventory.");
             } else if (mode == 1) {
                 return new Result(false, "You cannot give tools as gifts to NPCs.");
             } else if (mode == 2) {
@@ -119,12 +119,14 @@ public class NPCGameController {
                     setFriendshipScore(currentPlayer.getFriendship(npcName), 200);
                     currentPlayer.getFriendship(npcName).setFirstGift(false);
                 }
+                currentPlayer.getInventory().pickItem(itemName, 1);
                 return new Result(true, "Wow, you really made my day. Thanks for being amazing.");
             } else {
                 if (currentPlayer.getFriendship(npcName).isFirstGift()) {
                     setFriendshipScore(currentPlayer.getFriendship(npcName), 50);
                     currentPlayer.getFriendship(npcName).setFirstGift(false);
                 }
+                currentPlayer.getInventory().pickItem(itemName, 1);
                 return new Result(true, "Oh, thank you! That’s sweet of you.");
             }
         }
@@ -132,24 +134,11 @@ public class NPCGameController {
 
     public Result showFriendship() {
         StringBuilder output = new StringBuilder();
-        output.append("Sebastian ->\n").append("friendShip level : ");
-        output.append(currentPlayer.getFriendship("sebastian").getFriendshipLevel()).append("\n");
-        output.append("friendShip score : ").append(currentPlayer.getFriendship("sebastian").getFriendshipScore()).append("\n");
-        output.append("Abigail ->\n").append("friendShip level : ");
-        output.append(currentPlayer.getFriendship("abigail").getFriendshipLevel()).append("\n");
-        output.append("friendShip score : ").append(currentPlayer.getFriendship("abigail").getFriendshipScore()).append("\n");
-        output.append("Harvey ->\n").append("friendShip level : ");
-        output.append(currentPlayer.getFriendship("harvey").getFriendshipLevel()).append("\n");
-        output.append("friendShip score : ").append(currentPlayer.getFriendship("harvey").getFriendshipScore()).append("\n");
-        output.append("Leah ->\n").append("friendShip level : ");
-        output.append(currentPlayer.getFriendship("leah").getFriendshipLevel()).append("\n");
-        output.append("friendShip score : ").append(currentPlayer.getFriendship("leah").getFriendshipScore()).append("\n");
-        output.append("Robbin ->\n").append("friendShip level : ");
-        output.append(currentPlayer.getFriendship("robin").getFriendshipLevel()).append("\n");
-        output.append("friendShip score : ").append(currentPlayer.getFriendship("robin").getFriendshipScore()).append("\n");
+        for (String npcName : NPCNames) {
+            output.append(printFriendShip(npcName));
+        }
         return new Result(true, output.toString());
     }
-
 
 
     // Auxiliary functions :
@@ -270,6 +259,21 @@ public class NPCGameController {
                 return 4;
             }
         }
+    }
+
+    private StringBuilder printFriendShip(String NPCName) {
+        StringBuilder output = new StringBuilder();
+        output.append(NPCName).append(" ->\n").append("friendShip level : ");
+        output.append(currentPlayer.getFriendship(NPCName).getFriendshipLevel()).append("\n");
+        output.append("friendShip score : ").append(currentPlayer.getFriendship(NPCName).getFriendshipScore()).append("\n");
+        if (currentPlayer.getFriendship(NPCName).getFriendshipScore() == 799) {
+            output.append("Congratulations! You've maxed out your friendship with ").append(NPCName).append(" !!!\n");
+            output.append("---------------");
+        }
+        if (!NPCName.equals("robin")) {
+            output.append("\n");
+        }
+        return output;
     }
 
 

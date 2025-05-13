@@ -1,0 +1,18 @@
+{
+  "items": [
+    { "name": "Copper Ore", "price": 75, "limit": -1 },
+    { "name": "Iron Ore", "price": 150, "limit": -1 },
+    { "name": "Coal", "price": 150, "limit": -1 },
+    { "name": "Gold Ore", "price": 400, "limit": -1 }
+  ],
+  "toolUpgrades": [
+    "Copper Tool",
+    "Steel Tool",
+    "Gold Tool",
+    "Iridium Tool",
+    "Copper Trash Can",
+    "Steel Trash Can",
+    "Gold Trash Can",
+    "Iridium Trash Can"
+  ]
+}

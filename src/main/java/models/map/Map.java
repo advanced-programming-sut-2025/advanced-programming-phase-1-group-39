@@ -72,8 +72,8 @@ public class Map {
             Building greenhouse = player.getBuildingByName("greenhouse");
             addObjectToMap(greenhouse, "greenhouse");
 
-            Building shippingBin = player.getBuildingByName("shippingBin");
-            addObjectToMap(shippingBin, "shippingBin");
+            Building shippingBin = player.getBuildingByName("Shipping Bin");
+            addObjectToMap(shippingBin, "Shipping Bin");
 
 
             // adding main lake and quarry from json

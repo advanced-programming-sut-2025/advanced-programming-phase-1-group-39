@@ -212,6 +212,9 @@ public class Player {
         money += amount;
         if (money < 0) money = 0;
     }
+    public boolean hasEnoughMoney(int amount) {
+        return money >= amount;
+    }
 
     public boolean canBuildGreenHouse() {
         return inventory.hasEnoughStack("wood", 500) && money >= 1000;
@@ -228,7 +231,7 @@ public class Player {
     public void addFirstBuildingObjects(Game game) {
         Building cabin = new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5));
         Building greenhouse = new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0));
-        Building shippingBin = new ShippingBin(new Location(startOfFarm.x() + 77, startOfFarm.y() + 10));
+        Building shippingBin = new ShippingBin("Shipping Bin", new Location(startOfFarm.x() + 77, startOfFarm.y() + 10), 1, 1);
         addToBuildings(cabin);
         addToBuildings(greenhouse);
         addToBuildings(shippingBin);

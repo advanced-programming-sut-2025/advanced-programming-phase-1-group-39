@@ -1,0 +1,21 @@
+{
+  "foods": [
+    { "name": "Beer", "price": 400, "limit": 1000000 },
+    { "name": "Salad", "price": 220, "limit": 1000000 },
+    { "name": "Bread", "price": 120, "limit": 1000000 },
+    { "name": "Spaghetti", "price": 240, "limit": 1000000 },
+    { "name": "Pizza", "price": 600, "limit": 1000000 },
+    { "name": "Coffee", "price": 300, "limit": 1000000 }
+  ],
+  "recipes": [
+    { "name": "Hashbrowns Recipe", "price": 50, "limit": 1 },
+    { "name": "Omelet Recipe", "price": 100, "limit": 1 },
+    { "name": "Pancakes Recipe", "price": 100, "limit": 1 },
+    { "name": "Bread Recipe", "price": 100, "limit": 1 },
+    { "name": "Tortilla Recipe", "price": 100, "limit": 1 },
+    { "name": "Pizza Recipe", "price": 150, "limit": 1 },
+    { "name": "Maki Roll Recipe", "price": 300, "limit": 1 },
+    { "name": "Triple Shot Espresso Recipe", "price": 5000, "limit": 1 },
+    { "name": "Cookie Recipe", "price": 300, "limit": 1 }
+  ]
+}

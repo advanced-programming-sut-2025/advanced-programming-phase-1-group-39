@@ -5,6 +5,7 @@ import models.Enums.Season;
 import models.Enums.WeatherStatus;
 import models.animals.Animal;
 import models.buildings.Building;
+import models.buildings.Shop;
 import models.map.FarmType;
 import models.map.Map;
 import models.map.Tile;
@@ -40,11 +41,16 @@ public class Game {
     }
 
     public void startGame() {
+        makeNPCBuildings();
         gameMap.loadMap();
 
         for (Player player : players) {
             resetPlayerLocation(player);
         }
+    }
+
+    public void makeNPCBuildings() {
+
     }
 
     // Map
@@ -259,7 +265,7 @@ public class Game {
         tomorrowWeather.setWeatherRandom(this.time.getSeason());
     }
 
-    public void addToBuildings(Building building) {
+    public void addBuilding(Building building) {
         buildings.add(building);
     }
 }

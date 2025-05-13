@@ -41,7 +41,7 @@ public class CraftingManager {
         return new Result(true, "Crafted: " + recipe.getItem().getName());
     }
 
-    private static boolean hasAllIngredients(Inventory inv, CraftingRecipe recipe) {
+    public static boolean hasAllIngredients(Inventory inv, CraftingRecipe recipe) {
         for (Map.Entry<String, Integer> entry : recipe.getIngredients().entrySet()) {
             if (!inv.hasEnoughStack(entry.getKey(), entry.getValue())) {
                 return false;
@@ -50,7 +50,7 @@ public class CraftingManager {
         return true;
     }
 
-    private static CraftingRecipe getRecipeByName(String name) {
+    public static CraftingRecipe getRecipeByName(String name) {
         for (CraftingRecipe recipe : CraftingRecipe.values()) {
             if (recipe.getItem().getName().equalsIgnoreCase(name)) {
                 return recipe;

@@ -11,6 +11,7 @@ import models.map.AnsiColors;
 import models.map.MapMinPathFinder;
 import models.map.Tile;
 import models.tools.Axe;
+import models.tools.FishingPole;
 import models.tools.Pickaxe;
 import models.tools.Tool;
 
@@ -287,6 +288,8 @@ public class GameController {
 
 
         Tool tool = (Tool) itemStack.getItem();
+        if (tool instanceof FishingPole)
+            return new Result(false, "You can't use Fishing Pole by this command!");
 
         int energyConsumed = tool.getUsingEnergy(player.getSkills(), game.getTodayWeather());
         if (player.getTurnEnergy() <= energyConsumed) {

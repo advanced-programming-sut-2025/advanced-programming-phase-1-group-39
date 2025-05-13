@@ -3,9 +3,11 @@ package models;
 import controllers.AppControllers;
 import models.Enums.Season;
 import models.Enums.WeatherStatus;
+import models.NPC.*;
+import models.Shops.PierresGeneralStore;
+import models.Shops.Shop;
 import models.animals.Animal;
 import models.buildings.Building;
-import models.buildings.Shop;
 import models.map.FarmType;
 import models.map.Map;
 import models.map.Tile;
@@ -29,6 +31,9 @@ public class Game {
     private Weather todayWeather = new Weather();
     private Weather tomorrowWeather = new Weather();
 
+    ArrayList<NPC> npcs;
+
+
     // first player should be the mainPlayer of game
     public Game(Player one, Player two, Player three, Player four) {
         this.players = new ArrayList<>(List.of(one, two, three, four));
@@ -41,18 +46,64 @@ public class Game {
     }
 
     public void startGame() {
+        initializeNPCs();
         makeNPCBuildings();
-        gameMap.loadMap();
+        gameMap.loadMap(getNpcShops());
+
 
         for (Player player : players) {
             resetPlayerLocation(player);
         }
     }
 
+    // NPC
     public void makeNPCBuildings() {
+        ArrayList<Shop> gameShops = new ArrayList<>();
+        gameShops.add(new PierresGeneralStore("PierresGeneralStore",
+                9, 5, new Location(27, 22), 25, 20,
+                getNPC("pierre")
+                ));
 
+
+        buildings.addAll(gameShops);
     }
 
+    public ArrayList<Shop> getNpcShops() {
+        ArrayList<Shop> shops = new ArrayList<>();
+        for (Building building : buildings) {
+            if (building instanceof Shop) shops.add((Shop) building);
+        }
+
+        return shops;
+    }
+
+    private ArrayList<NPC> initializeNPCs() {
+        ArrayList<NPC> npcs = new ArrayList<>();
+        npcs.add(new SebastianNPC());
+        npcs.add(new AbigailNPC());
+        npcs.add(new HarveyNPC());
+        npcs.add(new LeahNPC());
+        npcs.add(new RobinNPC());
+        return npcs;
+    }
+
+    public NPC getNPC(String NPCName) {
+        for (NPC npc : npcs) {
+            if (npc.getName().equalsIgnoreCase(NPCName)) {
+                return npc;
+            }
+        }
+        return null;
+    }
+
+    private void resetFriendship() {
+        for (Player player : players) {
+            for (PlayerNPCInteraction friendship : player.getAllFriendships()) {
+                friendship.setFirstGift(true);
+                friendship.setFirstTalking(true);
+            }
+        }
+    }
     // Map
     public Map getMap() {
         return gameMap;

@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import models.*;
 import models.Enums.Season;
+import models.Shops.Shop;
 import models.artisan.ArtisanMachine;
 import models.buildings.Building;
 import models.buildings.GreenHouse;
@@ -13,7 +14,6 @@ import models.cropsAndFarming.*;
 
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 public class Map {
     private final int width = Constants.WORLD_MAP_WIDTH, height = Constants.WORLD_MAP_HEIGHT;
@@ -344,9 +344,9 @@ public class Map {
         }
     }
 
-    public void loadMap() {
+    public void loadMap(ArrayList<Shop> shops) {
         addDisabledTiles();
-        addNpcMap();
+        addNpcMap(shops);
     }
 
     // printing

@@ -2,6 +2,7 @@ package models;
 
 import models.Enums.Season;
 import models.NPC.NPC;
+import models.NPC.PlayerNPCInteraction;
 import models.NPC.Quest;
 import models.animals.Animal;
 import models.animals.Fish;
@@ -59,6 +60,9 @@ public class Player {
     private int nightRevenue = 0;
 
     private ArrayList<Building> playerFarmBuildings = new ArrayList<>();
+
+    // NPC
+    private ArrayList<PlayerNPCInteraction> friendships = initialPlayersFriendship();
 
     public Player() {
         ItemStack hoe = new ItemStack(new Hoe(), 1);
@@ -340,5 +344,30 @@ public class Player {
 
     public Skill getSkills() {
         return skills;
+    }
+
+    // NPC
+
+    public ArrayList<PlayerNPCInteraction> initialPlayersFriendship() {
+        ArrayList<PlayerNPCInteraction> friendship = new ArrayList<>();
+        friendship.add(new PlayerNPCInteraction("sebastian"));
+        friendship.add(new PlayerNPCInteraction("abigail"));
+        friendship.add(new PlayerNPCInteraction("harvey"));
+        friendship.add(new PlayerNPCInteraction("leah"));
+        friendship.add(new PlayerNPCInteraction("robin"));
+        return friendship;
+    }
+
+    public PlayerNPCInteraction getFriendship(String NPCName) {
+        for (PlayerNPCInteraction friendshipInteraction : friendships) {
+            if (friendshipInteraction.getNPCName().equals(NPCName)) {
+                return friendshipInteraction;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<PlayerNPCInteraction> getAllFriendships() {
+        return friendships;
     }
 }

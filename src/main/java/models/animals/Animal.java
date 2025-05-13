@@ -37,6 +37,10 @@ public class Animal {
     public void setLocation(Location location) { this.location = location; }
     public int getFriendship() { return friendship; }
 
+    public void setFriendship(int amount) {
+        friendship += amount;
+    }
+
     public void pet() {
         if (!pettedToday) {
             pettedToday = true;

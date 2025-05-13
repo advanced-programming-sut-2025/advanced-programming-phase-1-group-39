@@ -91,6 +91,19 @@ public class GameController {
         return new Result(false, "\"Thank you (:\" said " + name +
                 ". Your frienship: " + animal.getFriendship());
     }
+    public Result cheatFriendshipAnimal(Matcher matcher) {
+        String animalName = matcher.group(1);
+        int amount = Integer.parseInt(matcher.group(2));
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        Animal animal = player.getAnimal(animalName);
+        if (animal == null) {
+            return new Result(false, "You doesn't have this animal ):");
+        }
+
+        animal.setFriendship(amount);
+        return new Result(true, "You changed friendship with " + animalName + " by amount " + amount);
+    }
     public Result showAnimalsInfo(Matcher matcher) {
         ArrayList<Animal> animals = App.getApp().getCurrentGame().getPlayerInTurn().getAnimals();
         StringBuilder sb = new StringBuilder();

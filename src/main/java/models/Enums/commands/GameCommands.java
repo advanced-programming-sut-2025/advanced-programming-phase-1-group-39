@@ -8,6 +8,7 @@ public enum GameCommands {
     HELP_READING_MAP("help\\s+reading\\s+map"),
 
     PET("pet\\s+-n\\s+(.+?)"),
+    CHEAT_FRIENDSHIP_ANIMAL("cheat\\s+set\\s+friendship\\s+-n\\s+(.+?)\\s+-c\\s+(\\d+)"),
     SHOW_ANIMALS("animals"),
     SHEPHERD_ANIMALS("shepherd\\s+animals\\s+-n\\s+(.+?)\\s+-l\\s+(\\d+)\\s+(\\d+)"),
     FEED_ANIMAL("feed\\s+hay\\s+-n\\s+(.+?)"),

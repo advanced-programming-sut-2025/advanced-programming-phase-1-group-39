@@ -1,9 +1,6 @@
 package models.tools;
 
-import models.Item;
-import models.Result;
-import models.Skill;
-import models.Weather;
+import models.*;
 import models.map.Tile;
 
 public abstract class Tool extends Item {
@@ -17,7 +14,7 @@ public abstract class Tool extends Item {
         this.baseUsingEnergy = baseUsingEnergy;
     }
 
-    public abstract Result useTool(Tile tile);
+    public abstract Result useTool(Tile tile, Player player);
     public ToolType getType() {
         return type;
     }

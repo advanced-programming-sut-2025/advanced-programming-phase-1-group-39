@@ -26,7 +26,7 @@ public class Pickaxe extends Tool {
 
 
     @Override
-    public Result useTool(Tile tile) {
+    public Result useTool(Tile tile, Player player) {
         ItemStack item;
         switch (tile.getType()) {
             case QUARRY:

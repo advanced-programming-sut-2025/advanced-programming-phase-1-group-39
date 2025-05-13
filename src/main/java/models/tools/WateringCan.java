@@ -1,5 +1,6 @@
 package models.tools;
 
+import models.Player;
 import models.Result;
 import models.Skill;
 import models.Weather;
@@ -15,7 +16,7 @@ public class WateringCan extends Tool {
     }
 
     @Override
-    public Result useTool(Tile tile) {
+    public Result useTool(Tile tile, Player player) {
         tilesWaterNumRemaining--;
         if (tile.getType() == TileType.SOIL) {
             if (tile.isPlowed() || tile.getPlant() != null)

@@ -1,9 +1,6 @@
 package models.tools;
 
-import models.Item;
-import models.Result;
-import models.Skill;
-import models.Weather;
+import models.*;
 import models.map.Tile;
 import models.map.TileType;
 
@@ -13,7 +10,7 @@ public class Axe extends Tool {
     }
 
     @Override
-    public Result useTool(Tile tile) {
+    public Result useTool(Tile tile, Player player) {
         if (tile.getType() == TileType.SOIL) {
             Item item = tile.getItemOnTile().getItem();
             if (item.getName().equals("wood")) {

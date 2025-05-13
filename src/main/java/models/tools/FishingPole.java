@@ -1,11 +1,13 @@
 package models.tools;
 
+import models.Player;
 import models.Result;
 import models.Skill;
 import models.Weather;
+import models.map.Tile;
 
 public class FishingPole extends Tool {
-    FishingPoleType poleType;
+    private FishingPoleType poleType;
 
     public FishingPole(String name, FishingPoleType poleType) {
         super(name, ToolType.BASIC, poleType.getUsingEnergy());
@@ -13,7 +15,7 @@ public class FishingPole extends Tool {
     }
 
     @Override
-    public Result useTool() {
+    public Result useTool(Tile tile, Player player) {
         return null;
     }
 
@@ -25,5 +27,9 @@ public class FishingPole extends Tool {
     public int getUsingEnergy(Skill skill, Weather weather) {
         return (int)((baseUsingEnergy - getSkillEnergyReduce(skill))
                 * getWeatherMultiplier(weather));
+    }
+
+    public FishingPoleType getPoleType() {
+        return poleType;
     }
 }

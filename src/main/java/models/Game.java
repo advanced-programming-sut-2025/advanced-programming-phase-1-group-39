@@ -1,6 +1,5 @@
 package models;
 
-import models.Enums.WeatherStatus;
 import models.NPC.*;
 import models.buildings.Building;
 import models.map.FarmType;
@@ -82,14 +81,13 @@ public class Game {
 
     public void addToDay(int amount) {
         time.addToDay(amount);
-        resetFriendship();
         // TODO : changing weather
         // TODO : update plants
     }
 
     public void goToNextDay() {
         time.goToNextDay();
-
+        resetFriendship();
         // TODO : changing weather
     }
 

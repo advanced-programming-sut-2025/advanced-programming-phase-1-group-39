@@ -3,15 +3,14 @@ package controllers;
 import models.*;
 import models.Enums.Season;
 import models.Enums.WeatherStatus;
+import models.NPC.PlayerNPCInteraction;
 import models.NPC.Quest;
-import models.NPC.SebastianNPC;
 import models.artisan.ArtisanMachine;
 import models.tools.Tool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 
 public class NPCGameController {
@@ -147,26 +146,80 @@ public class NPCGameController {
         return new Result(true, output.toString());
     }
 
-//    public Result questsFinish(Matcher matcher) {
-//        String index = matcher.group("index");
-//
-//        if (!isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation()) &&
-//            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("abigail").getLocation()) &&
-//            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("harvey").getLocation()) &&
-//            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("leah").getLocation()) &&
-//            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("robin").getLocation())) {
-//
-//            return new Result(false, "To complete this quest, you need to be near the target NPC.");
-//        } else if (Integer.parseInt(index) > 3 || Integer.parseInt(index) < 0) {
-//            return new Result(false, "Please enter a quest number between 1 and 3.");
-//        } else if (isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation())) {
-//            if (getMission(Integer.parseInt(index), "sebastian") == null) {
-//                return new Result(false, "This quest has already been completed.");
-//            } else {
-//
-//            }
-//        }
-//    }
+    public Result questsFinish(Matcher matcher) {
+        String index = matcher.group("index");
+
+        if (!isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation()) &&
+            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("abigail").getLocation()) &&
+            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("harvey").getLocation()) &&
+            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("leah").getLocation()) &&
+            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("robin").getLocation())) {
+
+            return new Result(false, "To complete this quest, you need to be near the target NPC.");
+        } else if (Integer.parseInt(index) > 3 || Integer.parseInt(index) < 0) {
+            return new Result(false, "Please enter a quest number between 1 and 3.");
+        } else if (isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation())) {
+            if (getMission(Integer.parseInt(index), "sebastian") == null) {
+                return new Result(false, "This quest has already been completed.");
+            } else {
+                if (!canDoRequest(Integer.parseInt(index), "sebastian")) {
+                    return new Result(false, "You're missing something! Gather the required items and return to complete your quest.");
+                } else {
+                    getReward(Integer.parseInt(index), "sebastian", currentPlayer.getFriendship("sebastian").getFriendshipLevel());
+                    deleteQuest(Integer.parseInt(index), "sebastian");
+                    return new Result(true, "Well done, adventurer! The quest is complete and your prize awaits.");
+                }
+            }
+        } else if (isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("abigail").getLocation())) {
+            if (getMission(Integer.parseInt(index), "abigail") == null) {
+                return new Result(false, "This quest has already been completed.");
+            } else {
+                if (!canDoRequest(Integer.parseInt(index), "abigail")) {
+                    return new Result(false, "You're missing something! Gather the required items and return to complete your quest.");
+                } else {
+                    getReward(Integer.parseInt(index), "abigail", currentPlayer.getFriendship("abigail").getFriendshipLevel());
+                    deleteQuest(Integer.parseInt(index), "abigail");
+                    return new Result(true, "Well done, adventurer! The quest is complete and your prize awaits.");
+                }
+            }
+        } else if (isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("harvey").getLocation())) {
+            if (getMission(Integer.parseInt(index), "harvey") == null) {
+                return new Result(false, "This quest has already been completed.");
+            } else {
+                if (!canDoRequest(Integer.parseInt(index), "harvey")) {
+                    return new Result(false, "You're missing something! Gather the required items and return to complete your quest.");
+                } else {
+                    getReward(Integer.parseInt(index), "harvey", currentPlayer.getFriendship("harvey").getFriendshipLevel());
+                    deleteQuest(Integer.parseInt(index), "harvey");
+                    return new Result(true, "Well done, adventurer! The quest is complete and your prize awaits.");
+                }
+            }
+        } else if (isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("leah").getLocation())) {
+            if (getMission(Integer.parseInt(index), "leah") == null) {
+                return new Result(false, "This quest has already been completed.");
+            } else {
+                if (!canDoRequest(Integer.parseInt(index), "leah")) {
+                    return new Result(false, "You're missing something! Gather the required items and return to complete your quest.");
+                } else {
+                    getReward(Integer.parseInt(index), "leah", currentPlayer.getFriendship("leah").getFriendshipLevel());
+                    deleteQuest(Integer.parseInt(index), "leah");
+                    return new Result(true, "Well done, adventurer! The quest is complete and your prize awaits.");
+                }
+            }
+        } else {
+            if (getMission(Integer.parseInt(index), "robin") == null) {
+                return new Result(false, "This quest has already been completed.");
+            } else {
+                if (!canDoRequest(Integer.parseInt(index), "robin")) {
+                    return new Result(false, "You're missing something! Gather the required items and return to complete your quest.");
+                } else {
+                    getReward(Integer.parseInt(index), "robin", currentPlayer.getFriendship("robin").getFriendshipLevel());
+                    deleteQuest(Integer.parseInt(index), "robin");
+                    return new Result(true, "Well done, adventurer! The quest is complete and your prize awaits.");
+                }
+            }
+        }
+    }
 
 
     // Auxiliary functions :
@@ -332,15 +385,6 @@ public class NPCGameController {
         return output;
     }
 
-    private Quest getQuest(int level,String NPCName) {
-        for (Quest quest : game.getNPC(NPCName).getQuests()) {
-            if (quest.getLevel() == level) {
-                return quest;
-            }
-        }
-        return null;
-    }
-
     private String getMission(int level, String NPCName) {
         for (Quest quest : game.getNPC(NPCName).getQuests()) {
             if (quest.getLevel() == level) {
@@ -350,10 +394,30 @@ public class NPCGameController {
         return null;
     }
 
-//    private int cadDoRequest(int level, String NPCName) {
-//        Quest quest = getQuest(level,NPCName);
-//        if ()
-//    }
+    private Boolean canDoRequest(int level, String NPCName) {
+        Quest quest = game.getNPC(NPCName).getQuest(level);
+        return currentPlayer.getInventory().hasEnoughStack(quest.getTask().getItem().getName(), quest.getTask().getAmount());
+    }
 
+    private void getReward(int level, String NPCName, int friendShipLevel) {
+        if (level == 1) {
+            game.getNPC(NPCName).getRewardMission1(friendShipLevel, game);
+        } else if (level == 2) {
+            game.getNPC(NPCName).getRewardMission2(friendShipLevel, game);
+        } else if (level == 3) {
+            game.getNPC(NPCName).getRewardMission3(friendShipLevel, game);
+        }
+
+    }
+
+    private void deleteQuest(int level, String NPCName) {
+        for (int i = 0; i < game.getNPC(NPCName).getQuests().size(); i++) {
+            if (game.getNPC(NPCName).getQuests().get(i).getLevel() == level) {
+                game.getNPC(NPCName).getQuests().remove(i);
+                break;
+            }
+        }
+
+    }
 
 }

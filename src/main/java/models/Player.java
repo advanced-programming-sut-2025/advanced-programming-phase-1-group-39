@@ -1,6 +1,7 @@
 package models;
 
 import models.NPC.NPC;
+import models.NPC.PlayerNPCInteraction;
 import models.NPC.Quest;
 import models.artisan.ArtisanMachineRecipe;
 import models.cooking.FoodBuff;
@@ -78,6 +79,14 @@ public class Player {
 
     public int getGameId() {
         return gameId;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void addMoney(int amount) {
+        money += amount;
     }
 
     public void startTrade(Player player, TradeItem item) {

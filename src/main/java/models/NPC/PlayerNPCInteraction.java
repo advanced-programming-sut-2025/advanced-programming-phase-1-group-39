@@ -1,4 +1,6 @@
-package models;
+package models.NPC;
+
+import models.Time;
 
 public class PlayerNPCInteraction {
     private String NPCName;

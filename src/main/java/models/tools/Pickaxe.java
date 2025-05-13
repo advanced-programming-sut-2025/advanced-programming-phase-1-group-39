@@ -16,9 +16,9 @@ public class Pickaxe extends Tool {
         if (item.getName().equals("Iron") &&
                 type.equals(ToolType.BASIC)) return false;
         if (item.getName().equals("Gold") &&
-        (type.equals(ToolType.BASIC) || type.equals(ToolType.COPPER))) return false;
-        if (item.getName().equals("Iriduim") &&
-        (type.equals(ToolType.BASIC) || type.equals(ToolType.COPPER) || type.equals(ToolType.IRON)))
+                (type.equals(ToolType.BASIC) || type.equals(ToolType.COPPER))) return false;
+        if (item.getName().equals("Iridium") &&
+                (type.equals(ToolType.BASIC) || type.equals(ToolType.COPPER) || type.equals(ToolType.IRON)))
             return false;
 
         return true;
@@ -36,28 +36,44 @@ public class Pickaxe extends Tool {
                     if (!canGetItemInQuarry(item.getItem()))
                         return new Result(false, "Your pickaxe is not strong enough!");
 
-                    return new Result(true, "You broke the Mineral!");
+                    if (!player.getInventory().hasSpace(item))
+                        return new Result(false, "You don't have enough space to get objects!");
+
+
+                    player.getInventory().addItem(item.getItem(), item.getAmount());
+                    return new Result(true, "You broke and got the Minerals!");
                 }
 
             case SOIL:
                 if (tile.getPlant() != null) {
                     tile.removePlant();
-                    return new Result(true, "You destroyed a plant!");
-                } else if (tile.getItemOnTile() != null) {
-                    return new Result(true, "You got the item on tile");
+                    return new Result(false, "You destroyed a plant!");
+                } else if (tile.getTree() != null) {
+                    return new Result(false, "You can't use pickaxe to a tree!");
                 }
 
-                if (!tile.canPlant()) {
+                else if ((item = tile.getItemOnTile()) != null) {
+                    if (!player.getInventory().hasSpace(item))
+                        return new Result(false, "You don't have enough space to get objects!");
+                    player.getInventory().addItem(item.getItem(), item.getAmount());
+                    tile.removeItemOnTile();
+                    return new Result(true, "You got the " + item.getItem().getName());
+                }
+
+                if (!tile.isPlowed() || tile.getPlant() != null) {
                     return new Result(false, "The Soil wasn't plowed!");
                 } else {
                     tile.setNotPlow();
                     return new Result(true, "");
                 }
             case INDOOR:
-                if (tile.getItemOnTile() == null)
-                    return new Result(false, "There is nothing!");
-                else
-                    return new Result(true, "You got the item on tile");
+                if ((item = tile.getItemOnTile()) != null) {
+                    if (!player.getInventory().hasSpace(item))
+                        return new Result(false, "You don't have enough space to get objects!");
+                    player.getInventory().addItem(item.getItem(), item.getAmount());
+                    tile.removeItemOnTile();
+                    return new Result(true, "You got the " + item.getItem().getName());
+                }
             default:
                 return new Result(false, "You can't use Pickaxe on this tile!");
         }

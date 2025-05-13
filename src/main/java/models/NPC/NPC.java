@@ -21,6 +21,7 @@ public abstract class NPC {
     protected ArrayList<ItemStack> tasks;
     protected ArrayList<String> missions;
 
+
     public NPC(String name, String job, String personalityTraits, Location location, ArrayList<Item> favoriteItems) {
         this.name = name;
         this.job = job;
@@ -46,13 +47,20 @@ public abstract class NPC {
         return dialogues;
     }
 
+    public ArrayList<String> getMissions() {
+        return missions;
+    }
+
+    public ArrayList<Quest> getQuests() {
+        return quests;
+    }
 
     // Auxiliary functions :
 
     protected ArrayList<Quest> generateNPCQuests(ArrayList<ItemStack> tasks, ArrayList<String> missions ) {
         ArrayList<Quest> quests = new ArrayList<>();
         for (int i = 0; i < tasks.size(); i++) {
-            Quest quest = new Quest(i+1, missions.get(i), tasks.get(i));
+            Quest quest = new Quest(i+1, tasks.get(i));
         }
         return quests;
     }

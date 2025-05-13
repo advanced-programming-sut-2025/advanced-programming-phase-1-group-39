@@ -6,13 +6,16 @@ public class PlayerNPCInteraction {
     private int friendshipScore;
     private boolean isFirstTalking;
     private boolean isFirstGift;
+    private Time activeMission3 = null;
+    protected int daysPassed;
 
-    public PlayerNPCInteraction(String NPCName) {
+    public PlayerNPCInteraction(String NPCName, int daysPassed) {
         this.NPCName = NPCName;
         this.friendshipLevel = 0;
         this.friendshipScore = 0;
         this.isFirstTalking = true;
         this.isFirstGift = true;
+        this.daysPassed = daysPassed;
     }
 
     public String getNPCName() {
@@ -25,6 +28,14 @@ public class PlayerNPCInteraction {
 
     public int getFriendshipScore() {
         return friendshipScore;
+    }
+
+    public Time getActiveMission3() {
+        return activeMission3;
+    }
+
+    public int getDaysPassed() {
+        return daysPassed;
     }
 
     public boolean isFirstTalking() {
@@ -53,5 +64,9 @@ public class PlayerNPCInteraction {
 
     public void setFirstGift(boolean firstGift) {
         isFirstGift = firstGift;
+    }
+
+    public void setActiveMission3(Time activeMission3) {
+        this.activeMission3 = activeMission3;
     }
 }

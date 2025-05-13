@@ -3,6 +3,7 @@ package controllers;
 import models.*;
 import models.Enums.Season;
 import models.Enums.WeatherStatus;
+import models.NPC.Quest;
 import models.NPC.SebastianNPC;
 import models.artisan.ArtisanMachine;
 import models.tools.Tool;
@@ -140,6 +141,33 @@ public class NPCGameController {
         return new Result(true, output.toString());
     }
 
+    public Result showRequestsList() {
+        StringBuilder output = new StringBuilder();
+        output = activeMissions();
+        return new Result(true, output.toString());
+    }
+
+//    public Result questsFinish(Matcher matcher) {
+//        String index = matcher.group("index");
+//
+//        if (!isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation()) &&
+//            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("abigail").getLocation()) &&
+//            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("harvey").getLocation()) &&
+//            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("leah").getLocation()) &&
+//            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("robin").getLocation())) {
+//
+//            return new Result(false, "To complete this quest, you need to be near the target NPC.");
+//        } else if (Integer.parseInt(index) > 3 || Integer.parseInt(index) < 0) {
+//            return new Result(false, "Please enter a quest number between 1 and 3.");
+//        } else if (isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation())) {
+//            if (getMission(Integer.parseInt(index), "sebastian") == null) {
+//                return new Result(false, "This quest has already been completed.");
+//            } else {
+//
+//            }
+//        }
+//    }
+
 
     // Auxiliary functions :
 
@@ -165,6 +193,10 @@ public class NPCGameController {
         if (interaction.getFriendshipLevel() != 3) {
             if (levelScore + score > 200) {
                 interaction.setFriendshipLevel(interaction.getFriendshipLevel() + 1);
+                if (interaction.getFriendshipLevel() == 1) {
+                    interaction.setActiveMission3(game.getTime().clone());
+                    interaction.getActiveMission3().addToDay(interaction.getDaysPassed());
+                }
                 interaction.setFriendshipScore(interaction.getFriendshipScore() + score);
             }
         } else {
@@ -275,6 +307,53 @@ public class NPCGameController {
         }
         return output;
     }
+
+    private StringBuilder activeMissions() {
+        StringBuilder output = new StringBuilder();
+        output.append("Quests in Progress :");
+        int count = 0;
+        for (PlayerNPCInteraction friendship : currentPlayer.getAllFriendships()) {
+            if (getMission(1, friendship.getNPCName()) != null) {
+                count++;
+                output.append(count).append(") ").append(getMission(1, friendship.getNPCName())).append("\n");
+            }
+            if (getMission(2, friendship.getNPCName()) != null && currentPlayer.getFriendship(friendship.getNPCName()).getFriendshipLevel() >= 1) {
+                count++;
+                output.append(count).append(") ").append(getMission(2, friendship.getNPCName())).append("\n");
+            }
+            if (getMission(3, friendship.getNPCName()) != null &&
+                currentPlayer.getFriendship(friendship.getNPCName()).getFriendshipLevel() >= 1 &&
+                friendship.getActiveMission3().isGreater(game.getTime())) {
+                count++;
+                output.append(count).append(") ").append(getMission(3, friendship.getNPCName())).append("\n");
+            }
+            output.deleteCharAt(output.length() - 1);
+        }
+        return output;
+    }
+
+    private Quest getQuest(int level,String NPCName) {
+        for (Quest quest : game.getNPC(NPCName).getQuests()) {
+            if (quest.getLevel() == level) {
+                return quest;
+            }
+        }
+        return null;
+    }
+
+    private String getMission(int level, String NPCName) {
+        for (Quest quest : game.getNPC(NPCName).getQuests()) {
+            if (quest.getLevel() == level) {
+                return game.getNPC(NPCName).getMissions().get(level - 1);
+            }
+        }
+        return null;
+    }
+
+//    private int cadDoRequest(int level, String NPCName) {
+//        Quest quest = getQuest(level,NPCName);
+//        if ()
+//    }
 
 
 }

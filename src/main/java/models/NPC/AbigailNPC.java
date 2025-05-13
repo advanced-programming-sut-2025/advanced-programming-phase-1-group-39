@@ -19,7 +19,6 @@ public class AbigailNPC extends NPC {
                 new Location(95, 22),
                 new ArrayList<>(List.of(ItemManager.getItemByName("Stone"), ItemManager.getItemByName("Iron Ore"),
                         ItemManager.getItemByName("Coffee")))
-
         );
     }
 

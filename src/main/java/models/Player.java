@@ -141,11 +141,11 @@ public class Player {
 
     public ArrayList<PlayerNPCInteraction> initialPlayersFriendship() {
         ArrayList<PlayerNPCInteraction> friendship = new ArrayList<>();
-        friendship.add(new PlayerNPCInteraction("sebastian"));
-        friendship.add(new PlayerNPCInteraction("abigail"));
-        friendship.add(new PlayerNPCInteraction("harvey"));
-        friendship.add(new PlayerNPCInteraction("leah"));
-        friendship.add(new PlayerNPCInteraction("robin"));
+        friendship.add(new PlayerNPCInteraction("sebastian", 20));
+        friendship.add(new PlayerNPCInteraction("abigail", 40));
+        friendship.add(new PlayerNPCInteraction("harvey", 60));
+        friendship.add(new PlayerNPCInteraction("leah", 80));
+        friendship.add(new PlayerNPCInteraction("robin", 100));
         return friendship;
     }
 

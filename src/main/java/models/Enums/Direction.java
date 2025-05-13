@@ -6,9 +6,9 @@ public enum Direction {
     LEFT(-1, 0),
     RIGHT(1, 0),
     UPRIGHT(1, -1),
-    UP_LEFT(-1, -1),
+    UPLEFT(-1, -1),
     DOWNRIGHT(1, 1),
-    DOWN_LEFT(-1, 1);
+    DOWNLEFT(-1, 1);
 
     public final int dx;
     public final int dy;

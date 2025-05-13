@@ -19,4 +19,16 @@ public class Food extends Item {
     public String getName() {
         return name;
     }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public int getSellPrice() {
+        return sellPrice;
+    }
+
+    public FoodBuff getBuff() {
+        return buff;
+    }
 }

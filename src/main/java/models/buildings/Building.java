@@ -14,4 +14,20 @@ public abstract class Building {
         this.width = width;
         this.height = height;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

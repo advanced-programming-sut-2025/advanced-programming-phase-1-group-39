@@ -3,6 +3,7 @@ package models.map;
 import models.Item;
 import models.Player;
 import models.artisan.ArtisanMachine;
+import models.buildings.Building;
 
 public class Map {
     private int width, height;
@@ -37,6 +38,14 @@ public class Map {
         }
 
         return null;
+    }
+
+    public boolean isInBuilding(Building building, Player player) {
+        return (player.getLocation().x() <= building.getLocation().x() &&
+                player.getLocation().x() >= building.getLocation().x() + building.getWidth() &&
+                player.getLocation().y() <= building.getLocation().y() &&
+                player.getLocation().y() >= building.getLocation().y() + building.getHeight());
+
     }
 
 }

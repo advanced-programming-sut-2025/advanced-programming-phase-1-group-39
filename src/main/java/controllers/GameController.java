@@ -8,6 +8,7 @@ import models.animals.Fish;
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
 import models.artisan.Furnace;
+import models.cooking.FoodManager;
 import models.crafting.CraftingManager;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
@@ -147,9 +148,16 @@ public class GameController {
 
         return new Result(true, player.showFoodRecipes());
     }
-    public Result cook(Matcher matcher) {return null;}
+    public Result cook(Matcher matcher) {
+        String recipeName = matcher.group(1);
 
-    public Result eatFood(Matcher matcher) {return null;}
+        return FoodManager.cook(recipeName, App.getApp().getCurrentGame().getPlayerInTurn());
+    }
+
+    public Result eatFood(Matcher matcher) {
+        String foodName = matcher.group(1);
+        return FoodManager.eat(foodName, App.getApp().getCurrentGame().getPlayerInTurn());
+    }
 
     public Result build(Matcher matcher) {return null;}
     public Result buyAnimal(Matcher matcher) {return null;}

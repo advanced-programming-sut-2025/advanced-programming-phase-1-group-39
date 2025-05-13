@@ -46,7 +46,7 @@ public class Player {
     private int money = 0;
     private int nightRevenue = 0;
 
-    public void setBuff(FoodBuff buff) {
+    public void applyBuff(FoodBuff buff) {
         this.buff = buff;
     }
 

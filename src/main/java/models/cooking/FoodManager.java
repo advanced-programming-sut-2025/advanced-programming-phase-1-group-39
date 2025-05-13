@@ -13,7 +13,7 @@ public class FoodManager {
 
 //        if (!player.isAtHome()) {
 //            return new Result(false, "You need to be at home to cook.");
-//        }
+//        } Todo: check is in home with isInBuilding (mireslami)
 
         FoodRecipe recipe = getRecipeByName(foodName);
         if (recipe == null) {
@@ -48,7 +48,7 @@ public class FoodManager {
             int count = entry.getValue();
 
 //            if (!inv.hasEnoughStack(itemName, count) && !player.getHome().getRefrigerator().getInventory().hasEnoughStack(itemName, count)) {
-//                return false;
+//                return false; Todo: needs to check is in home
 //            }
         }
         return true;
@@ -79,8 +79,8 @@ public class FoodManager {
         player.changeEnergy(recipe.data.energy);
 
         if (recipe.data.buff != null) {
-            //player.applyBuff(recipe.data.buff);
-        }
+            player.applyBuff(recipe.data.buff);
+        } // Todo: handle buff effects
 
         return new Result(true, "You ate " + foodName + " and gained " + recipe.data.energy + " energy.");
     }

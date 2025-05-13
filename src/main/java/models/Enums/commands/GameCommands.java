@@ -12,6 +12,8 @@ public enum GameCommands {
     CHEAT_ADD_ITEM("cheat\\s+add\\s+item\\s+-n\\s+(.+?)\\s+-c\\s+(\\d+)"),
 
     COOKING_REFRIGERATOR("cooking\\s+refrigerator\\s+(put|pick)\\s+(.+?)"),
+    COOK("cooking\\s+prepare\\s+(.+?)"),
+    EAT("eat\\s+(.+?)"),
 
     SHOW_FOOD_RECIPES("show\\s+food\\s+recipes"),
 

@@ -132,7 +132,8 @@ public class Tile {
 
     // placed Items
     public boolean canAddItemToTile() {
-        if (type != TileType.SOIL) return false;
+        if (type != TileType.SOIL && type != TileType.INDOOR &&
+        type != TileType.QUARRY && type != TileType.PATH) return false;
         if (itemOnTile != null) return false;
         if (tree != null) return false;
         if (plant != null) return false;

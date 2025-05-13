@@ -8,6 +8,8 @@ public enum GameCommands {
     HELP_READING_MAP("help\\s+reading\\s+map"),
 
     SHOW_CRAFTING_RECIPES("show\\s+crafting\\s+recipes"),
+    CRAFT("crafting\\s+craft\\s+(.+?)"),
+    CHEAT_ADD_ITEM("cheat\\s+add\\s+item\\s+-n\\s+(.+?)\\s+-c\\s+(\\d+)"),
 
     SHOW_FOOD_RECIPES("show\\s+food\\s+recipes"),
 

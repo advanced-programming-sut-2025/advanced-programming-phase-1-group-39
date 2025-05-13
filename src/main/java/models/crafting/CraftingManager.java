@@ -36,6 +36,9 @@ public class CraftingManager {
             inv.pickItem(entry.getKey(), entry.getValue());
         }
 
+        if (!inv.hasSpace()) {
+            return new Result(false, "Your inventory has not space anymore!");
+        }
         inv.addItem(recipe.getItem(), 1);
         player.changeEnergy(-2);
         return new Result(true, "Crafted: " + recipe.getItem().getName());

@@ -72,6 +72,6 @@ public class Inventory {
         if (item == null) {
             return;
         }
-
+        tile.placeItem(item);
     }
 }

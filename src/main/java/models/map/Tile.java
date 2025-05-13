@@ -41,9 +41,6 @@ public class Tile {
         return c;
     }
 
-    public void plow() {
-        type.setCanPlant();
-    }
 
     public void removePlant() {
         plant = null;
@@ -53,9 +50,6 @@ public class Tile {
         tree = null;
     }
 
-    public boolean canPlant() {
-        return type.canPlant();
-    }
 
     public void plantSeed(String seedName) {
         Plant newPlant = CropManager.createPlantBySeed(seedName, this);
@@ -71,13 +65,24 @@ public class Tile {
     }
 
     public void placeItem(ItemStack item) {
-        if (itemOnTile != null) {
-            itemOnTile = item;
-        }
+        this.itemOnTile = item;
     }
     public ItemStack pickItem() {
         ItemStack result = itemOnTile;
         itemOnTile = null;
         return result;
+    }
+
+    public ItemStack getItemOnTile() {
+        return itemOnTile;
+    }
+
+    public boolean canAddItemToTile() {
+        if (type != TileType.SOIL && type != TileType.INDOOR &&
+                type != TileType.QUARRY && type != TileType.PATH) return false;
+        if (itemOnTile != null) return false;
+        if (tree != null) return false;
+        if (plant != null) return false;
+        return true;
     }
 }

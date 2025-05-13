@@ -9,14 +9,11 @@ public enum TileType {
     QUARRY('Q', true),
     SELL_BASKET('B', false),
     DISABLE(' ', false),
+    PATH('#', true),
     ;
 
     private final char symbol;
     private final boolean walkable;
-
-    private boolean canPlant = false;
-    private boolean isWatered = false;
-    private boolean isFertalized = false;
 
     TileType(char symbol, boolean walkable) {
         this.symbol = symbol;
@@ -24,14 +21,6 @@ public enum TileType {
     }
 
     public boolean isWalkable() { return walkable; }
-
-    public void setCanPlant() { canPlant = true; }
-    public void setIsFertalized() { isFertalized = true; }
-    public void setIsWatered() { isWatered = true; }
-
-    public boolean canPlant() { return canPlant; }
-    public boolean isFertalized() { return isFertalized; }
-    public boolean isWatered() { return isWatered; }
 
     public char getSymbol() { return symbol; }
 }

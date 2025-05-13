@@ -1,15 +1,18 @@
 package controllers;
 
 import models.*;
+import models.Enums.Direction;
 import models.animals.Animal;
 import models.animals.AnimalProduct;
 import models.animals.Fish;
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
 import models.artisan.Furnace;
+import models.crafting.CraftingManager;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
 import models.inventory.Inventory;
+import models.map.Tile;
 import models.tools.FishingPole;
 
 import java.util.ArrayList;
@@ -69,9 +72,47 @@ public class GameController {
 
         return new Result(true, player.showCraftingRecipes());
     }
-    public Result Craft(Matcher matcher) {return null;}
-    public Result placeItem(Matcher matcher) {return null;}
-    public Result cheatAddToInventory(Matcher matcher) {return null;}
+    public Result Craft(Matcher matcher) {
+        String craftName = matcher.group(1);
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        return CraftingManager.craft(craftName, player);
+    }
+    public Result placeItem(Matcher matcher) {
+        String itemName = matcher.group(1);
+        String dir = matcher.group(2);
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        Inventory inv = player.getInventory();
+        if (!inv.hasItem(itemName)) {
+            return new Result(false, "You doesn't have this item in your inventory");
+        }
+        Direction direction = Direction.getDirection(dir);
+        if (direction == null) {
+            return new Result(false, "This direction is unavailable");
+        }
+        Location playerLocation = player.getLocation();
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(playerLocation.x() + direction.dx,
+                playerLocation.y() + direction.dy);
+        if (!tile.canAddItemToTile()) {
+            return new Result(false, "You can't add item to this tile");
+        }
+        inv.placeItem(itemName, tile);
+        return new Result(true, "You have placed this item to tile successfully!");
+    }
+    public Result cheatAddToInventory(Matcher matcher) {
+        String name = matcher.group(1);
+        int count = Integer.parseInt(matcher.group(2));
+
+        Inventory inv = App.getApp().getCurrentGame().getPlayerInTurn().getInventory();
+        if (!inv.hasSpace()) {
+            return new Result(false, "Your inventory has not space anymore");
+        }
+
+        Item itemT0oAdd = ItemManager.getItemByName(name);
+        inv.addItem(itemT0oAdd, count);
+        return new Result(true, "You have successfully add " + name + " " + count + "x to your inventory");
+    }
     public Result manageRefrigerator(Matcher matcher) {return null;}
     private Result putInRefrigerator(Item item, int amount) {return null;}
     private Result pickFromRefrigerator(Item item, int amount) {return null;}

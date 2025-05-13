@@ -1,5 +1,6 @@
 package models.cooking;
 
+import models.ItemStack;
 import models.Player;
 import models.Result;
 import models.inventory.Inventory;
@@ -27,7 +28,7 @@ public class FoodManager {
             return new Result(false, "Missing required ingredients.");
         }
 
-        if (!player.getInventory().hasSpace()) {
+        if (!player.getInventory().hasSpace(new ItemStack(recipe.data, 1))) {
             return new Result(false, "Inventory full.");
         }
 

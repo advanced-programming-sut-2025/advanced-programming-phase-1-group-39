@@ -105,11 +105,11 @@ public class GameController {
         int count = Integer.parseInt(matcher.group(2));
 
         Inventory inv = App.getApp().getCurrentGame().getPlayerInTurn().getInventory();
-        if (!inv.hasSpace()) {
+        Item itemT0oAdd = ItemManager.getItemByName(name);
+        if (!inv.hasSpace(new ItemStack(itemT0oAdd, count))) {
             return new Result(false, "Your inventory has not space anymore");
         }
 
-        Item itemT0oAdd = ItemManager.getItemByName(name);
         inv.addItem(itemT0oAdd, count);
         return new Result(true, "You have successfully add " + name + " " + count + "x to your inventory");
     }
@@ -216,7 +216,7 @@ public class GameController {
         }
 
         AnimalProduct product = animal.collectProduct();
-        if (!player.getInventory().hasSpace()) {
+        if (!player.getInventory().hasSpace(new ItemStack(product, 1))) {
             return new Result(false, "Your inventory has not space anymore!");
         }
         player.getInventory().addItem(product, 1);
@@ -283,7 +283,7 @@ public class GameController {
         if (good == null) {
             return new Result(false, "The product has not produced by machine (yet or never)");
         }
-        if (!App.getApp().getCurrentGame().getPlayerInTurn().getInventory().hasSpace()) {
+        if (!App.getApp().getCurrentGame().getPlayerInTurn().getInventory().hasSpace(new ItemStack(good, 1))) {
             return new Result(false, "Your inventory has not space anymore!");
         }
         App.getApp().getCurrentGame().getPlayerInTurn().getInventory().addItem(good, 1);

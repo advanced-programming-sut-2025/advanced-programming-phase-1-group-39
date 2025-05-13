@@ -1,5 +1,6 @@
 package models.crafting;
 
+import models.ItemStack;
 import models.Player;
 import models.Result;
 import models.inventory.Inventory;
@@ -28,15 +29,11 @@ public class CraftingManager {
             return new Result(false, "You don't have the required ingredients.");
         }
 
-        if (!inv.hasSpace()) {
-            return new Result(false, "Inventory is full.");
-        }
-
         for (Map.Entry<String, Integer> entry : recipe.getIngredients().entrySet()) {
             inv.pickItem(entry.getKey(), entry.getValue());
         }
 
-        if (!inv.hasSpace()) {
+        if (!inv.hasSpace(new ItemStack(recipe.getItem(), 1))) {
             return new Result(false, "Your inventory has not space anymore!");
         }
         inv.addItem(recipe.getItem(), 1);

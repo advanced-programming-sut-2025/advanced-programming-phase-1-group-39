@@ -1,9 +1,6 @@
 package models.NPC;
 
-import models.Item;
-import models.ItemStack;
-import models.Location;
-import models.Result;
+import models.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +61,19 @@ public abstract class NPC {
         }
         return quests;
     }
+
+    public Quest getQuest(int level) {
+        for (Quest quest : quests) {
+            if (quest.getLevel() == level) {
+                return quest;
+            }
+        }
+        return null;
+    }
+
+    public abstract void getRewardMission1(int friendShipLevel, Game game);
+    public abstract void getRewardMission2(int friendShipLevel, Game game);
+    public abstract void getRewardMission3(int friendShipLevel, Game game);
 
 
 //    protected abstract

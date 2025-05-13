@@ -158,6 +158,10 @@ public class Tile {
         return itemOnTile;
     }
 
+    public void removeItemOnTile() {
+        itemOnTile = null;
+    }
+
     public Tree getTree() {
         return tree;
     }

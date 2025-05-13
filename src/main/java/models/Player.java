@@ -157,4 +157,8 @@ public class Player {
         }
         return null;
     }
+
+    public ArrayList<PlayerNPCInteraction> getAllFriendships() {
+        return friendships;
+    }
 }

@@ -36,6 +36,10 @@ public abstract class NPC {
         return name;
     }
 
+    public ArrayList<Item> getFavoriteItems() {
+        return favoriteItems;
+    }
+
     public HashMap<String, String> getDialogues() {
         return dialogues;
     }

@@ -82,12 +82,14 @@ public class Game {
 
     public void addToDay(int amount) {
         time.addToDay(amount);
+        resetFriendship();
         // TODO : changing weather
         // TODO : update plants
     }
 
     public void goToNextDay() {
         time.goToNextDay();
+
         // TODO : changing weather
     }
 
@@ -123,7 +125,7 @@ public class Game {
 
     // NPC
 
-    public ArrayList<NPC> initializeNPCs() {
+    private ArrayList<NPC> initializeNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
         npcs.add(new SebastianNPC());
         npcs.add(new AbigailNPC());
@@ -133,7 +135,7 @@ public class Game {
         return npcs;
     }
 
-    public NPC getNPC(String NPCName) {
+    private NPC getNPC(String NPCName) {
         for (NPC npc : npcs) {
             if (npc.getName().equalsIgnoreCase(NPCName)) {
                 return npc;
@@ -142,6 +144,14 @@ public class Game {
         return null;
     }
 
+    private void resetFriendship() {
+        for (Player player : players) {
+            for (PlayerNPCInteraction friendship : player.getAllFriendships()) {
+                friendship.setFirstGift(true);
+                friendship.setFirstTalking(true);
+            }
+        }
+    }
 
 
 }

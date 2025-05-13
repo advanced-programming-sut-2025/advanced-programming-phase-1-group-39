@@ -5,12 +5,14 @@ public class PlayerNPCInteraction {
     private int friendshipLevel;
     private int friendshipScore;
     private boolean isFirstTalking;
+    private boolean isFirstGift;
 
     public PlayerNPCInteraction(String NPCName) {
         this.NPCName = NPCName;
         this.friendshipLevel = 0;
         this.friendshipScore = 0;
         this.isFirstTalking = true;
+        this.isFirstGift = true;
     }
 
     public String getNPCName() {
@@ -29,6 +31,10 @@ public class PlayerNPCInteraction {
         return isFirstTalking;
     }
 
+    public boolean isFirstGift() {
+        return isFirstGift;
+    }
+
     public void setNPCName(String NPCName) {
         this.NPCName = NPCName;
     }
@@ -43,5 +49,9 @@ public class PlayerNPCInteraction {
 
     public void setFirstTalking(boolean firstTalking) {
         isFirstTalking = firstTalking;
+    }
+
+    public void setFirstGift(boolean firstGift) {
+        isFirstGift = firstGift;
     }
 }

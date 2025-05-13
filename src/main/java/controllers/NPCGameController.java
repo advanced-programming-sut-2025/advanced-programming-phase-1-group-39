@@ -10,6 +10,7 @@ import models.tools.Tool;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 public class NPCGameController {
@@ -17,12 +18,12 @@ public class NPCGameController {
     App app = App.getApp();
     Game game = app.getCurrentGame();
     Player currentPlayer = game.getCurrentPlayer();
+    ArrayList<String> NPCNames = new ArrayList<>(List.of("sebastian", "abigail", "leah", "robin", "harvey"));
 
     public Result meetNPC(Matcher matcher) {
         String npcName = matcher.group("NPCName");
         String condition;
         String output;
-        ArrayList<String> NPCNames = new ArrayList<>(List.of("sebastian", "abigail", "leah", "robin", "harvey"));
 
         if (!NPCNames.contains(npcName)) {
             return new Result(false, "NPC " + npcName + "is not among the npcs!");
@@ -84,7 +85,66 @@ public class NPCGameController {
         }
     }
 
-    public Result
+    public Result giveGift(Matcher matcher) {
+        String npcName = matcher.group("NPCName");
+        String itemName = matcher.group("item");
+
+        if (!NPCNames.contains(npcName)) {
+            return new Result(false, "NPC " + npcName + "is not among the npcs!");
+        } else if (npcName.equals("sebastian") && !isNpcNearPlayer(currentPlayer.getLocation(),
+                game.getNPC("sebastian").getLocation())) {
+            return new Result(false, "to interact with sebastian, you must be next to him.");
+        } else if (npcName.equals("abigail") && !isNpcNearPlayer(currentPlayer.getLocation(),
+                game.getNPC("abigail").getLocation())) {
+            return new Result(false, "to interact with abigail, you must be next to her.");
+        } else if (npcName.equals("harvey") && !isNpcNearPlayer(currentPlayer.getLocation(),
+                game.getNPC("harvey").getLocation())) {
+            return new Result(false, "to interact with harvey, you must be next to him.");
+        } else if (npcName.equals("leah") && !isNpcNearPlayer(currentPlayer.getLocation(),
+                game.getNPC("leah").getLocation())) {
+            return new Result(false, "to interact with leah, you must be next to her.");
+        } else if (npcName.equals("robin") && !isNpcNearPlayer(currentPlayer.getLocation(),
+                game.getNPC("robin").getLocation())) {
+            return new Result(false, "to interact with robin, you must be next to him.");
+        } else {
+            int mode = canGiveGift(itemName, game, npcName);
+            if (mode == 0) {
+                return new Result(false, "The " + itemName +" does not exist in your inventory.");
+            } else if (mode == 1) {
+                return new Result(false, "You cannot give tools as gifts to NPCs.");
+            } else if (mode == 2) {
+                return new Result(false, "You cannot give non-sellable items as gifts to NPCs.");
+            } else if (mode == 3) {
+                if (currentPlayer.getFriendship(npcName).isFirstGift()) {
+                    setFriendshipScore(currentPlayer.getFriendship(npcName), 200);
+                    currentPlayer.getFriendship(npcName).setFirstGift(false);
+                }
+                return new Result(true, "Wow, you really made my day. Thanks for being amazing.");
+            } else {
+                if (currentPlayer.getFriendship(npcName).isFirstGift()) {
+                    setFriendshipScore(currentPlayer.getFriendship(npcName), 50);
+                    currentPlayer.getFriendship(npcName).setFirstGift(false);
+                }
+                return new Result(true, "Oh, thank you! That’s sweet of you.");
+            }
+        }
+    }
+
+//    Player player = game.getCurrentPlayer();
+//        if (!player.getInventory().hasItem(giftName)) {
+//        return 0;
+//    } else {
+//        ItemStack stack = player.getInventory().getItemByName(giftName);
+//        if (stack.getItem() instanceof Tool) {
+//            return 1;
+//        } else if (stack.getItem() instanceof ArtisanMachine) {
+//            return 2;
+//        } else if (game.getNPC(NPCName).getFavoriteItems().contains(stack.getItem())) {
+//            return 3;
+//        } else {
+//            return 4;
+//        }
+//    }
 
 
     // Auxiliary functions :
@@ -189,7 +249,7 @@ public class NPCGameController {
         return null;
     }
 
-    private int canGiveGift(String giftName, Game game) {
+    private int canGiveGift(String giftName, Game game, String NPCName) {
         Player player = game.getCurrentPlayer();
         if (!player.getInventory().hasItem(giftName)) {
             return 0;
@@ -199,8 +259,10 @@ public class NPCGameController {
                 return 1;
             } else if (stack.getItem() instanceof ArtisanMachine) {
                 return 2;
-            } else {
+            } else if (game.getNPC(NPCName).getFavoriteItems().contains(stack.getItem())) {
                 return 3;
+            } else {
+                return 4;
             }
         }
     }

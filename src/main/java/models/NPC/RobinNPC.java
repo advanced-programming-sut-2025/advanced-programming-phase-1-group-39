@@ -1,8 +1,6 @@
 package models.NPC;
 
-import models.ItemManager;
-import models.ItemStack;
-import models.Location;
+import models.*;
 import models.services.DialogueLoader;
 import models.services.MissionsLoader;
 
@@ -28,5 +26,41 @@ public class RobinNPC extends NPC {
                     , new ItemStack(ItemManager.getItemByName("Wood"), 10000)));
         super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/robinMissions.json");
         super.quests = generateNPCQuests(tasks, missions);
+    }
+
+    @Override
+    public void getRewardMission1(int friendShip, Game game) {
+        Player currentPlayer = game.getCurrentPlayer();
+        currentPlayer.getInventory().pickItem(getQuest(1).getTask().getItem().getName(),
+                getQuest(1).getTask().getAmount());
+        if (friendShip == 2) {
+            currentPlayer.addMoney(2000);
+        } else {
+            currentPlayer.addMoney(1000);
+        }
+    }
+
+    @Override
+    public void getRewardMission2(int friendShip, Game game) {
+        Player currentPlayer = game.getCurrentPlayer();
+        currentPlayer.getInventory().pickItem(getQuest(2).getTask().getItem().getName(),
+                getQuest(2).getTask().getAmount());
+        if (friendShip == 2) {
+            currentPlayer.getInventory().addItem(ItemManager.getItemByName("Bee House"), 6);
+        } else {
+            currentPlayer.getInventory().addItem(ItemManager.getItemByName("Bee House"), 3);
+        }
+    }
+
+    @Override
+    public void getRewardMission3(int friendShip, Game game) {
+        Player currentPlayer = game.getCurrentPlayer();
+        currentPlayer.getInventory().pickItem(getQuest(3).getTask().getItem().getName(),
+                getQuest(3).getTask().getAmount());
+        if (friendShip == 2) {
+            currentPlayer.addMoney(50000);
+        } else {
+            currentPlayer.addMoney(25000);
+        }
     }
 }

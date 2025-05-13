@@ -128,7 +128,7 @@ public class Inventory {
         ItemStack itemStack = getItemByName(item.getName());
         if (!hasSpace(new ItemStack(item, amount))) return;
         if (itemStack != null) {
-            itemStack.addStack(-amount);
+            itemStack.addStack(amount);
             if(!hasEnoughStack(item.getName(), 1)){
                 inventoryItems.remove(itemStack);
             }
@@ -139,7 +139,10 @@ public class Inventory {
     public ItemStack pickItem(String name, int amount) {
         ItemStack item = getItemByName(name);
         if (item != null) {
-            item.addStack(-amount); // Todo: it's not complete
+            if (amount > item.getAmount()) {
+                return null;
+            }
+
             return new ItemStack(item.getItem(), amount);
         }
         return null;

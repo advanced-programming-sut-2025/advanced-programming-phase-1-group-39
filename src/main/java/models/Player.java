@@ -4,7 +4,6 @@ import models.Enums.Season;
 import models.NPC.NPC;
 import models.NPC.Quest;
 import models.animals.Animal;
-import models.animals.AnimalProductQuality;
 import models.animals.Fish;
 import models.animals.FishType;
 import models.artisan.ArtisanMachineRecipe;
@@ -116,6 +115,12 @@ public class Player {
 
     public void addAnimal(Animal animal) {
         animals.put(animal.getName(), animal);
+    }
+    public int sellAnimal(Animal animal) {
+        int money = (int) (animal.getPrice() * (((double) animal.getFriendship() /1000) + 0.3));
+        changeMoney(money);
+        animals.remove(animal.getName());
+        return money;
     }
     public ArrayList<Animal> getAnimals() {
         return new ArrayList<>(animals.values());

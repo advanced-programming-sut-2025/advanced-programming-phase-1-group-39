@@ -132,9 +132,21 @@ public class GameController {
         animal.feedHay();
         return new Result(true, "You have successfully feeded the " + animalName);
     }
-    public Result showAnimalsProducts(Matcher matcher) {return null;}
+    public Result showAnimalsProducts(Matcher matcher) {
+
+    }
     public Result collectProducts(Matcher matcher) {return null;}
-    public Result sellAnimal(Matcher matcher) {return null;}
+    public Result sellAnimal(Matcher matcher) {
+        String animalName = matcher.group(1);
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        Animal animal = player.getAnimal(animalName);
+        if (animal == null) {
+            return new Result(false, "You doesn't have this animal");
+        }
+
+        int money = player.sellAnimal(animal);
+        return new Result(true, "You have sold the animal. You have got " + money + "g");
+    }
 
     public Result fishing(Matcher matcher) {
         Game currentGame = App.getApp().getCurrentGame();

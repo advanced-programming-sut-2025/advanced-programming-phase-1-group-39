@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import models.*;
 import models.Enums.Season;
 import models.NPC.NPC;
+import models.cooking.Food;
 import models.inventory.InventoryType;
 
 import java.io.FileReader;
@@ -122,7 +123,11 @@ public class PierresGeneralStore extends Shop {
                 return new Result(false, "You don't have enough money.");
             }
 
-            player.getInventory().addItem(item, quantity);
+            if (ItemManager.getItemByName(product) != null) {
+                player.getInventory().addItem(ItemManager.getItemByName(product), quantity);
+            } else {
+                player.getInventory().addItem(new OddItems(product), quantity);
+            }
         }
 
         player.changeMoney(-totalPrice);

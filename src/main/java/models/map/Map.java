@@ -263,40 +263,13 @@ public class Map {
         int startY = Constants.DISABLED_HEIGHT;
 
         for (Shop shop : shops) {
-            addObjectToMap(shop, "shop", startX, startY);
+            addObjectToMap(shop, "shop", 0, 0);
         }
 
         try (FileReader reader = new FileReader("src/main/resources/data/Map/npcMap.json")) {
             Gson gson = new Gson();
-//
-//            int startX = Constants.FARM_WIDTH;
-//            int startY = Constants.DISABLED_HEIGHT;
-//
+
             JsonObject object = gson.fromJson(reader, JsonObject.class);
-//
-//            // buildings
-//            JsonObject buildings = object.getAsJsonObject("buildings");
-//
-//            JsonObject blacksmith = buildings.getAsJsonObject("blacksmith");
-//            addObjectToMap(blacksmith, "building", startX, startY);
-//
-//            JsonObject jojamart = buildings.getAsJsonObject("jojamart");
-//            addObjectToMap(jojamart, "building", startX, startY);
-//
-//            JsonObject pierres_store = buildings.getAsJsonObject("pierres_store");
-//            addObjectToMap(pierres_store, "building", startX, startY);
-//
-//            JsonObject carpenters_shop = buildings.getAsJsonObject("carpenters_shop");
-//            addObjectToMap(carpenters_shop, "building", startX, startY);
-//
-//            JsonObject fish_shop = buildings.getAsJsonObject("fish_shop");
-//            addObjectToMap(fish_shop, "building", startX, startY);
-//
-//            JsonObject marnies_ranch = buildings.getAsJsonObject("marnies_ranch");
-//            addObjectToMap(marnies_ranch, "building", startX, startY);
-//
-//            JsonObject stardrop_saloon = buildings.getAsJsonObject("stardrop_saloon");
-//            addObjectToMap(stardrop_saloon, "building", startX, startY);
 
             // paths
             JsonArray paths = object.getAsJsonArray("paths");
@@ -399,7 +372,7 @@ public class Map {
         return text.toString();
     }
 
-    //Todo : Add all chars to tile getColor and getSymbol
+
     public String printColorMap(ArrayList<Player> players) {
         StringBuilder text = new StringBuilder();
 

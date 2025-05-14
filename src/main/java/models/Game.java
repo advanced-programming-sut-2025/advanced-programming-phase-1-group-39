@@ -4,8 +4,7 @@ import controllers.AppControllers;
 import models.Enums.Season;
 import models.Enums.WeatherStatus;
 import models.NPC.*;
-import models.Shops.PierresGeneralStore;
-import models.Shops.Shop;
+import models.Shops.*;
 import models.animals.Animal;
 import models.buildings.Building;
 import models.map.FarmType;
@@ -48,6 +47,7 @@ public class Game {
     public void startGame() {
         initializeNPCs();
         makeNPCBuildings();
+
         gameMap.loadMap(getNpcShops());
 
 
@@ -58,14 +58,37 @@ public class Game {
 
     // NPC
     public void makeNPCBuildings() {
-        ArrayList<Shop> gameShops = new ArrayList<>();
-        gameShops.add(new PierresGeneralStore("PierresGeneralStore",
-                9, 5, new Location(27, 22), 25, 20,
-                getNPC("pierre")
-                ));
+//        ArrayList<Shop> gameShops = new ArrayList<>();
+//        gameShops.add(new BlackSmithShop("Blacksmith Shop",
+//                9, 16, new Location(100, 50), 11, 8,
+//                getNPC("clint")
+//                ));
+//        gameShops.add(new JojaMartShop("JojaMart Shop",
+//                9, 23, new Location(93,12), 25, 20,
+//                getNPC("morris")
+//                ));
+//        gameShops.add(new PierresGeneralStore("Pierre's General Store",
+//                9, 17, new Location(27, 22), 12, 11,
+//                getNPC("pierre")
+//                ));
+//        gameShops.add(new CarpentersShop("Carpenter's Shop",
+//                9, 20, new Location(23,46), 18, 12,
+//                getNPC("robin")
+//                ));
+//        gameShops.add(new FishingShop("Fishing Shop",
+//                9, 17, new Location(96, 76), 18, 12,
+//                getNPC("willy")
+//                ));
+//        gameShops.add(new MarniesRanch("Marnie's Ranch",
+//                9, 16, new Location(22, 76), 18, 12,
+//                getNPC("Marnie")
+//                ));
+//        gameShops.add(new StardropSaloon("The Stardrop Saloon",
+//                12, 24, new Location(64, 46), 18, 12,
+//                getNPC("pierre")
+//                ));
 
-
-        buildings.addAll(gameShops);
+//        buildings.addAll(gameShops);
     }
 
     public ArrayList<Shop> getNpcShops() {
@@ -77,14 +100,14 @@ public class Game {
         return shops;
     }
 
-    private ArrayList<NPC> initializeNPCs() {
-        ArrayList<NPC> npcs = new ArrayList<>();
+    private void initializeNPCs() {
         npcs.add(new SebastianNPC());
         npcs.add(new AbigailNPC());
         npcs.add(new HarveyNPC());
         npcs.add(new LeahNPC());
         npcs.add(new RobinNPC());
-        return npcs;
+
+        // TODO : add shop npcs
     }
 
     public NPC getNPC(String NPCName) {

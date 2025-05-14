@@ -221,11 +221,11 @@ public class Player {
     }
 
     public boolean canBuildGreenHouse() {
-        return inventory.hasEnoughStack("wood", 500) && money >= 1000;
+        return inventory.hasEnoughStack("Wood", 500) && money >= 1000;
     }
 
     public void buildGreenHouse() {
-        inventory.pickItem("wood", 500);
+        inventory.pickItem("Wood", 500);
         changeMoney(1000);
         for (Building building : playerFarmBuildings) {
             if (building.getName().equals("greenhouse")) ((GreenHouse)building).build();

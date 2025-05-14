@@ -67,13 +67,13 @@ public class Map {
             JsonObject fixedElements = farmObject.getAsJsonObject("fixedElements");
             // adding buildings
             Building cabin = player.getBuildingByName("cabin");
-            addObjectToMap(cabin, "cabin");
+            addObjectToMap(cabin, "cabin", 0,0);
 
             Building greenhouse = player.getBuildingByName("greenhouse");
-            addObjectToMap(greenhouse, "greenhouse");
+            addObjectToMap(greenhouse, "greenhouse", 0,0);
 
             Building shippingBin = player.getBuildingByName("Shipping Bin");
-            addObjectToMap(shippingBin, "Shipping Bin");
+            addObjectToMap(shippingBin, "Shipping Bin", 0,0);
 
 
             // adding main lake and quarry from json
@@ -166,13 +166,13 @@ public class Map {
         }
     }
 
-    private void addObjectToMap(Building building, String name) {
-        int x = building.getLocation().x();
-        int y = building.getLocation().y();
+    private void addObjectToMap(Building building, String name, int startX, int startY) {
+        int x = building.getLocation().x() + startX;
+        int y = building.getLocation().y() + startY;
         int w = building.getWidth();
         int h = building.getHeight();
 
-        if (name.equals("cabin") || name.equals("greenhouse")) {
+        if (name.equals("cabin") || name.equals("greenhouse") || name.equals("shop")) {
             for (int i = x; i < x + w; i++) {
                 tiles[y][i].setType(TileType.WALL);
                 tiles[y + h - 1][i].setType(TileType.WALL);
@@ -249,6 +249,61 @@ public class Map {
         }
     }
 
+    private void addNpcMap(ArrayList<Shop> shops) {
+
+        int startX = Constants.FARM_WIDTH;
+        int startY = Constants.DISABLED_HEIGHT;
+
+        for (Shop shop : shops) {
+            addObjectToMap(shop, "shop", startX, startY);
+        }
+
+        try (FileReader reader = new FileReader("src/main/resources/data/Map/npcMap.json")) {
+            Gson gson = new Gson();
+//
+//            int startX = Constants.FARM_WIDTH;
+//            int startY = Constants.DISABLED_HEIGHT;
+//
+            JsonObject object = gson.fromJson(reader, JsonObject.class);
+//
+//            // buildings
+//            JsonObject buildings = object.getAsJsonObject("buildings");
+//
+//            JsonObject blacksmith = buildings.getAsJsonObject("blacksmith");
+//            addObjectToMap(blacksmith, "building", startX, startY);
+//
+//            JsonObject jojamart = buildings.getAsJsonObject("jojamart");
+//            addObjectToMap(jojamart, "building", startX, startY);
+//
+//            JsonObject pierres_store = buildings.getAsJsonObject("pierres_store");
+//            addObjectToMap(pierres_store, "building", startX, startY);
+//
+//            JsonObject carpenters_shop = buildings.getAsJsonObject("carpenters_shop");
+//            addObjectToMap(carpenters_shop, "building", startX, startY);
+//
+//            JsonObject fish_shop = buildings.getAsJsonObject("fish_shop");
+//            addObjectToMap(fish_shop, "building", startX, startY);
+//
+//            JsonObject marnies_ranch = buildings.getAsJsonObject("marnies_ranch");
+//            addObjectToMap(marnies_ranch, "building", startX, startY);
+//
+//            JsonObject stardrop_saloon = buildings.getAsJsonObject("stardrop_saloon");
+//            addObjectToMap(stardrop_saloon, "building", startX, startY);
+
+            // paths
+            JsonArray paths = object.getAsJsonArray("paths");
+
+            for (JsonElement element : paths) {
+                JsonObject path = element.getAsJsonObject();
+                addObjectToMap(path, "path", startX, startY);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void growWateredPlantsAndTrees() {
         for(int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -281,52 +336,6 @@ public class Map {
             }
         }
 
-    }
-
-    private void addNpcMap(ArrayList<Shop> shops) {
-        try (FileReader reader = new FileReader("src/main/resources/data/Map/npcMap.json")) {
-            Gson gson = new Gson();
-
-            int startX = Constants.FARM_WIDTH;
-            int startY = Constants.DISABLED_HEIGHT;
-
-            JsonObject object = gson.fromJson(reader, JsonObject.class);
-
-            // buildings
-            JsonObject buildings = object.getAsJsonObject("buildings");
-
-            JsonObject blacksmith = buildings.getAsJsonObject("blacksmith");
-            addObjectToMap(blacksmith, "building", startX, startY);
-
-            JsonObject jojamart = buildings.getAsJsonObject("jojamart");
-            addObjectToMap(jojamart, "building", startX, startY);
-
-            JsonObject pierres_store = buildings.getAsJsonObject("pierres_store");
-            addObjectToMap(pierres_store, "building", startX, startY);
-
-            JsonObject carpenters_shop = buildings.getAsJsonObject("carpenters_shop");
-            addObjectToMap(carpenters_shop, "building", startX, startY);
-
-            JsonObject fish_shop = buildings.getAsJsonObject("fish_shop");
-            addObjectToMap(fish_shop, "building", startX, startY);
-
-            JsonObject marnies_ranch = buildings.getAsJsonObject("marnies_ranch");
-            addObjectToMap(marnies_ranch, "building", startX, startY);
-
-            JsonObject stardrop_saloon = buildings.getAsJsonObject("stardrop_saloon");
-            addObjectToMap(stardrop_saloon, "building", startX, startY);
-
-            // paths
-            JsonArray paths = object.getAsJsonArray("paths");
-
-            for (JsonElement element : paths) {
-                JsonObject path = element.getAsJsonObject();
-                addObjectToMap(path, "path", startX, startY);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void addDisabledTiles() {

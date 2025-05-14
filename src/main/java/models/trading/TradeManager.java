@@ -28,4 +28,15 @@ public class TradeManager {
     public static Trade getTradeById(int id) {
         return trades.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
     }
+
+    public static Trade getTradeById(String username, int id) {
+        for (Trade trade : trades) {
+            if ((username.equalsIgnoreCase(trade.getReceiver().getUsername())
+                    || username.equalsIgnoreCase(trade.getSender().getUsername()))
+                    && trade.getId() == id) {
+                return trade;
+            }
+        }
+        return null;
+    }
 }

@@ -13,10 +13,7 @@ import models.cropsAndFarming.*;
 import models.inventory.Inventory;
 import models.map.Tile;
 import models.tools.FishingPole;
-import models.trading.Trade;
-import models.trading.TradeItem;
-import models.trading.TradeManager;
-import models.trading.TradeType;
+import models.trading.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -493,7 +490,104 @@ public class GameController {
         }
         return new Result(true, sb.toString());
     }
-    public Result responseToTrade(Matcher matcher) {return null;}
+    public Result responseToTrade(Matcher matcher) {
+        String action = matcher.group(1); // --accept or --reject
+        int tradeId = Integer.parseInt(matcher.group(2));
+
+        Player currentPlayer = App.getApp().getCurrentGame().getPlayerInTurn();
+        Trade trade = TradeManager.getTradeById(currentPlayer.getUsername(), tradeId);
+
+        if (trade == null) {
+            return new Result(false, "No trade request found for you with this ID.");
+        }
+        if (trade.getReceiver() != currentPlayer) {
+            return new Result(false, "You must be the receiver of the trade");
+        }
+
+        if (trade.getStatus() != TradeStatus.PENDING) {
+            return new Result(false, "This trade has already been " +
+                    trade.getStatus().name().toLowerCase() + ".");
+        }
+
+        Player sender = trade.getSender();
+
+        if (action.equals("-reject")) {
+            trade.reject();
+            //FriendshipManager.decreaseXP(currentPlayer, sender, 30);
+            return new Result(true, "You rejected trade request #" + tradeId);
+        }
+
+        if (trade.getType() == TradeType.REQUEST) {
+            if (!currentPlayer.getInventory().hasEnoughStack(trade.getRequestedItem().getItemName(),
+                    trade.getRequestedItem().getAmount())) {
+                return new Result(false, "You don’t have enough "
+                        + trade.getRequestedItem().getItemName() + " to complete the trade.");
+            }
+        } else if (trade.getType() == TradeType.OFFER) {
+            if (!sender.getInventory().hasEnoughStack(trade.getRequestedItem().getItemName(), trade.getRequestedItem().getAmount())) {
+                return new Result(false, "Sender no longer has the required items.");
+            }
+        }
+
+        if (trade.isMoneyTrade()) {
+            int money = trade.getPrice();
+
+            if (trade.getType() == TradeType.REQUEST) {
+                if (!sender.hasEnoughMoney(money)) {
+                    return new Result(false, "Sender doesn’t have enough money.");
+                }
+                currentPlayer.getInventory().pickItem(trade.getOfferedItem().getItemName(), trade.getOfferedItem().getAmount());
+                sender.getInventory().addItem(ItemManager.getItemByName(trade.getOfferedItem().getItemName()),
+                        trade.getOfferedItem().getAmount());
+
+                sender.changeMoney(-money);
+                currentPlayer.changeMoney(money);
+            } else {
+                if (!currentPlayer.hasEnoughMoney(money)) {
+                    return new Result(false, "You don’t have enough money.");
+                }
+                sender.getInventory().pickItem(trade.getOfferedItem().getItemName(), trade.getOfferedItem().getAmount());
+                currentPlayer.getInventory().addItem(ItemManager.getItemByName(trade.getOfferedItem().getItemName()),
+                        trade.getOfferedItem().getAmount());
+
+                currentPlayer.changeMoney(-money);
+                sender.changeMoney(money);
+            }
+        } else {
+            TradeItem targetItem = trade.getRequestedItem() ;
+
+            if (trade.getType() == TradeType.REQUEST) {
+                if (!sender.getInventory().hasEnoughStack(targetItem.getItemName(), targetItem.getAmount())) {
+                    return new Result(false, "Sender no longer has " + targetItem.getItemName());
+                }
+
+                currentPlayer.getInventory().pickItem(trade.getOfferedItem().getItemName(), trade.getOfferedItem().getAmount());
+                sender.getInventory().addItem(ItemManager.getItemByName(trade.getOfferedItem().getItemName()),
+                        trade.getOfferedItem().getAmount());
+
+                sender.getInventory().pickItem(targetItem.getItemName(), targetItem.getAmount());
+                currentPlayer.getInventory().addItem(ItemManager.getItemByName(targetItem.getItemName()),
+                        targetItem.getAmount());
+
+            } else {
+                if (!currentPlayer.getInventory().hasEnoughStack(targetItem.getItemName(), targetItem.getAmount())) {
+                    return new Result(false, "You don’t have enough " + targetItem.getItemName());
+                }
+
+                sender.getInventory().pickItem(trade.getRequestedItem().getItemName(), trade.getRequestedItem().getAmount());
+                currentPlayer.getInventory().addItem(ItemManager.getItemByName(trade.getRequestedItem().getItemName()),
+                        trade.getRequestedItem().getAmount());
+
+                currentPlayer.getInventory().pickItem(targetItem.getItemName(), targetItem.getAmount());
+                sender.getInventory().addItem(ItemManager.getItemByName(targetItem.getItemName()), targetItem.getAmount());
+            }
+        }
+
+        trade.accept();
+        //FriendshipManager.increaseXP(currentPlayer, sender, 50);
+
+        return new Result(true, "Trade #" + tradeId + " accepted successfully.");
+    }
     public Result showTradeHistory(Matcher matcher) {
         ArrayList<Trade> trades = TradeManager.getTradeHistory(App.getApp().getCurrentGame()
                 .getPlayerInTurn().getUsername());

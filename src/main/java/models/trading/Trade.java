@@ -43,6 +43,26 @@ public class Trade {
         return status;
     }
 
+    public TradeType getType() {
+        return type;
+    }
+
+    public TradeItem getOfferedItem() {
+        return offeredItem;
+    }
+
+    public TradeItem getRequestedItem() {
+        return requestedItem;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public boolean isMoneyTrade() {
+        return price == 0;
+    }
+
     public boolean isSeenByTarget() {
         return isSeenByReceiver;
     }

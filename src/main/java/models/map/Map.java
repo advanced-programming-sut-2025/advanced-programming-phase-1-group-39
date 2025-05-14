@@ -14,6 +14,7 @@ import models.cropsAndFarming.*;
 
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Map {
     private final int width = Constants.WORLD_MAP_WIDTH, height = Constants.WORLD_MAP_HEIGHT;
@@ -88,10 +89,10 @@ public class Map {
                 JsonObject smallLake = lakes.get(1).getAsJsonObject();
                 addObjectToMap(smallLake, "lake", startX, startY);
             }
+            ArrayList<Building> buildings = new ArrayList<>(List.of(cabin, greenhouse, shippingBin));
 
             // random fill map
-            fillFarmWithRandoms(startX, startY, 0.25, 0.3, Season.SPRING, true);
-
+            fillFarmWithRandoms(startX, startY, 0.25, 0.3, Season.SPRING, true, buildings);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -206,10 +207,16 @@ public class Map {
 
     public void fillFarmWithRandoms(int startX, int startY,
                                      double foragingPossibility, double quarryPossibility,
-                                    Season nowSeason, boolean haveTree) {
+                                    Season nowSeason, boolean haveTree,
+                                    ArrayList<Building> buildings) {
         for (int i = startX; i < startX + Constants.FARM_WIDTH; i++) {
             for (int j = startY; j < startY + Constants.FARM_HEIGHT; j++) {
                 Tile tile = tiles[j][i];
+                boolean isInBuilding = false;
+                for (Building building : buildings) {
+                    if (isInBuilding(building, tile)) isInBuilding = true;
+                }
+                if (isInBuilding) continue;
 
                 if (tile.canAddItemToTile()) {
                     if (Math.random() < foragingPossibility) {
@@ -523,11 +530,16 @@ public class Map {
     }
 
     public boolean isInBuilding(Building building, Player player) {
-        return (player.getLocation().x() <= building.getLocation().x() &&
-                player.getLocation().x() >= building.getLocation().x() + building.getWidth() &&
-                player.getLocation().y() <= building.getLocation().y() &&
-                player.getLocation().y() >= building.getLocation().y() + building.getHeight());
-
+        return !(player.getLocation().x() >= building.getLocation().x() &&
+                player.getLocation().x() <= building.getLocation().x() + building.getWidth() &&
+                player.getLocation().y() >= building.getLocation().y() &&
+                player.getLocation().y() <= building.getLocation().y() + building.getHeight());
+    }
+    public boolean isInBuilding(Building building, Tile tile) {
+        return (tile.getLocation().x() >= building.getLocation().x() &&
+                tile.getLocation().x() <= building.getLocation().x() + building.getWidth() &&
+                tile.getLocation().y() >= building.getLocation().y() &&
+                tile.getLocation().y() <= building.getLocation().y() + building.getHeight());
     }
 }
 

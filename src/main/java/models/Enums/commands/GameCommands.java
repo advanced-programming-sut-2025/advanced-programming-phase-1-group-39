@@ -42,6 +42,8 @@ public enum GameCommands {
 
     TOOLS_UPGRADE("tools\\s+upgrade\\s+(?<name>\\S+)"),
     TOOL_USE("tools\\s+use\\s+-d\\s+(?<direction>\\S+)"),
+
+    HOWMUCH_WATER("howmuch\\s+water"),
     ;
 
     private final String pattern;

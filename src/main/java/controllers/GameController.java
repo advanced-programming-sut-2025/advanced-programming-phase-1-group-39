@@ -10,10 +10,7 @@ import models.inventory.TrashType;
 import models.map.AnsiColors;
 import models.map.MapMinPathFinder;
 import models.map.Tile;
-import models.tools.Axe;
-import models.tools.FishingPole;
-import models.tools.Pickaxe;
-import models.tools.Tool;
+import models.tools.*;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -321,7 +318,19 @@ public class GameController {
     public Result plant(Matcher matcher) {return null;}
     public Result showPlant(Matcher matcher) {return null;}
     public Result fertilize(Matcher matcher) {return null;}
-    public Result howMuchWater() {return null;}
+    public String howMuchWater() {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+
+        ItemStack itemStack = player.getInventory().getItemByName("watering can");
+        if (itemStack != null) {
+            WateringCan wateringCan = (WateringCan) itemStack.getItem();
+            return "The Water of your Watering Can : " + AnsiColors.ANSI_CYAN_BOLD + wateringCan.getHowmuchWater() +
+                    " / " + wateringCan.getMaxWaterSize() + AnsiColors.ANSI_RESET;
+        } else {
+            return "Watering can not found!";
+        }
+    }
 
     public Result showCraftingRecipes() {return null;}
     public Result Craft(Matcher matcher) {return null;}

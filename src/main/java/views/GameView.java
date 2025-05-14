@@ -89,6 +89,10 @@ public class GameView implements View {
             System.out.println(controller.upgradeTool(matcher));
         }
 
+        else if ((GameCommands.HOWMUCH_WATER.getMatcher(command)) != null) {
+            System.out.println(controller.howMuchWater());
+        }
+
         else {
             System.out.println("invalid command.");
         }

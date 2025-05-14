@@ -30,7 +30,7 @@ public class Game {
     private Weather todayWeather = new Weather();
     private Weather tomorrowWeather = new Weather();
 
-    ArrayList<NPC> npcs;
+    ArrayList<NPC> npcs = new ArrayList<>();
 
 
     // first player should be the mainPlayer of game

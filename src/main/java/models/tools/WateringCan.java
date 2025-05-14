@@ -34,8 +34,8 @@ public class WateringCan extends Tool {
         }
     }
 
-    public void fillWateringCan() {
-        tilesWaterNumRemaining = switch (type) {
+    public int getMaxWaterSize() {
+        return switch (type) {
             case BASIC -> 40;
             case COPPER -> 55;
             case IRON -> 70;
@@ -43,8 +43,16 @@ public class WateringCan extends Tool {
             case IRIDIUM -> 100;
         };
     }
+
+    public void fillWateringCan() {
+        tilesWaterNumRemaining = getMaxWaterSize();
+    }
     public boolean haveWater() {
         return tilesWaterNumRemaining > 0;
+    }
+
+    public int getHowmuchWater() {
+        return tilesWaterNumRemaining;
     }
 
     public int getSkillEnergyReduce(Skill skill) {

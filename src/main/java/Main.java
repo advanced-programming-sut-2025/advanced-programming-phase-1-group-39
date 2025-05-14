@@ -24,21 +24,19 @@ public class Main {
     public static void main(String[] args) {
         try {
             ItemManager.loadItems();
-            new Keg("keg", 0);
-            System.out.println(ItemManager.getItemByName("Coffee"));
-//
-//            Player player1 = new Player();
-//            Player player2 = new Player();
-//            Player player3 = new Player();
-//            Player player4 = new Player();
-//            ArrayList<Player> players = new ArrayList<>(List.of(player1, player2, player3, player4));
-//            Game game = new Game(player1, player2, player3, player4);
-//
-//            game.addRandomFarmForPlayer(player1, FarmType.getFarmTypeById(0));
-//            game.addRandomFarmForPlayer(player2, FarmType.getFarmTypeById(0));
-//            game.addRandomFarmForPlayer(player3, FarmType.getFarmTypeById(1));
-//            game.addRandomFarmForPlayer(player4, FarmType.getFarmTypeById(1));
-//
+
+            Player player1 = new Player();
+            Player player2 = new Player();
+            Player player3 = new Player();
+            Player player4 = new Player();
+            ArrayList<Player> players = new ArrayList<>(List.of(player1, player2, player3, player4));
+            Game game = new Game(player1, player2, player3, player4);
+
+            game.addRandomFarmForPlayer(player1, FarmType.getFarmTypeById(0));
+            game.addRandomFarmForPlayer(player2, FarmType.getFarmTypeById(0));
+            game.addRandomFarmForPlayer(player3, FarmType.getFarmTypeById(1));
+            game.addRandomFarmForPlayer(player4, FarmType.getFarmTypeById(1));
+
 //            game.startGame();
 //            ((GreenHouse) player2.getBuildingByName("greenhouse")).build();
 //            player2.getBuildingByName("greenhouse").updateMap(game.getMap());

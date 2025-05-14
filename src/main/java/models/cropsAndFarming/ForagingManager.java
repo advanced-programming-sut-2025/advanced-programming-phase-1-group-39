@@ -232,7 +232,7 @@ public class ForagingManager {
         return values.get(randomIndex).clone();
     }
 
-    public static ForagingMaterial gforagingMaterial() {
+    public static ForagingMaterial getRandomMaterial() {
         if (foragingMaterials.isEmpty()) return null;
 
         ArrayList<ForagingMaterial> values = new ArrayList<>(foragingMaterials.values());

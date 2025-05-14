@@ -16,8 +16,4 @@ public class TradeItem {
     public int getAmount() {
         return amount;
     }
-
-    public int getPrice() {
-        return price;
-    }
 }

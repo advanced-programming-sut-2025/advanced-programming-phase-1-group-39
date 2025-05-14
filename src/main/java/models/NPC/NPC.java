@@ -28,5 +28,8 @@ public class NPC {
 
     private ArrayList<Quest> quests;
 
+    public String getName() {
+        return name;
+    }
 }
 

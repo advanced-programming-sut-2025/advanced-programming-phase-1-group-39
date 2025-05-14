@@ -3,6 +3,8 @@ package models;
 import controllers.AppControllers;
 import models.Enums.Season;
 import models.Enums.WeatherStatus;
+import models.NPC.NPC;
+import models.Shops.*;
 import models.buildings.Building;
 //import models.map.FarmType;
 import models.map.Map;
@@ -21,6 +23,8 @@ public class Game {
     private ArrayList<TradeItem> trades = new ArrayList<>();
     private Map gameMap;
     private ArrayList<Building> buildings = new ArrayList<>();
+
+    private ArrayList<NPC> npcs = new ArrayList<>();
 
     private Time time = new Time();
 
@@ -259,5 +263,70 @@ public class Game {
 
     public void addBuilding(Building building) {
         buildings.add(building);
+    }
+
+    public void makeNPCBuildings() {
+        ArrayList<Shop> gameShops = new ArrayList<>();
+        gameShops.add(new BlackSmithShop("Blacksmith Shop", new Location(100, 50),
+                11, 8, "src/main/resources/data/BlackSmithShop.json",
+                9, 16,
+                getNPC("clint")
+        ));
+        gameShops.add(new JojaMartShop("JojaMart Shop", new Location(93,12),
+                25, 20, "src/main/resources/data/JojaMartShop.json",
+                9, 23,
+                getNPC("morris")
+        ));
+        gameShops.add(new PierresGeneralStore("Pierre's General Store", new Location(27, 22),
+                12, 11, "src/main/resources/data/PierresGeneralStore.json",
+                9, 17,
+                getNPC("pierre")
+        ));
+        gameShops.add(new CarpentersShop("Carpenter's Shop", new Location(23,46),
+                18, 12, "src/main/resources/data/CarpentersShop.json",
+                9, 20,
+                getNPC("robin")
+        ));
+        gameShops.add(new FishingShop("Fishing Shop", new Location(96, 76),
+                18, 12, "src/main/resources/data/FishingShop.json",
+                9, 17,
+                getNPC("willy")
+        ));
+        gameShops.add(new MarniesRanch("Marnie's Ranch", new Location(22, 76),
+                18, 12, "src/main/resources/data/MarniesRanch.json",
+                9, 16,
+                getNPC("marnie")
+        ));
+        gameShops.add(new StardropSaloon("The Stardrop Saloon", new Location(64, 46),
+                18, 12, "src/main/resources/data/StardropSaloon.json",
+                12, 24,
+                getNPC("gus")
+        ));
+
+        buildings.addAll(gameShops);
+    }
+
+    public ArrayList<Shop> getNpcShops() {
+        ArrayList<Shop> shops = new ArrayList<>();
+        for (Building building : buildings) {
+            if (building instanceof Shop) shops.add((Shop) building);
+        }
+
+        return shops;
+    }
+    public NPC getNPC(String NPCName) {
+        for (NPC npc : npcs) {
+            if (npc.getName().equalsIgnoreCase(NPCName)) {
+                return npc;
+            }
+        }
+        return null;
+    }
+
+    public Shop getShopPlayerIsIn(Player player) {
+        for (Shop shop : getNpcShops()) {
+            if (gameMap.isInBuilding(shop, player)) return shop;
+        }
+        return null;
     }
 }

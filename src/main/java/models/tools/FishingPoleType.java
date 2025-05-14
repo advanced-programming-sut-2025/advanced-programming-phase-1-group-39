@@ -1,19 +1,24 @@
 package models.tools;
 
 public enum FishingPoleType {
-    TRAINING_ROD(0.1),
-    BAMBOO_POLE(0.5),
-    FIBERGLASS_ROD(0.9),
-    IRIDIUM_ROD(1.2);
+    TRAINING_ROD(0.1, 8),
+    BAMBOO_POLE(0.5, 8),
+    FIBERGLASS_ROD(0.9, 6),
+    IRIDIUM_ROD(1.2, 4);
 
-    private double rate;
+    private double multiplier;
+    private int usingEnergy;
 
-    FishingPoleType(double multiplier) {
-        this.rate = multiplier;
+    FishingPoleType(double multiplier, int usingEnergy) {
+        this.multiplier = multiplier;
+        this.usingEnergy = usingEnergy;
     }
 
-    public double getRate() {
-        return rate;
+    public double getMultiplier() {
+        return multiplier;
+    }
+
+    public int getUsingEnergy() {
+        return usingEnergy;
     }
 }
-

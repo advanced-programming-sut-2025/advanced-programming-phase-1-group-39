@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Player {
+    private String username;
+
     private Location location;
     private double energy;
     private Skill skills;
@@ -38,6 +40,14 @@ public class Player {
     private HashMap<NPC, Integer> NPCsFriendship;
 
     private ArrayList<Quest> activeQuests;
+
+    public Player(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
 
     public boolean isConscious() {
         return energy > 0;
@@ -129,7 +139,7 @@ public class Player {
         return animals.get(name);
     }
 
-    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) { // Todo: not complete (legendary + type fishing pole)
+    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) {
         double M = weather.getFishingFactor();
         double R = Math.random();
         int skill = skills.getFishingLevel();
@@ -138,29 +148,32 @@ public class Player {
         count = Math.min(count, 6);
 
         List<FishType> seasonal = Arrays.stream(FishType.values())
-                .filter(f -> f.season == season)
+                .filter(f -> f.season == season && !f.isLegendary())
                 .collect(Collectors.toList());
+
 
         if (skill == skills.getMaxFishingLevel()) {
             seasonal.addAll(Arrays.stream(FishType.values())
-                    .filter(f -> f.name().equals(f.name().toUpperCase()))
-                    .filter(f -> f.season == season)
+                    .filter(f -> f.season == season && f.isLegendary())
                     .toList());
         }
 
+        if (seasonal.isEmpty()) return new ArrayList<>();
+
         List<Fish> result = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
-            FishType randomType = seasonal.get((int) (Math.random() * seasonal.size()));
-
-//            double qualityScore = Math.random() * (skill * 2) + pole.getType().;
-//            double normalized = qualityScore / 7.0;
+//        for (int i = 0; i < count; i++) {
+//            FishType randomType = seasonal.get((int) (Math.random() * seasonal.size()));
+//
+//            double score = Math.random() * (skill * 2) + pole.getType().ge;
+//            double normalized = score / 7.0;
 //            AnimalProductQuality quality = AnimalProductQuality.fromScore(normalized);
 //
 //            result.add(new Fish(randomType, quality));
-        }
+//        }
 
         return new ArrayList<>(result);
     }
+
 
 }

@@ -139,41 +139,4 @@ public class Player {
         return animals.get(name);
     }
 
-    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) {
-        double M = weather.getFishingFactor();
-        double R = Math.random();
-        int skill = skills.getFishingLevel();
-
-        int count = (int) Math.ceil((2 + skill) * M * R);
-        count = Math.min(count, 6);
-
-        List<FishType> seasonal = Arrays.stream(FishType.values())
-                .filter(f -> f.season == season && !f.isLegendary())
-                .collect(Collectors.toList());
-
-
-        if (skill == skills.getMaxFishingLevel()) {
-            seasonal.addAll(Arrays.stream(FishType.values())
-                    .filter(f -> f.season == season && f.isLegendary())
-                    .toList());
-        }
-
-        if (seasonal.isEmpty()) return new ArrayList<>();
-
-        List<Fish> result = new ArrayList<>();
-
-//        for (int i = 0; i < count; i++) {
-//            FishType randomType = seasonal.get((int) (Math.random() * seasonal.size()));
-//
-//            double score = Math.random() * (skill * 2) + pole.getType().ge;
-//            double normalized = score / 7.0;
-//            AnimalProductQuality quality = AnimalProductQuality.fromScore(normalized);
-//
-//            result.add(new Fish(randomType, quality));
-//        }
-
-        return new ArrayList<>(result);
-    }
-
-
 }

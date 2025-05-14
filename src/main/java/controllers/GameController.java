@@ -345,25 +345,7 @@ public class GameController {
         return new Result(true, "You have sold the animal. You have got " + money + "g");
     }
 
-    public Result fishing(Matcher matcher) {
-        Game currentGame = App.getApp().getCurrentGame();
-        String pole = matcher.group(1);
-        //Todo: check karadan name pole to inv
-        FishingPole fishingPole = null;
-        ArrayList<Fish> gotFishes = currentGame.getPlayerInTurn().goFishing(fishingPole, currentGame.getTodayWeather(),
-                currentGame.getTime().getSeason());
-        if (gotFishes == null) {
-            return new Result(false, "You didn't get any fishes ):");
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("You have got this fishes:    \n");
-        for (Fish fish : gotFishes) {
-            sb.append(fish.toString());
-        }
-
-        return new Result(true, sb.toString());
-    }
+    public Result fishing(Matcher matcher) {return null;}
 
     public Result artisanUse(Matcher matcher) {
         String itemName = matcher.group(1);

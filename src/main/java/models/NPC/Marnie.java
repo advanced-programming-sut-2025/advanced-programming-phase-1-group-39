@@ -11,12 +11,11 @@ public class Marnie extends NPC {
 
     public Marnie() {
         super(
-                "clint",
-                "   ",
-                "     ",
-                new Location(1,1),
-                new ArrayList<>(List.of(ItemManager.getItemByName("aaaa"),
-                        ItemManager.getItemByName("aaaa")))
+                "marine",
+                "Rancher & Livestock Supplier",
+                "Marnie treats her animals like family.\nShe’s warm and friendly, always willing to give farming advice or chat over a cup of tea.",
+                new Location(31,80),
+                new ArrayList<>(List.of(ItemManager.getItemByName("Chicken"), ItemManager.getItemByName("Cow")))
 
         );
     }

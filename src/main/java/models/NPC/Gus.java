@@ -11,12 +11,11 @@ public class Gus extends NPC {
 
     public Gus() {
         super(
-                "clint",
-                "   ",
-                "     ",
-                new Location(1,1),
-                new ArrayList<>(List.of(ItemManager.getItemByName("aaaa"),
-                        ItemManager.getItemByName("aaaa")))
+                "gus",
+                "Chef & Bartender",
+                "Gus loves food and people in equal measure.\nHis saloon is the heart of town, and he’s always ready to serve comfort—on a plate or with a kind word.",
+                new Location(73,50),
+                new ArrayList<>(List.of(ItemManager.getItemByName("Beer"), ItemManager.getItemByName("Salad")))
 
         );
     }

@@ -134,7 +134,7 @@ public class Game {
         npcs.add(new Willy());
         npcs.add(new Marnie());
         npcs.add(new Gus());
-        npcs.add(new Joja());
+        npcs.add(new Morris());
         npcs.add(new Pierre());
         return npcs;
     }

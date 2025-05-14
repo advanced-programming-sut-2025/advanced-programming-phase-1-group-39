@@ -11,13 +11,11 @@ public class Pierre extends NPC {
 
     public Pierre() {
         super(
-                "clint",
-                "   ",
-                "     ",
-                new Location(1,1),
-                new ArrayList<>(List.of(ItemManager.getItemByName("aaaa"),
-                        ItemManager.getItemByName("aaaa")))
-
+                "pierre",
+                "General Store Owner",
+                "Passionate about small business and proud of his store.\nHe has a flair for dramatics when it comes to JojaMart, and always tries to make his goods sound like the best.",
+                new Location(33,26),
+                new ArrayList<>(List.of(ItemManager.getItemByName("Oil"), ItemManager.getItemByName("Vinegar")))
         );
     }
 

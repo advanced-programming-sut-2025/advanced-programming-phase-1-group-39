@@ -63,4 +63,7 @@ public class Skill {
     public boolean isMiningLevelMax() {return getMiningLevel() == 4;}
     public boolean isForagingLevelMax() {return getForagingLevel() == 4;}
     public boolean isFishingLevelMax() {return getFishingLevel() == 4;}
+
+    // TODO : add update skills :
+    //          - add foodRecepies , CraftingRecepies
 }

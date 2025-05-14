@@ -325,7 +325,11 @@ public class GameController {
         ItemStack itemStack = player.getInventory().getItemByName("watering can");
         if (itemStack != null) {
             WateringCan wateringCan = (WateringCan) itemStack.getItem();
-            return "The Water of your Watering Can : " + AnsiColors.ANSI_CYAN_BOLD + wateringCan.getHowmuchWater() +
+            int waterValue = wateringCan.getHowmuchWater();
+            if (waterValue == 0)
+                return "The Water of your Watering Can : " + AnsiColors.ANSI_RED_BOLD + waterValue +
+                    " / " + wateringCan.getMaxWaterSize() + AnsiColors.ANSI_RESET;
+            return "The Water of your Watering Can : " + AnsiColors.ANSI_CYAN_BOLD + waterValue +
                     " / " + wateringCan.getMaxWaterSize() + AnsiColors.ANSI_RESET;
         } else {
             return "Watering can not found!";

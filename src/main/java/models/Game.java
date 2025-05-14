@@ -351,4 +351,11 @@ public class Game {
     public void addBuilding(Building building) {
         buildings.add(building);
     }
+
+    public Shop getShopPlayerIsIn(Player player) {
+        for (Shop shop : getNpcShops()) {
+            if (gameMap.isInBuilding(shop, player)) return shop;
+        }
+        return null;
+    }
 }

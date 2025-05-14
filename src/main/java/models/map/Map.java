@@ -375,15 +375,18 @@ public class Map {
         int j1 = Math.max(x - size/2, 0);
         int j2 = Math.min(x + size - size/2, width);
 
+        String[] colors = new String[]{AnsiColors.ANSI_PURPLE_BOLD, AnsiColors.ANSI_RED_BOLD, AnsiColors.ANSI_DARK_GREEN_BOLD, AnsiColors.ANSI_ORANGE_BOLD};
+        int playerCounter = 0;
         for (int i = i1; i < i2; i++) {
             for (int j = j1; j < j2; j++) {
                 Tile tile = tiles[i][j];
                 if (tile.getType().equals(TileType.DISABLE)) continue;
                 boolean doesSet = false;
 
+
                 for (Player player : players) {
                     if (j == player.getLocation().x() && i == player.getLocation().y()) {
-                        text.append(AnsiColors.ANSI_PURPLE_BOLD + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
+                        text.append(colors[playerCounter++] + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
                         doesSet = true;
                     }
                 }
@@ -400,13 +403,15 @@ public class Map {
     public String printColorMap(ArrayList<Player> players) {
         StringBuilder text = new StringBuilder();
 
+        String[] colors = new String[]{AnsiColors.ANSI_PURPLE_BOLD, AnsiColors.ANSI_RED_BOLD, AnsiColors.ANSI_DARK_GREEN_BOLD, AnsiColors.ANSI_ORANGE_BOLD};
+        int playerCounter = 0;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 boolean doesSet = false;
                 Tile tile = tiles[i][j];
                 for (Player player : players) {
                     if (j == player.getLocation().x() && i == player.getLocation().y()) {
-                        text.append(AnsiColors.ANSI_PURPLE_BOLD + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
+                        text.append(colors[playerCounter++] + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
                         doesSet = true;
                     }
                 }
@@ -531,7 +536,7 @@ public class Map {
     }
 
     public boolean isInBuilding(Building building, Player player) {
-        return !(player.getLocation().x() >= building.getLocation().x() &&
+        return (player.getLocation().x() >= building.getLocation().x() &&
                 player.getLocation().x() <= building.getLocation().x() + building.getWidth() &&
                 player.getLocation().y() >= building.getLocation().y() &&
                 player.getLocation().y() <= building.getLocation().y() + building.getHeight());

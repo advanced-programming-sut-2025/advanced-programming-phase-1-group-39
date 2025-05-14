@@ -32,7 +32,7 @@ public class PlayersInteractionController {
 
     // Auxiliary functions :
 
-    private boolean isPlayerExists(String playerName) {
+    private  boolean isPlayerExists(String playerName) {
         for (Player player : game.getPlayers()) {
             if (player.getUsername().equals(playerName)) {
                 return true;
@@ -60,7 +60,7 @@ public class PlayersInteractionController {
 
 
 
-    private String addXP(Friendship friendship, int xp, String playerName) {
+    private static String addXP(Friendship friendship, int xp, String playerName) {
         int currentXP = friendship.getXp();
         if (friendship.getFriendshipLevel() == 0 && currentXP < 100 && currentXP + xp >= 100) {
             friendship.setFriendshipLevel(1);

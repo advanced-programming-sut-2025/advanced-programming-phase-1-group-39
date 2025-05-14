@@ -290,8 +290,9 @@ public class Map {
             for (int j = 0; j < height; j++) {
                 Tile tile = tiles[j][i];
                 if (tile.getType() == TileType.SOIL) {
-                    if (tile.getPlant() != null) {
-                        tile.getPlant().updateDaily();
+                    Plant plant = tile.getPlant();
+                    if (plant != null) {
+                        plant.updateDaily();
                     } else if (tile.getTree() != null) {
                         tile.getTree().updateDaily();
                     }

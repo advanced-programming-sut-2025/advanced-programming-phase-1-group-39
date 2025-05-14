@@ -23,7 +23,7 @@ public class Dehydrator extends ArtisanMachine {
 
 
         HashMap<String, Integer> raisinsIngredients = new HashMap<>();
-        raisinsIngredients.put("Grapes", 5);
+        raisinsIngredients.put("Grape", 5);
         recipes.add(new ArtisanRecipe("Raisins", "It's said to be the Junimos' favorite food.",
                 raisinsIngredients, 24, 125, 600));
 

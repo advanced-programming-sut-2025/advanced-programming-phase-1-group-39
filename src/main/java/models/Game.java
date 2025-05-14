@@ -2,6 +2,7 @@ package models;
 
 import models.NPC.*;
 import models.PlayerInteraction.Friendship;
+import models.PlayerInteraction.Message;
 import models.buildings.Building;
 import models.map.FarmType;
 import models.map.Map;
@@ -133,6 +134,9 @@ public class Game {
 
         playerInTurn = players.get(newIndex);
         if (!playerInTurn.isConscious()) return nextTurn();
+
+        showMessages(playerInTurn);
+
         // TODO : add talk
         return true;
     }
@@ -253,6 +257,47 @@ public class Game {
         friendships.add(new Friendship(players.get(2).getUsername(), players.get(3).getUsername()));
         return friendships;
     }
+
+    public Friendship getFriendship(Player player1, Player player2) {
+        for (Friendship friendship : getFriendships()) {
+            if ((friendship.getUser1().equals(player1.getUsername()) && friendship.getUser2().equals(player2.getUsername())) ||
+                    (friendship.getUser1().equals(player2.getUsername()) && friendship.getUser2().equals(player1.getUsername()))) {
+                return friendship;
+            }
+        }
+        return null;
+    }
+
+    private ArrayList<Player> getOtherPlayers(String playerName) {
+        ArrayList<Player> otherPlayers = new ArrayList<>();
+        for (Player player : players) {
+            if (!player.getUsername().equals(playerName)) {
+                otherPlayers.add(player);
+            }
+        }
+        return otherPlayers;
+    }
+
+    private String showMessages(Player player) {
+        StringBuilder messages = new StringBuilder();
+        ArrayList<Player> otherPlayers = getOtherPlayers(player.getUsername());
+        for (Player otherPlayer : otherPlayers) {
+            int count = 0;
+            messages.append("Messages received from player ").append(otherPlayer.getUsername()).append(" :\n");
+            for (Message message : getFriendship(player, otherPlayer).getMessages()) {
+                if (message.getSender().equals(otherPlayer.getUsername()) && message.isNew()) {
+                    count++;
+                    messages.append("\t").append(message.getMessage()).append("\n");
+                }
+            }
+            if (count == 0) {
+                messages.append("\tYou have no messages from player ").append(otherPlayer.getUsername()).append(" .\n");
+            }
+        }
+        messages.deleteCharAt(messages.length() - 1);
+        return messages.toString();
+    }
+
 
 
 

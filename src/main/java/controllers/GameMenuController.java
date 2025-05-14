@@ -52,7 +52,7 @@ public class GameMenuController {
             app.setLastGameId(app.getLastGameId()+1);
             app.setCurrentGame(newGame);
             app.addGame(newGame);
-            app.getCurrentGame().setCurrentPlayer(player1);
+            app.getCurrentGame().setPlayerInTurn(player1);
             return new Result(true, "Congratulations!!!" + "\n" +
                     "The new game has been successfully created. " + "\n" +
                     "Now, each player must choose their game map in order, starting with the first player. \n" +
@@ -67,18 +67,18 @@ public class GameMenuController {
             return new Result(false, "The map number must be a number.");
         } else if (Integer.parseInt(mapNumber) >= 3) {
             return new Result(false, "The map number must be either 1 or 2.");
-        } else if (app.getCurrentGame().getPlayers().indexOf(app.getCurrentGame().getCurrentPlayer()) == 3) {
-            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentGame().getCurrentPlayer(),
+        } else if (app.getCurrentGame().getPlayers().indexOf(app.getCurrentGame().getPlayerInTurn()) == 3) {
+            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentGame().getPlayerInTurn(),
                     FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
             app.getCurrentGame().startGame();
             app.setCurrentMenu(Menu.GAME_MENU);
             app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
             return new Result(true, "The game map has been successfully created — let the adventure begin!");
         } else {
-            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentGame().getCurrentPlayer(),
+            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentGame().getPlayerInTurn(),
                     FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
-            app.getCurrentGame().setCurrentPlayer(app.getCurrentGame().getPlayers().get(app.getCurrentGame().getPlayers().indexOf(app.getCurrentGame().getCurrentPlayer())+1));
-            return new Result(true, "the game map was successfully selected. please " + app.getCurrentGame().getCurrentPlayer().getUsername() + " choose their map.");
+            app.getCurrentGame().setPlayerInTurn(app.getCurrentGame().getPlayers().get(app.getCurrentGame().getPlayers().indexOf(app.getCurrentGame().getPlayerInTurn())+1));
+            return new Result(true, "the game map was successfully selected. please " + app.getCurrentGame().getPlayerInTurn().getUsername() + " choose their map.");
         }
     }
 
@@ -90,7 +90,7 @@ public class GameMenuController {
             return new Result(false, "to start loading a game, none of the players must have an active game.");
         } else if (app.getLoggedInUser().getCurrentGame() != null) {
             app.setCurrentGame(app.getLoggedInUser().getCurrentGame());
-            app.getCurrentGame().setCurrentPlayer(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
+            app.getCurrentGame().setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
                     app.getLoggedInUser().getUserName()));
             app.getCurrentGame().setLoadedPlayerUsername(app.getLoggedInUser().getUserName());
             app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
@@ -101,7 +101,7 @@ public class GameMenuController {
             return new Result(false, "to start loading a game, none of the players must have an active game.");
         } else {
             app.setCurrentGame(app.getLoggedInUser().getSavedGame());
-            app.getCurrentGame().setCurrentPlayer(getPlayerFromPlayers(app.getCurrentGame().getPlayers(), app.getLoggedInUser().getUserName()));
+            app.getCurrentGame().setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(), app.getLoggedInUser().getUserName()));
             app.getCurrentGame().setLoadedPlayerUsername(app.getLoggedInUser().getUserName());
             app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
             app.getCurrentGame().startGame();

@@ -17,7 +17,7 @@ public class NPCGameController {
 
     App app = App.getApp();
     Game game = app.getCurrentGame();
-    Player currentPlayer = game.getCurrentPlayer();
+    Player currentPlayer = game.getPlayerInTurn();
     ArrayList<String> NPCNames = new ArrayList<>(List.of("sebastian", "abigail", "leah", "robin", "harvey"));
 
     public Result meetNPC(Matcher matcher) {
@@ -329,7 +329,7 @@ public class NPCGameController {
     }
 
     private int canGiveGift(String giftName, Game game, String NPCName) {
-        Player player = game.getCurrentPlayer();
+        Player player = game.getPlayerInTurn();
         if (!player.getInventory().hasItem(giftName)) {
             return 0;
         } else {

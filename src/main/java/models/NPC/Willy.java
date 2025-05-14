@@ -11,13 +11,11 @@ public class Willy extends NPC {
 
     public Willy() {
         super(
-                "clint",
-                "   ",
-                "     ",
-                new Location(1,1),
-                new ArrayList<>(List.of(ItemManager.getItemByName("aaaa"),
-                        ItemManager.getItemByName("aaaa")))
-
+                "willy",
+                "Fisherman & Tackle Shop Owner",
+                "A salty old fisherman with countless tales from the sea.\nHe’s simple and humble, and has a deep respect for nature and the ocean.",
+                new Location(105,80),
+                new ArrayList<>(List.of(ItemManager.getItemByName("Wood"), ItemManager.getItemByName("Iron")))
         );
     }
 

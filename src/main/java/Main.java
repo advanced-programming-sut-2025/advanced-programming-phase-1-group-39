@@ -36,7 +36,6 @@ public class Main {
             game.addRandomFarmForPlayer(player2, FarmType.getFarmTypeById(0));
             game.addRandomFarmForPlayer(player3, FarmType.getFarmTypeById(1));
             game.addRandomFarmForPlayer(player4, FarmType.getFarmTypeById(1));
-
             game.startGame();
             App.getApp().addGame(game);
             App.getApp().setCurrentGame(game);

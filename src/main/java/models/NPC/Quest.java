@@ -7,12 +7,18 @@ import java.util.ArrayList;
 public class Quest {
 
     int level;
-    String mission;
     ItemStack task;
 
-    public Quest(int level, String mission, ItemStack task) {
+    public Quest(int level, ItemStack task) {
         this.level = level;
-        this.mission = mission;
         this.task = task;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public ItemStack getTask() {
+        return task;
     }
 }

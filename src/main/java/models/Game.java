@@ -58,37 +58,37 @@ public class Game {
     // NPC
     public void makeNPCBuildings() {
         ArrayList<Shop> gameShops = new ArrayList<>();
-        gameShops.add(new BlackSmithShop("Blacksmith Shop", new Location(100, 50),
+        gameShops.add(new BlackSmithShop("Blacksmith Shop", new Location(100 + Constants.FARM_WIDTH, 50),
                 11, 8, "src/main/resources/data/BlackSmithShop.json",
                 9, 16,
                 getNPC("clint")
                 ));
-        gameShops.add(new JojaMartShop("JojaMart Shop", new Location(93,12),
+        gameShops.add(new JojaMartShop("JojaMart Shop", new Location(93 + Constants.FARM_WIDTH,12 + Constants.DISABLED_HEIGHT),
                 25, 20, "src/main/resources/data/JojaMartShop.json",
                 9, 23,
                 getNPC("morris")
                 ));
-        gameShops.add(new PierresGeneralStore("Pierre's General Store", new Location(27, 22),
+        gameShops.add(new PierresGeneralStore("Pierre's General Store", new Location(27 + Constants.FARM_WIDTH, 22 + Constants.DISABLED_HEIGHT),
                 12, 11, "src/main/resources/data/PierresGeneralStore.json",
                 9, 17,
                 getNPC("pierre")
                 ));
-        gameShops.add(new CarpentersShop("Carpenter's Shop", new Location(23,46),
+        gameShops.add(new CarpentersShop("Carpenter's Shop", new Location(23 + Constants.FARM_WIDTH,46 + Constants.DISABLED_HEIGHT),
                 18, 12, "src/main/resources/data/CarpentersShop.json",
                 9, 20,
                 getNPC("robin")
                 ));
-        gameShops.add(new FishingShop("Fishing Shop", new Location(96, 76),
+        gameShops.add(new FishingShop("Fishing Shop", new Location(96 + Constants.FARM_WIDTH, 76 + Constants.DISABLED_HEIGHT),
                 18, 12, "src/main/resources/data/FishingShop.json",
                 9, 17,
                 getNPC("willy")
                 ));
-        gameShops.add(new MarniesRanch("Marnie's Ranch", new Location(22, 76),
+        gameShops.add(new MarniesRanch("Marnie's Ranch", new Location(22 + Constants.FARM_WIDTH, 76 + Constants.DISABLED_HEIGHT),
                 18, 12, "src/main/resources/data/MarniesRanch.json",
                 9, 16,
                 getNPC("marnie")
                 ));
-        gameShops.add(new StardropSaloon("The Stardrop Saloon", new Location(64, 46),
+        gameShops.add(new StardropSaloon("The Stardrop Saloon", new Location(64 + Constants.FARM_WIDTH, 46 + Constants.DISABLED_HEIGHT),
                 18, 12, "src/main/resources/data/StardropSaloon.json",
                 12, 24,
                 getNPC("gus")
@@ -113,7 +113,12 @@ public class Game {
         npcs.add(new LeahNPC());
         npcs.add(new RobinNPC());
 
-        // TODO : add shop npcs
+        npcs.add(new Clint());
+        npcs.add(new Gus());
+        npcs.add(new Marnie());
+        npcs.add(new Morris());
+        npcs.add(new Pierre());
+        npcs.add(new Willy());
     }
 
     public NPC getNPC(String NPCName) {

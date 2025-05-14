@@ -22,7 +22,7 @@ public class Shop extends Building {
         this.owner = owner;
     }
 
-    public void handleCommand(String command){}
+    public Result purchase(String productName, int amount) {return null;}
     public String showAllProducts(){return null;}
     public String showAvailableProducts() {return null;}
     public void endDay() {};

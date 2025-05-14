@@ -58,37 +58,44 @@ public class Game {
 
     // NPC
     public void makeNPCBuildings() {
-//        ArrayList<Shop> gameShops = new ArrayList<>();
-//        gameShops.add(new BlackSmithShop("Blacksmith Shop",
-//                9, 16, new Location(100, 50), 11, 8,
-//                getNPC("clint")
-//                ));
-//        gameShops.add(new JojaMartShop("JojaMart Shop",
-//                9, 23, new Location(93,12), 25, 20,
-//                getNPC("morris")
-//                ));
-//        gameShops.add(new PierresGeneralStore("Pierre's General Store",
-//                9, 17, new Location(27, 22), 12, 11,
-//                getNPC("pierre")
-//                ));
-//        gameShops.add(new CarpentersShop("Carpenter's Shop",
-//                9, 20, new Location(23,46), 18, 12,
-//                getNPC("robin")
-//                ));
-//        gameShops.add(new FishingShop("Fishing Shop",
-//                9, 17, new Location(96, 76), 18, 12,
-//                getNPC("willy")
-//                ));
-//        gameShops.add(new MarniesRanch("Marnie's Ranch",
-//                9, 16, new Location(22, 76), 18, 12,
-//                getNPC("Marnie")
-//                ));
-//        gameShops.add(new StardropSaloon("The Stardrop Saloon",
-//                12, 24, new Location(64, 46), 18, 12,
-//                getNPC("pierre")
-//                ));
+        ArrayList<Shop> gameShops = new ArrayList<>();
+        gameShops.add(new BlackSmithShop("Blacksmith Shop", new Location(100, 50),
+                11, 8, "src/main/resources/data/BlackSmithShop.json",
+                9, 16,
+                getNPC("clint")
+                ));
+        gameShops.add(new JojaMartShop("JojaMart Shop", new Location(93,12),
+                25, 20, "src/main/resources/data/JojaMartShop.json",
+                9, 23,
+                getNPC("morris")
+                ));
+        gameShops.add(new PierresGeneralStore("Pierre's General Store", new Location(27, 22),
+                12, 11, "src/main/resources/data/PierreGeneralStore.json",
+                9, 17,
+                getNPC("pierre")
+                ));
+        gameShops.add(new CarpentersShop("Carpenter's Shop", new Location(23,46),
+                18, 12, "src/main/resources/data/CarpentersShop.json",
+                9, 20,
+                getNPC("robin")
+                ));
+        gameShops.add(new FishingShop("Fishing Shop", new Location(96, 76),
+                18, 12, "src/main/resources/data/FishingShop.json",
+                9, 17,
+                getNPC("willy")
+                ));
+        gameShops.add(new MarniesRanch("Marnie's Ranch", new Location(22, 76),
+                18, 12, "src/main/resources/data/MarniesRanch.json",
+                9, 16,
+                getNPC("marnie")
+                ));
+        gameShops.add(new StardropSaloon("The Stardrop Saloon", new Location(64, 46),
+                18, 12, "src/main/resources/data/StardropSaloon.json",
+                12, 24,
+                getNPC("gus")
+                ));
 
-//        buildings.addAll(gameShops);
+        buildings.addAll(gameShops);
     }
 
     public ArrayList<Shop> getNpcShops() {

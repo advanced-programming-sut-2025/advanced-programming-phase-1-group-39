@@ -1,10 +1,10 @@
 package models.Shops;
 
 import com.google.gson.Gson;
+import models.*;
 import models.Enums.Season;
-import models.Location;
 import models.NPC.NPC;
-import models.Result;
+import models.inventory.InventoryType;
 
 import java.io.FileReader;
 import java.util.*;
@@ -61,9 +61,80 @@ public class PierresGeneralStore extends Shop {
         }
     }
 
+
+    @Override
+    public Result purchase(String product, int quantity) {
+        ShopItem item = null;
+
+        if (yearRound.containsKey(product)) {
+            item = yearRound.get(product);
+        } else if (backpacks.containsKey(product)) {
+            item = backpacks.get(product);
+        } else {
+            for (List<SeasonalItem> items : seasonal.values()) {
+                for (SeasonalItem i : items) {
+                    if (i.getName().equals(product)) {
+                        item = i;
+                        break;
+                    }
+                }
+                if (item != null) break;
+            }
+        }
+
+        if (item == null) {
+            return new Result(false, "Item \"" + product + "\" not found in Pierre's store.");
+        }
+
+        if (quantity > item.getAvailableQuantity()) {
+            return new Result(false, "Limit exceeded for \"" + product + "\". Limit: " + item.getAvailableQuantity());
+        }
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        boolean isBackpack = backpacks.containsValue(item);
+        int finalPrice;
+
+        if (item instanceof SeasonalItem seasonalItem) {
+            finalPrice = (seasonalItem.getSeason() == currentSeason)
+                    ? seasonalItem.getPrice()
+                    : seasonalItem.getOffSeasonPrice();
+        } else {
+            finalPrice = item.getPrice();
+        }
+
+        int totalPrice = finalPrice * quantity;
+
+        if (isBackpack) {
+            if (quantity > 1) {
+                return new Result(false, "You can only buy one backpack at a time.");
+            }
+            if (!player.hasEnoughMoney(totalPrice)) {
+                return new Result(false, "You don't have enough money for backpack upgrade.");
+            }
+
+            player.getInventory().setInventoryType(InventoryType.getType(item.getName()));
+        } else {
+            if (!player.getInventory().hasSpace(new ItemStack(item, quantity))) {
+                return new Result(false, "Your Inventory does not have enough space.");
+            }
+            if (!player.hasEnoughMoney(totalPrice)) {
+                return new Result(false, "You don't have enough money.");
+            }
+
+            player.getInventory().addItem(item, quantity);
+        }
+
+        player.changeMoney(-totalPrice);
+        item.purchase(quantity);
+
+        return new Result(true, "Purchased " + quantity + " x " + product + " for " + totalPrice + "g.");
+    }
+
+
     @Override
     public String showAllProducts() {
-        StringBuilder sb = new StringBuilder("=== Pierre's General Store ===\n\n-- Year-Round Items --\n");
+        StringBuilder sb = new StringBuilder("=== Pierre's General Store (Availables only) ===\n\n-- Year-Round Items --\n");
         for (ShopItem item : yearRound.values()) {
             sb.append(item.getName()).append(" - ").append(item.getPrice()).append(descriptions.get(item.getName())).append("g\n");
         }
@@ -86,39 +157,32 @@ public class PierresGeneralStore extends Shop {
         return sb.toString();
     }
 
-    public Result purchase(String product, int quantity) {
-        ShopItem item = null;
+    @Override
+    public String showAvailableProducts() {
+        StringBuilder sb = new StringBuilder("=== Pierre's General Store ===\n\n-- Year-Round Items --\n");
+        for (ShopItem item : yearRound.values()) {
+            if (item.getAvailableQuantity() <= 0) continue;
+            sb.append(item.getName()).append(" - ").append(item.getPrice()).append(descriptions.get(item.getName())).append("g\n");
+        }
 
-        if (yearRound.containsKey(product)) item = yearRound.get(product);
-        else if (backpacks.containsKey(product)) item = backpacks.get(product);
-        else {
-            for (List<SeasonalItem> items : seasonal.values()) {
-                for (SeasonalItem i : items) {
-                    if (i.getName().equals(product)) {
-                        item = i;
-                        break;
-                    }
-                }
-                if (item != null) break;
+        sb.append("\n-- Backpacks --\n");
+        for (ShopItem item : backpacks.values()) {
+            if (item.getAvailableQuantity() <= 0) continue;
+            sb.append(item.getName()).append(" - ").append(item.getPrice()).append(descriptions.get(item.getName())).append("g (Limit: ")
+                    .append(item.getDailyLimit()).append(")\n");
+        }
+
+        sb.append("\n-- Seasonal Items (" + currentSeason.name() + ") --\n");
+        for (Season season : seasonal.keySet()) {
+            for (SeasonalItem item : seasonal.get(season)) {
+                if (item.getAvailableQuantity() <= 0) continue;
+                int price = (season == currentSeason) ? item.getPrice() : item.getOffSeasonPrice();
+                sb.append(item.getName()).append(" - ").append(price).append("g (Limit: ")
+                        .append(item.getDailyLimit()).append(") [").append(season).append(descriptions.get(item.getName())).append("]\n");
             }
         }
 
-        if (item == null)
-            return new Result(false, "Item \"" + product + "\" not found in Pierre's store.");
-
-        if (quantity > item.getAvailableQuantity()) {
-            return new Result(false, "Limit exceeded for \"" + product + "\". Limit: " + item.getAvailableQuantity());
-        }
-
-        int finalPrice;
-        if (item instanceof SeasonalItem seasonalItem) {
-            finalPrice = (seasonalItem.getSeason() == currentSeason) ? seasonalItem.getPrice() : seasonalItem.getOffSeasonPrice();
-        } else {
-            finalPrice = item.getPrice();
-        }
-
-        item.purchase(quantity);
-        return new Result(true, "Purchased " + quantity + " x " + product + " for " + (finalPrice * quantity) + "g.");
+        return sb.toString();
     }
 
     @Override
@@ -128,11 +192,6 @@ public class PierresGeneralStore extends Shop {
         for (List<SeasonalItem> items : seasonal.values())
             for (ShopItem item : items)
                 item.resetDailyLimit();
-    }
-
-    @Override
-    public void handleCommand(String command) {
-        // TODO: implement
     }
 
     // ---------------- Internal Data Structures ---------------- //

@@ -1,10 +1,10 @@
 package models.Shops;
 
 import com.google.gson.Gson;
-import models.Constants;
-import models.Location;
+import models.*;
 import models.NPC.NPC;
-import models.Result;
+import models.cooking.Food;
+import models.cooking.FoodRecipe;
 
 import java.io.FileReader;
 import java.util.HashMap;
@@ -49,6 +49,50 @@ public class StardropSaloon extends Shop {
         public int limit;
     }
 
+    @Override
+    public Result purchase(String product, int count) {
+        ShopItem item = null;
+
+        if (foods.containsKey(product)) {
+            item = foods.get(product);
+        } else if (recipes.containsKey(product)) {
+            item = recipes.get(product);
+        }
+
+        if (item == null) {
+            return new Result(false, "Item \"" + product + "\" not found in this shop.");
+        }
+
+        if (count > item.getAvailableQuantity()) {
+            return new Result(false, "Purchase limit exceeded for \"" + product +
+                    "\". Limit: " + item.getAvailableQuantity());
+        }
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        int totalPrice = item.getPrice() * count;
+
+        if (!player.hasEnoughMoney(totalPrice)) {
+            return new Result(false, "You don't have enough money to buy " + count + " x " + product + ".");
+        }
+
+        if (recipes.containsValue(item)) {
+            player.learnFoodRecipe(FoodRecipe.valueOf(product.toUpperCase()));
+        } else {
+            if (!player.getInventory().hasSpace(new ItemStack(item, count))) {
+                return new Result(false, "Your Inventory does not have enough space.");
+            }
+            if (ItemManager.getItemByName(product) != null) {
+                player.getInventory().addItem(ItemManager.getItemByName(product), count);
+            } else {
+                player.getInventory().addItem(new Food(product, 50, 100, null), count);
+            }
+        }
+
+        player.changeMoney(-totalPrice);
+        item.purchase(count);
+
+        return new Result(true, "Purchased " + count + " x " + product + " for " + totalPrice + "g.");
+    }
 
 
     @Override
@@ -65,36 +109,30 @@ public class StardropSaloon extends Shop {
         return sb.toString();
     }
 
-
-    public Result purchase(String product, int count) {
-        ShopItem item = null;
-
-        if (foods.containsKey(product)) {
-            item = foods.get(product);
-        } else if (recipes.containsKey(product)) {
-            item = recipes.get(product);
+    @Override
+    public String showAvailableProducts() {
+        StringBuilder sb = new StringBuilder("=== Stardrop Saloon (Availables only) ===\n\n-- Foods --\n");
+        for (ShopItem item : foods.values()) {
+            if (item.getAvailableQuantity() <= 0) continue;
+            sb.append(item.getName()).append(" - ").append(item.getPrice()).append("g\n");
         }
-
-        if (item == null) {
-            return new Result(false, "Item \"" + product + "\" not found in this shop.");
+        sb.append("\n-- Recipes --\n");
+        for (ShopItem item : recipes.values()) {
+            if (item.getAvailableQuantity() <= 0) continue;
+            sb.append(item.getName()).append(" - ").append(item.getPrice()).append("g (Limit: ").
+                    append(item.getDailyLimit()).append(" per day)\n");
         }
-
-        if (count > item.getAvailableQuantity()) {
-            return new Result(false, "Purchase limit exceeded for \""
-                    + product + "\". Limit: " + item.getAvailableQuantity());
-        }
-
-        item.purchase(count);
-        return new Result(false,"Purchased " + count + " x " + product + " for " + (item.getPrice() * count) + "g.");
+        return sb.toString();
     }
-
 
     @Override
     public void endDay() {
-    }
-
-    @Override
-    public void handleCommand(String command) {
+        for (ShopItem item : foods.values()) {
+            item.resetDailyLimit();
+        }
+        for (ShopItem item : recipes.values()) {
+            item.resetDailyLimit();
+        }
     }
 
 }

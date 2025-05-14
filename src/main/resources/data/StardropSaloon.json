@@ -8,14 +8,14 @@
     { "name": "Coffee", "price": 300, "limit": 1000000 }
   ],
   "recipes": [
-    { "name": "Hashbrowns Recipe", "price": 50, "limit": 1 },
-    { "name": "Omelet Recipe", "price": 100, "limit": 1 },
-    { "name": "Pancakes Recipe", "price": 100, "limit": 1 },
-    { "name": "Bread Recipe", "price": 100, "limit": 1 },
-    { "name": "Tortilla Recipe", "price": 100, "limit": 1 },
-    { "name": "Pizza Recipe", "price": 150, "limit": 1 },
-    { "name": "Maki Roll Recipe", "price": 300, "limit": 1 },
-    { "name": "Triple Shot Espresso Recipe", "price": 5000, "limit": 1 },
-    { "name": "Cookie Recipe", "price": 300, "limit": 1 }
+    { "name": "Hashbrowns", "price": 50, "limit": 1 },
+    { "name": "Omelet", "price": 100, "limit": 1 },
+    { "name": "Pancakes", "price": 100, "limit": 1 },
+    { "name": "Bread", "price": 100, "limit": 1 },
+    { "name": "Tortilla", "price": 100, "limit": 1 },
+    { "name": "Pizza", "price": 150, "limit": 1 },
+    { "name": "Maki Roll", "price": 300, "limit": 1 },
+    { "name": "Triple Shot Espresso", "price": 5000, "limit": 1 },
+    { "name": "Cookie", "price": 300, "limit": 1 }
   ]
 }

@@ -394,7 +394,7 @@ public class GameController {
 
         Shop shop = game.getShopPlayerIsIn(player);
         if (shop == null) {
-            return new Result(false, "You should be in a building");
+            return new Result(false, "You should be in a shop");
         }
         return new Result(true, shop.showAllProducts());
     }
@@ -404,11 +404,23 @@ public class GameController {
 
         Shop shop = game.getShopPlayerIsIn(player);
         if (shop == null) {
-            return new Result(false, "You should be in a building");
+            return new Result(false, "You should be in a shop");
         }
         return new Result(true, shop.showAvailableProducts());
     }
-    public Result purchaseProduct(Matcher matcher) {return null;}
+    public Result purchaseProduct(Matcher matcher) {
+        String productName = matcher.group(1);
+        int count = Integer.parseInt(matcher.group(2));
+
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+
+        Shop shop = game.getShopPlayerIsIn(player);
+        if (shop == null) {
+            return new Result(false, "You should be in a shop");
+        }
+        return shop.purchase(productName, count);
+    }
     public void cheatAddToShopStock(Matcher matcher) {}
     public Result sellProduct(Matcher matcher) {return null;}
 

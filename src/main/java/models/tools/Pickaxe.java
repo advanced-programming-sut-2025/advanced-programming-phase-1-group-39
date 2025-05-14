@@ -41,6 +41,7 @@ public class Pickaxe extends Tool {
 
 
                     player.getInventory().addItem(item.getItem(), item.getAmount());
+                    tile.removeItemOnTile();
                     return new Result(true, "You broke and got the Minerals!");
                 }
 

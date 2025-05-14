@@ -22,9 +22,16 @@ public class WateringCan extends Tool {
             return new Result(false, "You don't have water!\nYou should fill your Watering Can by water");
         tilesWaterNumRemaining--;
         if (tile.getType() == TileType.SOIL) {
-            if (tile.isPlowed() || tile.getPlant() != null)
+            if (tile.isPlowed() || tile.getPlant() != null) {
                 tile.setIsWatered();
-            return new Result(true, AnsiColors.ANSI_BLUE + "Watered" + AnsiColors.ANSI_RESET);
+                return new Result(true, AnsiColors.ANSI_BLUE_BOLD + "Watered" + AnsiColors.ANSI_RESET);
+            } else if (tile.getTree() != null) {
+                return new Result(false, AnsiColors.ANSI_RED_BOLD + "A tree is on Tile! You watered Tree! :|" + AnsiColors.ANSI_RESET);
+            }
+            else
+                return new Result(false, AnsiColors.ANSI_RED_BOLD + "plow and then water!" + AnsiColors.ANSI_RESET);
+
+
         } else if (tile.getType() == TileType.WATER) {
             fillWateringCan();
             return new Result(true, "Your watering can filled up!");

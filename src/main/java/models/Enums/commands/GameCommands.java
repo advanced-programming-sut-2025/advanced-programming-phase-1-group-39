@@ -35,7 +35,6 @@ public enum GameCommands {
     INVENTORY_TRASH("inventory\\s+trash\\s+-i\\s+(?<itemName>.+)(\\s+-n\\s+(?<number>\\d+)?)"),
 
     // Tools
-    // TODO : complete tools in View and Controller
     TOOLS_EQUIP("tools\\s+equip\\s+(?<toolName>.+)"),
     TOOL_SHOW_CURRENT("tools\\s+show\\s+current"),
     TOOL_SHOW_AVAILABLE("tools\\s+show\\s+available"),

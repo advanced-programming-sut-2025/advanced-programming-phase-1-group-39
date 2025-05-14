@@ -41,7 +41,7 @@ public class Inventory {
         } else if (item instanceof Seed) {
             colorCode = AnsiColors.ANSI_LIGHT_YELLOW_BOLD;
         } else if (item instanceof FarmingProduct) {
-            colorCode = AnsiColors.ANSI_GREEN_BOLD; // Using the custom bold green
+            colorCode = AnsiColors.ANSI_LIGHT_GREEN_BOLD; // Using the custom bold green
         } else if (item instanceof ForagingCrop) {
             colorCode = AnsiColors.ANSI_ORANGE_BOLD;
         } else if (item instanceof ForagingMaterial) {
@@ -57,7 +57,7 @@ public class Inventory {
         } else if (item instanceof CraftingItem) {
             colorCode = AnsiColors.ANSI_WHITE;
         } else if (item instanceof Crop) {
-            colorCode = AnsiColors.ANSI_GREEN; // Using standard green for the plant itself
+            colorCode = AnsiColors.ANSI_LIGHT_GREEN_BOLD; // Using standard green for the plant itself
         } else {
             colorCode = AnsiColors.ANSI_RESET;
         }
@@ -67,7 +67,7 @@ public class Inventory {
 
     public String showInventory() {
         StringBuilder text = new StringBuilder();
-        text.append(AnsiColors.ANSI_GREEN_BOLD + "Your inventory:\n--------------\n" + AnsiColors.ANSI_RESET);
+        text.append(AnsiColors.ANSI_LIGHT_GREEN_BOLD + "Your inventory:\n--------------\n" + AnsiColors.ANSI_RESET);
         for (ItemStack item : inventoryItems) {
             text.append(getItemAndColor(item));
             text.append(" : " + item.getAmount());
@@ -79,7 +79,7 @@ public class Inventory {
 
     public String showTools() {
         StringBuilder text = new StringBuilder();
-        text.append(AnsiColors.ANSI_GREEN_BOLD + "Your Tools:\n--------------\n" + AnsiColors.ANSI_RESET);
+        text.append(AnsiColors.ANSI_LIGHT_GREEN_BOLD + "Your Tools:\n--------------\n" + AnsiColors.ANSI_RESET);
 
         boolean added = false;
         for (ItemStack itemStack : inventoryItems) {

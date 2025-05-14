@@ -16,13 +16,13 @@ public class Hoe extends Tool {
     @Override
     public Result useTool(Tile tile, Player player) {
         if (tile.getType() == TileType.SOIL) {
-            if (tile.getTree() != null &&
-                tile.getPlant() != null &&
+            if (tile.getTree() != null ||
+                tile.getPlant() != null ||
                 tile.getItemOnTile() != null) {
                 return new Result(false, "You can't plow tile that a plant or tree is on it!");
             }
             tile.plow();
-            return new Result(true, "");
+            return new Result(true, "You plowed the tile " + tile.getLocation());
         } else {
             return new Result(false, "You can't use Hoe on tiles that aren't soil");
         }

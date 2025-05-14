@@ -14,15 +14,20 @@ public class Axe extends Tool {
     public Result useTool(Tile tile, Player player) {
         if (tile.getType() == TileType.SOIL) {
             ItemStack itemStack = tile.getItemOnTile();
+            if (itemStack == null && tile.getTree() == null) {
+                return new Result(false, "Did nothing!");
+            }
             Item item = itemStack.getItem();
-            if (item.getName().equals("wood")) {
+            if (item.getName().equals("Wood")) {
                 if (!player.getInventory().hasSpace(itemStack))
                     return new Result(false, "You don't have enough space to get wood!");
                 else{
                     player.getInventory().addItem(item, itemStack.getAmount());
+                    tile.removeItemOnTile();
                     return new Result(true, "You got wood!");
                 }
-            } else if (tile.getTree() != null) {
+            }
+            else if (tile.getTree() != null) {
                 Tree tree = tile.getTree();
                 ItemStack treeProducts = tree.cutDown();
                 if (!player.getInventory().hasSpace(treeProducts))

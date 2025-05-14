@@ -28,7 +28,7 @@ public class GameController {
 
         if (!game.nextTurn()) {
             return new Result(false, "All players are not conscious!\n"
-                    + AnsiColors.ANSI_GREEN_BOLD + "Going next day!" + AnsiColors.ANSI_RESET
+                    + AnsiColors.ANSI_LIGHT_GREEN_BOLD + "Going next day!" + AnsiColors.ANSI_RESET
             + game.goToNextDay());
         }
 
@@ -211,7 +211,7 @@ public class GameController {
     public String cheatEnergyUnlimited() {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         player.setEnergyUnlimited();
-        return "now your energy is " + AnsiColors.ANSI_GREEN_BOLD + "UNLIMITED" + AnsiColors.ANSI_RESET;
+        return "now your energy is " + AnsiColors.ANSI_LIGHT_GREEN_BOLD + "UNLIMITED" + AnsiColors.ANSI_RESET;
     }
 
     public String showInventory() {
@@ -258,7 +258,8 @@ public class GameController {
         if (item == null || !(item.getItem() instanceof Tool))
             return new Result(false, "You did not equip any tool!");
 
-        return new Result(true, "Your tool in hand is :" + item.getItem().getName());
+        return new Result(true, "Your tool in hand is: " +
+                AnsiColors.ANSI_YELLOW + item.getItem().getName() + AnsiColors.ANSI_RESET);
     }
     public String showAvailableTools() {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();

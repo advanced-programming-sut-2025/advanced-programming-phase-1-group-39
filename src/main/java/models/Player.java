@@ -142,9 +142,9 @@ public class Player {
     }
 
     public String getColoredEnergy() {
-        if (energyUnlimited) return (AnsiColors.ANSI_GREEN_BOLD + "UNLIMITED" + AnsiColors.ANSI_RESET);
+        if (energyUnlimited) return (AnsiColors.ANSI_LIGHT_GREEN_BOLD + "UNLIMITED" + AnsiColors.ANSI_RESET);
         StringBuilder sb = new StringBuilder();
-        if (energy > 150) sb.append(AnsiColors.ANSI_GREEN_BOLD);
+        if (energy > 150) sb.append(AnsiColors.ANSI_LIGHT_GREEN_BOLD);
         else if (energy > 100) sb.append(AnsiColors.ANSI_LIGHT_YELLOW_BOLD);
         else if (energy > 50) sb.append(AnsiColors.ANSI_LIGHT_ORANGE_BOLD);
         else sb.append(AnsiColors.ANSI_RED_BOLD);

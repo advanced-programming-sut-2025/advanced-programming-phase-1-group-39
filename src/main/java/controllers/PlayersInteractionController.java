@@ -58,8 +58,6 @@ public class PlayersInteractionController {
         return false;
     }
 
-
-
     private static String addXP(Friendship friendship, int xp, String playerName) {
         int currentXP = friendship.getXp();
         if (friendship.getFriendshipLevel() == 0 && currentXP < 100 && currentXP + xp >= 100) {
@@ -90,6 +88,5 @@ public class PlayersInteractionController {
             return "Congratulations! Your friendship XP increased by " + xp + " !";
         }
     }
-
 
 }

@@ -68,6 +68,10 @@ public class Player {
         return inventory;
     }
 
+    public Skill getSkills() {
+        return skills;
+    }
+
     public int getMoney() {
         return money;
     }

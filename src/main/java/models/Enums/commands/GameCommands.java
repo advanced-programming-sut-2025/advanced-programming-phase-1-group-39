@@ -36,6 +36,7 @@ public enum GameCommands {
 
     ARTISAN_USE("artisan\\s+use\\s+\"(.*?)\"(?:\\s+\"(.*?)\")+"),
     ARTISAN_GET("artisan\\s+get\\s+(.+?)"),
+    PURCHASE("purchase\\s+(.+?)\\s+-n\\s+(\\d+)"),
 
     SHOW_ALL_PRODUCTS("show\\s+all\\s+products"),
     SHOW_AVAILABLE_PRODUCTS("show\\s+all\\s+available\\s+products"),

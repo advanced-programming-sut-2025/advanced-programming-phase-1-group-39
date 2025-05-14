@@ -1,9 +1,9 @@
 {
   "items": [
-    { "name": "Copper Ore", "price": 75, "limit": -1 },
-    { "name": "Iron Ore", "price": 150, "limit": -1 },
+    { "name": "Copper", "price": 75, "limit": -1 },
+    { "name": "Iron", "price": 150, "limit": -1 },
     { "name": "Coal", "price": 150, "limit": -1 },
-    { "name": "Gold Ore", "price": 400, "limit": -1 }
+    { "name": "Gold", "price": 400, "limit": -1 }
   ],
   "toolUpgrades": [
     "Copper Tool",

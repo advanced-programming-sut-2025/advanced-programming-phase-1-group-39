@@ -84,7 +84,7 @@ public class Inventory {
         boolean added = false;
         for (ItemStack itemStack : inventoryItems) {
             if (itemStack.getItem() instanceof Tool) {
-                text.append(getItemAndColor(itemStack));
+                text.append(getItemAndColor(itemStack) + "\n");
                 added = true;
             }
         }

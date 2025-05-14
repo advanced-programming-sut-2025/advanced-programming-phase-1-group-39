@@ -13,6 +13,7 @@ public class WateringCan extends Tool {
 
     public WateringCan() {
         super("watering can", ToolType.BASIC, 5);
+        tilesWaterNumRemaining = getMaxWaterSize();
     }
 
     @Override

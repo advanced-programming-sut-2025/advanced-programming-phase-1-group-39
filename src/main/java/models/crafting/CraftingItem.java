@@ -19,4 +19,12 @@ public class CraftingItem extends Item {
     public int getSellPrice() {
         return sellPrice;
     }
+
+    @Override
+    public String toString() {
+        return "CraftingItem{" +
+                "sellPrice=" + sellPrice +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

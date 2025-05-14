@@ -24,7 +24,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             ItemManager.loadItems();
-
+//            System.out.println(ItemManager.getItemByName("Carrot Pickle"));
             Player player1 = new Player();
             Player player2 = new Player();
             Player player3 = new Player();
@@ -38,16 +38,14 @@ public class Main {
             game.addRandomFarmForPlayer(player4, FarmType.getFarmTypeById(1));
 
             game.startGame();
-//            ((GreenHouse) player2.getBuildingByName("greenhouse")).build();
-//            player2.getBuildingByName("greenhouse").updateMap(game.getMap());
-//            App.getApp().addGame(game);
-//            App.getApp().setCurrentGame(game);
-//            game.setPlayerInTurn(player2);
-//            System.out.println(game.getMap().printColorMap(players));
-//        Menu.GAME.checkInput("print map -l 74,8 -s 39");
-//            while (true) {
-//                Menu.GAME.checkInput(Input.getNextLine());
-//            }
+            App.getApp().addGame(game);
+            App.getApp().setCurrentGame(game);
+            game.setPlayerInTurn(player2);
+            System.out.println(game.getMap().printColorMap(players));
+        Menu.GAME.checkInput("print map -l 74,8 -s 39");
+            while (true) {
+                Menu.GAME.checkInput(Input.getNextLine());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

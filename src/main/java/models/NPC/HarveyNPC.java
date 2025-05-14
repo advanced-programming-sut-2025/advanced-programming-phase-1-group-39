@@ -19,8 +19,8 @@ public class HarveyNPC extends NPC {
                 "Doctor",
                 "Harvey is a kind-hearted, meticulous doctor who values routine and health above all else.\nHe enjoys reading and often spends his time researching medical topics.\nHarvey has a deep love for coffee and wine and prefers to stay out of the spotlight, but his caring nature shines when you get to know him better.",
                 new Location(25,82),
-                new ArrayList<>(List.of(ItemManager.getItemByName("Coffee"), ItemManager.getItemByName("Carrot Pickles"),
-                                ItemManager.getItemByName("Wine")))
+                new ArrayList<>(List.of(ItemManager.getItemByName("Coffee"), ItemManager.getItemByName("Carrot Pickle"),
+                                ItemManager.getItemByName("Apple Wine")))
         );
     }
 

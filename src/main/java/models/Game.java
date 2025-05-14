@@ -70,7 +70,7 @@ public class Game {
                 getNPC("morris")
                 ));
         gameShops.add(new PierresGeneralStore("Pierre's General Store", new Location(27, 22),
-                12, 11, "src/main/resources/data/PierreGeneralStore.json",
+                12, 11, "src/main/resources/data/PierresGeneralStore.json",
                 9, 17,
                 getNPC("pierre")
                 ));

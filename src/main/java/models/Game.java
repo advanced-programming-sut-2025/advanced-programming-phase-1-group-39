@@ -196,6 +196,14 @@ public class Game {
     public ArrayList<Player> getPlayers() {
         return players;
     }
+    public Player getPlayerByName(String name) {
+        for (Player player : players) {
+            if (player.getUsername().equalsIgnoreCase(name)) {
+                return player;
+            }
+        }
+        return null;
+    }
 
     //turn
     public Player getPlayerInTurn() {

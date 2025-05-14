@@ -30,7 +30,7 @@ public class RobinNPC extends NPC {
 
     @Override
     public void getRewardMission1(int friendShip, Game game) {
-        Player currentPlayer = game.getCurrentPlayer();
+        Player currentPlayer = game.getPlayerInTurn();
         currentPlayer.getInventory().pickItem(getQuest(1).getTask().getItem().getName(),
                 getQuest(1).getTask().getAmount());
         if (friendShip == 2) {
@@ -42,7 +42,7 @@ public class RobinNPC extends NPC {
 
     @Override
     public void getRewardMission2(int friendShip, Game game) {
-        Player currentPlayer = game.getCurrentPlayer();
+        Player currentPlayer = game.getPlayerInTurn();
         currentPlayer.getInventory().pickItem(getQuest(2).getTask().getItem().getName(),
                 getQuest(2).getTask().getAmount());
         if (friendShip == 2) {
@@ -54,7 +54,7 @@ public class RobinNPC extends NPC {
 
     @Override
     public void getRewardMission3(int friendShip, Game game) {
-        Player currentPlayer = game.getCurrentPlayer();
+        Player currentPlayer = game.getPlayerInTurn();
         currentPlayer.getInventory().pickItem(getQuest(3).getTask().getItem().getName(),
                 getQuest(3).getTask().getAmount());
         if (friendShip == 2) {

@@ -3,7 +3,6 @@ package models.NPC;
 import models.*;
 import models.services.DialogueLoader;
 import models.services.MissionsLoader;
-import models.tools.Tool;
 import models.tools.ToolType;
 import models.tools.WateringCan;
 
@@ -34,7 +33,7 @@ public class AbigailNPC extends NPC {
 
     @Override
     public void getRewardMission1(int friendShipLevel, Game game) {
-        Player currentPlayer = game.getCurrentPlayer();
+        Player currentPlayer = game.getPlayerInTurn();
         currentPlayer.getInventory().pickItem(getQuest(1).getTask().getItem().getName(),
                 getQuest(1).getTask().getAmount());
         if (friendShipLevel == 2) {
@@ -46,7 +45,7 @@ public class AbigailNPC extends NPC {
 
     @Override
     public void getRewardMission2(int friendShipLevel, Game game) {
-        Player currentPlayer = game.getCurrentPlayer();
+        Player currentPlayer = game.getPlayerInTurn();
         currentPlayer.getInventory().pickItem(getQuest(2).getTask().getItem().getName(),
                 getQuest(2).getTask().getAmount());
         if (friendShipLevel == 2) {
@@ -58,7 +57,7 @@ public class AbigailNPC extends NPC {
 
     @Override
     public void getRewardMission3(int friendShipLevel, Game game) {
-        Player currentPlayer = game.getCurrentPlayer();
+        Player currentPlayer = game.getPlayerInTurn();
         currentPlayer.getInventory().pickItem(getQuest(3).getTask().getItem().getName(),
                 getQuest(3).getTask().getAmount());
 

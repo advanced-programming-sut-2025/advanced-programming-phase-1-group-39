@@ -140,13 +140,13 @@ public class NPCGameController {
         return new Result(true, output.toString());
     }
 
-    public Result showRequestsList() {
+    public Result showQuestsList() {
         StringBuilder output = new StringBuilder();
         output = activeMissions();
         return new Result(true, output.toString());
     }
 
-    public Result questsFinish(Matcher matcher) {
+    public Result finishQuests(Matcher matcher) {
         String index = matcher.group("index");
 
         if (!isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation()) &&

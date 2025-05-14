@@ -6,10 +6,11 @@ import java.util.regex.Pattern;
 public enum NPCGameCommand {
 
     MeetNPC("meet\\s+NPC\\s+(?<NPCName>.*?)"),
-    GifNPC("gift\\s+NPC\\s+(?<NPCName>.*?)\\s+-i\\s+(?<item>.*?)"),
+    GiveGiftToNPC("gift\\s+NPC\\s+(?<NPCName>.*?)\\s+-i\\s+(?<item>.*?)"),
     ShowFriendShipList("friendship\\s+NP\\s+list"),
-    QuestsList("quests\\s+list"),
+    ShowQuestsList("quests\\s+list"),
     QuestsFinish("quests\\s+finish\\s+-i(?<index>\\d+)"),
+
     //quests finish -i <index>
 
 

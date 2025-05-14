@@ -12,9 +12,10 @@ public class MarniesRanch extends Shop {
     HashMap<String, ShopItem> supplies = new HashMap<>();
     HashMap<String, LivestockItem> livestock = new HashMap<>();
 
-    public MarniesRanch(String name, int openHour, int closeHour, NPC owner) {
-        super(name, new Location(0, 0), 0, 0, openHour, closeHour, owner);
-        loadFromJson("src/main/resources/data/MarniesRanch.json");
+    public MarniesRanch(String name, Location location, int width, int height, String jsonPath,
+                        int openHour, int closeHour, NPC owner) {
+        super(name, location, width, height, openHour, closeHour, owner);
+        loadFromJson(jsonPath);
     }
 
     public void loadFromJson(String path) {

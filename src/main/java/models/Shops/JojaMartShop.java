@@ -21,12 +21,12 @@ public class JojaMartShop extends Shop {
     private Map<Season, HashMap<String, ShopItem>> seasonalStockBySeason = new HashMap<>();
     private HashMap<String, ShopItem> seasonalStock = new HashMap<>();
 
-    private Season currentSeason;
+    private Season currentSeason = Season.SPRING; // initialize
 
-    public JojaMartShop(String name, int openHour, int closeHour, NPC owner, Season currentSeason) {
-        super(name, new Location(0, 0), 0, 0, openHour, closeHour, owner);
-        this.currentSeason = currentSeason;
-        loadFromJson("src/main/resources/data/JojaMartShop.json");
+    public JojaMartShop(String name, Location location, int width, int height, String jsonPath,
+                        int openHour, int closeHour, NPC owner) {
+        super(name, location, width, height, openHour, closeHour, owner);
+        loadFromJson(jsonPath);
     }
 
     public void loadFromJson(String path) {
@@ -52,7 +52,6 @@ public class JojaMartShop extends Shop {
                 seasonalStockBySeason.put(season, seasonMap);
             }
 
-            // Set initial seasonal stock
             setupSeasonalStock(currentSeason);
 
             reader.close();
@@ -72,6 +71,9 @@ public class JojaMartShop extends Shop {
         int limit;
     }
 
+    public void setCurrentSeason(Season season) {
+        this.currentSeason = season;
+    }
 
     private void setupSeasonalStock(Season season) {
         seasonalStock = seasonalStockBySeason.getOrDefault(season, new HashMap<>());

@@ -15,9 +15,10 @@ public class BlackSmithShop extends Shop{
     HashMap<String, ShopItem> shopItems = new HashMap<>();
     HashMap<ToolType, Boolean> toolUpgrade = new HashMap<>();
 
-    public BlackSmithShop(String name, int openHour, int closeHour, NPC owner) {
-        super(name, new Location(0,0), 0, 0, openHour, closeHour, owner);
-        loadFromJson("src/main/resources/data/BlackSmithShop.json");
+    public BlackSmithShop(String name, Location location, int width, int height, String jsonPath,
+                          int openHour, int closeHour, NPC owner) {
+        super(name, location, width, height, openHour, closeHour, owner);
+        loadFromJson(jsonPath);
     }
 
     public void loadFromJson(String path) {

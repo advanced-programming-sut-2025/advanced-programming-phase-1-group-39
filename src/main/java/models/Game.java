@@ -180,7 +180,9 @@ public class Game {
         this.playerInTurn = playerInTurn;
     }
 
-    public ArrayList<Friendship> getFriendships() { return friendships; }
+    public ArrayList<Friendship> getFriendships() {
+        return friendships;
+    }
 
     // NPC
 
@@ -232,7 +234,8 @@ public class Game {
         for (Player player : players) {
             for (PlayerNPCInteraction friendship : player.getAllFriendships()) {
                 if (friendship.getFriendshipLevel() == 3) {
-                    if ((x = randomZeroOrOne()) == 1 ) {
+                    x = randomZeroOrOne();
+                    if (x == 1) {
                         y = randomZeroToThree();
                         ItemStack itemStack = getNPC(friendship.getNPCName()).getGifts().get(y);
                         if (player.getInventory().hasSpace(itemStack)) {
@@ -297,9 +300,6 @@ public class Game {
         messages.deleteCharAt(messages.length() - 1);
         return messages.toString();
     }
-
-
-
 
 
 }

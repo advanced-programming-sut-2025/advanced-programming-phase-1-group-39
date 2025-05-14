@@ -9,6 +9,7 @@ public class CraftingItem extends Item {
 
     public CraftingItem(String name, int sellPrice) {
         super(name);
+        this.name = name;
         this.sellPrice = sellPrice;
     }
 

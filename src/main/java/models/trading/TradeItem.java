@@ -3,12 +3,10 @@ package models.trading;
 public class TradeItem {
     private String itemName;
     private int amount;
-    private int price;
 
-    public TradeItem(String itemName, int amount, int price) {
+    public TradeItem(String itemName, int amount) {
         this.itemName = itemName;
         this.amount = amount;
-        this.price = price;
     }
 
     public String getItemName() {

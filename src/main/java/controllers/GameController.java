@@ -13,6 +13,10 @@ import models.cropsAndFarming.*;
 import models.inventory.Inventory;
 import models.map.Tile;
 import models.tools.FishingPole;
+import models.trading.Trade;
+import models.trading.TradeItem;
+import models.trading.TradeManager;
+import models.trading.TradeType;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -402,7 +406,81 @@ public class GameController {
     public Result askMarriage(Matcher matcher) {return null;}
     public Result respond(Matcher matcher) {return null;}
 
-    public Result startTrade(Matcher matcher) {return null;}
+    public Result startTrade(Matcher matcher) {
+        ArrayList<Player> players = App.getApp().getCurrentGame().getPlayers();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Players in game: \n");
+        for (Player player : players) {
+            sb.append(player.getUsername()).append("\n");
+        }
+
+        return new Result(true, sb.toString());
+    }
+    public Result trade(Matcher matcher) {
+        String targetUsername = matcher.group(1);
+        String typeString = matcher.group(2);
+        String itemName = matcher.group(3);
+        int amount;
+
+        try {
+            amount = Integer.parseInt(matcher.group(4));
+        } catch (NumberFormatException e) {
+            return new Result(false, "Amount must be a valid number.");
+        }
+
+        String priceStr = matcher.group("money");
+        String targetItem = matcher.group("item");
+        String targetAmountStr = matcher.group(7);
+
+        Player currentPlayer = App.getApp().getCurrentGame().getPlayerInTurn();
+        Player targetPlayer = App.getApp().getCurrentGame().getPlayerByName(targetUsername);
+        if (targetPlayer == null) return new Result(false, "Player not found.");
+
+
+        TradeType type = TradeType.getTypeByString(typeString);
+        if (type == null) {
+            return new Result(false, "Invalid type");
+        }
+
+        Inventory currentInv = currentPlayer.getInventory();
+        Inventory targetInv = targetPlayer.getInventory();
+
+        if (!currentInv.hasEnoughStack(itemName, amount)) {
+            return new Result(false, "You don’t have enough of this item.");
+        }
+
+        boolean isMoneyTrade = priceStr != null;
+        boolean isItemTrade = targetItem != null && targetAmountStr != null;
+
+        if (isMoneyTrade == isItemTrade) {
+            return new Result(false, "Specify only one of -p (price) or -ti/-ta (item for item).");
+        }
+
+        Trade trade;
+        if (isMoneyTrade) {
+            int price = Integer.parseInt(priceStr);
+            if (price <= 0) return new Result(false, "Price must be positive.");
+            trade = new Trade(currentPlayer, targetPlayer, type,
+                    new TradeItem(itemName, amount), null, price);
+        } else {
+            int targetAmount;
+            try {
+                targetAmount = Integer.parseInt(targetAmountStr);
+            } catch (NumberFormatException e) {
+                return new Result(false, "Invalid target amount.");
+            }
+
+            trade = new Trade(currentPlayer, targetPlayer, type,
+                    new TradeItem(itemName, amount),
+                    new TradeItem(targetItem, targetAmount), -1);
+        }
+
+        TradeManager.addTrade(trade);
+
+        return new Result(true, "Trade request sent to " + targetUsername + " (id: " + trade.getId() + ").");
+    }
+
 
 
     public Result meetNPC(Matcher matcher) {return null;}

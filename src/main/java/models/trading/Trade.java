@@ -15,16 +15,16 @@ public class Trade {
     private TradeStatus status = TradeStatus.PENDING;
     private boolean isSeenByReceiver = false;
 
-    public Trade(int id, Player sender, Player receiver, TradeType type, TradeItem offeredItem,
-                 TradeItem requestedItem, TradeStatus status, boolean isSeenByReceiver) {
+    public Trade(Player sender, Player receiver, TradeType type, TradeItem offeredItem,
+                 TradeItem requestedItem, int price) {
         this.id = nextId++;
         this.sender = sender;
         this.receiver = receiver;
         this.type = type;
         this.offeredItem = offeredItem;
         this.requestedItem = requestedItem;
-        this.status = status;
-        this.isSeenByReceiver = isSeenByReceiver;
+        this.isSeenByReceiver = false;
+        this.price = price;
     }
 
     public int getId() {

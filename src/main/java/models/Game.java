@@ -130,6 +130,12 @@ public class Game {
         npcs.add(new HarveyNPC());
         npcs.add(new LeahNPC());
         npcs.add(new RobinNPC());
+        npcs.add(new Clint());
+        npcs.add(new Willy());
+        npcs.add(new Marnie());
+        npcs.add(new Gus());
+        npcs.add(new Joja());
+        npcs.add(new Pierre());
         return npcs;
     }
 

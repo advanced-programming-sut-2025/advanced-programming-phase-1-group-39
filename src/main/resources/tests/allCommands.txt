@@ -1,0 +1,139 @@
+// ALL MENUS
+menu enter <menu_name>
+menu exit
+show current menu
+
+// SignUp
+register -u  -p <password> <passwordConfirm> -n  -e -g
+pick question -q <question_number> -a <answer> -c <answer_confirm>
+
+// LOGIN
+login -u <username> -p <password> –stay-logged-in
+forget password -u <username>
+answer -a <answer>
+-p <newPass>
+
+// MAIN MENU
+user logout
+
+// PROFILE MENU
+change username -u <username>
+change nickname -u <nickname>
+change email -e <email>
+change password -p <new_password> -o <old_password>
+uesr info
+
+// GAME MENU
+game new -u <username_1> <username_2> <username_3>
+game map <map_number>
+load game
+exit game
+next turn
+
+
+// GAME COMMANDS
+// -- TIME --
+time
+date
+datetime
+day of the week
+season
+
+cheat advance time <X>h
+cheat advance date <X>d
+
+
+// --WEATHER--
+cheat Thor -l <x,y>
+weather
+weather forecast
+cheat weather set <Type>
+
+greenhouse build
+
+// MAP AND WALK
+walk -l <x, y>
+print map -l <x, y> -s <size>
+help reading map
+
+// ENERGY
+energy show
+energy set -v <value>
+energy unlimited
+
+// INVENTORY
+inventory show
+inventory trash -i <item’s name> -n <number>
+cheat add item -n <item_name> -c <count>
+
+
+// TOOLS
+tools equip <tool_name>
+tools show current
+tools show available
+tools upgrade <tool_name>
+tools use -d <dir>
+howmuch water
+fishing -p <fishing pole>
+
+// PLANTS
+craftinfo -n <craft_name>
+plant -s <seed> -d <direction>
+showplant -l <x, y>
+fertilize -f <fertilizer> -d <direction>
+
+// CRAFTING
+crafting show recipes
+crafting craft <item_name>
+place item -n <item_name> -d <dir>
+
+
+// COOKING
+cooking refrigerator [put/pick] <item>
+cooking show recipes
+cooking prepare <recipe_name>
+eat <food_name>
+
+// ANIMAL
+build -a <building_name> -l <x , y>
+buy animal -a <animal> -n <name>
+pet -n <name>
+cheat set friendship -n <animal name> -c <amount>
+animals
+shepherd animals -n <animal name> -l <x , y>
+feed hay -n <animal name>
+produces
+collect produce -n <name>
+
+sell animal -n <name>
+
+artisan use <artisanMachineName> <item1_name>
+artisan get <artisan_name>
+show all products
+show all available products
+purchase <product_name> -n <count>
+cheat add <count> dollars
+sell <product_name> -n <count>
+
+// FRIEND SHIP
+friendships
+talk -u <username> -m <message>
+talk history -u <username>
+gift -u <username> -i <item> -a <amount>
+gift list
+gift rate -i <gift-number> -r <rate>
+gift history -u <username>
+hug -u <username>
+flower -u <username>
+ask marriage -u <username> -r <ring>
+
+// -- TRADE --
+trade response (–accept | –reject) -i <id>
+trade history
+
+// NPC
+meet NPC <npc_name>
+gift NPC <npc_name> -i <item>
+friendship NPC list
+quests list
+quests finish -i <index>

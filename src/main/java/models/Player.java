@@ -5,6 +5,7 @@ import models.NPC.NPC;
 import models.NPC.PlayerNPCInteraction;
 import models.NPC.Quest;
 import models.animals.Animal;
+import models.animals.AnimalProductQuality;
 import models.animals.Fish;
 import models.animals.FishType;
 import models.artisan.ArtisanMachineRecipe;
@@ -72,9 +73,10 @@ public class Player {
         ItemStack axe = new ItemStack(new Axe(), 1);
         ItemStack scythe = new ItemStack(new Scythe(), 1);
         ItemStack wateringCan = new ItemStack(new WateringCan(), 1);
+        ItemStack trainingRod = new ItemStack(new FishingPole("Training Rod", FishingPoleType.TRAINING_ROD), 1);
 
         this.inventory = new Inventory(
-                List.of(hoe, pickaxe, axe, scythe, wateringCan)
+                List.of(hoe, pickaxe, axe, scythe, wateringCan, trainingRod)
         );
 
         this.username = username;
@@ -229,11 +231,13 @@ public class Player {
         for (int i = 0; i < count; i++) {
             FishType randomType = seasonal.get((int) (Math.random() * seasonal.size()));
 
-//            double qualityScore = Math.random() * (skill * 2) + pole.getType().;
-//            double normalized = qualityScore / 7.0;
-//            AnimalProductQuality quality = AnimalProductQuality.fromScore(normalized);
-//
-//            result.add(new Fish(randomType, quality));
+            double qualityScore = Math.random() * (skill * 2) + pole.getPoleType().getMultiplier();
+            double normalized = qualityScore / 7.0;
+            AnimalProductQuality quality = AnimalProductQuality.fromScore(normalized);
+
+            Fish fish = randomType.create();
+            fish.setQuality(quality);
+            result.add(fish);
         }
 
         return new ArrayList<>(result);
@@ -372,5 +376,9 @@ public class Player {
     // Foods
     public void applyBuff(FoodBuff buff) {
         this.buff = buff;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

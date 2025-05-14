@@ -43,7 +43,11 @@ public class GameView implements View {
             System.out.println(result);
             if (result.success()) {
                 System.out.println("do you want to go? (y / n)");
-                char character = Input.getNextChar();
+                String str = Input.getNextLine();
+                while (str.isEmpty()) {
+                    str = Input.getNextLine();
+                }
+                char character = str.charAt(0);
                 if (character == 'y' || character == 'Y') {
                     System.out.println(controller.walkTo());
                 }

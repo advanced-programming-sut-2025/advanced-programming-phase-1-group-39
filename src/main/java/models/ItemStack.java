@@ -10,7 +10,7 @@ public class ItemStack {
     }
 
     public void addStack(int amount) {
-        amount += amount;
+        this.amount += amount;
     }
 
     public Item getItem() {

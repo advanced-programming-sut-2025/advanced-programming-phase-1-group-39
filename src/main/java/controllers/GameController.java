@@ -34,7 +34,7 @@ public class GameController {
 
         Player player = game.getPlayerInTurn();
         return new Result(true, AnsiColors.ANSI_CYAN_BOLD +
-                "Next turn: " + App.getApp().getUserByPlayer(player).getNickname() + AnsiColors.ANSI_RESET);
+                "Next turn: " + player.getUsername() + AnsiColors.ANSI_RESET);
     }
 
     public String showTime() {
@@ -299,11 +299,11 @@ public class GameController {
         if (!toolResult.success()) {
             if (tool instanceof Pickaxe || tool instanceof Axe)
                 energyConsumed -= 1;
-            player.changeEnergy(energyConsumed);
+            player.changeEnergy(-energyConsumed);
             return new Result(true, toolResult +
                     AnsiColors.ANSI_ORANGE_BOLD + "\nConsumed Energy: " + energyConsumed + AnsiColors.ANSI_RESET);
         } else {
-            player.changeEnergy(energyConsumed);
+            player.changeEnergy(-energyConsumed);
             return new Result(true, toolResult +
                     AnsiColors.ANSI_ORANGE_BOLD + "\nConsumed Energy: " + energyConsumed + AnsiColors.ANSI_RESET);
         }
@@ -364,10 +364,10 @@ public class GameController {
         Player player = game.getPlayerInTurn();
 
         String pole = matcher.group("pole");
-        FishingPole fishingPole = (FishingPole) player.getInventory().getItemByName(pole).getItem();
-        if (fishingPole == null) {
+        if (player.getInventory().getItemByName(pole) == null) {
             return new Result(false, "You don't have a fishing pole by this name!");
         }
+        FishingPole fishingPole = (FishingPole) player.getInventory().getItemByName(pole).getItem();
 
         int usingEnergy = fishingPole.getUsingEnergy(player.getSkills(), game.getTodayWeather());
         if (player.getTurnEnergy() <= usingEnergy) {
@@ -376,12 +376,13 @@ public class GameController {
 
         if (game.getMap().isNearWater(player)) {
             ArrayList<Fish> caughtFishes = player.goFishing(fishingPole, game.getTodayWeather(), game.getTime().getSeason());
-            player.changeEnergy(usingEnergy);
+            player.changeEnergy(-usingEnergy);
             if (caughtFishes.size() == 0) {
                 return new Result(true, "You didn't got any fish!" + "Energy consumed: " + usingEnergy);
             }
             int num = 0;
             StringBuilder text = new StringBuilder("Fishes:\n");
+            System.out.println(caughtFishes);
 
             for (Fish caughtFish : caughtFishes) {
                 ItemStack fishItem = new ItemStack(caughtFish, 1);
@@ -390,12 +391,13 @@ public class GameController {
                     if (num == 0)
                         return new Result(true, "You don't have enough space to add fish!");
                     else
-                        return new Result(true, "You caught " + num + " fishes!" + text);
+                        return new Result(true, "You caught " + num + " fishes!\n" + text);
                 }
                 num ++;
                 text.append(caughtFish.getType().name().toLowerCase() + "\n");
+                player.getInventory().addItem(fishItem.getItem(), fishItem.getAmount());
             }
-
+            return new Result(true, "You caught " + num + " fishes!\n" + text);
         } else {
             return new Result(false, "You need to be near water to get Fish!");
         }

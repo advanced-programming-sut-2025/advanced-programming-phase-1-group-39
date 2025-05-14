@@ -241,10 +241,11 @@ public class Map {
                             }
                         }
                     }
-                } else if (tile.canAddMineralToQuarry()) {
+                }
+                if (tile.canAddMineralToQuarry()) {
                     if (Math.random() < quarryPossibility) {
                         if (Math.random() > 0.3) {
-                            tile.placeItem(new ItemStack(ForagingManager.foragingMaterials.get("stone"), 1));
+                            tile.placeItem(new ItemStack(ForagingManager.foragingMaterials.get("Stone"), 1));
                         } else {
                             ForagingMineral randomMineral = ForagingManager.getRandomMineral();
                             tile.placeItem(new ItemStack(randomMineral, 1));
@@ -491,7 +492,7 @@ public class Map {
 
         for (int i = startX; i < startX + 3; i++) {
             for (int j = startY; j < startY + 3; j++) {
-                Tile tile = tiles[i][j];
+                Tile tile = tiles[j][i];
                 if (tile.getType() == TileType.WATER) return true;
             }
         }

@@ -50,7 +50,6 @@ public class Game {
 
         gameMap.loadMap(getNpcShops());
 
-
         for (Player player : players) {
             resetPlayerLocation(player);
         }
@@ -250,8 +249,10 @@ public class Game {
     }
     private void fillFarmsWithRandoms() {
         for (Player player : players) {
+            boolean haveTrees = Math.random() > 0.8;
             gameMap.fillFarmWithRandoms(player.getStartOfFarm().x(), player.getStartOfFarm().y(),
-                    0.01, 0.05, time.getSeason(), false);
+                    0.01, 0.05, time.getSeason(), haveTrees,
+                    buildings);
         }
     }
     private void resetPlayersEnergies() {

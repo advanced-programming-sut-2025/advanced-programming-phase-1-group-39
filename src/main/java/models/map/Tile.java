@@ -56,14 +56,21 @@ public class Tile {
 
     public String getTileColor() {
         char c = getSymbol();
-        if (c == '.') return AnsiColors.ANSI_GOLDEN_BACKGROUND;
+        if (c == '.'){
+            if (canPlant && isWatered)
+                return AnsiColors.ANSI_WATERED_TILE_BACKGROUND;
+            else if (canPlant)
+                return AnsiColors.ANSI_PLOWED_TILE_BACKGROUND;
+            else
+                return AnsiColors.ANSI_GOLDEN_BACKGROUND;
+        }
         else if (c == '~') return AnsiColors.ANSI_BLUE_BACKGROUND;
         else if (c == '*') return AnsiColors.ANSI_WHITE_BACKGROUND;
         else if (c == 'O') return AnsiColors.ANSI_BLACK_BACKGROUND;
         else if (c == '×') return AnsiColors.ANSI_BLACK_BOLD;
         else if (c == 'Q') return AnsiColors.ANSI_GRAY_BACKGROUND;
 
-        else if (c == 'P') return AnsiColors.ANSI_GREEN_BOLD;
+        else if (c == 'P') return AnsiColors.ANSI_LIGHT_GREEN_BOLD;
         else if (c == 'T') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_DARK_GREEN_BACKGROUND;
         else if (c == '/') return AnsiColors.ANSI_BROWN_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
 

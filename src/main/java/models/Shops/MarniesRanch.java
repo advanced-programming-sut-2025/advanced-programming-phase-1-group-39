@@ -3,6 +3,8 @@ package models.Shops;
 import com.google.gson.Gson;
 import models.*;
 import models.NPC.NPC;
+import models.tools.MilkPail;
+import models.tools.Shear;
 
 import java.io.FileReader;
 import java.util.HashMap;
@@ -79,24 +81,6 @@ public class MarniesRanch extends Shop {
     }
 
     @Override
-    public String showAllProducts() {
-        StringBuilder sb = new StringBuilder("=== Marnie's Ranch ===\n\n-- Supplies --\n");
-        for (ShopItem item : supplies.values()) {
-            sb.append(item.getName()).append(" - ").append(item.getPrice()).append("g");
-            String limit = item.getDailyLimit() == Integer.MAX_VALUE ? "unlimited" : String.valueOf(item.getDailyLimit());
-            sb.append(" (Limit: ").append(limit).append(" per day)\n");
-        }
-
-        sb.append("\n-- Livestock --\n");
-        for (LivestockItem animal : livestock.values()) {
-            sb.append(animal.getName()).append(" - ").append(animal.getPrice()).append("g");
-            sb.append(" (Building: ").append(animal.getBuildingRequired()).append(", Limit: ")
-                    .append(animal.getDailyLimit()).append(" per day)\n");
-        }
-
-        return sb.toString();
-    }
-
     public Result purchase(String product, int quantity) {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
 
@@ -118,13 +102,56 @@ public class MarniesRanch extends Shop {
         if (supplies.containsValue(item)) {
             if (product.equalsIgnoreCase("Hay")) {
                 player.getInventory().addItem(new OddItems(item.getName()), quantity);
+            } else if (product.equalsIgnoreCase("Milk Pail")) {
+                //player.getInventory().addItem(new MilkPail(), 1);
+            } else {
+                //player.getInventory().addItem(new Shear(), 1);
             }
-            // Todo: add Shears and milk pail
         } else {
             // Todo: add new animal to where?
         }
         return new Result(true, "Purchased " + quantity + " x "
                 + product + " for " + (item.getPrice() * quantity) + "g.");
+    }
+
+    @Override
+    public String showAllProducts() {
+        StringBuilder sb = new StringBuilder("=== Marnie's Ranch ===\n\n-- Supplies --\n");
+        for (ShopItem item : supplies.values()) {
+            sb.append(item.getName()).append(" - ").append(item.getPrice()).append("g");
+            String limit = item.getDailyLimit() == 1000000 ? "unlimited" : String.valueOf(item.getDailyLimit());
+            sb.append(" (Limit: ").append(limit).append(" per day)\n");
+        }
+
+        sb.append("\n-- Livestock --\n");
+        for (LivestockItem animal : livestock.values()) {
+            sb.append(animal.getName()).append(" - ").append(animal.getPrice()).append("g");
+            sb.append(" (Building: ").append(animal.getBuildingRequired()).append(", Limit: ")
+                    .append(animal.getDailyLimit()).append(" per day)\n");
+        }
+
+        return sb.toString();
+    }
+
+    @Override
+    public String showAvailableProducts() {
+        StringBuilder sb = new StringBuilder("=== Marnie's Ranch (Availables only) ===\n\n-- Supplies --\n");
+        for (ShopItem item : supplies.values()) {
+            if (item.getAvailableQuantity() <= 0) continue;
+            sb.append(item.getName()).append(" - ").append(item.getPrice()).append("g");
+            String limit = item.getDailyLimit() == 1000000  ? "unlimited" : String.valueOf(item.getDailyLimit());
+            sb.append(" (Limit: ").append(limit).append(" per day)\n");
+        }
+
+        sb.append("\n-- Livestock --\n");
+        for (LivestockItem animal : livestock.values()) {
+            if (animal.getAvailableQuantity() <= 0) continue;
+            sb.append(animal.getName()).append(" - ").append(animal.getPrice()).append("g");
+            sb.append(" (Building: ").append(animal.getBuildingRequired()).append(", Limit: ")
+                    .append(animal.getDailyLimit()).append(" per day)\n");
+        }
+
+        return sb.toString();
     }
 
     @Override
@@ -137,8 +164,4 @@ public class MarniesRanch extends Shop {
         }
     }
 
-    @Override
-    public void handleCommand(String command) {
-        // Optional command handling
-    }
 }

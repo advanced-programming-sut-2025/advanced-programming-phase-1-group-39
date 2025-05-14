@@ -16,9 +16,10 @@ public class PierresGeneralStore extends Shop {
     HashMap<String, String> descriptions = new HashMap<>();
     private Season currentSeason = Season.SPRING;
 
-    public PierresGeneralStore(String name, int openHour, int closeHour, Location location, int width, int height, NPC owner) {
+    public PierresGeneralStore(String name, Location location, int width, int height, String jsonPath,
+                               int openHour, int closeHour, NPC owner) {
         super(name, location, width, height, openHour, closeHour, owner);
-        loadFromJson("src/main/resources/data/PierresGeneralStore.json");
+        loadFromJson(jsonPath);
     }
 
     public void setCurrentSeason(Season season) {

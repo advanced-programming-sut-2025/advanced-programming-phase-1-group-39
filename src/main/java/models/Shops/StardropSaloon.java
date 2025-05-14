@@ -14,9 +14,10 @@ public class StardropSaloon extends Shop {
     HashMap<String, ShopItem> foods = new HashMap<>();
     HashMap<String, ShopItem> recipes = new HashMap<>();
 
-    public StardropSaloon(String name, int openHour, int closeHour, NPC owner) {
-        super(name, new Location(0,0), 0,0, openHour, closeHour, owner);
-        loadFromJson("src/main/resources/data/StardropSaloon.json");
+    public StardropSaloon(String name, Location location, int width, int height, String jsonPath,
+                          int openHour, int closeHour, NPC owner) {
+        super(name, location, width, height, openHour, closeHour, owner);
+        loadFromJson(jsonPath);
     }
 
     public void loadFromJson(String path) {

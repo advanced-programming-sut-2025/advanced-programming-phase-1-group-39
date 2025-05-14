@@ -16,9 +16,10 @@ import java.util.List;
 public class FishingShop extends Shop {
     HashMap<String, ShopItem> items = new HashMap<>();
 
-    public FishingShop(String name, int openHour, int closeHour, NPC owner) {
-        super(name, new Location(0, 0), 0, 0, openHour, closeHour, owner);
-        loadFromJson("src/main/resources/data/FishingShop.json");
+    public FishingShop(String name, Location location, int width, int height, String jsonPath,
+                       int openHour, int closeHour, NPC owner) {
+        super(name, location, width, height, openHour, closeHour, owner);
+        loadFromJson(jsonPath);
     }
 
     public void loadFromJson(String path) {

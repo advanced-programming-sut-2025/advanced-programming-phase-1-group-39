@@ -20,7 +20,8 @@ public class Inventory {
 
     public void trashItem(Item item) {}
 
-    public boolean hasSpace() {
+    public boolean hasSpace(ItemStack itemStack) {
+        if (hasItem(itemStack.getItem().getName())) return true;
         return inventoryItems.size() < type.getCapacity();
     }
 

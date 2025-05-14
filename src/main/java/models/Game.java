@@ -88,6 +88,7 @@ public class Game {
     public void goToNextDay() {
         time.goToNextDay();
         resetFriendship();
+        sendGiftToPlayers();
         // TODO : changing weather
     }
 
@@ -154,6 +155,33 @@ public class Game {
                 friendship.setFirstGift(true);
                 friendship.setFirstTalking(true);
             }
+        }
+    }
+
+    public static int randomZeroOrOne() {
+        return (int) (Math.random() * 2);
+    }
+
+    public static int randomZeroToThree() {
+        return (int) (Math.random() * 4);
+    }
+
+    private void sendGiftToPlayers() {
+        int x;
+        int y;
+        for (Player player : players) {
+            for (PlayerNPCInteraction friendship : player.getAllFriendships()) {
+                if (friendship.getFriendshipLevel() == 3) {
+                    if ((x = randomZeroOrOne()) == 1 ) {
+                        y = randomZeroToThree();
+                        ItemStack itemStack = getNPC(friendship.getNPCName()).getGifts().get(y);
+                        if (player.getInventory().hasSpace(itemStack)) {
+                            player.getInventory().addItem(itemStack.getItem(), itemStack.getAmount());
+                        }
+                    }
+                }
+            }
+
         }
     }
 

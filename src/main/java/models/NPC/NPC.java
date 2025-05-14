@@ -17,6 +17,7 @@ public abstract class NPC {
     protected ArrayList<Quest> quests;
     protected ArrayList<ItemStack> tasks;
     protected ArrayList<String> missions;
+    protected ArrayList<ItemStack> gifts;
 
 
     public NPC(String name, String job, String personalityTraits, Location location, ArrayList<Item> favoriteItems) {
@@ -25,6 +26,10 @@ public abstract class NPC {
         this.personalityTraits = personalityTraits;
         this.location = location;
         this.favoriteItems = favoriteItems;
+        gifts = new ArrayList<>(List.of(new ItemStack(ItemManager.getItemByName("Iridium Bar"), 2),
+                                        new ItemStack(ItemManager.getItemByName("Iron Bar"), 4),
+                                        new ItemStack(ItemManager.getItemByName("Gold Bar"), 3),
+                                        new ItemStack(ItemManager.getItemByName("Copper Bar"), 5)));
     }
 
 
@@ -69,6 +74,10 @@ public abstract class NPC {
             }
         }
         return null;
+    }
+
+    public ArrayList<ItemStack> getGifts() {
+        return gifts;
     }
 
     public abstract void getRewardMission1(int friendShipLevel, Game game);

@@ -27,6 +27,8 @@ public class Plant {
 
     private boolean hasCrop;
 
+    public boolean isAlive = true;
+
     public Plant(Tile tile, Crop product, Seed seed, ArrayList<Integer> stages,
                  boolean oneTimeHarvest, int regrowthTime, boolean canBecomeGiant) {
         this.tile = tile;
@@ -50,6 +52,7 @@ public class Plant {
     public void updateDaily() {
         if (!isWateredToday) {
             daysWithoutWater++;
+            if (daysWithoutWater > 2) die();
             return;
         }
 
@@ -78,12 +81,20 @@ public class Plant {
         isWateredToday = false;
     }
 
+    // TODO : change scythe working
+    public boolean isAlive() {
+        return isAlive;
+    }
+    public void die() {
+        isAlive = false;
+    }
+
     public void setIsWateredToday() {
         isWateredToday = true;
     }
 
     public ItemStack harvest() {
-        if (!hasCrop) {return null;}
+        if (!hasCrop || !isAlive) {return null;}
 
         if (oneTimeHarvest) {
             productStack = 0;

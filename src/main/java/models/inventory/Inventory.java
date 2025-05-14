@@ -37,7 +37,7 @@ public class Inventory {
     public void addItem(Item item, int amount) {
         ItemStack itemStack = getItemByName(item.getName());
         if (item != null) {
-            itemStack.addStack(-amount); // Todo: it's not complete
+            itemStack.addStack(amount); // Todo: it's not complete
         } else {
             inventoryItems.add(new ItemStack(item, amount));
         }

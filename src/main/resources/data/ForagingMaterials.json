@@ -10,5 +10,9 @@
   {
     "name": "Grass",
     "sellPrice": 50
+  },
+  {
+    "name": "Fiber",
+    "sellPrice": 50
   }
 ]

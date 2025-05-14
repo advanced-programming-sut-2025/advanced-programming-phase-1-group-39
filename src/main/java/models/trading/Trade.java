@@ -11,7 +11,7 @@ public class Trade {
     private TradeType type;
     private TradeItem offeredItem;
     private TradeItem requestedItem; // can be null
-    private int price; // -1 if payment is not money
+    private int price; // 0 if payment is not money
     private TradeStatus status = TradeStatus.PENDING;
     private boolean isSeenByReceiver = false;
 

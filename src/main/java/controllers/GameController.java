@@ -18,6 +18,7 @@ import models.trading.TradeItem;
 import models.trading.TradeManager;
 import models.trading.TradeType;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
@@ -446,16 +447,18 @@ public class GameController {
         Inventory currentInv = currentPlayer.getInventory();
         Inventory targetInv = targetPlayer.getInventory();
 
-        if (!currentInv.hasEnoughStack(itemName, amount)) {
-            return new Result(false, "You don’t have enough of this item.");
+        if (type == TradeType.OFFER) {
+            if (!currentInv.hasEnoughStack(itemName, amount)) {
+                return new Result(false, "You don’t have enough of this item.");
+            }
+        } else {
+            if (!targetInv.hasEnoughStack(itemName, amount)) {
+                return new Result(false, "The player doesn’t have enough of this item.");
+            }
         }
 
         boolean isMoneyTrade = priceStr != null;
         boolean isItemTrade = targetItem != null && targetAmountStr != null;
-
-        if (isMoneyTrade == isItemTrade) {
-            return new Result(false, "Specify only one of -p (price) or -ti/-ta (item for item).");
-        }
 
         Trade trade;
         if (isMoneyTrade) {
@@ -473,12 +476,33 @@ public class GameController {
 
             trade = new Trade(currentPlayer, targetPlayer, type,
                     new TradeItem(itemName, amount),
-                    new TradeItem(targetItem, targetAmount), -1);
+                    new TradeItem(targetItem, targetAmount), 0);
         }
 
         TradeManager.addTrade(trade);
 
         return new Result(true, "Trade request sent to " + targetUsername + " (id: " + trade.getId() + ").");
+    }
+    public Result ShowTradeList(Matcher matcher) {
+        ArrayList<Trade> trades = TradeManager.getTradesForUser(App.getApp().getCurrentGame()
+                .getPlayerInTurn().getUsername());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Your available trades: \n");
+        for (Trade trade : trades) {
+            sb.append(trade.toString());
+        }
+        return new Result(true, sb.toString());
+    }
+    public Result responseToTrade(Matcher matcher) {return null;}
+    public Result showTradeHistory(Matcher matcher) {
+        ArrayList<Trade> trades = TradeManager.getTradeHistory(App.getApp().getCurrentGame()
+                .getPlayerInTurn().getUsername());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Your trades history: \n");
+        for (Trade trade : trades) {
+            sb.append(trade.toString());
+        }
+        return new Result(true, sb.toString());
     }
 
 

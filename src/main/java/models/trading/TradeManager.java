@@ -11,18 +11,18 @@ public class TradeManager {
         trades.add(trade);
     }
 
-    public static List<Trade> getTradesForUser(String username) {
-        return trades.stream()
+    public static ArrayList<Trade> getTradesForUser(String username) {
+        return new ArrayList<>(trades.stream()
                 .filter(t -> t.getSender().getUsername().equalsIgnoreCase(username)
                         && t.getStatus() == TradeStatus.PENDING)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
-    public static List<Trade> getTradeHistory(String username) {
-        return trades.stream()
+    public static ArrayList<Trade> getTradeHistory(String username) {
+        return new ArrayList<>(trades.stream()
                 .filter(t -> t.getSender().getUsername().equalsIgnoreCase(username)
                         || t.getReceiver().getUsername().equalsIgnoreCase(username))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     public static Trade getTradeById(int id) {

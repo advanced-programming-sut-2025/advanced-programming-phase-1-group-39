@@ -18,6 +18,7 @@ public class Player {
     private int gameId;
 
     private Location location = new Location(0, 0);
+    private double turnEnergy = Constants.MAX_ENERGY_PER_TURN;
     private Location startOfFarm;
     private Location endOfFarm;
     private String username;
@@ -49,6 +50,9 @@ public class Player {
         this.gameId = gameId;
     }
 
+    public void resetHourlyEnergyLimit() {
+        turnEnergy = Math.min(Constants.MAX_ENERGY_PER_TURN, energy);
+    }
 
     public boolean isConscious() {
         return energy > 0;

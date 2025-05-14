@@ -1,6 +1,7 @@
 package models;
 
 import models.NPC.*;
+import models.PlayerInteraction.Friendship;
 import models.buildings.Building;
 import models.map.FarmType;
 import models.map.Map;
@@ -17,14 +18,16 @@ public class Game {
     private ArrayList<TradeItem> trades = new ArrayList<>();
     private Map gameMap;
     private ArrayList<Building> buildings = new ArrayList<>();
-    ArrayList<NPC> npcs = initializeNPCs();
+
+    ArrayList<NPC> NPCs = initializeNPCs();
+    ArrayList<Friendship> friendships = initializeFriendships();
 
     private Time time = new Time();
 
     private Weather todayWeather = new Weather();
     private Weather tomorrowWeather = new Weather();
 
-    private Player currentPlayer;
+    private Player playerInTurn;
 
     // first player should be the mainPlayer of game
     public Game(int gameId, Player one, Player two, Player three, Player four) {
@@ -79,6 +82,20 @@ public class Game {
         //TODO : Update of map and plants
     }
 
+    public void goToNextHour() {
+        addToHour(1);
+        //TODO : food buffs
+
+        // reset players energiesHourLimit
+        resetPlayersHourlyEnergyLimit();
+    }
+
+    public void resetPlayersHourlyEnergyLimit() {
+        for (Player player : players) {
+            player.resetHourlyEnergyLimit();
+        }
+    }
+
     public void addToDay(int amount) {
         time.addToDay(amount);
         // TODO : changing weather
@@ -90,6 +107,34 @@ public class Game {
         resetFriendship();
         sendGiftToPlayers();
         // TODO : changing weather
+    }
+
+    public boolean areAllNotConscious() {
+        boolean areAllNotConscious = true;
+        for (Player player : players) {
+            if (player.isConscious()) {
+                areAllNotConscious = false;
+                break;
+            }
+        }
+        return areAllNotConscious;
+    }
+
+    public boolean nextTurn() {
+        if (areAllNotConscious()) return false;
+
+        int index = players.indexOf(playerInTurn);
+        int newIndex = index + 1;
+        if (newIndex == players.size()) {
+            newIndex = 0;
+            // adding to hour
+            goToNextHour();
+        }
+
+        playerInTurn = players.get(newIndex);
+        if (!playerInTurn.isConscious()) return nextTurn();
+        // TODO : add talk
+        return true;
     }
 
     public Time getTime() {
@@ -114,34 +159,45 @@ public class Game {
         return loadedPlayerUsername;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
+    public Player getPlayerInTurn() {
+        return playerInTurn;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+    public Player getPlayerByUsername(String username) {
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                return player;
+            }
+        }
+        return null;
     }
+
+    public void setPlayerInTurn(Player playerInTurn) {
+        this.playerInTurn = playerInTurn;
+    }
+
+    public ArrayList<Friendship> getFriendships() { return friendships; }
 
     // NPC
 
     private ArrayList<NPC> initializeNPCs() {
-        ArrayList<NPC> npcs = new ArrayList<>();
-        npcs.add(new SebastianNPC());
-        npcs.add(new AbigailNPC());
-        npcs.add(new HarveyNPC());
-        npcs.add(new LeahNPC());
-        npcs.add(new RobinNPC());
-        npcs.add(new Clint());
-        npcs.add(new Willy());
-        npcs.add(new Marnie());
-        npcs.add(new Gus());
-        npcs.add(new Morris());
-        npcs.add(new Pierre());
-        return npcs;
+        ArrayList<NPC> NPCs = new ArrayList<>();
+        NPCs.add(new SebastianNPC());
+        NPCs.add(new AbigailNPC());
+        NPCs.add(new HarveyNPC());
+        NPCs.add(new LeahNPC());
+        NPCs.add(new RobinNPC());
+        NPCs.add(new Clint());
+        NPCs.add(new Willy());
+        NPCs.add(new Marnie());
+        NPCs.add(new Gus());
+        NPCs.add(new Morris());
+        NPCs.add(new Pierre());
+        return NPCs;
     }
 
     public NPC getNPC(String NPCName) {
-        for (NPC npc : npcs) {
+        for (NPC npc : NPCs) {
             if (npc.getName().equalsIgnoreCase(NPCName)) {
                 return npc;
             }
@@ -184,6 +240,21 @@ public class Game {
 
         }
     }
+
+    // interactions
+
+    private ArrayList<Friendship> initializeFriendships() {
+        ArrayList<Friendship> friendships = new ArrayList<>();
+        friendships.add(new Friendship(players.get(0).getUsername(), players.get(1).getUsername()));
+        friendships.add(new Friendship(players.get(0).getUsername(), players.get(2).getUsername()));
+        friendships.add(new Friendship(players.get(0).getUsername(), players.get(3).getUsername()));
+        friendships.add(new Friendship(players.get(1).getUsername(), players.get(2).getUsername()));
+        friendships.add(new Friendship(players.get(1).getUsername(), players.get(3).getUsername()));
+        friendships.add(new Friendship(players.get(2).getUsername(), players.get(3).getUsername()));
+        return friendships;
+    }
+
+
 
 
 }

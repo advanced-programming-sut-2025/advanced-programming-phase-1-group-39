@@ -14,4 +14,6 @@ public class Constants {
     public static final double MAX_ENERGY_PER_TURN = 50;
     public static final double MAX_ENERGY = 200;
 
+    public static final int MAX_SKILL_LEVEL = 4;
+
 }

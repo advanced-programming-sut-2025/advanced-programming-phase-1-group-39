@@ -3,6 +3,7 @@ package controllers;
 import models.*;
 import models.Enums.Direction;
 import models.Enums.WeatherStatus;
+import models.animals.Fish;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
 import models.inventory.Inventory;
@@ -358,7 +359,47 @@ public class GameController {
     public Result collectProducts(Matcher matcher) {return null;}
     public Result sellAnimal(Matcher matcher) {return null;}
 
-    public Result fishing(Matcher matcher) {return null;}
+    public Result fishing(Matcher matcher) {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+
+        String pole = matcher.group("pole");
+        FishingPole fishingPole = (FishingPole) player.getInventory().getItemByName(pole).getItem();
+        if (fishingPole == null) {
+            return new Result(false, "You don't have a fishing pole by this name!");
+        }
+
+        int usingEnergy = fishingPole.getUsingEnergy(player.getSkills(), game.getTodayWeather());
+        if (player.getTurnEnergy() <= usingEnergy) {
+            return new Result(false, "You don't have enough energy to use fishing pole!");
+        }
+
+        if (game.getMap().isNearWater(player)) {
+            ArrayList<Fish> caughtFishes = player.goFishing(fishingPole, game.getTodayWeather(), game.getTime().getSeason());
+            player.changeEnergy(usingEnergy);
+            if (caughtFishes.size() == 0) {
+                return new Result(true, "You didn't got any fish!" + "Energy consumed: " + usingEnergy);
+            }
+            int num = 0;
+            StringBuilder text = new StringBuilder("Fishes:\n");
+
+            for (Fish caughtFish : caughtFishes) {
+                ItemStack fishItem = new ItemStack(caughtFish, 1);
+
+                if (!player.getInventory().hasSpace(fishItem)) {
+                    if (num == 0)
+                        return new Result(true, "You don't have enough space to add fish!");
+                    else
+                        return new Result(true, "You caught " + num + " fishes!" + text);
+                }
+                num ++;
+                text.append(caughtFish.getType().name().toLowerCase() + "\n");
+            }
+
+        } else {
+            return new Result(false, "You need to be near water to get Fish!");
+        }
+    }
 
     public Result artisanUse(Matcher matcher) {return null;}
     public Result artisanGet(Matcher matcher) {return null;}

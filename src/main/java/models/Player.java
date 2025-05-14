@@ -95,8 +95,6 @@ public class Player {
         return inventory;
     }
 
-    public void goFishing() {}
-
     public int getLevelOfFriendship(NPC npc) {return 0;}
 
     public void startTrade(Player player, TradeItem item) {}
@@ -207,6 +205,40 @@ public class Player {
         return new Location(startOfFarm.x() + 74, startOfFarm.y() + 8);
     }
 
+    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) { // Todo: not complete (legendary + type fishing pole)
+        double M = weather.getFishingFactor();
+        double R = Math.random();
+        int skill = skills.getFishingLevel();
+
+        int count = (int) Math.ceil((2 + skill) * M * R);
+        count = Math.min(count, 6);
+
+        List<FishType> seasonal = Arrays.stream(FishType.values())
+                .filter(f -> f.season == season)
+                .collect(Collectors.toList());
+
+        if (skill == Constants.MAX_SKILL_LEVEL) {
+            seasonal.addAll(Arrays.stream(FishType.values())
+                    .filter(f -> f.name().equals(f.name().toUpperCase()))
+                    .filter(f -> f.season == season)
+                    .toList());
+        }
+
+        List<Fish> result = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            FishType randomType = seasonal.get((int) (Math.random() * seasonal.size()));
+
+//            double qualityScore = Math.random() * (skill * 2) + pole.getType().;
+//            double normalized = qualityScore / 7.0;
+//            AnimalProductQuality quality = AnimalProductQuality.fromScore(normalized);
+//
+//            result.add(new Fish(randomType, quality));
+        }
+
+        return new ArrayList<>(result);
+    }
+
     // Money handling
     public void addNightRevenueToMoney() {
         money += nightRevenue;
@@ -256,10 +288,6 @@ public class Player {
     }
 
 
-
-    public void getFish() {}
-
-
     public void learnCraftingRecipe(CraftingRecipe recipe) {
         craftingRecipes.add(recipe);
     }
@@ -286,40 +314,6 @@ public class Player {
             sb.append(recipe.toString());
         }
         return sb.toString();
-    }
-
-    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) { // Todo: not complete (legendary + type fishing pole)
-        double M = weather.getFishingFactor();
-        double R = Math.random();
-        int skill = skills.getFishingLevel();
-
-        int count = (int) Math.ceil((2 + skill) * M * R);
-        count = Math.min(count, 6);
-
-        List<FishType> seasonal = Arrays.stream(FishType.values())
-                .filter(f -> f.season == season)
-                .collect(Collectors.toList());
-
-        if (skill == 4) {
-            seasonal.addAll(Arrays.stream(FishType.values())
-                    .filter(f -> f.name().equals(f.name().toUpperCase()))
-                    .filter(f -> f.season == season)
-                    .toList());
-        }
-
-        List<Fish> result = new ArrayList<>();
-
-        for (int i = 0; i < count; i++) {
-            FishType randomType = seasonal.get((int) (Math.random() * seasonal.size()));
-
-//            double qualityScore = Math.random() * (skill * 2) + pole.getType().;
-//            double normalized = qualityScore / 7.0;
-//            AnimalProductQuality quality = AnimalProductQuality.fromScore(normalized);
-//
-//            result.add(new Fish(randomType, quality));
-        }
-
-        return new ArrayList<>(result);
     }
 
 

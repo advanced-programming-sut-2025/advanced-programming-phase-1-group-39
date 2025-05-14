@@ -93,6 +93,10 @@ public class GameView implements View {
             System.out.println(controller.howMuchWater());
         }
 
+        else if ((matcher = GameCommands.GO_FISHING.getMatcher(command)) != null) {
+            System.out.println(controller.fishing(matcher));
+        }
+
         else {
             System.out.println("invalid command.");
         }

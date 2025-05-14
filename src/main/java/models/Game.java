@@ -328,6 +328,7 @@ public class Game {
 
         playerInTurn = players.get(newIndex);
         if (!playerInTurn.isConscious()) return nextTurn();
+        // TODO : add talk
         return true;
     }
 

@@ -13,4 +13,18 @@ public enum InventoryType {
     public int getCapacity() {
         return capacity;
     }
+
+    public static InventoryType getType(String name) {
+        if (name.equalsIgnoreCase("Basic Pack")) {
+            return BASIC;
+        }
+        if (name.equalsIgnoreCase("Large Pack")) {
+            return BIG;
+        }
+        if (name.equalsIgnoreCase("Deluxe Pack")) {
+            return DELUXE;
+        }
+
+        return null;
+    }
 }

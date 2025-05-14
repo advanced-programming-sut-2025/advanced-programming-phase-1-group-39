@@ -3,8 +3,7 @@ package models;
 import models.animals.AnimalProduct;
 import models.animals.AnimalType;
 import models.animals.FishType;
-import models.artisan.ArtisanGood;
-import models.artisan.ArtisanMachine;
+import models.artisan.*;
 import models.cooking.FoodManager;
 import models.crafting.CraftingRecipe;
 import models.cropsAndFarming.CropManager;
@@ -31,6 +30,18 @@ public class ItemManager {
         for (AnimalProduct product : AnimalType.getAllAnimalProducts()) {
             animalProducts.put(product.getName(), product);
         }
+
+        new BeeHouse("Bee House", 0);
+        new CharcoalKiln("Charcoal Kiln", 0);
+        new CheesePress("Cheese Press", 0);
+        new Dehydrator("Dehydrator", 0);
+        new FishSmoker("Fish Smoker", 0);
+        new Furnace("Furnace", 0);
+        new Keg("Keg", 0);
+        new Loom("Loom", 0);
+        new MayonnaiseMachine("Mayonnaise Machine", 0);
+        new OilMaker("OilMaker", 0);
+        new PreservesJar("Preserves Jar", 0);
     }
 
     public static void addArtisanGood(ArtisanGood good, String machineName) {

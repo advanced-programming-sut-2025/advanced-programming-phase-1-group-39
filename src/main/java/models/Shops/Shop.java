@@ -25,7 +25,6 @@ public class Shop extends Building {
     public void handleCommand(String command){}
     public String showAllProducts(){return null;}
     public String showAvailableProducts() {return null;}
-    //public Result purchase(String product, int quantity){return null;}
     public void endDay() {};
 }
 

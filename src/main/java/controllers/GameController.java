@@ -2,11 +2,13 @@ package controllers;
 
 import models.*;
 import models.Enums.Direction;
+import models.Shops.Shop;
 import models.animals.Animal;
 import models.animals.AnimalProduct;
 import models.animals.Fish;
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
+import models.buildings.Building;
 import models.cooking.FoodManager;
 import models.crafting.CraftingManager;
 import models.cropsAndFarming.*;
@@ -386,8 +388,26 @@ public class GameController {
         return new Result(true, "You have got " + itemName + " successfully");
     }
 
-    public Result showAllProducts() {return null;}
-    public Result showAllAvailableProducts() {return null;}
+    public Result showAllProducts() {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+
+        Shop shop = game.getShopPlayerIsIn(player);
+        if (shop == null) {
+            return new Result(false, "You should be in a building");
+        }
+        return new Result(true, shop.showAllProducts());
+    }
+    public Result showAllAvailableProducts() {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+
+        Shop shop = game.getShopPlayerIsIn(player);
+        if (shop == null) {
+            return new Result(false, "You should be in a building");
+        }
+        return new Result(true, shop.showAvailableProducts());
+    }
     public Result purchaseProduct(Matcher matcher) {return null;}
     public void cheatAddToShopStock(Matcher matcher) {}
     public Result sellProduct(Matcher matcher) {return null;}
@@ -491,7 +511,7 @@ public class GameController {
         return new Result(true, sb.toString());
     }
     public Result responseToTrade(Matcher matcher) {
-        String action = matcher.group(1); // --accept or --reject
+        String action = matcher.group(1);
         int tradeId = Integer.parseInt(matcher.group(2));
 
         Player currentPlayer = App.getApp().getCurrentGame().getPlayerInTurn();

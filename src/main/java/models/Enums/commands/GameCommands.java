@@ -37,6 +37,9 @@ public enum GameCommands {
     ARTISAN_USE("artisan\\s+use\\s+\"(.*?)\"(?:\\s+\"(.*?)\")+"),
     ARTISAN_GET("artisan\\s+get\\s+(.+?)"),
 
+    SHOW_ALL_PRODUCTS("show\\s+all\\s+products"),
+    SHOW_AVAILABLE_PRODUCTS("show\\s+all\\s+available\\s+products"),
+
     START_TRADE("start\\s+trade"),
     TRADE("trade\\s+-u\\s+(.+?)\\s+-t\\s+(request|offer)\\s+-i\\s+(.+?)\\s+-a\\s+(\\d+)(?:\\s+-p\\s+(?<money>\\d+)|\\s+-ti\\s+(?<item>.+?)\\s+-ta\\s+(\\d+))"),
     SHOW_TRADES_LIST("trade\\s+list"),

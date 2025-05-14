@@ -139,4 +139,9 @@ public class CarpentersShop extends Shop{
         }
         return sb.toString();
     }
+
+    @Override
+    public void endDay() {
+
+    }
 }

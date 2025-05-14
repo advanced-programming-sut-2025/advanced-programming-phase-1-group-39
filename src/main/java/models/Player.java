@@ -31,6 +31,8 @@ public class Player {
     private Location startOfFarm;
     private Location endOfFarm;
 
+    private String username;
+
     FoodBuff buff = null;
 
     private double energy = Constants.MAX_ENERGY;
@@ -64,7 +66,7 @@ public class Player {
     // NPC
     private ArrayList<PlayerNPCInteraction> friendships = initialPlayersFriendship();
 
-    public Player() {
+    public Player(String username) {
         ItemStack hoe = new ItemStack(new Hoe(), 1);
         ItemStack pickaxe = new ItemStack(new Pickaxe(), 1);
         ItemStack axe = new ItemStack(new Axe(), 1);
@@ -74,6 +76,8 @@ public class Player {
         this.inventory = new Inventory(
                 List.of(hoe, pickaxe, axe, scythe, wateringCan)
         );
+
+        this.username = username;
     }
 
     public boolean isConscious() {

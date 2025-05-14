@@ -370,4 +370,9 @@ public class Player {
     public ArrayList<PlayerNPCInteraction> getAllFriendships() {
         return friendships;
     }
+
+    // Foods
+    public void applyBuff(FoodBuff buff) {
+        this.buff = buff;
+    }
 }

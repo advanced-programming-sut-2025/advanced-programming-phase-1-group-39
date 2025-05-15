@@ -1,8 +1,8 @@
 {
   "items": [
-    { "name": "Wood", "price": 10, "limit": -1 },
-    { "name": "Stone", "price": 20, "limit": -1 },
-    { "name": "Shipping Bin", "price": 250, "limit": -1 }
+    { "name": "Wood", "price": 10, "limit": 1000000 },
+    { "name": "Stone", "price": 20, "limit": 1000000 },
+    { "name": "Shipping Bin", "price": 250, "limit": 1000000 }
   ],
   "buildings": [
     {

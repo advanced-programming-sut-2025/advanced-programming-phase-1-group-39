@@ -1,9 +1,9 @@
 {
   "items": [
-    { "name": "Copper", "price": 75, "limit": -1 },
-    { "name": "Iron", "price": 150, "limit": -1 },
-    { "name": "Coal", "price": 150, "limit": -1 },
-    { "name": "Gold", "price": 400, "limit": -1 }
+    { "name": "Copper", "price": 75, "limit": 1000000 },
+    { "name": "Iron", "price": 150, "limit": 1000000 },
+    { "name": "Coal", "price": 150, "limit": 1000000 },
+    { "name": "Gold", "price": 400, "limit": 1000000 }
   ],
   "toolUpgrades": [
     "Copper Tool",

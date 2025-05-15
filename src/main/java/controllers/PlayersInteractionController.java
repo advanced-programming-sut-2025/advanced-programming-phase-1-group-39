@@ -12,7 +12,6 @@ public class PlayersInteractionController {
     static Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
 
 
-
     public static Result ShowFriendshipsList() {
         StringBuilder output = new StringBuilder();
         for (Player otherPlayer : game.getOtherPlayers(currentPlayer.getUsername())) {
@@ -34,8 +33,11 @@ public class PlayersInteractionController {
         } else {
             Friendship friendship = game.getFriendship(currentPlayer, player2);
             friendship.addMessage(new Message(message, currentPlayer.getUsername(), playerName));
-            String output = increaseXP(friendship, 20, playerName);
-            return new Result(true, "Your message has been sent to player " + playerName + ".\n" + output);
+            if (friendship.isFirstHug()) {
+                String output = increaseXP(friendship, 20, playerName);
+                return new Result(true, "Your message has been sent to player " + playerName + ".\n" + output);
+            }
+            return new Result(true, "Your message has been sent to player " + playerName + ".");
         }
     }
 
@@ -48,6 +50,24 @@ public class PlayersInteractionController {
         }
         output.deleteCharAt(output.length() - 1);
         return new Result(true, output.toString());
+    }
+
+    public static Result hug(Matcher matcher) {
+        String otherPlayer = matcher.group("username");
+
+        if (!isPlayerExists(otherPlayer)) {
+            return new Result(false, "Player " + otherPlayer + " doesn't exist");
+        } else if (!isPlayersNear(currentPlayer.getLocation(), game.getPlayerByUsername(otherPlayer).getLocation())) {
+            return new Result(false, "to hug " + otherPlayer + " , you need to be standing right next to them.");
+        } else if (game.getFriendship(game.getPlayerByUsername(otherPlayer), currentPlayer).getFriendshipLevel() < 2) {
+            return new Result(false, "you need to reach friendship level 2 with " + otherPlayer + " before you can give them a hug!");
+        } else {
+            if (game.getFriendship(game.getPlayerByUsername(otherPlayer), currentPlayer).isFirstHug()) {
+                String output = increaseXP(game.getFriendship(game.getPlayerByUsername(otherPlayer), currentPlayer), 60, otherPlayer);
+                return new Result(true, "you gave " + otherPlayer + " a warm hug! your bond feels stronger already.\n" + output);
+            }
+            return new Result(true, "you gave " + otherPlayer + " a warm hug! your bond feels stronger already.");
+        }
     }
 
 
@@ -82,7 +102,6 @@ public class PlayersInteractionController {
     public static String increaseXP(Friendship friendship, int xp, String playerName) {
         int currentXP = friendship.getXp();
         if (friendship.getFriendshipLevel() == 0 && currentXP < 100 && currentXP + xp >= 100) {
-            friendship.setFriendshipLevel(1);
             friendship.setXp(currentXP + xp);
             return "Congratulations! You've reached Friendship Level 1 with " + playerName + " !" + "XP gained: " + xp;
         } else if (friendship.getFriendshipLevel() == 0 && currentXP < 100 && currentXP + xp < 100) {

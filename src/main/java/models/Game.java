@@ -26,11 +26,10 @@ public class Game {
     private ArrayList<Player> players;
     private String loadedPlayerUsername;
     private Player mainPlayer;
-
     private Player playerInTurn;
 
-    private ArrayList<TradeItem> trades = new ArrayList<>();
-    private Map gameMap;
+
+    private transient Map gameMap;
     private ArrayList<Building> buildings = new ArrayList<>();
 
     private ArrayList<NPC> npcs = new ArrayList<>();

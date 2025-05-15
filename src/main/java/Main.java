@@ -45,6 +45,5 @@ public class Main {
         new AppView().run();
         UsersDataManager.saveUsers(App.getApp().getUsers());
         SaveAppManager.saveApp();
-
     }
 }

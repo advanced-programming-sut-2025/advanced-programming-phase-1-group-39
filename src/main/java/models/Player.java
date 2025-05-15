@@ -19,6 +19,7 @@ import models.crafting.CraftingRecipe;
 import models.inventory.Inventory;
 import models.map.AnsiColors;
 import models.tools.*;
+import models.tools.FishingPole;
 import models.trading.TradeItem;
 
 import java.util.ArrayList;
@@ -100,8 +101,6 @@ public class Player {
     public Inventory getInventory() {
         return inventory;
     }
-
-    public void startTrade(Player player, TradeItem item) {}
 
     public Location getLocation() {
         return location;
@@ -332,6 +331,15 @@ public class Player {
     public void addAnimal(Animal animal) {
         animals.put(animal.getName(), animal);
     }
+
+    public int sellAnimal(Animal animal) {
+        int money = (int) (animal.getPrice() * (((double) animal.getFriendship() /1000) + 0.3));
+        changeMoney(money);
+        animals.remove(animal.getName());
+        //TODO : remove from building animals
+        return money;
+    }
+
     public ArrayList<Animal> getAnimals() {
         return new ArrayList<>(animals.values());
     }

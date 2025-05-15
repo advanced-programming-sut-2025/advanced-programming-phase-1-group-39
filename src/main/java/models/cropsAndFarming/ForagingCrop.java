@@ -19,6 +19,9 @@ public class ForagingCrop extends Crop {
     public ForagingSource getSource() {
         return source;
     }
+    public Season[] getSeasons() {
+        return seasons;
+    }
 
     @Override
     public String toString() {
@@ -36,9 +39,5 @@ public class ForagingCrop extends Crop {
     @Override
     protected ForagingCrop clone(){
         return new ForagingCrop(this.name, this.baseSellPrice, this.baseEnergy, this.source, this.seasons);
-    }
-
-    public Season[] getSeasons() {
-        return seasons;
     }
 }

@@ -103,6 +103,10 @@ public class Inventory {
         return trashType;
     }
 
+    public void setInventoryType(InventoryType type) {
+        this.type = type;
+    }
+
     public int trashItem(ItemStack item, int number) {
         int itemPrice = item.getItem().getItemPrice() * number;
         return (int)(trashType.quantifier * itemPrice);

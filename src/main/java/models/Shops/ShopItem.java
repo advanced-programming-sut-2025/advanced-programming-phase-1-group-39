@@ -39,7 +39,7 @@ public class ShopItem extends Item {
     }
 
     public void purchase(int amount) {
-        if (dailyLimit > 500000) { // Todo: kheili randome haji shayad bug bokhore
+        if (dailyLimit > 500000) {
             return;
         }
         decreaseQuantity(amount);

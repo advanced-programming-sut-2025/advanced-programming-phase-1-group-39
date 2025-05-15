@@ -32,7 +32,6 @@ public class App {
         return app;
     }
 
-    //
 
     public void addUser(User user) {
         users.add(user);
@@ -41,8 +40,6 @@ public class App {
     public void addGame(Game game) {
         games.add(game);
     }
-
-    //
 
     public User getLoggedInUser() {
         return loggedInUser;

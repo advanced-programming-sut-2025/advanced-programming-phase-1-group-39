@@ -1,13 +1,13 @@
 package models.Shops;
 
-import models.App;
-import models.Location;
+import models.*;
 import models.NPC.NPC;
 
 import com.google.gson.Gson;
-import models.Player;
-import models.Result;
+import models.cooking.Food;
 import models.crafting.CraftingRecipe;
+import models.tools.FishingPole;
+import models.tools.FishingPoleType;
 
 import java.io.FileReader;
 import java.util.HashMap;
@@ -20,6 +20,8 @@ public class FishingShop extends Shop {
                        int openHour, int closeHour, NPC owner) {
         super(name, location, width, height, openHour, closeHour, owner);
         loadFromJson(jsonPath);
+
+        addToItemManager();
     }
 
     public void loadFromJson(String path) {
@@ -70,6 +72,43 @@ public class FishingShop extends Shop {
         }
     }
 
+    public void addToItemManager() {
+        ItemManager.addShopItems(items.get("Trout Soup"));
+    }
+
+    @Override
+    public Result purchase(String product, int quantity) {
+        if (!items.containsKey(product)) {
+            return new Result(false, "Item \"" + product + "\" not found in Fishing Shop.");
+        }
+
+        FishingShopItem item = (FishingShopItem) items.get(product);
+
+        if (quantity > item.getAvailableQuantity()) {
+            return new Result(false, "Limit exceeded for \"" + product + "\". Limit: " + item.getAvailableQuantity());
+        }
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        if (product.equalsIgnoreCase("Fish Smoker (Recipe)")) {
+            CraftingRecipe recipe = CraftingRecipe.FISH_SMOKER;
+            player.learnCraftingRecipe(recipe);
+            item.purchase(quantity);
+        } else if (product.equalsIgnoreCase("Trout Soup")) {
+            player.getInventory().addItem(new Food("Trout Soup", 50, 250, null), 1);
+            item.purchase(quantity);
+        } else {
+            Skill skill = player.getSkills();
+            if (skill.getFishingLevel() < item.getFishingSkillRequired()) {
+                return new Result(false, "Your fishing skill is not high enough ):");
+            }
+            String[] str = product.split(" ");
+            String typeStr = str[0];
+            // Todo: return pole with type
+            item.purchase(quantity);
+        }
+        return new Result(true, "Purchased " + quantity + " x " + product + " for " + (item.getPrice() * quantity) + "g.");
+    }
+
     @Override
     public String showAllProducts() {
         StringBuilder sb = new StringBuilder("=== Fishing Shop ===\n\n-- Items --\n");
@@ -85,26 +124,22 @@ public class FishingShop extends Shop {
         return sb.toString();
     }
 
-    public Result purchase(String product, int quantity) {
-        if (!items.containsKey(product)) {
-            return new Result(false, "Item \"" + product + "\" not found in Fishing Shop.");
+    @Override
+    public String showAvailableProducts() {
+        StringBuilder sb = new StringBuilder("=== Fishing Shop (Availables only) ===\n\n-- Items --\n");
+        for (ShopItem item : items.values()) {
+            if (item.getAvailableQuantity() <= 0) {
+                continue;
+            }
+            FishingShopItem fishItem = (FishingShopItem) item;
+            sb.append(fishItem.getName()).append(" - ").append(fishItem.getPrice()).append("g");
+            sb.append(" (Limit: ").append(fishItem.getDailyLimit()).append(" per day)");
+            if (fishItem.getFishingSkillRequired() > 0) {
+                sb.append(" [Fishing Skill: ").append(fishItem.getFishingSkillRequired()).append("]");
+            }
+            sb.append("\n");
         }
-
-        FishingShopItem item = (FishingShopItem) items.get(product);
-
-        if (quantity > item.getAvailableQuantity()) {
-            return new Result(false, "Limit exceeded for \"" + product + "\". Limit: " + item.getAvailableQuantity());
-        }
-
-        item.purchase(quantity);
-        if (product.equalsIgnoreCase("Fish Smoker (Recipe)")) {
-            CraftingRecipe recipe = CraftingRecipe.FISH_SMOKER;
-            App.getApp().getCurrentGame().getPlayerInTurn().learnCraftingRecipe(recipe);
-        } else {
-            Player player = App.getApp().getCurrentGame().getPlayerInTurn();
-            // Todo: check skill and return pole
-        }
-        return new Result(true, "Purchased " + quantity + " x " + product + " for " + (item.getPrice() * quantity) + "g.");
+        return sb.toString();
     }
 
     @Override
@@ -112,11 +147,6 @@ public class FishingShop extends Shop {
         for (ShopItem item : items.values()) {
             item.resetDailyLimit();
         }
-    }
-
-    @Override
-    public void handleCommand(String command) {
-        // Optional commands
     }
 }
 

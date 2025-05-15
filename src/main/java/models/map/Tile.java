@@ -14,6 +14,7 @@ public class Tile {
     private Tree tree = null;
 //    private PlacedObject placedObject = null;
 
+    private FertilizerType fertilizer = null;
 
     private boolean canPlant = false;
     private boolean isWatered = false;
@@ -44,7 +45,6 @@ public class Tile {
         } else if (tree != null) {
             c = 'T';
         } else if (itemOnTile != null) {
-            //TODO: maybe change for Error
             if (itemOnTile.getItem() instanceof ForagingCrop) c = 'F';
             else if (itemOnTile.getItem() instanceof ForagingMaterial) {
                 if (itemOnTile.getItem().getName().equalsIgnoreCase("Wood")) c = '/';
@@ -83,7 +83,7 @@ public class Tile {
         else if (c == 'M') return AnsiColors.ANSI_YELLOW_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;
         else if (c == '=') return AnsiColors.ANSI_DARK_GREEN_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
 
-        // basket
+            // basket
         else if (c == 'B') return AnsiColors.ANSI_YELLOW_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;
         else if (c == '#') return AnsiColors.ANSI_LIGHT_GOLDEN_BACKGROUND;
         else {
@@ -119,6 +119,13 @@ public class Tile {
     }
 
     public void setIsFertilized() { isFertilized = true; }
+
+    public FertilizerType getFertilizer() {
+        return fertilizer;
+    }
+    public void setFertilizer(FertilizerType fertilizer) {
+        this.fertilizer = fertilizer;
+    }
 
     public void setIsWatered() { isWatered = true; }
     public void setNotWatered() { isWatered = false; }
@@ -190,4 +197,3 @@ public class Tile {
         return true;
     }
 }
-

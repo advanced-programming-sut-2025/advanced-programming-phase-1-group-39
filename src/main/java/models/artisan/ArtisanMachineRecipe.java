@@ -7,5 +7,4 @@ public class ArtisanMachineRecipe {
     int energyCost;
 
 
-
 }

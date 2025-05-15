@@ -41,6 +41,11 @@ public enum FishType {
         return new Fish(this.name(), this, basePrice, season);
     }
 
+    public boolean isLegendary() {
+        return this == LEGEND || this == GLACIERFISH || this == ANGLER || this == CRIMSONFISH;
+    }
+
+
     public static Fish getFishByName(String name) {
         for (FishType type : values()) {
             if (name.equalsIgnoreCase(type.name())) {

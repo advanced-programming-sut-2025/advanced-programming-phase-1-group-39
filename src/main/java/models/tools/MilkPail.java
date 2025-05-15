@@ -18,17 +18,19 @@ public class MilkPail extends Tool {
         Animal animal = player.getAnimalByLocation(location);
         if (animal == null)
             return new Result(false, "Animal not found");
-        else if (animal.getPlace() != LivingPlace.BARN || animal.getPlace() != LivingPlace.BIG_BARN
-                || animal.getPlace() != LivingPlace.DELUXE_BARN
-                || animal.getType() != AnimalType.COW || animal.getType() != AnimalType.GOAT) {
+        else if (animal.getPlace() != LivingPlace.BARN && animal.getPlace() != LivingPlace.BIG_BARN
+                && animal.getPlace() != LivingPlace.DELUXE_BARN
+                && animal.getType() != AnimalType.COW && animal.getType() != AnimalType.GOAT) {
             return new Result(false, "This Animal can't produce Milk!");
         } else {
-            AnimalProduct product = animal.getProduct();
+            AnimalProduct product = animal.collectProduct();
+            if (product == null)
+                return new Result(false, "No Milk!");
             if (!player.getInventory().hasSpace(new ItemStack(product, 1)))
                 return new Result(false, "You don't have enough space to get Animal products!");
             player.getInventory().addItem(product, 1);
 
-            animal.changeFriendShip(5);
+            animal.changeFriendship(5);
             ItemStack products = new ItemStack(animal.collectProduct(), 1);
             player.getInventory().addItem(products.getItem(), 1);
             return new Result(true, "You got Milk of Your "+animal.getName()+" !");

@@ -4,13 +4,13 @@
             "name": "Rice",
             "description": "A basic grain often served under vegetables.",
             "price": 200,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Wheat Flour",
             "description": "A common cooking ingredient made from crushed wheat seeds.",
             "price": 100,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Bouquet",
@@ -25,13 +25,13 @@
             "dailyLimit": 2
         },
         {
-            "name": "Dehydrator (Recipe)",
+            "name": "Dehydrator",
             "description": "A recipe to make Dehydrator",
             "price": 10000,
             "dailyLimit": 1
         },
         {
-            "name": "Grass Starter (Recipe)",
+            "name": "Grass Starter",
             "description": "A recipe to make Grass Starter",
             "price": 1000,
             "dailyLimit": 1
@@ -40,85 +40,85 @@
             "name": "Sugar",
             "description": "Adds sweetness to pastries and candies. Too much can be unhealthy.",
             "price": 100,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Oil",
             "description": "All purpose cooking oil.",
             "price": 200,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Vinegar",
             "description": "An aged fermented liquid used in many cooking recipes.",
             "price": 200,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Deluxe Retaining Soil",
             "description": "This soil has a 100% chance of staying watered overnight. Mix into tilled soil.",
             "price": 150,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Grass Starter",
             "description": "Place this on your farm to start a new patch of grass.",
             "price": 100,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Speed-Gro",
             "description": "Makes the plants grow 1 day earlier.",
             "price": 100,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Apple Sapling",
             "description": "Takes 28 days to produce a mature Apple tree. Bears fruit in the fall. Only grows if the 8 surrounding \"tiles\" are empty.",
             "price": 4000,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Apricot Sapling",
             "description": "Takes 28 days to produce a mature Apricot tree. Bears fruit in the spring. Only grows if the 8 surrounding \"tiles\" are empty.",
             "price": 2000,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Cherry Sapling",
             "description": "Takes 28 days to produce a mature Cherry tree. Bears fruit in the spring. Only grows if the 8 surrounding \"tiles\" are empty.",
             "price": 3400,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Orange Sapling",
             "description": "Takes 28 days to produce a mature Orange tree. Bears fruit in the summer. Only grows if the 8 surrounding \"tiles\" are empty.",
             "price": 4000,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Peach Sapling",
             "description": "Takes 28 days to produce a mature Peach tree. Bears fruit in the summer. Only grows if the 8 surrounding \"tiles\" are empty.",
             "price": 6000,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Pomegranate Sapling",
             "description": "Takes 28 days to produce a mature Pomegranate tree. Bears fruit in the fall. Only grows if the 8 surrounding \"tiles\" are empty.",
             "price": 6000,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Basic Retaining Soil",
             "description": "This soil has a chance of staying watered overnight. Mix into tilled soil.",
             "price": 100,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         },
         {
             "name": "Quality Retaining Soil",
             "description": "This soil has a good chance of staying watered overnight. Mix into tilled soil.",
             "price": 150,
-            "dailyLimit": -1
+            "dailyLimit": 1000000
         }
     ],
     "backpacks": [

@@ -27,7 +27,7 @@ public class Plant {
 
     private boolean hasCrop;
 
-    public boolean isAlive = true;
+    private boolean isAlive = true;
 
     public Plant(Tile tile, Crop product, Seed seed, ArrayList<Integer> stages,
                  boolean oneTimeHarvest, int regrowthTime, boolean canBecomeGiant) {
@@ -50,14 +50,21 @@ public class Plant {
 
 
     public void updateDaily() {
-        if (!isWateredToday) {
+        FertilizerType type = tile.getFertilizer();
+
+        boolean needsWater = (type != FertilizerType.QUALITY);
+        boolean isWateredEnough = !needsWater || isWateredToday;
+
+        if (!isWateredEnough) {
             daysWithoutWater++;
-            if (daysWithoutWater > 2) die();
             return;
         }
 
         if (currentStage < stages.size()) {
-            daysOfCurrentStage--;
+            int speedBonus = (type == FertilizerType.SPEED) ? 2 : 1;
+
+            daysOfCurrentStage -= speedBonus;
+
             if (daysOfCurrentStage <= 0) {
                 if (currentStage + 1 < stages.size()) {
                     currentStage++;
@@ -78,7 +85,9 @@ public class Plant {
             productStack = 1;
         }
 
-        isWateredToday = false;
+        if (needsWater) {
+            isWateredToday = false;
+        }
     }
 
     // TODO : change scythe working

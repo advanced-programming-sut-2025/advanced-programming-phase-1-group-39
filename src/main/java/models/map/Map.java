@@ -210,7 +210,7 @@ public class Map {
 
 
     public void fillFarmWithRandoms(int startX, int startY,
-                                     double foragingPossibility, double quarryPossibility,
+                                    double foragingPossibility, double quarryPossibility,
                                     Season nowSeason, boolean haveTree,
                                     ArrayList<Building> buildings) {
         for (int i = startX; i < startX + Constants.FARM_WIDTH; i++) {
@@ -542,7 +542,7 @@ public class Map {
                 Tile tile = tiles[i][j];
                 Item machine = tile.getItemOnTile().getItem();
                 if (machine instanceof ArtisanMachine
-                && machine.getName().equalsIgnoreCase(name)) {
+                        && machine.getName().equalsIgnoreCase(name)) {
                     return (ArtisanMachine) machine;
                 }
             }

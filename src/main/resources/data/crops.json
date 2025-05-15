@@ -10,7 +10,7 @@
     "isEdible": true,
     "baseEnergy": 45,
     "baseHealth": 20,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -24,7 +24,7 @@
     "isEdible": true,
     "baseEnergy": 75,
     "baseHealth": 33,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -38,7 +38,7 @@
     "isEdible": true,
     "baseEnergy": 75,
     "baseHealth": 33,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": true
   },
   {
@@ -52,7 +52,7 @@
     "isEdible": false,
     "baseEnergy": null,
     "baseHealth": null,
-    "season": "SPRING_SUMMER",
+    "season": ["SPRING", "SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -66,7 +66,7 @@
     "isEdible": true,
     "baseEnergy": 20,
     "baseHealth": 9,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -80,7 +80,7 @@
     "isEdible": true,
     "baseEnergy": 25,
     "baseHealth": 11,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -94,7 +94,7 @@
     "isEdible": true,
     "baseEnergy": 50,
     "baseHealth": 22,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -108,7 +108,7 @@
     "isEdible": true,
     "baseEnergy": 25,
     "baseHealth": 11,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -122,7 +122,7 @@
     "isEdible": true,
     "baseEnergy": 25,
     "baseHealth": 11,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -136,7 +136,7 @@
     "isEdible": false,
     "baseEnergy": null,
     "baseHealth": null,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -150,7 +150,7 @@
     "isEdible": true,
     "baseEnergy": 50,
     "baseHealth": 22,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -164,7 +164,7 @@
     "isEdible": true,
     "baseEnergy": 45,
     "baseHealth": 20,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -178,7 +178,7 @@
     "isEdible": true,
     "baseEnergy": 3,
     "baseHealth": 1,
-    "season": "SPRING",
+    "season": ["SPRING"],
     "canBecomeGiant": false
   },
   {
@@ -192,7 +192,7 @@
     "isEdible": true,
     "baseEnergy": 25,
     "baseHealth": 11,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -206,7 +206,7 @@
     "isEdible": true,
     "baseEnergy": 25,
     "baseHealth": 11,
-    "season": "SUMMER_FALL",
+    "season": ["SUMMER", "FALL"],
     "canBecomeGiant": false
   },
   {
@@ -220,7 +220,7 @@
     "isEdible": true,
     "baseEnergy": 45,
     "baseHealth": 20,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -234,7 +234,7 @@
     "isEdible": true,
     "baseEnergy": 13,
     "baseHealth": 5,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -248,7 +248,7 @@
     "isEdible": true,
     "baseEnergy": 113,
     "baseHealth": 50,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": true
   },
   {
@@ -262,7 +262,7 @@
     "isEdible": true,
     "baseEnergy": 45,
     "baseHealth": 20,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -276,7 +276,7 @@
     "isEdible": true,
     "baseEnergy": 45,
     "baseHealth": 20,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -290,7 +290,7 @@
     "isEdible": true,
     "baseEnergy": 75,
     "baseHealth": 33,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -304,7 +304,7 @@
     "isEdible": true,
     "baseEnergy": 125,
     "baseHealth": 56,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -318,7 +318,7 @@
     "isEdible": true,
     "baseEnergy": 45,
     "baseHealth": 20,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -332,7 +332,7 @@
     "isEdible": true,
     "baseEnergy": 63,
     "baseHealth": 28,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -346,7 +346,7 @@
     "isEdible": true,
     "baseEnergy": 45,
     "baseHealth": 20,
-    "season": "SUMMER_FALL",
+    "season": ["SUMMER", "FALL"],
     "canBecomeGiant": false
   },
   {
@@ -360,7 +360,7 @@
     "isEdible": true,
     "baseEnergy": 20,
     "baseHealth": 9,
-    "season": "SUMMER",
+    "season": ["SUMMER"],
     "canBecomeGiant": false
   },
   {
@@ -374,7 +374,7 @@
     "isEdible": false,
     "baseEnergy": null,
     "baseHealth": null,
-    "season": "SUMMER_FALL",
+    "season": ["SUMMER", "FALL"],
     "canBecomeGiant": false
   },
   {
@@ -388,7 +388,7 @@
     "isEdible": true,
     "baseEnergy": 50,
     "baseHealth": 22,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -402,7 +402,7 @@
     "isEdible": true,
     "baseEnergy": 30,
     "baseHealth": 13,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -416,7 +416,7 @@
     "isEdible": true,
     "baseEnergy": 30,
     "baseHealth": 13,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -430,7 +430,7 @@
     "isEdible": true,
     "baseEnergy": 25,
     "baseHealth": 11,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -444,7 +444,7 @@
     "isEdible": true,
     "baseEnergy": 63,
     "baseHealth": 28,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -458,7 +458,7 @@
     "isEdible": true,
     "baseEnergy": 38,
     "baseHealth": 17,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -472,7 +472,7 @@
     "isEdible": true,
     "baseEnergy": 20,
     "baseHealth": 9,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -486,7 +486,7 @@
     "isEdible": true,
     "baseEnergy": 45,
     "baseHealth": 20,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -500,7 +500,7 @@
     "isEdible": true,
     "baseEnergy": 38,
     "baseHealth": 17,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -514,7 +514,7 @@
     "isEdible": false,
     "baseEnergy": null,
     "baseHealth": null,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": true
   },
   {
@@ -528,7 +528,7 @@
     "isEdible": true,
     "baseEnergy": 45,
     "baseHealth": 20,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -542,7 +542,7 @@
     "isEdible": false,
     "baseEnergy": null,
     "baseHealth": null,
-    "season": "FALL",
+    "season": ["FALL"],
     "canBecomeGiant": false
   },
   {
@@ -556,7 +556,7 @@
     "isEdible": true,
     "baseEnergy": 63,
     "baseHealth": 28,
-    "season": "WINTER",
+    "season": ["WINTER"],
     "canBecomeGiant": true
   },
   {
@@ -570,7 +570,7 @@
     "isEdible": false,
     "baseEnergy": null,
     "baseHealth": null,
-    "season": "SPRING_SUMMER_FALL",
+    "season": ["SPRING", "SUMMER", "FALL"],
     "canBecomeGiant": false
   }
 ]

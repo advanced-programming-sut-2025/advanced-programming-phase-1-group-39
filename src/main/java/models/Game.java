@@ -32,8 +32,8 @@ public class Game {
     private Map gameMap;
     private ArrayList<Building> buildings = new ArrayList<>();
 
-    ArrayList<NPC> npcs = new ArrayList<>();
-    ArrayList<Friendship> friendships = initializeFriendships();
+    private ArrayList<NPC> npcs = new ArrayList<>();
+    private ArrayList<Friendship> friendships = initializeFriendships();
 
     private Time time = new Time();
 
@@ -385,7 +385,6 @@ public class Game {
         tomorrowWeather.setStatus(status);
     }
 
-    // TODO: each day should be called
     public void setTomorrowWeatherRandom() {
         tomorrowWeather.setWeatherRandom(this.time.getSeason());
     }

@@ -27,6 +27,8 @@ public class JojaMartShop extends Shop {
                         int openHour, int closeHour, NPC owner) {
         super(name, location, width, height, openHour, closeHour, owner);
         loadFromJson(jsonPath);
+
+        addToItemManager();
     }
 
     public void loadFromJson(String path) {
@@ -37,12 +39,10 @@ public class JojaMartShop extends Shop {
             Type type = new TypeToken<JojaMartData>() {}.getType();
             JojaMartData data = gson.fromJson(reader, type);
 
-            // Load permanent stock
             for (ShopItemData item : data.permanentStock) {
                 permanentStock.put(item.name, new ShopItem(item.name, item.price, item.limit));
             }
 
-            // Load seasonal stock for all seasons
             for (Map.Entry<String, List<ShopItemData>> entry : data.seasonalStock.entrySet()) {
                 Season season = Season.valueOf(entry.getKey());
                 HashMap<String, ShopItem> seasonMap = new HashMap<>();
@@ -59,7 +59,7 @@ public class JojaMartShop extends Shop {
             e.printStackTrace();
         }
     }
-    // Data holder classes for JSON parsing
+
     public static class JojaMartData {
         List<ShopItemData> permanentStock;
         Map<String, List<ShopItemData>> seasonalStock;
@@ -84,7 +84,16 @@ public class JojaMartShop extends Shop {
         setupSeasonalStock(newSeason);
     }
 
-    public Result purchaseItem(String itemName, int quantity) {
+    public void addToItemManager() {
+        for (ShopItem item : permanentStock.values()) {
+            if (ItemManager.getItemByName(item.getName()) == null) {
+                ItemManager.addShopItems(item);
+            }
+        }
+    }
+
+    @Override
+    public Result purchase(String itemName, int quantity) {
         ShopItem item = permanentStock.getOrDefault(itemName, seasonalStock.get(itemName));
         if (item == null)
             return new Result(false, "Item not found.");
@@ -92,6 +101,7 @@ public class JojaMartShop extends Shop {
         if (quantity > item.getAvailableQuantity())
             return new Result(false, "You can't buy that many today.");
 
+        item.purchase(quantity);
         Item itemToAdd = ItemManager.getItemByName(itemName);
         App.getApp().getCurrentGame().getPlayerInTurn().getInventory().addItem(itemToAdd, 1);
         return new Result(true, "Successfully bought " + quantity + " x " + itemName + " for " +
@@ -122,12 +132,19 @@ public class JojaMartShop extends Shop {
 
     @Override
     public String showAvailableProducts() {
-        return showAllProducts();
-    }
+        StringBuilder sb = new StringBuilder("Availables:\nPermanent Stock:\n");
+        for (ShopItem item : permanentStock.values()) {
+            if (item.getAvailableQuantity() <= 0) continue;
+            sb.append(item.getName()).append(" - ").append(item.getPrice()).append("g\n");
+        }
 
-    @Override
-    public void handleCommand(String command) {
-        // TODO: parse commands like: "buy Parsnip Seeds 3"
+        sb.append("\n").append(currentSeason).append(" Stock:\n");
+        for (ShopItem item : seasonalStock.values()) {
+            if (item.getAvailableQuantity() <= 0) continue;
+            sb.append(item.getName()).append(" - ").append(item.getPrice()).append("g\n");
+        }
+
+        return sb.toString();
     }
 
 }

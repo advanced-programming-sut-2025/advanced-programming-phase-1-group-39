@@ -77,13 +77,15 @@ public enum CraftingRecipe {
                 Map.of("Wood", 30, "Stone", 20, "Fiber", 30),
                 "Pierre's General Store"),
 
-        FISH_SMOKER(new FishSmoker("Fish Smoker", 0), // Todo:
+        FISH_SMOKER(new FishSmoker("Fish Smoker", 0),
                 Map.of("Wood", 50, "Iron Bar", 3, "Coal", 10),
                 "Fish Shop"),
 
         MYSTIC_TREE_SEED(new CraftingItem("Mystic Tree Seed", 100),
                 Map.of("Acorn", 5, "Maple Seed", 5, "Pine Cone", 5, "Mahogany Seed", 5),
-                "Foraging Level 4");
+                "Foraging Level 4"),
+
+        GRASS_STARTER(new CraftingItem("Grass", 0), Map.of("Wood", 1, "Fiber", 1), "Pierre's General Store");
 
         private final CraftingItem data;
         private final Map<String, Integer> ingredients;

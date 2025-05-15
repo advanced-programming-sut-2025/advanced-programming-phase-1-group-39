@@ -1,15 +1,12 @@
-
 package models.crafting;
 
 import models.Item;
 
 public class CraftingItem extends Item {
-    private String name;
     private int sellPrice;
 
     public CraftingItem(String name, int sellPrice) {
         super(name);
-        this.name = name;
         this.sellPrice = sellPrice;
     }
 
@@ -29,3 +26,4 @@ public class CraftingItem extends Item {
                 '}';
     }
 }
+

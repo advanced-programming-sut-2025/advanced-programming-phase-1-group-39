@@ -62,19 +62,28 @@ public class BlackSmithShop extends Shop{
             return new Result(false, "We don't have enough stock of " + product);
         }
 
-        if (!player.hasEnoughMoney(item.getPrice() * quantity)) {
-            return new Result(false, "Oops, you doesn't have enough money ):");
+        if (!player.getInventory().hasSpace(new ItemStack(item, quantity))) {
+            return new Result(false, "Your Inventory does not have enough space.");
         }
 
-        player.changeMoney(-(item.getPrice() * quantity));
+        int totalPrice = item.getPrice() * quantity;
+        if (!player.hasEnoughMoney(totalPrice)) {
+            return new Result(false, "Oops, you don't have enough money ):");
+        }
+
+        player.changeMoney(-totalPrice);
+        player.getInventory().addItem(ItemManager.getItemByName(item.getName()), quantity);
         item.purchase(quantity);
-        return new Result(true, "You have successfully bought " + quantity + "x of " + product);
+
+        return new Result(true, "You have successfully bought " + quantity + "x of " + product + " for " + totalPrice + "g.");
     }
+
 
 
     public Result upgradeTool(Tool tool) {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         ToolType type = ToolType.getNext(tool.getType());
+        int price  = 0;
         Boolean available = toolUpgrade.get(type);
         if (available == null) {
             return new Result(false, "No such upgrade available.");
@@ -87,45 +96,45 @@ public class BlackSmithShop extends Shop{
                             || !player.hasEnoughMoney(2000)) {
                         return new Result(false, "You can't upgrade your tool");
                     }
+                    price = 2000;
                 }
                 case IRON -> {
                     if (!player.getInventory().hasEnoughStack("Steel Bar", 5)
                             || !player.hasEnoughMoney(5000)) {
                         return new Result(false, "You can't upgrade your tool");
                     }
+                    price = 5000;
                 }
                 case GOLD -> {
                     if (!player.getInventory().hasEnoughStack("Gold Bar", 5)
                             || !player.hasEnoughMoney(10000)) {
                         return new Result(false, "You can't upgrade your tool");
                     }
+                    price = 10000;
                 }
                 case IRIDIUM -> {
                     if (!player.getInventory().hasEnoughStack("Iridium Bar", 5)
                             || !player.hasEnoughMoney(25000)) {
                         return new Result(false, "You can't upgrade your tool");
                     }
+                    price = 25000;
                 }
             }
             tool.upgradeType();
         }
 
+        player.changeMoney(-price);
         toolUpgrade.put(type, false);
         return new Result (true, "Successfully upgraded to" + type + ".");
     }
-    // upgrade trash can has been removed
 
-    public void endDay() { // Todo: must be called each day
+    public void endDay() {
         for (ToolType key : toolUpgrade.keySet()) {
             toolUpgrade.put(key, true);
         }
-    }
-
-
-    @Override
-    public void handleCommand(String command) {
-        // TODO: parse and route commands like:
-        // "buy Copper Ore 5", "upgrade Copper Tool"
+        for (ShopItem item : shopItems.values()) {
+            item.resetDailyLimit();
+        }
     }
 
     @Override

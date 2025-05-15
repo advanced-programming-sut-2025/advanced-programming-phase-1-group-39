@@ -24,4 +24,3 @@ public enum TileType {
 
     public char getSymbol() { return symbol; }
 }
-

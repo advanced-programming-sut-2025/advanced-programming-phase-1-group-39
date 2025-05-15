@@ -23,12 +23,14 @@ public class Shear extends Tool {
                 || animal.getType() != AnimalType.SHEEP) {
             return new Result(false, "This Animal can't produce Wool!");
         } else {
-            AnimalProduct product = animal.getProduct();
+            AnimalProduct product = animal.collectProduct();
+            if (product == null)
+                return new Result(false, "No Wool!");
             if (!player.getInventory().hasSpace(new ItemStack(product, 1)))
                 return new Result(false, "You don't have enough space to get Animal products!");
             player.getInventory().addItem(product, 1);
 
-            animal.changeFriendShip(5);
+            animal.changeFriendship(5);
             ItemStack products = new ItemStack(animal.collectProduct(), 1);
             player.getInventory().addItem(products.getItem(), 1);
             return new Result(true, "You got Wool of Your "+animal.getName()+" !");

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.App;
 import models.Enums.Menu;
+import models.ItemManager;
 import models.User;
 
 import java.io.FileReader;
@@ -26,6 +27,7 @@ public class AppDataManager {
 
     public static void loadApp() {
         File file = new File(APP_FILE_PATH);
+        ItemManager.loadItems();
         if (!file.exists() || file.length() == 0) {
             App app = App.getApp();
             initializeDefaults(app);

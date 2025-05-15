@@ -33,7 +33,7 @@ public class Game {
     private ArrayList<Building> buildings = new ArrayList<>();
 
     private ArrayList<NPC> npcs = new ArrayList<>();
-    private ArrayList<Friendship> friendships = initializeFriendships();
+    private ArrayList<Friendship> friendships = new ArrayList<>();
 
     private Time time = new Time();
 
@@ -64,6 +64,8 @@ public class Game {
         for (Player player : players) {
             resetPlayerLocation(player);
         }
+
+        initializeFriendships();
     }
 
     public int getId() {
@@ -367,7 +369,7 @@ public class Game {
         if (!playerInTurn.isConscious()) return nextTurn();
 
         // TODO : show message!!!
-        showMessages(playerInTurn);
+//        showMessages(playerInTurn);
 
         return true;
     }

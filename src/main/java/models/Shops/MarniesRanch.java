@@ -108,6 +108,10 @@ public class MarniesRanch extends Shop {
                     + product + "\". Limit: " + item.getAvailableQuantity());
         }
 
+        if (!player.hasEnoughMoney(item.getPrice() * quantity)) {
+            return new Result(false, "You don't have enough money ):");
+        }
+
         item.purchase(quantity);
         if (supplies.containsValue(item)) {
             if (product.equalsIgnoreCase("Hay")) {

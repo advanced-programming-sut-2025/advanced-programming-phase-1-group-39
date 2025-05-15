@@ -20,6 +20,8 @@ public class FishingShop extends Shop {
                        int openHour, int closeHour, NPC owner) {
         super(name, location, width, height, openHour, closeHour, owner);
         loadFromJson(jsonPath);
+
+        addToItemManager();
     }
 
     public void loadFromJson(String path) {
@@ -68,6 +70,10 @@ public class FishingShop extends Shop {
         public int getFishingSkillRequired() {
             return fishingSkillRequired;
         }
+    }
+
+    public void addToItemManager() {
+        ItemManager.addShopItems(items.get("Trout Soup"));
     }
 
     @Override

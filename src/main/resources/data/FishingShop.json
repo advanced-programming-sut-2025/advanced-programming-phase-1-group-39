@@ -8,6 +8,13 @@
       "fishingSkillRequired": 0
     },
     {
+      "name": "Trout Soup",
+      "description": "Pretty Salty",
+      "price": 250,
+      "dailyLimit": 1,
+      "fishingSkillRequired": 0
+    },
+    {
       "name": "Bamboo Pole",
       "description": "Use in the water to catch fish.",
       "price": 500,

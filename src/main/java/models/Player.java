@@ -7,6 +7,7 @@ import models.animals.Animal;
 import models.animals.Fish;
 import models.animals.FishType;
 import models.artisan.ArtisanMachineRecipe;
+import models.buildings.Building;
 import models.cooking.FoodBuff;
 import models.cooking.FoodRecipe;
 import models.crafting.CraftingRecipe;
@@ -35,6 +36,7 @@ public class Player {
     private ArrayList<CraftingRecipe> craftingRecipes;
     private ArrayList<ArtisanMachineRecipe> artisanMachineRecipes;
     private ArrayList<FoodRecipe> foodRecipes;
+    private ArrayList<Building> buildings = new ArrayList<>();
 
     private HashMap<Player, Integer> playersFriendship;
     private HashMap<NPC, Integer> NPCsFriendship;
@@ -143,4 +145,7 @@ public class Player {
         return animals.get(name);
     }
 
+    public void addToBuildings(Building building) {
+        buildings.add(building);
+    }
 }

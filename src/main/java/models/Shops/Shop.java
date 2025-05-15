@@ -14,7 +14,6 @@ public class Shop extends Building {
     private int closeHour;
     private NPC owner;
 
-    // Todo: location and width and width in every shop is not true, must be initialized
     public Shop(String name, Location location, int width, int height, int openHour, int closeHour, NPC owner) {
         super(name, location, width, height);
         this.openHour = openHour;

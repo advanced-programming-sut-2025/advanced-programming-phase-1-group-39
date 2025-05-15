@@ -45,7 +45,6 @@ public class Tile {
         } else if (tree != null) {
             c = 'T';
         } else if (itemOnTile != null) {
-            //TODO: maybe change for Error
             if (itemOnTile.getItem() instanceof ForagingCrop) c = 'F';
             else if (itemOnTile.getItem() instanceof ForagingMaterial) {
                 if (itemOnTile.getItem().getName().equalsIgnoreCase("wood")) c = '/';
@@ -157,7 +156,7 @@ public class Tile {
     // walk
     public boolean canWalkOnTile() {
         if (!type.isWalkable()) return false;
-        if (itemOnTile != null) return false; // TODO : for grass it is walkable
+        if (itemOnTile != null) return false;
         if (tree != null) return false;
         if (plant != null) return false;
         return true;

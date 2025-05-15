@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 public class Inventory {
     InventoryType type;
-    //ToDO: change
     ArrayList<ItemStack> inventoryItems = new ArrayList<>();
     TrashType trashType;
 
@@ -41,7 +40,7 @@ public class Inventory {
     public void addItem(Item item, int amount) {
         ItemStack itemStack = getItemByName(item.getName());
         if (item != null) {
-            itemStack.addStack(amount); // Todo: it's not complete
+            itemStack.addStack(amount);
         } else {
             inventoryItems.add(new ItemStack(item, amount));
         }
@@ -49,7 +48,7 @@ public class Inventory {
     public ItemStack pickItem(String name, int amount) {
         ItemStack item = getItemByName(name);
         if (item != null) {
-            item.addStack(-amount); // Todo: it's not complete
+            item.addStack(-amount);
             return new ItemStack(item.getItem(), amount);
         }
         return null;

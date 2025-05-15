@@ -77,7 +77,7 @@ public enum CraftingRecipe {
                 Map.of("Wood", 30, "Stone", 20, "Fiber", 30),
                 "Pierre's General Store"),
 
-        FISH_SMOKER(new FishSmoker("Fish Smoker", 0), // Todo:
+        FISH_SMOKER(new FishSmoker("Fish Smoker", 0),
                 Map.of("Wood", 50, "Iron Bar", 3, "Coal", 10),
                 "Fish Shop"),
 

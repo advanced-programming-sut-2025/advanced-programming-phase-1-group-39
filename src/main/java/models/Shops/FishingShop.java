@@ -95,7 +95,7 @@ public class FishingShop extends Shop {
             item.purchase(quantity);
         } else if (product.equalsIgnoreCase("Trout Soup")) {
             player.getInventory().addItem(new Food("Trout Soup", 50, 250, null), 1);
-            item.purchase(quantity); // Todo: add to item manager
+            item.purchase(quantity);
         } else {
             Skill skill = player.getSkills();
             if (skill.getFishingLevel() < item.getFishingSkillRequired()) {

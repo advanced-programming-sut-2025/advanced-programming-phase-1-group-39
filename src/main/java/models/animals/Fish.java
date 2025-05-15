@@ -14,7 +14,7 @@ public class Fish extends Item {
         this.type = type;
         this.price = price;
         this.season = season;
-        this.quality = AnimalProductQuality.NORMAL; // initial Todo:
+        this.quality = AnimalProductQuality.NORMAL;
     }
 
     public FishType getType() {

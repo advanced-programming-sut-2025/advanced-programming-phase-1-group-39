@@ -16,7 +16,7 @@ public class CraftingManager {
 
     public static Result craft(String itemName, Player player) {
         if (player.getEnergy() < 2) {
-            return new Result(false, "Not enough energy to craft."); // Todo: must add concious
+            return new Result(false, "Not enough energy to craft.");
         }
 
         CraftingRecipe recipe = getRecipeByName(itemName);

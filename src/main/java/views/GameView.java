@@ -21,7 +21,15 @@ public class GameView implements View {
     public void checkCommand(String command) {
 
         Matcher matcher;
-        if ((GameCommands.NEXT_TURN.getMatcher(command)) != null) {
+        Result result;
+
+        if ((GameCommands.SHOW_CURRENT_MENU.getMatcher(command)) != null) {
+            System.out.println(controller.showCurrentMenu());
+        } else if ((GameCommands.EXIT_GAME.getMatcher(command)) != null) {
+            System.out.println(controller.exitGame());
+        } else if ((GameCommands.EXIT_APP.getMatcher(command)) != null) {
+            controller.exitApp();
+        } else if ((GameCommands.NEXT_TURN.getMatcher(command)) != null) {
             System.out.println(controller.goNextTurn());
         } else if ((GameCommands.TIME.getMatcher(command)) != null) {
             System.out.println(controller.showTime());
@@ -46,7 +54,7 @@ public class GameView implements View {
             int x = Integer.parseInt(matcher.group("x"));
             int y = Integer.parseInt(matcher.group("y"));
 
-            Result result = controller.walkToCheck(x,y);
+            result = controller.walkToCheck(x,y);
             System.out.println(result);
             if (result.success()) {
                 System.out.println("do you want to go? (y / n)");
@@ -111,9 +119,8 @@ public class GameView implements View {
             System.out.println(controller.sellProduct(matcher));
         }
 
-        Result result;
         // NPC and friendships
-        if ((matcher = NPCGameCommand.MeetNPC.getMatcher(command)) != null) {
+        else if ((matcher = NPCGameCommand.MeetNPC.getMatcher(command)) != null) {
             result = npcController.meetNPC(matcher);
             System.out.println(result.message());
         } else if ((matcher = NPCGameCommand.GiveGiftToNPC.getMatcher(command)) != null) {

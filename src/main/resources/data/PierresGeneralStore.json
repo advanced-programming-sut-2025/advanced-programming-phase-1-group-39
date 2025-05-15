@@ -25,13 +25,13 @@
             "dailyLimit": 2
         },
         {
-            "name": "Dehydrator (Recipe)",
+            "name": "Dehydrator",
             "description": "A recipe to make Dehydrator",
             "price": 10000,
             "dailyLimit": 1
         },
         {
-            "name": "Grass Starter (Recipe)",
+            "name": "Grass Starter",
             "description": "A recipe to make Grass Starter",
             "price": 1000,
             "dailyLimit": 1

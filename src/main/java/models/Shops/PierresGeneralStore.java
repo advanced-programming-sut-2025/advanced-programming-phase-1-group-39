@@ -5,6 +5,7 @@ import models.*;
 import models.Enums.Season;
 import models.NPC.NPC;
 import models.cooking.Food;
+import models.crafting.CraftingRecipe;
 import models.inventory.InventoryType;
 
 import java.io.FileReader;
@@ -21,6 +22,8 @@ public class PierresGeneralStore extends Shop {
                                int openHour, int closeHour, NPC owner) {
         super(name, location, width, height, openHour, closeHour, owner);
         loadFromJson(jsonPath);
+
+        addToItemManager();
     }
 
     public void setCurrentSeason(Season season) {
@@ -59,6 +62,16 @@ public class PierresGeneralStore extends Shop {
             reader.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void addToItemManager() {
+        for (ShopItem item : yearRound.values()) {
+            if (ItemManager.getItemByName(item.getName()) == null
+                    && !item.getName().equalsIgnoreCase("Dehydrator")
+                    && !item.getName().equalsIgnoreCase("Grass Starter")) {
+                ItemManager.addShopItems(item);
+            }
         }
     }
 
@@ -123,7 +136,11 @@ public class PierresGeneralStore extends Shop {
                 return new Result(false, "You don't have enough money.");
             }
 
-            if (ItemManager.getItemByName(product) != null) {
+            if (product.equalsIgnoreCase("Dehydrator")) {
+                player.learnCraftingRecipe(CraftingRecipe.DEHYDRATOR);
+            } else if (product.equalsIgnoreCase("Grass Starter")) {
+                player.learnCraftingRecipe(CraftingRecipe.GRASS_STARTER);
+            } else if (ItemManager.getItemByName(product) != null) {
                 player.getInventory().addItem(ItemManager.getItemByName(product), quantity);
             } else {
                 player.getInventory().addItem(new OddItems(product), quantity);

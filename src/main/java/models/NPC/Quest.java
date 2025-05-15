@@ -22,3 +22,4 @@ public class Quest {
         return task;
     }
 }
+

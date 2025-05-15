@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Player {
+    private int gameId;
+
     private Location location = new Location(0,0);
     private Location startOfFarm;
     private Location endOfFarm;
@@ -67,7 +69,7 @@ public class Player {
     // NPC
     private ArrayList<PlayerNPCInteraction> friendships = initialPlayersFriendship();
 
-    public Player(String username) {
+    public Player(String username, int gameId) {
         ItemStack hoe = new ItemStack(new Hoe(), 1);
         ItemStack pickaxe = new ItemStack(new Pickaxe(), 1);
         ItemStack axe = new ItemStack(new Axe(), 1);
@@ -80,6 +82,8 @@ public class Player {
         );
 
         this.username = username;
+
+        this.gameId = gameId;
     }
 
     public boolean isConscious() {
@@ -96,8 +100,6 @@ public class Player {
     public Inventory getInventory() {
         return inventory;
     }
-
-    public int getLevelOfFriendship(NPC npc) {return 0;}
 
     public void startTrade(Player player, TradeItem item) {}
 
@@ -202,6 +204,12 @@ public class Player {
     public void resetHourlyEnergyLimit() {
         turnEnergy = Math.min(Constants.MAX_ENERGY_PER_TURN, energy);
     }
+
+    // ID
+    public int getGameId() {
+        return gameId;
+    }
+
     // home location
     public Location getHomeLocation() {
         return new Location(startOfFarm.x() + 74, startOfFarm.y() + 8);
@@ -352,11 +360,11 @@ public class Player {
 
     public ArrayList<PlayerNPCInteraction> initialPlayersFriendship() {
         ArrayList<PlayerNPCInteraction> friendship = new ArrayList<>();
-        friendship.add(new PlayerNPCInteraction("sebastian"));
-        friendship.add(new PlayerNPCInteraction("abigail"));
-        friendship.add(new PlayerNPCInteraction("harvey"));
-        friendship.add(new PlayerNPCInteraction("leah"));
-        friendship.add(new PlayerNPCInteraction("robin"));
+        friendship.add(new PlayerNPCInteraction("sebastian", 20));
+        friendship.add(new PlayerNPCInteraction("abigail", 40));
+        friendship.add(new PlayerNPCInteraction("harvey", 60));
+        friendship.add(new PlayerNPCInteraction("leah", 80));
+        friendship.add(new PlayerNPCInteraction("robin", 100));
         return friendship;
     }
 

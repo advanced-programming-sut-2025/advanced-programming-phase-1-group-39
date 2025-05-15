@@ -1,0 +1,65 @@
+{
+  "users": [
+    {
+      "userName": "mostafa",
+      "password": "28110713b73a7c15a621a4272e8bfc4e1122f6a7e8b261c15dfec650a8a14cb7",
+      "nickname": "mosi",
+      "email": "mostafa@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "DREAM_JOB",
+        "answer": "salam"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0,
+      "players": []
+    },
+    {
+      "userName": "ahmad",
+      "password": "28110713b73a7c15a621a4272e8bfc4e1122f6a7e8b261c15dfec650a8a14cb7",
+      "nickname": "ahi",
+      "email": "ahamd@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "DREAM_JOB",
+        "answer": "salam"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0,
+      "players": []
+    },
+    {
+      "userName": "reza",
+      "password": "28110713b73a7c15a621a4272e8bfc4e1122f6a7e8b261c15dfec650a8a14cb7",
+      "nickname": "reza",
+      "email": "reza@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "DREAM_JOB",
+        "answer": "salam"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0,
+      "players": []
+    },
+    {
+      "userName": "mohsen",
+      "password": "28110713b73a7c15a621a4272e8bfc4e1122f6a7e8b261c15dfec650a8a14cb7",
+      "nickname": "mohsen",
+      "email": "mohsen@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "DREAM_JOB",
+        "answer": "salam"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0,
+      "players": []
+    }
+  ],
+  "games": [],
+  "isRegisterSuccessful": false,
+  "stayLoggedIn": false,
+  "currentGameId": 101,
+  "currentMenu": "SIGNUP_MENU"
+}

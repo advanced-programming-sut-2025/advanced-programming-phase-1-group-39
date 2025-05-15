@@ -6,6 +6,8 @@ import models.Enums.WeatherStatus;
 import models.NPC.*;
 import models.Shops.*;
 import models.animals.Animal;
+import models.PlayerInteraction.Friendship;
+import models.PlayerInteraction.Message;
 import models.buildings.Building;
 import models.map.FarmType;
 import models.map.Map;
@@ -16,7 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    // TODO : remove currentId from APP
+    public static int lastGameId = 101;
+    private int id;
+
     private ArrayList<Player> players;
+    private String loadedPlayerUsername;
     private Player mainPlayer;
 
     private Player playerInTurn;
@@ -25,16 +32,20 @@ public class Game {
     private Map gameMap;
     private ArrayList<Building> buildings = new ArrayList<>();
 
+    ArrayList<NPC> npcs = new ArrayList<>();
+    ArrayList<Friendship> friendships = initializeFriendships();
+
     private Time time = new Time();
 
     private Weather todayWeather = new Weather();
     private Weather tomorrowWeather = new Weather();
 
-    ArrayList<NPC> npcs = new ArrayList<>();
-
+    // TODO: change place of this
+    private int currentGiftNumber = 101;
 
     // first player should be the mainPlayer of game
-    public Game(Player one, Player two, Player three, Player four) {
+    public Game(int gameId, Player one, Player two, Player three, Player four) {
+        this.id = lastGameId++;
         this.players = new ArrayList<>(List.of(one, two, three, four));
         this.mainPlayer = one;
         this.playerInTurn = one;
@@ -53,6 +64,10 @@ public class Game {
         for (Player player : players) {
             resetPlayerLocation(player);
         }
+    }
+
+    public int getId() {
+        return id;
     }
 
     // NPC
@@ -223,6 +238,12 @@ public class Game {
         // animals
         generateAllAnimalsProduct();
 
+        // friendships
+        resetFriendshipNPCs();
+        sendGiftToPlayers();
+        hasNoInteraction();
+        resetFriendships();
+
         return lastDayReport.toString();
     }
     private void playersGoHome() {
@@ -334,7 +355,10 @@ public class Game {
 
         playerInTurn = players.get(newIndex);
         if (!playerInTurn.isConscious()) return nextTurn();
-        // TODO : add talk
+
+        // TODO : show message!!!
+        showMessages(playerInTurn);
+
         return true;
     }
 
@@ -354,6 +378,14 @@ public class Game {
         tomorrowWeather.setWeatherRandom(this.time.getSeason());
     }
 
+    public void setLoadedPlayerUsername(String PlayerUsername) {
+        this.loadedPlayerUsername = PlayerUsername;
+    }
+
+    public String getLoadedPlayerUsername() {
+        return loadedPlayerUsername;
+    }
+
     public void addBuilding(Building building) {
         buildings.add(building);
     }
@@ -364,4 +396,151 @@ public class Game {
         }
         return null;
     }
+
+    public Player getPlayerByUsername(String username) {
+        for (Player player : players) {
+            if (player.getUsername().equals(username)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    // Friendships
+    public ArrayList<Friendship> getFriendships() {
+        return friendships;
+    }
+
+    private void resetFriendshipNPCs() {
+        for (Player player : players) {
+            for (PlayerNPCInteraction friendship : player.getAllFriendships()) {
+                friendship.setFirstGift(true);
+                friendship.setFirstTalking(true);
+            }
+        }
+    }
+
+    public static int randomZeroOrOne() {
+        return (int) (Math.random() * 2);
+    }
+
+    public static int randomZeroToThree() {
+        return (int) (Math.random() * 4);
+    }
+
+    private void sendGiftToPlayers() {
+        int x;
+        int y;
+        for (Player player : players) {
+            for (PlayerNPCInteraction friendship : player.getAllFriendships()) {
+                if (friendship.getFriendshipLevel() == 3) {
+                    x = randomZeroOrOne();
+                    if (x == 1) {
+                        y = randomZeroToThree();
+                        ItemStack itemStack = getNPC(friendship.getNPCName()).getGifts().get(y);
+                        if (player.getInventory().hasSpace(itemStack)) {
+                            player.getInventory().addItem(itemStack.getItem(), itemStack.getAmount());
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    // interactions
+
+    private ArrayList<Friendship> initializeFriendships() {
+        ArrayList<Friendship> friendships = new ArrayList<>();
+        friendships.add(new Friendship(players.get(0).getUsername(), players.get(1).getUsername()));
+        friendships.add(new Friendship(players.get(0).getUsername(), players.get(2).getUsername()));
+        friendships.add(new Friendship(players.get(0).getUsername(), players.get(3).getUsername()));
+        friendships.add(new Friendship(players.get(1).getUsername(), players.get(2).getUsername()));
+        friendships.add(new Friendship(players.get(1).getUsername(), players.get(3).getUsername()));
+        friendships.add(new Friendship(players.get(2).getUsername(), players.get(3).getUsername()));
+        return friendships;
+    }
+
+    public Friendship getFriendship(Player player1, Player player2) {
+        for (Friendship friendship : getFriendships()) {
+            if ((friendship.getUser1().equals(player1.getUsername()) && friendship.getUser2().equals(player2.getUsername())) ||
+                    (friendship.getUser1().equals(player2.getUsername()) && friendship.getUser2().equals(player1.getUsername()))) {
+                return friendship;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Player> getOtherPlayers(String playerName) {
+        ArrayList<Player> otherPlayers = new ArrayList<>();
+        for (Player player : players) {
+            if (!player.getUsername().equals(playerName)) {
+                otherPlayers.add(player);
+            }
+        }
+        return otherPlayers;
+    }
+
+    private String showMessages(Player player) {
+        StringBuilder messages = new StringBuilder();
+        ArrayList<Player> otherPlayers = getOtherPlayers(player.getUsername());
+        for (Player otherPlayer : otherPlayers) {
+            int count = 0;
+            messages.append("Messages received from player ").append(otherPlayer.getUsername()).append(" :\n");
+            for (Message message : getFriendship(player, otherPlayer).getMessages()) {
+                if (message.getSender().equals(otherPlayer.getUsername()) && message.isNew()) {
+                    count++;
+                    messages.append("\t").append(message.getMessage()).append("\n");
+                    message.setNew(false);
+                }
+            }
+            if (count == 0) {
+                messages.append("\tYou have no messages from player ").append(otherPlayer.getUsername()).append(" .\n");
+            }
+        }
+        messages.deleteCharAt(messages.length() - 1);
+        return messages.toString();
+    }
+
+    private void resetFriendships() {
+        for (Friendship friendship : friendships) {
+            friendship.setFirstHug(true);
+            friendship.setFirstTalking(true);
+            friendship.setHasGiftedEachOther(true);
+        }
+    }
+
+    private void hasNoInteraction() {
+        for (Friendship friendship : getFriendships()) {
+            if (friendship.isFirstTalking() && friendship.isFirstHug() && friendship.isHasGiftedEachOther() && !friendship.isMarried()) {
+                int currentXP = friendship.getXp();
+                if (currentXP - 10 < 0) {
+                    friendship.setXp(0);
+                } else if (currentXP < 100) {
+                    friendship.setXp(currentXP - 10);
+                } else if (currentXP > 100 && currentXP - 10 < 100) {
+                    friendship.setXp(90);
+                } else if (currentXP < 200 && currentXP - 10 >= 100) {
+                    friendship.setXp(currentXP - 10);
+                } else if (currentXP > 200 && currentXP - 10 < 200) {
+                    friendship.setXp(190);
+                } else if (currentXP < 300 && currentXP - 10 >= 200) {
+                    friendship.setXp(currentXP - 10);
+                } else if (currentXP > 300 && currentXP - 10 < 300) {
+                    friendship.setXp(290);
+                } else if (currentXP < 400 && currentXP - 10 >= 300) {
+                    friendship.setXp(currentXP - 10);
+                } else {
+                    friendship.setXp(currentXP);
+                }
+            }
+        }
+    }
+
+    // gift
+
+    public void setCurrentGiftNumber() {
+        this.currentGiftNumber += 1;
+    }
+
 }

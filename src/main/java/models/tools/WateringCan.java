@@ -78,4 +78,8 @@ public class WateringCan extends Tool {
     public void upgradeTo(ToolType type) {
         this.type = type;
     }
+
+    public void upgradeTo(ToolType type) {
+        this.type = type;
+    }
 }

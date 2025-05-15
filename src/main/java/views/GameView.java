@@ -2,6 +2,8 @@ package views;
 
 import controllers.AppControllers;
 import controllers.GameController;
+import controllers.NPCGameController;
+import models.Enums.commands.NPCGameCommand;
 import models.Enums.commands.GameCommands;
 import models.Input;
 import models.Result;
@@ -9,9 +11,11 @@ import models.Result;
 import java.util.regex.Matcher;
 
 public class GameView implements View {
+    GameController controller = AppControllers.gameController;
+    private final NPCGameController npcController = new NPCGameController();
+
     @Override
     public void checkCommand(String command) {
-        GameController controller = AppControllers.gameController;
 
         Matcher matcher;
         if ((GameCommands.NEXT_TURN.getMatcher(command)) != null) {
@@ -104,11 +108,30 @@ public class GameView implements View {
             System.out.println(controller.sellProduct(matcher));
         }
 
+        // NPC and friendships
+        if ((matcher = NPCGameCommand.MeetNPC.getMatcher(command)) != null) {
+            result = npcController.meetNPC(matcher);
+            System.out.println(result.message());
+        } else if ((matcher = NPCGameCommand.GiveGiftToNPC.getMatcher(command)) != null) {
+            result = npcController.giveGift(matcher);
+            System.out.println(result.message());
+        } else if ((matcher = NPCGameCommand.ShowFriendShipList.getMatcher(command)) != null) {
+            result = npcController.showFriendship();
+            System.out.println(result.message());
+        } else if ((matcher = NPCGameCommand.ShowQuestsList.getMatcher(command)) != null) {
+            result = npcController.showQuestsList();
+            System.out.println(result.message());
+        } else if ((matcher = NPCGameCommand.QuestsFinish.getMatcher(command)) != null) {
+            result = npcController.finishQuests(matcher);
+            System.out.println(result.message());
+        }
 
         else {
             System.out.println("invalid command.");
         }
 
+
+        // todo: check
         // Time checking
         Result result = controller.checkTime();
         if (result.success()) {

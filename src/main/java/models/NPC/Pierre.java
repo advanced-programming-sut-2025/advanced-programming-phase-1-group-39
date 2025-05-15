@@ -15,7 +15,7 @@ public class Pierre extends NPC {
                 "General Store Owner",
                 "Passionate about small business and proud of his store.\nHe has a flair for dramatics when it comes to JojaMart, and always tries to make his goods sound like the best.",
                 new Location(33,26),
-                new ArrayList<>(List.of(ItemManager.getItemByName("Rare Seed"), ItemManager.getItemByName("Tomato Seeds")))
+                new ArrayList<>(List.of(ItemManager.getItemByName("Rare Seed"), ItemManager.getItemByName("Vinegar")))
         );
     }
 

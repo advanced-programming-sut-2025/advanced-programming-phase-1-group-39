@@ -1,27 +1,4 @@
-import com.google.gson.internal.bind.util.ISO8601Utils;
-import controllers.AppControllers;
-import models.*;
-import models.Enums.Menu;
-import models.Enums.Season;
-import models.artisan.Keg;
-import models.buildings.GreenHouse;
-import models.cropsAndFarming.ForagingManager;
-import models.cropsAndFarming.TreeManager;
-import models.map.FarmType;
-import models.map.Map;
-import models.map.Tile;
-import org.w3c.dom.Node;
-import views.AppView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Main {
-//    public static void main(String[] args) {
-//        (new AppView()).run();
-//    }
-
     public static void main(String[] args) {
         try {
             ItemManager.loadItems();
@@ -49,5 +26,14 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        // TODO : delete up
+        AppDataManager.loadApp();
+        UsersDataManager.loadUsers();
+        new AppView().run();
+        UsersDataManager.saveUsers(App.getApp().getUsers());
+        SaveAppManager.saveApp();
+
     }
 }

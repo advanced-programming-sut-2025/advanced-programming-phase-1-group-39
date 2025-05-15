@@ -108,6 +108,7 @@ public class GameView implements View {
             System.out.println(controller.sellProduct(matcher));
         }
 
+        Result result;
         // NPC and friendships
         if ((matcher = NPCGameCommand.MeetNPC.getMatcher(command)) != null) {
             result = npcController.meetNPC(matcher);
@@ -133,7 +134,7 @@ public class GameView implements View {
 
         // todo: check
         // Time checking
-        Result result = controller.checkTime();
+        result = controller.checkTime();
         if (result.success()) {
             System.out.println(result);
             System.out.println(controller.goNextDay());

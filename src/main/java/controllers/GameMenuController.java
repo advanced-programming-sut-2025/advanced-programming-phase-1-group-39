@@ -36,10 +36,10 @@ public class GameMenuController {
         } else if (hasCurrentGame(username3)) {
             return new Result(false, "username3 already has a current game.");
         } else {
-            Player player1 = new Player(app.getLoggedInUser().getUserName(), 1, app.getLastGameId()+1);
-            Player player2 = new Player(username1, 2, app.getLastGameId()+1);
-            Player player3 = new Player(username2, 3, app.getLastGameId()+1);
-            Player player4 = new Player(username3, 4, app.getLastGameId()+1);
+            Player player1 = new Player(app.getLoggedInUser().getUserName(), Game.lastGameId);
+            Player player2 = new Player(username1, Game.lastGameId);
+            Player player3 = new Player(username2, Game.lastGameId);
+            Player player4 = new Player(username3, Game.lastGameId);
             app.getUsers().get(getIndexInUsers(app.getLoggedInUser().getUserName())).addPlayer(player1);
             app.getUsers().get(getIndexInUsers(app.getLoggedInUser().getUserName())).addNumberOfGamesPlayed();
             app.getUsers().get(getIndexInUsers(username1)).addPlayer(player2);
@@ -56,7 +56,7 @@ public class GameMenuController {
             return new Result(true, "Congratulations!!!" + "\n" +
                     "The new game has been successfully created. " + "\n" +
                     "Now, each player must choose their game map in order, starting with the first player. \n" +
-                    "The available map types are as follows: \n" + Map.showFarmTypesInfo());
+                    "The available map types are as follows: \n" + newGame.getMap().showFarmTypesInfo());
         }
     }
 

@@ -1,5 +1,6 @@
 package views;
 
+import controllers.AppControllers;
 import controllers.ProfileMenuController;
 import models.App;
 import models.Enums.commands.ProfileMenuCommands;
@@ -8,7 +9,7 @@ import models.Result;
 import java.util.regex.Matcher;
 
 public class ProfileMenuView implements View {
-    private final ProfileMenuController controller = new ProfileMenuController();
+    private final ProfileMenuController controller = AppControllers.profileMenuController;
     
     @Override
     public void checkCommand(String command) {

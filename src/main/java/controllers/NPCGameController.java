@@ -17,14 +17,14 @@ public class NPCGameController {
 
     App app = App.getApp();
     Game game = app.getCurrentGame();
-    Player currentPlayer = game.getPlayerInTurn();
     ArrayList<String> NPCNames = new ArrayList<>(List.of("sebastian", "abigail", "leah", "robin", "harvey"));
+
 
     public Result meetNPC(Matcher matcher) {
         String npcName = matcher.group("NPCName");
         String condition;
         String output;
-
+        Player currentPlayer = game.getPlayerInTurn();
         if (!NPCNames.contains(npcName)) {
             return new Result(false, "NPC " + npcName + "is not among the npcs!");
         } else if (npcName.equals("sebastian") && !isNpcNearPlayer(currentPlayer.getLocation(),
@@ -88,7 +88,7 @@ public class NPCGameController {
     public Result giveGift(Matcher matcher) {
         String npcName = matcher.group("NPCName");
         String itemName = matcher.group("item");
-
+        Player currentPlayer = game.getPlayerInTurn();
         if (!NPCNames.contains(npcName)) {
             return new Result(false, "NPC " + npcName + "is not among the npcs!");
         } else if (npcName.equals("sebastian") && !isNpcNearPlayer(currentPlayer.getLocation(),
@@ -148,7 +148,7 @@ public class NPCGameController {
 
     public Result finishQuests(Matcher matcher) {
         String index = matcher.group("index");
-
+        Player currentPlayer = game.getPlayerInTurn();
         if (!isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation()) &&
             !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("abigail").getLocation()) &&
             !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("harvey").getLocation()) &&
@@ -351,6 +351,7 @@ public class NPCGameController {
     }
 
     private StringBuilder printFriendShip(String NPCName) {
+        Player currentPlayer = game.getPlayerInTurn();
         StringBuilder output = new StringBuilder();
         output.append(NPCName).append(" ->\n").append("friendShip level : ");
         output.append(currentPlayer.getFriendship(NPCName).getFriendshipLevel()).append("\n");
@@ -366,6 +367,7 @@ public class NPCGameController {
     }
 
     private StringBuilder activeMissions() {
+        Player currentPlayer = game.getPlayerInTurn();
         StringBuilder output = new StringBuilder();
         output.append("Quests in Progress :");
         int count = 0;
@@ -400,6 +402,7 @@ public class NPCGameController {
 
     private Boolean canDoRequest(int level, String NPCName) {
         Quest quest = game.getNPC(NPCName).getQuest(level);
+        Player currentPlayer = game.getPlayerInTurn();
         return currentPlayer.getInventory().hasEnoughStack(quest.getTask().getItem().getName(), quest.getTask().getAmount());
     }
 

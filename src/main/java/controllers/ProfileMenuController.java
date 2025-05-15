@@ -74,7 +74,7 @@ public class ProfileMenuController {
             return new Result(false, output.toString());
         } else {
             App.getApp().getLoggedInUser().setPassword(HashSHA256.hashPassword(password));
-            App.getApp().getUsers().get(getIndexInUsers(App.getApp().getLoggedInUser().getUserName())).setPassword(password);
+            App.getApp().getUsers().get(getIndexInUsers(App.getApp().getLoggedInUser().getUserName())).setPassword(HashSHA256.hashPassword(password));
             return new Result(true, "password changed successfully.");
         }
     }

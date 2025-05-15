@@ -73,12 +73,6 @@ public class WateringCan extends Tool {
                 * getWeatherMultiplier(weather));
     }
 
-    public void upgradeToNext() {}
-
-    public void upgradeTo(ToolType type) {
-        this.type = type;
-    }
-
     public void upgradeTo(ToolType type) {
         this.type = type;
     }

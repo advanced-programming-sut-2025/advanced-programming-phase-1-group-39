@@ -81,37 +81,37 @@ public class Game {
                 11, 8, "src/main/resources/data/BlackSmithShop.json",
                 9, 16,
                 getNPC("clint")
-                ));
-        gameShops.add(new JojaMartShop("JojaMart Shop", new Location(93 + Constants.FARM_WIDTH,12 + Constants.DISABLED_HEIGHT),
+        ));
+        gameShops.add(new JojaMartShop("JojaMart Shop", new Location(93 + Constants.FARM_WIDTH, 12 + Constants.DISABLED_HEIGHT),
                 25, 20, "src/main/resources/data/JojaMartShop.json",
                 9, 23,
                 getNPC("morris")
-                ));
+        ));
         gameShops.add(new PierresGeneralStore("Pierre's General Store", new Location(27 + Constants.FARM_WIDTH, 22 + Constants.DISABLED_HEIGHT),
                 12, 11, "src/main/resources/data/PierresGeneralStore.json",
                 9, 17,
                 getNPC("pierre")
-                ));
-        gameShops.add(new CarpentersShop("Carpenter's Shop", new Location(23 + Constants.FARM_WIDTH,46 + Constants.DISABLED_HEIGHT),
+        ));
+        gameShops.add(new CarpentersShop("Carpenter's Shop", new Location(23 + Constants.FARM_WIDTH, 46 + Constants.DISABLED_HEIGHT),
                 18, 12, "src/main/resources/data/CarpentersShop.json",
                 9, 20,
                 getNPC("robin")
-                ));
+        ));
         gameShops.add(new FishingShop("Fishing Shop", new Location(96 + Constants.FARM_WIDTH, 76 + Constants.DISABLED_HEIGHT),
                 18, 12, "src/main/resources/data/FishingShop.json",
                 9, 17,
                 getNPC("willy")
-                ));
+        ));
         gameShops.add(new MarniesRanch("Marnie's Ranch", new Location(22 + Constants.FARM_WIDTH, 76 + Constants.DISABLED_HEIGHT),
                 18, 12, "src/main/resources/data/MarniesRanch.json",
                 9, 16,
                 getNPC("marnie")
-                ));
+        ));
         gameShops.add(new StardropSaloon("The Stardrop Saloon", new Location(64 + Constants.FARM_WIDTH, 46 + Constants.DISABLED_HEIGHT),
                 18, 12, "src/main/resources/data/StardropSaloon.json",
                 12, 24,
                 getNPC("gus")
-                ));
+        ));
 
         buildings.addAll(gameShops);
     }
@@ -157,6 +157,7 @@ public class Game {
             }
         }
     }
+
     // Map
     public Map getMap() {
         return gameMap;
@@ -165,7 +166,9 @@ public class Game {
 
     public void addRandomFarmForPlayer(Player player, FarmType farmType) {
         int number = players.indexOf(player);
-        if (number == -1) {return;}
+        if (number == -1) {
+            return;
+        }
 
         player.setFarmBound(Map.getStartOfFarm(number));
         player.addFirstBuildingObjects(this);
@@ -184,6 +187,7 @@ public class Game {
         // reset players energiesHourLimit
         resetPlayersHourlyEnergyLimit();
     }
+
     public void resetPlayersHourlyEnergyLimit() {
         for (Player player : players) {
             player.resetHourlyEnergyLimit();
@@ -229,7 +233,7 @@ public class Game {
 
         // if weather rain or storm should water all tiles
         if (todayWeather.getStatus().equals(WeatherStatus.STORM)
-        || todayWeather.getStatus().equals(WeatherStatus.RAIN)) {
+                || todayWeather.getStatus().equals(WeatherStatus.RAIN)) {
             gameMap.setWaterAllTiles(true);
         } else {
             gameMap.setWaterAllTiles(false);
@@ -246,6 +250,7 @@ public class Game {
 
         return lastDayReport.toString();
     }
+
     private void playersGoHome() {
         for (Player player : players) {
             Location homeLoc = player.getHomeLocation();
@@ -256,15 +261,16 @@ public class Game {
                 player.setEnergy(0);
         }
     }
+
     private void thorTiles() {
         ArrayList<Tile> tiles = new ArrayList<>();
         for (Player player : players) {
             for (int i = 0; i < 3; i++) {
-                int tileX = player.getStartOfFarm().x() + (int)(Math.random() * Constants.FARM_WIDTH);
-                int tileY = player.getStartOfFarm().y() + (int)(Math.random() * Constants.FARM_HEIGHT);
+                int tileX = player.getStartOfFarm().x() + (int) (Math.random() * Constants.FARM_WIDTH);
+                int tileY = player.getStartOfFarm().y() + (int) (Math.random() * Constants.FARM_HEIGHT);
 
                 Tile tile = gameMap.getTile(tileX, tileY);
-                if (tiles.contains(tile)){
+                if (tiles.contains(tile)) {
                     i--;
                     continue;
                 }
@@ -274,6 +280,7 @@ public class Game {
             }
         }
     }
+
     private void fillFarmsWithRandoms() {
         for (Player player : players) {
             boolean haveTrees = Math.random() > 0.8;
@@ -282,23 +289,26 @@ public class Game {
                     buildings);
         }
     }
+
     private void resetPlayersEnergies() {
         for (Player player : players) {
             if (!player.isConscious()) player.setEnergy(0.75 * Constants.MAX_ENERGY);
             else if (player.haveBadDay()) {
                 player.setEnergy(0.5 * Constants.MAX_ENERGY);
                 player.changeBadDays(-1);
-            }
-            else player.setEnergy(Constants.MAX_ENERGY);
+            } else player.setEnergy(Constants.MAX_ENERGY);
 
             player.resetEnergyUnlimited();
             player.resetCheatedEnergy();
         }
-    } public void addPlayersRevenueToMoney() {
+    }
+
+    public void addPlayersRevenueToMoney() {
         for (Player player : players) {
             player.addNightRevenueToMoney();
         }
     }
+
     public void generateAllAnimalsProduct() {
         for (Player player : players) {
             for (Animal animal : player.getAnimals()) {
@@ -370,9 +380,11 @@ public class Game {
     public Weather getTomorrowWeather() {
         return tomorrowWeather;
     }
+
     public void setTomorrowWeather(WeatherStatus status) {
         tomorrowWeather.setStatus(status);
     }
+
     // TODO: each day should be called
     public void setTomorrowWeatherRandom() {
         tomorrowWeather.setWeatherRandom(this.time.getSeason());

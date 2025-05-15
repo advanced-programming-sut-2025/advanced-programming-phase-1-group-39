@@ -15,6 +15,7 @@ public enum GameMenuCommands {
 
     ShowCurrentMenu("show\\s+current\\s+menu")
 
+
     ;
 
     private final String pattern;

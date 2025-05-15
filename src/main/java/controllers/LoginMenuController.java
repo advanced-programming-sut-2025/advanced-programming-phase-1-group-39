@@ -211,16 +211,16 @@ public class LoginMenuController {
         StringBuilder errors = new StringBuilder();
 
         if (password.length() < 8) {
-            errors.append("Password must be at least 8 characters long. \n");
+            errors.append("Password must be at least 8 characters long.");
         }
         if (!password.matches(".*[a-z].*")) {
-            errors.append("Password must include at least one lowercase letter.\n");
+            errors.append("Password must include at least one lowercase letter.");
         }
         if (!password.matches(".*[A-Z].*")) {
-            errors.append("Password must include at least one uppercase letter. \n");
+            errors.append("Password must include at least one uppercase letter.");
         }
         if (!password.matches(".*[0-9].*")) {
-            errors.append("Password must contain at least one digit. \n");
+            errors.append("Password must contain at least one digit.");
         }
         if (!password.matches(".*[?<>,\"';:/\\\\|\\]\\[\\}\\{\\+=\\)\\(\\*&\\^%\\$#!].*")) {
             errors.append("Password must contain at least one special character (e.g. !, @, #, $...).");

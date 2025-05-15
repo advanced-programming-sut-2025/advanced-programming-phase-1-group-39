@@ -1,5 +1,6 @@
 package views;
 
+import controllers.AppControllers;
 import controllers.GameMenuController;
 import models.Enums.commands.GameMenuCommands;
 import models.Result;
@@ -7,7 +8,7 @@ import models.Result;
 import java.util.regex.Matcher;
 
 public class GameMenuView implements View {
-    private final GameMenuController controller = new GameMenuController();
+    private final GameMenuController controller = AppControllers.gameMenuController;
 
     @Override
     public void checkCommand(String command) {

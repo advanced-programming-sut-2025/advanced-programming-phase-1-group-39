@@ -13,6 +13,7 @@ public enum MainMenuCommands {
     ShowCurrentMenu("show\\s+current\\s+menu"),
 
     ExitMenu("menu\\s+exit"),
+    Exit("exit")
 
     ;
 

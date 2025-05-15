@@ -1,5 +1,6 @@
 package views;
 
+import controllers.AppControllers;
 import controllers.MainMenuController;
 import models.Enums.commands.MainMenuCommands;
 import models.Result;
@@ -7,7 +8,7 @@ import models.Result;
 import java.util.regex.Matcher;
 
 public class MainMenuView implements View {
-    private final MainMenuController controller = new MainMenuController();
+    private final MainMenuController controller = AppControllers.mainMenuController;
 
     @Override
     public void checkCommand(String command) {

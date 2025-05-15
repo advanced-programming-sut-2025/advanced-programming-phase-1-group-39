@@ -1,5 +1,6 @@
 package views;
 
+import controllers.AppControllers;
 import controllers.SignupMenuController;
 import models.App;
 import models.Enums.commands.SignupMenuCommands;
@@ -8,7 +9,7 @@ import models.Result;
 import java.util.regex.Matcher;
 
 public class SignupMenuView implements View {
-    private final SignupMenuController controller = new SignupMenuController();
+    private final SignupMenuController controller = AppControllers.signupMenuController;
 
     @Override
     public void checkCommand(String command) {

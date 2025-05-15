@@ -105,8 +105,10 @@ public class Game {
 
     public void goToNextDay() {
         time.goToNextDay();
-        resetFriendship();
+        resetFriendshipNPCs();
         sendGiftToPlayers();
+        hasNoInteraction();
+        resetFriendships();
         // TODO : changing weather
     }
 
@@ -211,7 +213,7 @@ public class Game {
         return null;
     }
 
-    private void resetFriendship() {
+    private void resetFriendshipNPCs() {
         for (Player player : players) {
             for (PlayerNPCInteraction friendship : player.getAllFriendships()) {
                 friendship.setFirstGift(true);
@@ -301,5 +303,39 @@ public class Game {
         return messages.toString();
     }
 
+    private void resetFriendships() {
+        for (Friendship friendship : friendships) {
+            friendship.setFirstHug(true);
+            friendship.setFirstTalking(true);
+            friendship.setHasGiftedEachOther(true);
+        }
+    }
+
+    private void hasNoInteraction() {
+        for (Friendship friendship : getFriendships()) {
+            if (friendship.isFirstTalking() && friendship.isFirstHug() && friendship.isHasGiftedEachOther() && !friendship.isMarried()) {
+                int currentXP = friendship.getXp();
+                if (currentXP - 10 < 0) {
+                    friendship.setXp(0);
+                } else if (currentXP < 100) {
+                    friendship.setXp(currentXP - 10);
+                } else if (currentXP > 100 && currentXP - 10 < 100) {
+                    friendship.setXp(90);
+                } else if (currentXP < 200 && currentXP - 10 >= 100) {
+                    friendship.setXp(currentXP - 10);
+                } else if (currentXP > 200 && currentXP - 10 < 200) {
+                    friendship.setXp(190);
+                } else if (currentXP < 300 && currentXP - 10 >= 200) {
+                    friendship.setXp(currentXP - 10);
+                } else if (currentXP > 300 && currentXP - 10 < 300) {
+                    friendship.setXp(290);
+                } else if (currentXP < 400 && currentXP - 10 >= 300) {
+                    friendship.setXp(currentXP - 10);
+                } else {
+                    friendship.setXp(currentXP);
+                }
+            }
+        }
+    }
 
 }

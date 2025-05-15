@@ -14,7 +14,7 @@ public class Clint extends NPC {
                 "Blacksmith",
                 "A quiet man who spends his days hammering away at the forge.\nHe’s a bit awkward around people, especially someone he has a crush on, but he’s loyal and dedicated.",
                 new Location(105,53),
-                new ArrayList<>(List.of(ItemManager.getItemByName("Iron"), ItemManager.getItemByName("Iriduim")))
+                new ArrayList<>(List.of(ItemManager.getItemByName("Iron"), ItemManager.getItemByName("Iridium")))
         );
     }
 

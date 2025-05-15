@@ -18,6 +18,8 @@ public class Friendship {
     private boolean hasGiftedEachOther;
     private boolean isFirstHug;
 
+    private boolean isMarried;
+
     private ArrayList<Message> messages = new ArrayList<>();
 
 
@@ -26,6 +28,7 @@ public class Friendship {
         this.user2 = user2;
         this.friendshipLevel = 0;
         this.xp = 0;
+        this.isFirstTalking = false;
     }
 
 
@@ -51,7 +54,17 @@ public class Friendship {
     }
 
     public int getFriendshipLevel() {
-        return friendshipLevel;
+        if (xp >= 450) {
+            return 4;
+        } else if (xp >= 300) {
+            return 3;
+        } else if (xp >= 200) {
+            return 2;
+        } else if (xp >= 100) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public Time getLastInteraction() {
@@ -74,8 +87,21 @@ public class Friendship {
         return isFirstHug;
     }
 
+    public boolean isMarried() {
+        return isMarried;
+    }
 
-    // Auxiliary functions :
+    public void setFirstTalking(boolean firstTalking) {
+        isFirstTalking = firstTalking;
+    }
+
+    public void setFirstHug(boolean firstHug) {
+        isFirstHug = firstHug;
+    }
+
+    public void setHasGiftedEachOther(boolean hasGiftedEachOther) {
+        this.hasGiftedEachOther = hasGiftedEachOther;
+    }
 
     public void setXp(int xp) {
         this.xp = xp;
@@ -85,9 +111,12 @@ public class Friendship {
         this.friendshipLevel = friendshipLevel;
     }
 
+    // Auxiliary functions :
+
     public void addMessage(Message message) {
         messages.add(message);
     }
+
 
 
 

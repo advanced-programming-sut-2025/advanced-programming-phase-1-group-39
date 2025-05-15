@@ -12,6 +12,16 @@ public class PlayersInteractionController {
     static Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
 
 
+
+    public static Result ShowFriendshipsList() {
+        StringBuilder output = new StringBuilder();
+        for (Player otherPlayer : game.getOtherPlayers(currentPlayer.getUsername())) {
+            output.append(printFriendship(game.getFriendship(currentPlayer, otherPlayer), otherPlayer.getUsername()));
+        }
+        output.deleteCharAt(output.length() - 1);
+        return new Result(true, output.toString());
+    }
+
     public static Result talk(Matcher matcher) {
         String playerName = matcher.group("username");
         String message = matcher.group("message");
@@ -27,6 +37,17 @@ public class PlayersInteractionController {
             String output = increaseXP(friendship, 20, playerName);
             return new Result(true, "Your message has been sent to player " + playerName + ".\n" + output);
         }
+    }
+
+    public static Result talkHistory(Matcher matcher) {
+        String otherPlayer = matcher.group("username");
+        StringBuilder output = new StringBuilder();
+
+        for (Message message : game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getMessages()) {
+            output.append(printMessage(message));
+        }
+        output.deleteCharAt(output.length() - 1);
+        return new Result(true, output.toString());
     }
 
 
@@ -124,7 +145,23 @@ public class PlayersInteractionController {
         } else {
             return "Since your friendship level with player " + playerName + " is 4, your friendship XP will remain unchanged.";
         }
+    }
 
+    public static StringBuilder printFriendship(Friendship friendship, String otherPlayerName) {
+        StringBuilder output = new StringBuilder();
+        output.append("* ").append(otherPlayerName).append(" :\n");
+        output.append("Friendship level: ").append(friendship.getFriendshipLevel()).append("\n");
+        output.append("Friendship XP: ").append(friendship.getXp()).append("\n");
+        return output;
+    }
+
+    public static StringBuilder printMessage(Message message) {
+        StringBuilder output = new StringBuilder();
+        output.append("Sender : ").append(message.getSender()).append("\n");
+        output.append("Receiver : ").append(message.getReceiver()).append("\n");
+        output.append("Message : ").append(message.getMessage()).append("\n");
+        output.append("---------------\n");
+        return output;
     }
 
 

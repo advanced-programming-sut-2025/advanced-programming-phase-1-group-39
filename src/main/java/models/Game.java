@@ -273,7 +273,7 @@ public class Game {
         return null;
     }
 
-    private ArrayList<Player> getOtherPlayers(String playerName) {
+    public ArrayList<Player> getOtherPlayers(String playerName) {
         ArrayList<Player> otherPlayers = new ArrayList<>();
         for (Player player : players) {
             if (!player.getUsername().equals(playerName)) {
@@ -293,6 +293,7 @@ public class Game {
                 if (message.getSender().equals(otherPlayer.getUsername()) && message.isNew()) {
                     count++;
                     messages.append("\t").append(message.getMessage()).append("\n");
+                    message.setNew(false);
                 }
             }
             if (count == 0) {

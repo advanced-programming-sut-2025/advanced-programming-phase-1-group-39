@@ -1,16 +1,26 @@
 register    -u   mostafa   -p paSS12#$   paSS12#$  -n mosi  -e mostafa@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
 register   -u ahmad -p paSS12#$ paSS12#$ -n ahi -e ahamd@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
 register -u reza -p paSS12#$ paSS12#$ -n reza -e reza@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
 register -u mohsen -p paSS12#$ paSS12#$ -n mohsen -e mohsen@gmail.com -g male
- register    -u   mostafa   -p random  -n mosi  -e mostafa@gmail.com -g male
 pick question -q 1 -a salam -c salam
 
-login -u mostafa -p paSS12#$ -stay-logged-in
-change password -p Ali123!1232131 -o paSS12#$
+login -u reza -p paSS12#$ -stay-logged-in
 
+menu enter game
+game new -u ahmad mostafa mohsen
+game map 1
+game map 2
+game map 1
+game map 2
 
+print map -l 150,75 -s 300
 
- print map -l 50,15 -s 100
  walk -l 72,13
 print map -l 70,10 -s 20
 tools equip hoe

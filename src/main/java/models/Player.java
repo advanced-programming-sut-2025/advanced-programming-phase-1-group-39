@@ -54,7 +54,7 @@ public class Player {
     private ArrayList<ArtisanMachineRecipe> artisanMachineRecipes;
     private ArrayList<FoodRecipe> foodRecipes;
 
-    private HashMap<Player, Integer> playersFriendship;
+//    private HashMap<Player, Integer> playersFriendship;
     private HashMap<NPC, Integer> NPCsFriendship;
 
     private ArrayList<Quest> activeQuests;

@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class NPC {
 
     protected String name;
-    protected  String job;
+    protected String job;
     protected String personalityTraits;
     protected Location location;
     protected ArrayList<Item> favoriteItems;

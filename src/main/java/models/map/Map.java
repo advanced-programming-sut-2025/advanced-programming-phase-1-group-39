@@ -478,16 +478,21 @@ public class Map {
         return false;
     }
 
-    public boolean isNearGreenHouse(Player player) {
+    public boolean isNearBuilding(Player player, Building building) {
         int startX = player.getLocation().x() - 1;
         int startY = player.getLocation().y() - 1;
 
-        for (int i = startX; i < startX + 3; i++) {
-            for (int j = startY; j < startY + 3; j++) {
-                Tile tile = tiles[i][j];
-                // TODO : complete near building
+        int buildingX = building.getLocation().x();
+        int buildingY = building.getLocation().y();
+        int width = building.getWidth();
+        int height = building.getHeight();
+
+        for (int i = buildingX; i < buildingX + width; i++) {
+            for (int j = buildingY; j < buildingY + height; j++) {
+                if (player.isNearLocation(new Location(i, j))) return true;
             }
         }
+
         return false;
     }
 

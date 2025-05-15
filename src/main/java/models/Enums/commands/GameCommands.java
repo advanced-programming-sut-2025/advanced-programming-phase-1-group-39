@@ -43,7 +43,9 @@ public enum GameCommands {
     TOOL_USE("tools\\s+use\\s+-d\\s+(?<direction>\\S+)"),
 
     HOWMUCH_WATER("howmuch\\s+water"),
-    GO_FISHING("fishing\\s+-p\\s+(?<pole>.+)")
+    GO_FISHING("fishing\\s+-p\\s+(?<pole>.+)"),
+
+    SELL_PRODUCTS("sell\\s+(?<product>.+)\\s+-n\\s+(?<count>\\d+)")
     ;
 
     private final String pattern;

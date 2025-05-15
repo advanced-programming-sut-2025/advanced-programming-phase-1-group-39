@@ -4,6 +4,7 @@ import models.*;
 import models.Enums.Direction;
 import models.Enums.WeatherStatus;
 import models.animals.Fish;
+import models.buildings.ShippingBin;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
 import models.inventory.Inventory;
@@ -411,7 +412,35 @@ public class GameController {
     public Result showAllAvailableProducts() {return null;}
     public Result purchaseProduct(Matcher matcher) {return null;}
     public void cheatAddToShopStock(Matcher matcher) {}
-    public Result sellProduct(Matcher matcher) {return null;}
+
+    public Result sellProduct(Matcher matcher) {
+        String productName = matcher.group("product");
+        int num = Integer.parseInt(matcher.group("count"));
+
+
+        Game currentGame = App.getApp().getCurrentGame();
+        Player player = currentGame.getPlayerInTurn();
+        ItemStack item = player.getInventory().getItemByName(productName);
+
+        ShippingBin bin = (ShippingBin) player.getBuildingByName("Shipping Bin");
+        if (!currentGame.getMap().isNearBuilding(player, bin)) {
+            return new Result(false, "You should be near you shippingBin to sell your products!");
+        }
+
+        if (item == null) {
+            return new Result(false, "You don't have any of product " + productName);
+        }
+        else if (item.getAmount() < num) {
+            return new Result(false, "You don't have enough product " + productName + "\nStock: " + item.getAmount());
+        }
+        if (!item.getItem().isSellable()) {
+            return new Result(false, "You can't sell this product!");
+        }
+        player.getInventory().addItem(item.getItem(), -num);
+        int price = num * item.getItem().getItemPrice();
+        player.addToRevenue(price);
+        return new Result(true, "You successfully sold your product " + productName + "!\nPrice: " + price);
+    }
 
     public Result showFriendShip() {return null;}
     public Result talk(Matcher matcher) {return null;}

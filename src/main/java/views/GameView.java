@@ -100,6 +100,10 @@ public class GameView implements View {
         else if ((matcher = GameCommands.GO_FISHING.getMatcher(command)) != null) {
             System.out.println(controller.fishing(matcher));
         }
+        else if ((matcher = GameCommands.SELL_PRODUCTS.getMatcher(command)) != null) {
+            System.out.println(controller.sellProduct(matcher));
+        }
+
 
         else {
             System.out.println("invalid command.");

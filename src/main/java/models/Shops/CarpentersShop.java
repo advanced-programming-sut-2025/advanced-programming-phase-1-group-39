@@ -116,14 +116,17 @@ public class CarpentersShop extends Shop{
         if (name.equalsIgnoreCase("Well")) {
             Well newWell = new Well("Well", new Location(x,y), data.width, data.height);
             game.addBuilding(newWell);
+            player.addToBuildings(newWell);
         } else if (name.equalsIgnoreCase("Shipping Bin")) {
             ShippingBin bin = new ShippingBin("Shipping Bin", new Location(x,y), data.width, data.height);
             game.addBuilding(bin);
+            player.addToBuildings(bin);
         } else {
             LivingPlace type = LivingPlace.fromString(name);
             AnimalBuilding building = new AnimalBuilding(name, new Location(x, y), data.width, data.height, type);
             game.addBuilding(building);
-        } // Todo: add to player
+            player.addToBuildings(building);
+        }
 
         return new Result(true, name + " successfully created!");
     }

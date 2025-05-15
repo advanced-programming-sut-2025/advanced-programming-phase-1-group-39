@@ -1,6 +1,5 @@
 package models.PlayerInteraction;
 
-import models.Enums.FriendshipLevel;
 import models.Time;
 
 import java.time.LocalDate;

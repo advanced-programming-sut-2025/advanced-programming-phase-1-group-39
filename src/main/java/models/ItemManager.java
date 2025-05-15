@@ -1,5 +1,6 @@
 package models;
 
+import models.Shops.ShopItem;
 import models.animals.AnimalProduct;
 import models.animals.AnimalType;
 import models.animals.FishType;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 public class ItemManager {
     static HashMap<ArtisanGood, String> artisanItems = new HashMap<>();
     private static HashMap<String, AnimalProduct> animalProducts = new HashMap<>();
+    private static HashMap<String, ShopItem> shopsProducts = new HashMap<>();
 
 
     public static void loadItems() {
@@ -64,6 +66,10 @@ public class ItemManager {
         return null;
     }
 
+    public static void addShopItems(ShopItem item) {
+        shopsProducts.put(item.getName(), item);
+    }
+
     public static Item getItemByName(String name) {
         if (CropManager.getCropByName(name) != null) {
             return CropManager.getCropByName(name);
@@ -94,6 +100,9 @@ public class ItemManager {
         }
         if (animalProducts.containsKey(name)) {
             return animalProducts.get(name);
+        }
+        if (shopsProducts.containsKey(name)) {
+            return shopsProducts.get(name);
         }
 
 

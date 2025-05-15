@@ -4,6 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public enum GameCommands {
+    SHOW_CURRENT_MENU("show current menu"),
+    EXIT_GAME("menu exit"),
+    EXIT_APP("exit"),
     NEXT_TURN("next\\s+turn"),
 
     TIME("time"),

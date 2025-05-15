@@ -40,6 +40,7 @@ public class GameMenuController {
             Player player2 = new Player(username1, Game.lastGameId);
             Player player3 = new Player(username2, Game.lastGameId);
             Player player4 = new Player(username3, Game.lastGameId);
+            // TODO : change to  "for" (CLEAN CODE)
             app.getUsers().get(getIndexInUsers(app.getLoggedInUser().getUserName())).addPlayer(player1);
             app.getUsers().get(getIndexInUsers(app.getLoggedInUser().getUserName())).addNumberOfGamesPlayed();
             app.getUsers().get(getIndexInUsers(username1)).addPlayer(player2);
@@ -67,18 +68,20 @@ public class GameMenuController {
             return new Result(false, "The map number must be a number.");
         } else if (Integer.parseInt(mapNumber) >= 3) {
             return new Result(false, "The map number must be either 1 or 2.");
-        } else if (app.getCurrentGame().getPlayers().indexOf(app.getCurrentGame().getPlayerInTurn()) == 3) {
-            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentGame().getPlayerInTurn(),
-                    FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
-            app.getCurrentGame().startGame();
-            app.setCurrentMenu(Menu.GAME_MENU);
-            app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
-            return new Result(true, "The game map has been successfully created — let the adventure begin!");
         } else {
-            app.getCurrentGame().addRandomFarmForPlayer(app.getCurrentGame().getPlayerInTurn(),
-                    FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
-            app.getCurrentGame().setPlayerInTurn(app.getCurrentGame().getPlayers().get(app.getCurrentGame().getPlayers().indexOf(app.getCurrentGame().getPlayerInTurn())+1));
-            return new Result(true, "the game map was successfully selected. please " + app.getCurrentGame().getPlayerInTurn().getUsername() + " choose their map.");
+            Game currentGame = app.getCurrentGame();
+            if (currentGame.getPlayers().indexOf(currentGame.getPlayerInTurn()) == 3) {
+                currentGame.addRandomFarmForPlayer(currentGame.getPlayerInTurn(),
+                        FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
+                currentGame.startGame();
+                app.setCurrentMenu(Menu.GAME);
+                return new Result(true, "The game map has been successfully created — let the adventure begin!");
+            } else {
+                currentGame.addRandomFarmForPlayer(currentGame.getPlayerInTurn(),
+                        FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
+                currentGame.setPlayerInTurn(currentGame.getPlayers().get(currentGame.getPlayers().indexOf(currentGame.getPlayerInTurn())+1));
+                return new Result(true, "the game map was successfully selected. " + currentGame.getPlayerInTurn().getUsername() + "! choose your map please.");
+            }
         }
     }
 
@@ -95,7 +98,7 @@ public class GameMenuController {
             app.getCurrentGame().setLoadedPlayerUsername(app.getLoggedInUser().getUserName());
             app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
             app.getCurrentGame().startGame();
-            app.setCurrentMenu(Menu.GAME_MENU);
+            app.setCurrentMenu(Menu.GAME);
             return new Result(true, "the game was loaded successfully. you can now continue your game.");
         } else if (app.getLoggedInUser().getSavedGame() != null && haveOtherPlayersCurrentGame(app.getLoggedInUser().getSavedGame().getPlayers())) {
             return new Result(false, "to start loading a game, none of the players must have an active game.");

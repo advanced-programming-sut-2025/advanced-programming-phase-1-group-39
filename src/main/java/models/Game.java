@@ -59,13 +59,14 @@ public class Game {
     public void startGame() {
         initializeNPCs();
         makeNPCBuildings();
-        friendships = initializeFriendships();
 
         gameMap.loadMap(getNpcShops());
 
         for (Player player : players) {
             resetPlayerLocation(player);
         }
+
+        initializeFriendships();
     }
 
     public int getId() {

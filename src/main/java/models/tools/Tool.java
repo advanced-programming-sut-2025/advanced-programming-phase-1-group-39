@@ -4,7 +4,6 @@ import models.*;
 import models.map.Tile;
 
 public abstract class Tool extends Item {
-    protected String name;
     protected ToolType type;
     protected int baseUsingEnergy;
 

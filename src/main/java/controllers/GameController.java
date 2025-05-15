@@ -2,6 +2,7 @@ package controllers;
 
 import models.*;
 import models.Enums.Direction;
+import models.Enums.Menu;
 import models.Enums.WeatherStatus;
 import models.animals.Fish;
 import models.buildings.ShippingBin;
@@ -37,8 +38,22 @@ public class GameController {
     public ArrayList<MapMinPathFinder.Node> path;
 
     public Result saveGame() {return null;}
-    public Result exitGame() {return null;}
+
+    public String exitGame() {
+        App.getApp().setCurrentGame(null);
+        App.getApp().setCurrentMenu(Menu.MAIN_MENU);
+        return "You exited from the game! game saved.\nNow you are in main menu.";
+    }
+
+    public void exitApp() {
+        App.getApp().setCurrentMenu(Menu.ExitMenu);
+    }
+
     public Result deleteGame() {return null;}
+
+    public String showCurrentMenu() {
+        return "Now you are in game!";
+    }
 
     public Result goNextTurn() {
         Game game = App.getApp().getCurrentGame();

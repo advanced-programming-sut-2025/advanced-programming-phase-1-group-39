@@ -18,6 +18,8 @@ public class MarniesRanch extends Shop {
                         int openHour, int closeHour, NPC owner) {
         super(name, location, width, height, openHour, closeHour, owner);
         loadFromJson(jsonPath);
+
+        addToItemManager();
     }
 
     public void loadFromJson(String path) {
@@ -80,6 +82,14 @@ public class MarniesRanch extends Shop {
         }
     }
 
+    public void addToItemManager() {
+        for (ShopItem item : supplies.values()) {
+            if (ItemManager.getItemByName(item.getName()) == null) {
+                ItemManager.addShopItems(item);
+            }
+        }
+    }
+
     @Override
     public Result purchase(String product, int quantity) {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
@@ -103,7 +113,7 @@ public class MarniesRanch extends Shop {
             if (product.equalsIgnoreCase("Hay")) {
                 player.getInventory().addItem(new OddItems(item.getName()), quantity);
             } else if (product.equalsIgnoreCase("Milk Pail")) {
-                //player.getInventory().addItem(new MilkPail(), 1);
+                //player.getInventory().addItem(new MilkPail(), 1); Todo: not comment
             } else {
                 //player.getInventory().addItem(new Shear(), 1);
             }

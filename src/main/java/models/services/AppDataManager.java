@@ -26,6 +26,7 @@ public class AppDataManager {
     }
 
     public static void loadApp() {
+        ItemManager.loadItems();
         File file = new File(APP_FILE_PATH);
         ItemManager.loadItems();
         if (!file.exists() || file.length() == 0) {

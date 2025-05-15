@@ -11,7 +11,6 @@ import java.util.List;
 
 public class Tree{
     private String name;
-    private Tile tile;
     private Seed source;
     private ArrayList<Integer> stages = new ArrayList<>();
     private int currentStage;
@@ -36,7 +35,6 @@ public class Tree{
                 String fruitName, int fruitHarvestCycle, int fruitBaseSellPrice, boolean isFruitEdible,
                 Integer fruitEnergy, Integer fruitHealth, Season[] seasons) {
         this.name = name;
-        this.tile = tile;
         this.source = source;
         this.stages = stages;
         this.currentStage = 0;
@@ -112,7 +110,6 @@ public class Tree{
     public String toString() {
         return "Tree{" +
                 "name='" + name + '\'' +
-                ", tile=" + tile +
                 ", source=" + source +
                 ", stages=" + stages +
                 ", currentStage=" + currentStage +

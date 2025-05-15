@@ -9,7 +9,6 @@ import models.buildings.Building;
 import java.util.*;
 
 public class Shop extends Building {
-    private String name;
     private int openHour;
     private int closeHour;
     private NPC owner;

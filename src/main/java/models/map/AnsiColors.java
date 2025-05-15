@@ -21,7 +21,7 @@ public class AnsiColors {
     public static final String ANSI_ORANGE_BOLD = getAnsiBoldColor(200, 79, 0);
     public static final String ANSI_DARK_BLUE_BOLD = getAnsiBoldColor(0, 14, 145);
     public static final String ANSI_GREEN_BLUE_BOLD = getAnsiBoldColor(0, 204, 118);
-    public static final String ANSI_DARK_GREEN_BOLD = "\u001b[1;32m";
+    public static final String ANSI_DARK_GREEN_BOLD = getAnsiBoldColor(0, 95, 0);
 
     public static final String ANSI_BLUE_BOLD = "\u001b[1;34m";
     public static final String ANSI_CYAN_BOLD = "\u001b[1;36m";

@@ -47,8 +47,9 @@ public class Tile {
             //TODO: maybe change for Error
             if (itemOnTile.getItem() instanceof ForagingCrop) c = 'F';
             else if (itemOnTile.getItem() instanceof ForagingMaterial) {
-                if (itemOnTile.getItem().getName().equalsIgnoreCase("wood")) c = '/';
-                else if (itemOnTile.getItem().getName().equalsIgnoreCase("stone")) c = '●';
+                if (itemOnTile.getItem().getName().equalsIgnoreCase("Wood")) c = '/';
+                else if (itemOnTile.getItem().getName().equalsIgnoreCase("Stone")) c = '●';
+                else if (itemOnTile.getItem().getName().equalsIgnoreCase("Grass")) c = '=';
             } else if (itemOnTile.getItem() instanceof ForagingMineral) c = 'M';
         }
         return c;
@@ -80,6 +81,7 @@ public class Tile {
 
         else if (c == 'F') return AnsiColors.ANSI_ORANGE_BACKGROUND;
         else if (c == 'M') return AnsiColors.ANSI_YELLOW_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;
+        else if (c == '=') return AnsiColors.ANSI_DARK_GREEN_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
 
         // basket
         else if (c == 'B') return AnsiColors.ANSI_YELLOW_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;

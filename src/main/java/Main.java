@@ -1,3 +1,4 @@
+import com.google.gson.internal.bind.util.ISO8601Utils;
 import controllers.AppControllers;
 import models.*;
 import models.Enums.Menu;
@@ -40,7 +41,8 @@ public class Main {
             App.getApp().addGame(game);
             App.getApp().setCurrentGame(game);
             game.setPlayerInTurn(player2);
-            System.out.println(game.getMap().printColorMap(players));
+//            System.out.println(ItemManager.getItemByName("Sugar"));
+//            System.out.println(game.getMap().printColorMap(players, null));
             while (true) {
                 Menu.GAME.checkInput(Input.getNextLine());
             }

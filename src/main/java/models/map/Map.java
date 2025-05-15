@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import models.*;
 import models.Enums.Season;
+import models.NPC.NPC;
 import models.Shops.Shop;
 import models.artisan.ArtisanMachine;
 import models.buildings.Building;
@@ -19,6 +20,9 @@ import java.util.List;
 public class Map {
     private final int width = Constants.WORLD_MAP_WIDTH, height = Constants.WORLD_MAP_HEIGHT;
     private Tile[][] tiles;
+
+    private int npcMapStartX = Constants.FARM_WIDTH;
+    private int npcMapStartY = Constants.DISABLED_HEIGHT;
 
     public Map() {
         tiles = new Tile[height][width];
@@ -341,7 +345,8 @@ public class Map {
     }
 
     // printing
-    public String printMapBySize(int x, int y, int size, ArrayList<Player> players) {
+    public String printMapBySize(int x, int y, int size, ArrayList<Player> players,
+                                 ArrayList<NPC> npcs) {
         StringBuilder text = new StringBuilder();
         int i1 = Math.max(y - size/2, 0);
         int i2 = Math.min(y + size - size/2, height);
@@ -349,23 +354,46 @@ public class Map {
         int j1 = Math.max(x - size/2, 0);
         int j2 = Math.min(x + size - size/2, width);
 
-        String[] colors = new String[]{AnsiColors.ANSI_PURPLE_BOLD, AnsiColors.ANSI_RED_BOLD, AnsiColors.ANSI_DARK_GREEN_BOLD, AnsiColors.ANSI_ORANGE_BOLD};
+        int npcMapStartX = Constants.FARM_WIDTH;
+        int npcMapStartY = Constants.DISABLED_HEIGHT;
+
+        String[] playerColors = new String[]{AnsiColors.ANSI_PURPLE_BOLD, AnsiColors.ANSI_RED_BOLD, AnsiColors.ANSI_DARK_GREEN_BOLD, AnsiColors.ANSI_ORANGE_BOLD};
+        String[] npcColors = new String[]{
+                AnsiColors.ANSI_PURPLE_BOLD, AnsiColors.ANSI_RED_BOLD, AnsiColors.ANSI_DARK_GREEN_BOLD, AnsiColors.ANSI_ORANGE_BOLD,
+                AnsiColors.ANSI_BLACK_BOLD, AnsiColors.ANSI_CYAN_BOLD, AnsiColors.ANSI_BROWN_BOLD, AnsiColors.ANSI_BLUE_BOLD,
+                AnsiColors.ANSI_DARK_BLUE_BOLD, AnsiColors.ANSI_GREEN_BLUE_BOLD, AnsiColors.ANSI_CYAN_BOLD
+        };
+
         int playerCounter = 0;
+        int npcCounter = 0;
         for (int i = i1; i < i2; i++) {
             for (int j = j1; j < j2; j++) {
                 Tile tile = tiles[i][j];
-                if (tile.getType().equals(TileType.DISABLE)) continue;
-                boolean doesSet = false;
+                if (tile.getType().equals(TileType.DISABLE)){
+                    text.append("   ");
+                    continue;
+                }
+                boolean doesSetPlayer = false;
+                boolean doesSetNpc = false;
 
 
                 for (Player player : players) {
                     if (j == player.getLocation().x() && i == player.getLocation().y()) {
-                        text.append(colors[playerCounter++] + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
-                        doesSet = true;
+                        text.append(playerColors[playerCounter++] + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
+                        doesSetPlayer = true;
                     }
                 }
-                if (!doesSet)
-                    text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
+                if (doesSetPlayer) continue;
+
+                for (NPC npc : npcs) {
+                    if (j == npc.getLocation().x() + npcMapStartX && i == npc.getLocation().y() + npcMapStartY) {
+                        text.append(AnsiColors.ANSI_REVERSE + npcColors[npcCounter++] + tile.getTileColor() + " N " + AnsiColors.ANSI_RESET);
+                        doesSetNpc = true;
+                    }
+                }
+                if (doesSetNpc) continue;
+
+                text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
             }
             text.append("\n");
         }
@@ -374,29 +402,38 @@ public class Map {
     }
 
 
-    public String printColorMap(ArrayList<Player> players) {
-        StringBuilder text = new StringBuilder();
+    public String printColorMap(ArrayList<Player> players, ArrayList<NPC> npcs) {
+//        StringBuilder text = new StringBuilder();
+//
+//        String[] playerColors = new String[]{AnsiColors.ANSI_PURPLE_BOLD, AnsiColors.ANSI_RED_BOLD, AnsiColors.ANSI_DARK_GREEN_BOLD, AnsiColors.ANSI_ORANGE_BOLD};
+//        String[] npcColors = new String[]{
+//                AnsiColors.ANSI_PURPLE_BOLD, AnsiColors.ANSI_RED_BOLD, AnsiColors.ANSI_DARK_GREEN_BOLD, AnsiColors.ANSI_ORANGE_BOLD,
+//
+//        };
+//
+//        int playerCounter = 0;
+//        int npcCounter = 0;
+//        for (int i = 0; i < height; i++) {
+//            for (int j = 0; j < width; j++) {
+//                boolean doesSet = false;
+//                Tile tile = tiles[i][j];
+//                for (Player player : players) {
+//                    if (j == player.getLocation().x() && i == player.getLocation().y()) {
+//                        text.append(colors[playerCounter++] + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
+//                        doesSet = true;
+//                    }
+//                }
+//                if (!doesSet)
+//                    text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
+//            }
+//            text.append("\n");
+//        }
+//
+//        return text.toString();
 
-        String[] colors = new String[]{AnsiColors.ANSI_PURPLE_BOLD, AnsiColors.ANSI_RED_BOLD, AnsiColors.ANSI_DARK_GREEN_BOLD, AnsiColors.ANSI_ORANGE_BOLD};
-        int playerCounter = 0;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                boolean doesSet = false;
-                Tile tile = tiles[i][j];
-                for (Player player : players) {
-                    if (j == player.getLocation().x() && i == player.getLocation().y()) {
-                        text.append(colors[playerCounter++] + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
-                        doesSet = true;
-                    }
-                }
-                if (!doesSet)
-                    text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
-            }
-            text.append("\n");
-        }
-
-        return text.toString();
+        return printMapBySize(150, 75, 150, players, npcs);
     }
+
 
     public String helpReadingMap() {
         return     "Soil : .\n"

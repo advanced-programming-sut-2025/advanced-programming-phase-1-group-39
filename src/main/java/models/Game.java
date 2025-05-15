@@ -56,9 +56,13 @@ public class Game {
     }
 
     // NPC
+    public ArrayList<NPC> getNpcs() {
+        return npcs;
+    }
+
     public void makeNPCBuildings() {
         ArrayList<Shop> gameShops = new ArrayList<>();
-        gameShops.add(new BlackSmithShop("Blacksmith Shop", new Location(100 + Constants.FARM_WIDTH, 50),
+        gameShops.add(new BlackSmithShop("Blacksmith Shop", new Location(100 + Constants.FARM_WIDTH, 50 + Constants.DISABLED_HEIGHT),
                 11, 8, "src/main/resources/data/BlackSmithShop.json",
                 9, 16,
                 getNPC("clint")
@@ -143,9 +147,6 @@ public class Game {
         return gameMap;
     }
 
-    public String printColorMap() {
-        return gameMap.printColorMap(players);
-    }
 
     public void addRandomFarmForPlayer(Player player, FarmType farmType) {
         int number = players.indexOf(player);
@@ -186,7 +187,7 @@ public class Game {
 
     public String goToNextDay() {
         StringBuilder lastDayReport = new StringBuilder("Last day Report");
-        // TODO (OPTIONAL) : complete report
+//         TODO (OPTIONAL) : complete report
 
         playersGoHome();
         // reset players energy

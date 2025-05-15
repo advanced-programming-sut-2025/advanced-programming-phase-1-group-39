@@ -27,6 +27,8 @@ public class JojaMartShop extends Shop {
                         int openHour, int closeHour, NPC owner) {
         super(name, location, width, height, openHour, closeHour, owner);
         loadFromJson(jsonPath);
+
+        addToItemManager();
     }
 
     public void loadFromJson(String path) {
@@ -80,6 +82,14 @@ public class JojaMartShop extends Shop {
     public void changeSeason(Season newSeason) {
         this.currentSeason = newSeason;
         setupSeasonalStock(newSeason);
+    }
+
+    public void addToItemManager() {
+        for (ShopItem item : permanentStock.values()) {
+            if (ItemManager.getItemByName(item.getName()) == null) {
+                ItemManager.addShopItems(item);
+            }
+        }
     }
 
     @Override

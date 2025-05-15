@@ -5,6 +5,7 @@ import models.PlayerInteraction.Friendship;
 import models.PlayerInteraction.Gift;
 import models.PlayerInteraction.Message;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class PlayersInteractionController {
@@ -90,11 +91,32 @@ public class PlayersInteractionController {
             return new Result(false, "Player " + otherPlayer + " doesn't have enough space in their inventory to receive your gift!");
         } else {
             game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).addGift(
-                    new Gift(currentPlayer.getUsername(), otherPlayer, new ItemStack(ItemManager.getItemByName(item), amount)));
+                    new Gift(currentPlayer.getUsername(), otherPlayer, new ItemStack(ItemManager.getItemByName(item), amount), game.getCurrentGiftNumber()));
+            game.setCurrentGiftNumber();
             currentPlayer.getInventory().pickItem(item, amount);
             game.getPlayerByUsername(otherPlayer).getInventory().addItem(ItemManager.getItemByName(item), amount);
             return new Result(true, "Your gift has been successfully delivered to Player " + otherPlayer + "! Let the friendship blossom!");
         }
+    }
+
+    public static Result showGiftsList() {
+        StringBuilder output = new StringBuilder();
+        ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());
+        output.append("Gifts You've Received : \n");
+        for (Player otherPlayer : otherPlayers) {
+            for (Gift gift : game.getFriendship(currentPlayer, otherPlayer).getGifts()) {
+                if (gift.getSender().equals(otherPlayer.getUsername()) && gift.isNew()) {
+                    output.append("gift id : ").append(gift.getGiftId()).append(" |");
+                    output.append("sender : ").append(gift.getSender()).append(" |");
+                    output.append("item name : ").append(gift.getGiftItem().getItem().getName()).append(" |");
+                    output.append("amount : ").append(gift.getGiftItem().getAmount()).append("\n");
+                    output.append("---------------\n");
+                    gift.setNew(false);
+                }
+            }
+        }
+        output.deleteCharAt(output.length() - 1);
+        return new Result(true, output.toString());
     }
 
 
@@ -208,6 +230,26 @@ public class PlayersInteractionController {
         output.append("Message : ").append(message.getMessage()).append("\n");
         output.append("---------------\n");
         return output;
+    }
+
+    public static String printGiftsList() {
+        StringBuilder output = new StringBuilder();
+        ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());
+        output.append("Gifts You've Received : \n");
+        for (Player otherPlayer : otherPlayers) {
+            for (Gift gift : game.getFriendship(currentPlayer, otherPlayer).getGifts()) {
+                if (gift.getSender().equals(otherPlayer.getUsername()) && gift.isNew()) {
+                    output.append("gift id : ").append(gift.getGiftId()).append(" |");
+                    output.append("sender : ").append(gift.getSender()).append(" |");
+                    output.append("item name : ").append(gift.getGiftItem().getItem().getName()).append(" |");
+                    output.append("amount : ").append(gift.getGiftItem().getAmount()).append("\n");
+                    output.append("---------------\n");
+                    gift.setNew(false);
+                }
+            }
+        }
+        output.deleteCharAt(output.length() - 1);
+        return output.toString();
     }
 
 

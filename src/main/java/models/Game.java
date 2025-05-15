@@ -4,6 +4,7 @@ import controllers.AppControllers;
 import models.Enums.Season;
 import models.Enums.WeatherStatus;
 import models.NPC.*;
+import models.PlayerInteraction.Gift;
 import models.Shops.*;
 import models.animals.Animal;
 import models.PlayerInteraction.Friendship;
@@ -552,6 +553,30 @@ public class Game {
 
     public void setCurrentGiftNumber() {
         this.currentGiftNumber += 1;
+    }
+    public int getCurrentGiftNumber() { return this.currentGiftNumber; }
+
+    private String showGiftMessages(Player player) {
+        StringBuilder output = new StringBuilder();
+        ArrayList<Player> otherPlayers = getOtherPlayers(player.getUsername());
+        for (Player otherPlayer : otherPlayers) {
+            int count = 0;
+            output.append("Gifts sent by player ").append(otherPlayer.getUsername()).append(" :\n");
+            for (Gift gift : getFriendship(player, otherPlayer).getGifts()) {
+                if (gift.getSender().equals(otherPlayer.getUsername()) && gift.isNew()) {
+                    output.append("\t").append("gift id : ").append(gift.getGiftId()).append(" |");
+                    output.append("item name : ").append(gift.getGiftItem().getItem().getName()).append(" |");
+                    output.append("amount : ").append(gift.getGiftItem().getAmount()).append("\n");
+                    count++;
+                    gift.setNew(false);
+                }
+            }
+            if (count == 0) {
+                output.append("\t").append("Player ").append(otherPlayer.getUsername()).append(" hasn’t sent you any gifts.\n");
+            }
+        }
+        output.deleteCharAt(output.length() - 1);
+        return output.toString();
     }
 
 }

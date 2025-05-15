@@ -1,7 +1,7 @@
 {
     "yearRound": [
         {
-            "name": "Rice Shoot",
+            "name": "Rice",
             "description": "A basic grain often served under vegetables.",
             "price": 200,
             "dailyLimit": 1000000

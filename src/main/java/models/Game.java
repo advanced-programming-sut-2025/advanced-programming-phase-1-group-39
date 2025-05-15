@@ -28,6 +28,8 @@ public class Game {
     private Weather todayWeather = new Weather();
     private Weather tomorrowWeather = new Weather();
 
+    private int currentGiftNumber = 101;
+
     private Player playerInTurn;
 
     // first player should be the mainPlayer of game
@@ -337,6 +339,12 @@ public class Game {
                 }
             }
         }
+    }
+
+    // gift :
+
+    public void setCurrentGiftNumber() {
+        this.currentGiftNumber += 1;
     }
 
 }

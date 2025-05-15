@@ -20,6 +20,7 @@ public class Friendship {
     private boolean isMarried;
 
     private ArrayList<Message> messages = new ArrayList<>();
+    private ArrayList<Gift> gifts = new ArrayList<>();
 
 
     public Friendship(String user1, String user2) {
@@ -74,6 +75,10 @@ public class Friendship {
         return messages;
     }
 
+    public ArrayList<Gift> getGifts() {
+        return gifts;
+    }
+
     public boolean isFirstTalking() {
         return isFirstTalking;
     }
@@ -114,6 +119,10 @@ public class Friendship {
 
     public void addMessage(Message message) {
         messages.add(message);
+    }
+
+    public void addGift(Gift gift) {
+        gifts.add(gift);
     }
 
 

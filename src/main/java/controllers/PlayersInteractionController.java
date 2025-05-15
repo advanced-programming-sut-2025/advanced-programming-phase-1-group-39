@@ -2,6 +2,7 @@ package controllers;
 
 import models.*;
 import models.PlayerInteraction.Friendship;
+import models.PlayerInteraction.Gift;
 import models.PlayerInteraction.Message;
 
 import java.util.regex.Matcher;
@@ -67,6 +68,32 @@ public class PlayersInteractionController {
                 return new Result(true, "you gave " + otherPlayer + " a warm hug! your bond feels stronger already.\n" + output);
             }
             return new Result(true, "you gave " + otherPlayer + " a warm hug! your bond feels stronger already.");
+        }
+    }
+
+    public static Result buyGift(Matcher matcher) {
+        String otherPlayer = matcher.group("username");
+        String item = matcher.group("item");
+        int amount = Integer.parseInt(matcher.group("amount"));
+
+        if (!isPlayerExists(otherPlayer)) {
+            return new Result(false, "Player " + otherPlayer + " doesn't exist");
+        } else if (!isPlayersNear(currentPlayer.getLocation(), game.getPlayerByUsername(otherPlayer).getLocation())) {
+            return new Result(false, "to give a gift to " + otherPlayer + " , you need to be near them.");
+        } else if (game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getFriendshipLevel() < 1) {
+            return new Result(false, "you need to reach friendship level 1 with " + otherPlayer + " before you can give them gifts.");
+        } else if (currentPlayer.getInventory().hasItem(item)) {
+            return new Result(false, "You don't have the item " + item + " in your inventory.");
+        } else if (currentPlayer.getInventory().hasEnoughStack(item, amount)) {
+            return new Result(false, "Uh-oh! You're short on " + item + ". You need " + amount + ", but you don’t have enough in your inventory!");
+        } else if (!game.getPlayerByUsername(otherPlayer).getInventory().hasSpace(new ItemStack(ItemManager.getItemByName(item), amount))) {
+            return new Result(false, "Player " + otherPlayer + " doesn't have enough space in their inventory to receive your gift!");
+        } else {
+            game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).addGift(
+                    new Gift(currentPlayer.getUsername(), otherPlayer, new ItemStack(ItemManager.getItemByName(item), amount)));
+            currentPlayer.getInventory().pickItem(item, amount);
+            game.getPlayerByUsername(otherPlayer).getInventory().addItem(ItemManager.getItemByName(item), amount);
+            return new Result(true, "Your gift has been successfully delivered to Player " + otherPlayer + "! Let the friendship blossom!");
         }
     }
 

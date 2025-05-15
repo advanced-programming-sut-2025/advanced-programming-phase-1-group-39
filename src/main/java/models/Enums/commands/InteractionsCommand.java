@@ -13,6 +13,14 @@ public enum InteractionsCommand {
 
     Hug("hug\\s+-u\\s+(?<username>.*?)"),
 
+    Gift("gift\\s+-u\\s+(?<username>.*?)\\s+-i\\s+(?<item>.*?)\\s+-a\\s+(?<amount>\\d+)"),
+    GiftList("gift\\s+list"),
+    GiftRate("gift\\s+rate\\s+")
+
+
+    // gift history -u <username>
+    // gift rate -i <gift-number> -r <rate>
+    // gift -u <username> -i <item> -a <amount>
     // talk -u <username> -m <message>
     // talk history -u <username>
     // hug -u <username>

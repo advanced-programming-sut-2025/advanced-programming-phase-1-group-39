@@ -18,7 +18,7 @@ public class GameMenuView implements View {
         if ((matcher = GameMenuCommands.NewGame.getMatcher(command)) != null) {
             result = controller.startNewGame(matcher);
             System.out.println(result.message());
-        } else if ((matcher = GameMenuCommands.ChoseMap.getMatcher(command)) != null) {
+        } else if ((matcher = GameMenuCommands.ChooseMap.getMatcher(command)) != null) {
             result = controller.chooseMap(matcher);
             System.out.println(result.message());
         } else if ((matcher = GameMenuCommands.LoadGame.getMatcher(command)) != null) {

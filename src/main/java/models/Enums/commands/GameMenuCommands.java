@@ -7,7 +7,7 @@ public enum GameMenuCommands {
 
     NewGame("game\\s+new\\s+-u\\s+(?<username1>\\S+)((\\s+(?<username2>\\S+))?)((\\s+(?<username3>\\S+))?)((\\s+(?<otherUsers>\\S+))?)"),
 
-    ChoseMap("game\\s+map\\s+(?<mapNumber>\\S+)"),
+    ChooseMap("game\\s+map\\s+(?<mapNumber>\\S+)"),
 
     LoadGame("load\\s+game"),
 

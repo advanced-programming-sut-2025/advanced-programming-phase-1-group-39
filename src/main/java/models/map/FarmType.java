@@ -5,7 +5,7 @@ public enum FarmType {
 
     int id;
     FarmType() {
-        this.id = ordinal();
+        this.id = ordinal() + 1;
     }
 
     public static FarmType getFarmTypeById(int id) {

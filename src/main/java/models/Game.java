@@ -370,6 +370,7 @@ public class Game {
         if (!playerInTurn.isConscious()) return nextTurn();
 
         // TODO : show message!!!
+        showMessages(playerInTurn);
 
         return true;
     }

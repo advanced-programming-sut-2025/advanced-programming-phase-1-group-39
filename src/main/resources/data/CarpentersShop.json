@@ -1,0 +1,79 @@
+{
+  "items": [
+    { "name": "Wood", "price": 10, "limit": -1 },
+    { "name": "Stone", "price": 20, "limit": -1 },
+    { "name": "Shipping Bin", "price": 250, "limit": -1 }
+  ],
+  "buildings": [
+    {
+      "name": "Barn",
+      "description": "Houses 4 barn-dwelling animals.",
+      "goldCost": 6000,
+      "woodCost": 350,
+      "stoneCost": 150,
+      "width": 7,
+      "height": 4,
+      "dailyLimit": 1
+    },
+    {
+      "name": "Big Barn",
+      "description": "Houses 8 barn-dwelling animals. Unlocks goats.",
+      "goldCost": 12000,
+      "woodCost": 450,
+      "stoneCost": 200,
+      "width": 7,
+      "height": 4,
+      "dailyLimit": 1
+    },
+    {
+      "name": "Deluxe Barn",
+      "description": "Houses 12 barn-dwelling animals. Unlocks sheep and pigs.",
+      "goldCost": 25000,
+      "woodCost": 550,
+      "stoneCost": 300,
+      "width": 7,
+      "height": 4,
+      "dailyLimit": 1
+    },
+    {
+      "name": "Coop",
+      "description": "Houses 4 coop-dwelling animals.",
+      "goldCost": 4000,
+      "woodCost": 300,
+      "stoneCost": 100,
+      "width": 6,
+      "height": 3,
+      "dailyLimit": 1
+    },
+    {
+      "name": "Big Coop",
+      "description": "Houses 8 coop-dwelling animals. Unlocks ducks.",
+      "goldCost": 10000,
+      "woodCost": 400,
+      "stoneCost": 150,
+      "width": 6,
+      "height": 3,
+      "dailyLimit": 1
+    },
+    {
+      "name": "Deluxe Coop",
+      "description": "Houses 12 coop-dwelling animals. Unlocks rabbits.",
+      "goldCost": 20000,
+      "woodCost": 500,
+      "stoneCost": 200,
+      "width": 6,
+      "height": 3,
+      "dailyLimit": 1
+    },
+    {
+      "name": "Well",
+      "description": "Provides a place for you to refill your watering can.",
+      "goldCost": 1000,
+      "woodCost": 0,
+      "stoneCost": 75,
+      "width": 3,
+      "height": 3,
+      "dailyLimit": 1
+    }
+  ]
+}

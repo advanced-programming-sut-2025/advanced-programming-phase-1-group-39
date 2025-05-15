@@ -1,0 +1,7 @@
+ print map -l 50,15 -s 100
+ walk -l 72,13
+print map -l 70,10 -s 20
+tools equip hoe
+tools use -d
+tools equip watering can
+inventory show

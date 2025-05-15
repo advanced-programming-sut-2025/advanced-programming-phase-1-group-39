@@ -1,0 +1,145 @@
+[
+  {
+    "mapTypeId": 1,
+    "mapType": "mine farm",
+    "description": "A farm for Mining Lovers with bigger Quarry!",
+    "fixedElements": {
+      "cabin": {
+        "x": 70,
+        "y": 5,
+        "w": 6,
+        "h": 6,
+        "door" : {
+          "x" : 72,
+          "y" : 10
+        }
+      },
+      "greenhouse": {
+        "x": 25,
+        "y": 0,
+        "w": 9,
+        "h": 8,
+        "door" : {
+          "x" : 28,
+          "y" : 6
+        }
+      },
+      "quarry": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 12
+      },
+      "sell_basket": {
+        "x" : 77,
+        "y" : 10
+      },
+      "lakes": [
+        {
+          "id": "main_lake",
+          "x": 40,
+          "y": 40,
+          "w": 10,
+          "h": 8,
+          "emptyTiles" : [
+            {
+              "x": 40,
+              "y": 40
+            },{
+              "x": 49,
+              "y": 40
+            },{
+              "x": 40,
+              "y": 47
+            },{
+              "x": 49,
+              "y": 47
+            }
+          ]
+        }
+      ]
+    }
+  },{
+    "mapTypeId": 2,
+    "mapType": "lake farm",
+    "description": "A Farm for Fishing Lovers with 2 lakes!",
+    "fixedElements": {
+      "cabin": {
+        "x": 70,
+        "y": 5,
+        "w": 6,
+        "h": 6,
+        "door" : {
+          "x" : 72,
+          "y" : 10
+        }
+      },
+      "greenhouse": {
+        "x": 25,
+        "y": 0,
+        "w": 9,
+        "h": 8,
+        "door" : {
+          "x" : 28,
+          "y" : 6
+        }
+      },
+      "quarry": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 8
+      },
+      "sell_basket": {
+        "x" : 77,
+        "y" : 10
+      },
+      "lakes": [
+        {
+          "id": "main_lake",
+          "x": 40,
+          "y": 40,
+          "w": 10,
+          "h": 8,
+          "emptyTiles" : [
+            {
+              "x": 40,
+              "y": 40
+            },{
+              "x": 49,
+              "y": 40
+            },{
+              "x": 40,
+              "y": 47
+            },{
+              "x": 49,
+              "y": 47
+            }
+          ]
+        },
+        {
+          "id": "small_lake",
+          "x": 65,
+          "y": 25,
+          "w": 6,
+          "h": 6,
+          "emptyTiles" : [
+            {
+              "x": 70,
+              "y": 30
+            },{
+              "x": 69,
+              "y": 30
+            },{
+              "x": 70,
+              "y": 29
+            },{
+              "x": 70,
+              "y": 25
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

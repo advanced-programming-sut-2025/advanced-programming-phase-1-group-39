@@ -1,0 +1,39 @@
+{
+  "stock": [
+    {
+      "name": "Fish Smoker (Recipe)",
+      "description": "A recipe to make Fish Smoker",
+      "price": 10000,
+      "dailyLimit": 1,
+      "fishingSkillRequired": 0
+    },
+    {
+      "name": "Bamboo Pole",
+      "description": "Use in the water to catch fish.",
+      "price": 500,
+      "dailyLimit": 1,
+      "fishingSkillRequired": 0
+    },
+    {
+      "name": "Training Rod",
+      "description": "It's a lot easier to use than other rods, but can only catch basic fish.",
+      "price": 25,
+      "dailyLimit": 1,
+      "fishingSkillRequired": 0
+    },
+    {
+      "name": "Fiberglass Rod",
+      "description": "Use in the water to catch fish.",
+      "price": 1800,
+      "dailyLimit": 1,
+      "fishingSkillRequired": 2
+    },
+    {
+      "name": "Iridium Rod",
+      "description": "Use in the water to catch fish.",
+      "price": 7500,
+      "dailyLimit": 1,
+      "fishingSkillRequired": 4
+    }
+  ]
+}

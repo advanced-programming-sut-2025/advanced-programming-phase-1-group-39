@@ -1,0 +1,21 @@
+[
+  {"name": "Acorns",
+    "seasons": ["SPRING", "SUMMER", "FALL", "WINTER"]
+  },
+  {
+    "name": "Maple Seeds",
+    "seasons": ["SPRING", "SUMMER", "FALL", "WINTER"]
+  },
+  {
+    "name": "Pine Cones",
+    "seasons": ["SPRING", "SUMMER", "FALL", "WINTER"]
+  },
+  {
+    "name": "Mahogany Seeds",
+    "seasons": ["SPRING", "SUMMER", "FALL", "WINTER"]
+  },
+  {
+    "name": "Mushroom Tree Seeds",
+    "seasons": ["SPRING", "SUMMER", "FALL", "WINTER"]
+  }
+]

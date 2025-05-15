@@ -1,17 +1,31 @@
+
 package models.crafting;
 
-import java.util.Map;
+import models.Item;
 
-public class CraftingItem {
-    String name;
-    Map<String, Integer> ingredients;
-    String source;
-    int sellPrice;
+public class CraftingItem extends Item {
+    private String name;
+    private int sellPrice;
 
-    public CraftingItem(String name, Map<String, Integer> ingredients, String source, int sellPrice) {
+    public CraftingItem(String name, int sellPrice) {
+        super(name);
         this.name = name;
-        this.ingredients = ingredients;
-        this.source = source;
         this.sellPrice = sellPrice;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSellPrice() {
+        return sellPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "CraftingItem{" +
+                "sellPrice=" + sellPrice +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

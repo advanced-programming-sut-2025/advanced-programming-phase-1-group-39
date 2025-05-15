@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Wood",
+    "sellPrice": 50
+  },
+  {
+    "name": "Stone",
+    "sellPrice": 50
+  },
+  {
+    "name": "Grass",
+    "sellPrice": 50
+  },
+  {
+    "name": "Fiber",
+    "sellPrice": 50
+  }
+]

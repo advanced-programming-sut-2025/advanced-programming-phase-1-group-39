@@ -45,13 +45,13 @@ public class GameController {
 
         if (!game.nextTurn()) {
             return new Result(false, "All players are not conscious!\n"
-                    + AnsiColors.ANSI_LIGHT_GREEN_BOLD + "Going next day!" + AnsiColors.ANSI_RESET
+                    + AnsiColors.ANSI_LIGHT_GREEN_BOLD + "Going next day!\n" + AnsiColors.ANSI_RESET
                     + game.goToNextDay());
         }
 
         Player player = game.getPlayerInTurn();
         return new Result(true, AnsiColors.ANSI_CYAN_BOLD +
-                "Next turn: " + player.getUsername() + game.showMessages(game.getPlayerInTurn()) +
+                "Next turn: " + player.getUsername() + "\n" +game.showMessages(game.getPlayerInTurn()) + "\n" +
                 game.showGiftMessages(game.getPlayerInTurn()) + AnsiColors.ANSI_RESET);
     }
 

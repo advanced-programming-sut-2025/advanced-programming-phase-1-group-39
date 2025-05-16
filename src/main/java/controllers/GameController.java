@@ -13,6 +13,7 @@ import models.inventory.TrashType;
 import models.map.AnsiColors;
 import models.map.MapMinPathFinder;
 import models.map.Tile;
+import models.services.AppDataManager;
 import models.tools.*;
 
 import models.Shops.Shop;
@@ -40,9 +41,13 @@ public class GameController {
     public Result saveGame() {return null;}
 
     public String exitGame() {
-        App.getApp().setCurrentGame(null);
-        App.getApp().setCurrentMenu(Menu.MAIN_MENU);
-        return "You exited from the game! game saved.\nNow you are in main menu.";
+        if (!App.getApp().getCurrentGame().getMainPlayers().contains(App.getApp().getCurrentGame().getPlayerInTurn())) {
+            return "Only main players are allowed to request to leave the game.";
+        } else {
+            App.getApp().setCurrentGame(null);
+            App.getApp().setCurrentMenu(Menu.MAIN_MENU);
+            return "You exited from the game! game saved.\nNow you are in main menu.";
+        }
     }
 
     public void exitApp() {

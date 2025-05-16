@@ -51,3 +51,4 @@ public enum SignupMenuCommands {
 //  register    -u   mostafa   -p random  -n mosi  -e mostafa@gmail.com -g male
 // pick question -q 1 -a salam -c salam
 // login -u mostafa -p paSS12#$
+// menu enter signup

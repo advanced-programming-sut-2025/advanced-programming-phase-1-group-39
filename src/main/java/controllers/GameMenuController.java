@@ -87,25 +87,26 @@ public class GameMenuController {
 
     public Result loadGame() {
         App app = App.getApp();
-        if (app.getLoggedInUser().getCurrentGame() == null && app.getLoggedInUser().getSavedGame() == null) {
+        User user = app.getLoggedInUser();
+        if (user.getCurrentGame() == null && user.getSavedGame() == null) {
             return new Result(false, "You don't have any game. please create a game first.");
-        } else if (app.getLoggedInUser().getCurrentGame() != null && haveOtherPlayersCurrentGame(app.getLoggedInUser().getCurrentGame().getPlayers())) {
+        } else if (user.getCurrentGame() != null && haveOtherPlayersCurrentGame(user.getCurrentGame().getPlayers())) {
             return new Result(false, "to start loading a game, none of the players must have an active game.");
-        } else if (app.getLoggedInUser().getCurrentGame() != null) {
-            app.setCurrentGame(app.getLoggedInUser().getCurrentGame());
+        } else if (user.getCurrentGame() != null) {
+            app.setCurrentGame(user.getCurrentGame());
             app.getCurrentGame().setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
-                    app.getLoggedInUser().getUserName()));
-            app.getCurrentGame().setLoadedPlayerUsername(app.getLoggedInUser().getUserName());
+                    user.getUserName()));
+            app.getCurrentGame().setLoadedPlayerUsername(user.getUserName());
             app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
             app.getCurrentGame().startGame();
             app.setCurrentMenu(Menu.GAME);
             return new Result(true, "the game was loaded successfully. you can now continue your game.");
-        } else if (app.getLoggedInUser().getSavedGame() != null && haveOtherPlayersCurrentGame(app.getLoggedInUser().getSavedGame().getPlayers())) {
+        } else if (user.getSavedGame() != null && haveOtherPlayersCurrentGame(user.getSavedGame().getPlayers())) {
             return new Result(false, "to start loading a game, none of the players must have an active game.");
         } else {
-            app.setCurrentGame(app.getLoggedInUser().getSavedGame());
-            app.getCurrentGame().setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(), app.getLoggedInUser().getUserName()));
-            app.getCurrentGame().setLoadedPlayerUsername(app.getLoggedInUser().getUserName());
+            app.setCurrentGame(user.getSavedGame());
+            app.getCurrentGame().setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(), user.getUserName()));
+            app.getCurrentGame().setLoadedPlayerUsername(user.getUserName());
             app.getGames().set(getIndexInGames(app.getCurrentGame().getId()), app.getCurrentGame());
             app.getCurrentGame().startGame();
             app.setCurrentMenu(Menu.GAME_MENU);

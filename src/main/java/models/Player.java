@@ -76,10 +76,10 @@ public class Player {
         ItemStack axe = new ItemStack(new Axe(), 1);
         ItemStack scythe = new ItemStack(new Scythe(), 1);
         ItemStack wateringCan = new ItemStack(new WateringCan(), 1);
-        ItemStack trainingRod = new ItemStack(new FishingPole("Training Rod", FishingPoleType.TRAINING_ROD), 1);
+//        ItemStack trainingRod = new ItemStack(new FishingPole("Training Rod", FishingPoleType.TRAINING_ROD), 1);
 
         this.inventory = new Inventory(
-                List.of(hoe, pickaxe, axe, scythe, wateringCan, trainingRod)
+                List.of(hoe, pickaxe, axe, scythe, wateringCan)
         );
 
         this.username = username;

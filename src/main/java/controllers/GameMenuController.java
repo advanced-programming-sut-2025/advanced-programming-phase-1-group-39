@@ -2,6 +2,7 @@ package controllers;
 
 import models.*;
 import models.Enums.Menu;
+import models.map.AnsiColors;
 import models.map.FarmType;
 import models.map.Map;
 
@@ -75,7 +76,21 @@ public class GameMenuController {
                         FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
                 currentGame.startGame();
                 app.setCurrentMenu(Menu.GAME);
-                return new Result(true, "The game map has been successfully created — let the adventure begin!");
+                currentGame.setPlayerInTurn(currentGame.getPlayers().get(0));
+                StringBuilder text = new StringBuilder();
+                int counter = 1;
+                for (Player player : currentGame.getPlayers()) {
+                    String farmPlace = switch (counter) {
+                        case 1 -> "Top right";
+                        case 2 -> "Top left";
+                        case 3 -> "Bottom left";
+                        default -> "Bottom right";
+                    };
+                    text.append("Player "+counter++ +" : " + player.getUsername() + " - Farm: "+farmPlace+"\n");
+                }
+                return new Result(true, "The game map has been successfully created\nlet the adventure begin!\n" +
+                        text.toString() + AnsiColors.ANSI_CYAN_BOLD + "Starting turn : " + currentGame.getPlayerInTurn().getUsername() + AnsiColors.ANSI_RESET
+                );
             } else {
                 currentGame.addRandomFarmForPlayer(currentGame.getPlayerInTurn(),
                         FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));

@@ -119,6 +119,72 @@ public class PlayersInteractionController {
         return new Result(true, output.toString());
     }
 
+    public static Result getRateToGift(Matcher matcher) {
+        int giftId = Integer.parseInt(matcher.group("giftNumber"));
+        String rate = matcher.group("rate");
+
+        if (!isGiftExists(giftId)) {
+            return new Result(false, "No gift with ID " + giftId + " has been sent to you.");
+        } else if (!isNumeric(rate)) {
+            return new Result(false, "Gift rating must be an integer between 1 and 5.");
+        } else if (Integer.parseInt(rate) < 1 || Integer.parseInt(rate) > 5) {
+            return new Result(false, "Gift rating must be between 1 and 5.");
+        } else if (getGift(giftId).getRate() >= 0) {
+            return new Result(false, "This gift has already been rated!");
+        } else {
+            Gift gift = getGift(giftId);
+            gift.setRate(Integer.parseInt(rate));
+            String output;
+            int xp = (gift.getRate() - 3) * 30 + 15;
+            if (xp > 0) {
+                output = increaseXP(game.getFriendship(currentPlayer, game.getPlayerByUsername(gift.getSender())), xp, gift.getSender());
+            } else {
+                output = decreaseXP(game.getFriendship(currentPlayer, game.getPlayerByUsername(gift.getSender())), xp, gift.getSender());
+            }
+            return new Result(true, "Your rating has been saved! Thanks for sharing your thoughts!\n" +
+                    output);
+        }
+    }
+
+    public static Result showGiftHistory(Matcher matcher) {
+        String otherPlayer = matcher.group("username");
+        StringBuilder output = new StringBuilder();
+        output.append(" Gift History with Player ").append(otherPlayer).append(" :\n");
+        for (Gift gift : game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getGifts()) {
+            output.append("gift id : ").append(gift.getGiftId()).append("\n");
+            output.append("sender : ").append(gift.getSender()).append("\n");
+            output.append("receiver : ").append(gift.getReceiver()).append("\n");
+            output.append("item name : ").append(gift.getGiftItem().getItem().getName()).append("\n");
+            output.append("amount : ").append(gift.getGiftItem().getAmount()).append("\n");
+            output.append("---------------\n");
+        }
+        output.deleteCharAt(output.length() - 1);
+        return new Result(true, output.toString());
+    }
+
+    public static Result getFlower(Matcher matcher) {
+        String otherPlayer = matcher.group("username");
+
+        if (!isPlayerExists(otherPlayer)) {
+            return new Result(false, "Player " + otherPlayer + " doesn't exist");
+        } else if (!isPlayersNear(currentPlayer.getLocation(), game.getPlayerByUsername(otherPlayer).getLocation())) {
+            return new Result(false, "To give a flower to player " + otherPlayer + "you need to be standing right next to them.");
+        } else if (game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getFriendshipLevel() != 2 ||
+                game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getXp() != 299) {
+            return new Result(false, "To give a flower, you must be at Friendship Level 2 and have exactly 299 XP with the player " + otherPlayer + " .");
+        } else if (!game.getPlayerByUsername(otherPlayer).getInventory().hasSpace(new ItemStack(ItemManager.getItemByName("Bouquet"), 1))) {
+            return new Result(false, "Player " + otherPlayer + " doesn’t have enough space to accept your flower.");
+        } else if (!currentPlayer.getInventory().hasItem("Bouquet")) {
+            return new Result(false, "You can’t offer what you don’t have! Make sure Bouquet is in your inventory first.");
+        } else {
+            currentPlayer.getInventory().pickItem("Bouquet", 1);
+            game.getPlayerByUsername(otherPlayer).getInventory().addItem(ItemManager.getItemByName("Bouquet"), 1);
+            game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).setFriendshipLevel(3);
+            game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).setXp(300);
+            return new Result(true, "You gave a flower to " + otherPlayer + " ! Your bond blossoms beautifully — Friendship Level 3 unlocked!");
+        }
+    }
+
 
     // Auxiliary functions :
 
@@ -164,7 +230,7 @@ public class PlayersInteractionController {
             return "Congratulations! Your friendship XP increased by " + xp + " !" + "XP gained: " + xp;
         } else if (friendship.getFriendshipLevel() == 2 && currentXP < 300 && currentXP + xp >= 300) {
             friendship.setXp(299);
-            return "You've built a great friendship with " + playerName + " ! To strengthen this bond and reach the next friendship level, consider buying your friend a flower!" + "XP gained: " + xp;
+            return "You've built a great friendship with " + playerName + " ! To strengthen this bond and reach the next friendship level, consider buying your friend a flower!" + "XP gained: " + (299 - currentXP);
         } else if (friendship.getFriendshipLevel() == 2 && currentXP < 300 && currentXP + xp < 300) {
             friendship.setXp(currentXP + xp);
             return "Congratulations! Your friendship XP increased by " + xp + " !" + "XP gained: " + xp;
@@ -250,6 +316,42 @@ public class PlayersInteractionController {
         }
         output.deleteCharAt(output.length() - 1);
         return output.toString();
+    }
+
+    private static boolean isGiftExists(int giftId) {
+        ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());
+        for (Player otherPlayer : otherPlayers) {
+            for (Gift gift : game.getFriendship(currentPlayer, otherPlayer).getGifts()) {
+                if (gift.getReceiver().equals(currentPlayer.getUsername()) && gift.getGiftId() == giftId) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static Gift getGift(int giftId) {
+        ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());
+        for (Player otherPlayer : otherPlayers) {
+            for (Gift gift : game.getFriendship(currentPlayer, otherPlayer).getGifts()) {
+                if (gift.getGiftId() == giftId) {
+                    return gift;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static boolean isNumeric(String str) {
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
 

@@ -7,4 +7,5 @@ public class AppControllers {
     public static GameMenuController gameMenuController = new GameMenuController();
     public static SignupMenuController signupMenuController = new SignupMenuController();
     public static GameController gameController = new GameController();
+    public static PlayersInteractionController playersInteractionController = new PlayersInteractionController();
 }

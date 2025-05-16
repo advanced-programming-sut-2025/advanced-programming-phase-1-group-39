@@ -14,7 +14,7 @@ public class PlayersInteractionController {
     static Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
 
 
-    public static Result ShowFriendshipsList() {
+    public Result showFriendshipsList() {
         StringBuilder output = new StringBuilder();
         for (Player otherPlayer : game.getOtherPlayers(currentPlayer.getUsername())) {
             output.append(printFriendship(game.getFriendship(currentPlayer, otherPlayer), otherPlayer.getUsername()));
@@ -23,7 +23,7 @@ public class PlayersInteractionController {
         return new Result(true, output.toString());
     }
 
-    public static Result talk(Matcher matcher) {
+    public Result talk(Matcher matcher) {
         String playerName = matcher.group("username");
         String message = matcher.group("message");
         Player player2 = game.getPlayerByUsername(playerName);
@@ -43,7 +43,7 @@ public class PlayersInteractionController {
         }
     }
 
-    public static Result talkHistory(Matcher matcher) {
+    public Result talkHistory(Matcher matcher) {
         String otherPlayer = matcher.group("username");
         StringBuilder output = new StringBuilder();
 
@@ -54,7 +54,7 @@ public class PlayersInteractionController {
         return new Result(true, output.toString());
     }
 
-    public static Result hug(Matcher matcher) {
+    public Result hug(Matcher matcher) {
         String otherPlayer = matcher.group("username");
 
         if (!isPlayerExists(otherPlayer)) {
@@ -72,7 +72,7 @@ public class PlayersInteractionController {
         }
     }
 
-    public static Result buyGift(Matcher matcher) {
+    public Result buyGift(Matcher matcher) {
         String otherPlayer = matcher.group("username");
         String item = matcher.group("item");
         int amount = Integer.parseInt(matcher.group("amount"));
@@ -99,7 +99,7 @@ public class PlayersInteractionController {
         }
     }
 
-    public static Result showGiftsList() {
+    public Result showGiftsList() {
         StringBuilder output = new StringBuilder();
         ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());
         output.append("Gifts You've Received : \n");
@@ -119,7 +119,7 @@ public class PlayersInteractionController {
         return new Result(true, output.toString());
     }
 
-    public static Result getRateToGift(Matcher matcher) {
+    public Result getRateToGift(Matcher matcher) {
         int giftId = Integer.parseInt(matcher.group("giftNumber"));
         String rate = matcher.group("rate");
 
@@ -146,7 +146,7 @@ public class PlayersInteractionController {
         }
     }
 
-    public static Result showGiftHistory(Matcher matcher) {
+    public Result showGiftHistory(Matcher matcher) {
         String otherPlayer = matcher.group("username");
         StringBuilder output = new StringBuilder();
         output.append(" Gift History with Player ").append(otherPlayer).append(" :\n");
@@ -162,7 +162,7 @@ public class PlayersInteractionController {
         return new Result(true, output.toString());
     }
 
-    public static Result getFlower(Matcher matcher) {
+    public Result getFlower(Matcher matcher) {
         String otherPlayer = matcher.group("username");
 
         if (!isPlayerExists(otherPlayer)) {

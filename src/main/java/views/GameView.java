@@ -3,6 +3,8 @@ package views;
 import controllers.AppControllers;
 import controllers.GameController;
 import controllers.NPCGameController;
+import controllers.PlayersInteractionController;
+import models.Enums.commands.InteractionsCommand;
 import models.Enums.commands.NPCGameCommand;
 import models.Enums.commands.GameCommands;
 import models.Input;
@@ -12,6 +14,7 @@ import java.util.regex.Matcher;
 
 public class GameView implements View {
     GameController controller = AppControllers.gameController;
+    PlayersInteractionController interactionsController = AppControllers.playersInteractionController;
     private final NPCGameController npcController = new NPCGameController();
 
     @Override
@@ -127,10 +130,39 @@ public class GameView implements View {
             System.out.println(result.message());
         }
 
+        // Interactions with players :
+        else if ((matcher = InteractionsCommand.ShowFriendshipList.getMatcher(command)) != null) {
+            result = interactionsController.showFriendshipsList();
+            System.out.println(result.message());
+        } else if ((matcher = InteractionsCommand.Talk.getMatcher(command)) != null) {
+            result = interactionsController.talk(matcher);
+            System.out.println(result.message());
+        } else if ((matcher = InteractionsCommand.TalkHistory.getMatcher(command)) != null) {
+            result = interactionsController.talkHistory(matcher);
+            System.out.println(result.message());
+        } else if ((matcher = InteractionsCommand.Hug.getMatcher(command)) != null) {
+            result = interactionsController.hug(matcher);
+            System.out.println(result.message());
+        } else if ((matcher = InteractionsCommand.Gift.getMatcher(command)) != null) {
+            result = interactionsController.buyGift(matcher);
+            System.out.println(result.message());
+        } else if ((matcher = InteractionsCommand.GiftList.getMatcher(command)) != null) {
+            result = interactionsController.showGiftsList();
+            System.out.println(result.message());
+        } else if ((matcher = InteractionsCommand.GiftRate.getMatcher(command)) != null) {
+            result = interactionsController.getRateToGift(matcher);
+            System.out.println(result.message());
+        } else if ((matcher = InteractionsCommand.GiftHistory.getMatcher(command)) != null) {
+            result = interactionsController.showGiftHistory(matcher);
+            System.out.println(result.message());
+        } else if ((matcher = InteractionsCommand.GetFlower.getMatcher(command)) != null) {
+            result = interactionsController.getFlower(matcher);
+            System.out.println(result.message());
+        }
+
         else {
             System.out.println("invalid command.");
         }
-
 
         // todo: check
         // Time checking

@@ -24,7 +24,7 @@ public abstract class Item {
                 || this instanceof ForagingMaterial || this instanceof ForagingMineral) {
             return true;
         }
-        return null;
+        return false;
     }
     public int getItemPrice() {
         if (this instanceof ArtisanMachine) {

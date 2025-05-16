@@ -25,7 +25,7 @@ public class Game {
 
     private ArrayList<Player> players;
     private String loadedPlayerUsername;
-    private ArrayList<Player> mainPlayers;
+    private Player mainPlayers;
     private Player playerInTurn;
 
 
@@ -47,7 +47,7 @@ public class Game {
     public Game(int gameId, Player one, Player two, Player three, Player four) {
         this.id = lastGameId++;
         this.players = new ArrayList<>(List.of(one, two, three, four));
-        addMainPlayer(one);
+        this.mainPlayers = one;
         this.playerInTurn = one;
         this.gameMap = new Map();
 
@@ -72,9 +72,9 @@ public class Game {
         return id;
     }
 
-    public void addMainPlayer(Player player) { mainPlayers.add(player); }
+    public void setMainPlayers(Player mainPlayers) { this.mainPlayers = mainPlayers; }
 
-    public ArrayList<Player> getMainPlayers() { return mainPlayers; }
+    public Player getMainPlayers() { return mainPlayers; }
 
     // NPC
     public ArrayList<NPC> getNpcs() {

@@ -108,7 +108,7 @@ public class GameMenuController {
             app.setCurrentGame(app.getLoggedInUser().getCurrentGame());
             app.getCurrentGame().setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
                     app.getLoggedInUser().getUserName()));
-            app.getCurrentGame().addMainPlayer(app.getCurrentGame().getPlayerByUsername(app.getLoggedInUser().getUserName()));
+            app.getCurrentGame().setMainPlayers(app.getCurrentGame().getPlayerByUsername(app.getLoggedInUser().getUserName()));
             app.getCurrentGame().startGame();
             app.setCurrentMenu(Menu.GAME);
             return new Result(true, "the game was loaded successfully. you can now continue your game.");
@@ -118,9 +118,7 @@ public class GameMenuController {
         } else {
             app.setCurrentGame(app.getLoggedInUser().getSavedGame());
             app.getCurrentGame().setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(), app.getLoggedInUser().getUserName()));
-            if (!app.getCurrentGame().getMainPlayers().contains(app.getCurrentGame().getPlayerByUsername(app.getLoggedInUser().getUserName()))) {
-                app.getCurrentGame().addMainPlayer(app.getCurrentGame().getPlayerByUsername(app.getLoggedInUser().getUserName()));
-            }
+            app.getCurrentGame().setMainPlayers(app.getCurrentGame().getPlayerByUsername(app.getLoggedInUser().getUserName()));
             for (Player player : app.getCurrentGame().getPlayers()) {
                 app.getUsers().get(getIndexInUsers(player.getUsername())).setCurrentGame(app.getCurrentGame());
                 app.getUsers().get(getIndexInUsers(player.getUsername())).setSavedGame(null);

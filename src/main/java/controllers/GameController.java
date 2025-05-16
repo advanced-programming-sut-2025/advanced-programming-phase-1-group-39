@@ -41,8 +41,8 @@ public class GameController {
     public Result saveGame() {return null;}
 
     public String exitGame() {
-        if (!App.getApp().getCurrentGame().getMainPlayers().contains(App.getApp().getCurrentGame().getPlayerInTurn())) {
-            return "Only main players are allowed to request to leave the game.";
+        if (!App.getApp().getCurrentGame().getMainPlayers().getUsername().equals(App.getApp().getCurrentGame().getPlayerInTurn().getUsername())) {
+            return "Only main player is allowed to request to leave the game.";
         } else {
             App.getApp().setCurrentGame(null);
             App.getApp().setCurrentMenu(Menu.MAIN_MENU);

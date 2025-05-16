@@ -19,6 +19,7 @@ game map 2
 game map 1
 game map 2
 
+exit
 print map -l 150,75 -s 300
 
  walk -l 72,13

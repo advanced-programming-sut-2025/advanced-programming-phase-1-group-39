@@ -34,7 +34,7 @@ public class Game {
     private ArrayList<Building> buildings = new ArrayList<>();
 
     private ArrayList<NPC> npcs = new ArrayList<>();
-    private ArrayList<Friendship> friendships = initializeFriendships();
+    private ArrayList<Friendship> friendships = new ArrayList<>();
 
     private Time time = new Time();
 
@@ -59,6 +59,7 @@ public class Game {
     public void startGame() {
         initializeNPCs();
         makeNPCBuildings();
+        friendships = initializeFriendships();
 
         gameMap.loadMap(getNpcShops());
 
@@ -368,7 +369,6 @@ public class Game {
         if (!playerInTurn.isConscious()) return nextTurn();
 
         // TODO : show message!!!
-        showMessages(playerInTurn);
 
         return true;
     }
@@ -493,7 +493,7 @@ public class Game {
         return otherPlayers;
     }
 
-    private String showMessages(Player player) {
+    public String showMessages(Player player) {
         StringBuilder messages = new StringBuilder();
         ArrayList<Player> otherPlayers = getOtherPlayers(player.getUsername());
         for (Player otherPlayer : otherPlayers) {
@@ -556,7 +556,7 @@ public class Game {
     }
     public int getCurrentGiftNumber() { return this.currentGiftNumber; }
 
-    private String showGiftMessages(Player player) {
+    public String showGiftMessages(Player player) {
         StringBuilder output = new StringBuilder();
         ArrayList<Player> otherPlayers = getOtherPlayers(player.getUsername());
         for (Player otherPlayer : otherPlayers) {

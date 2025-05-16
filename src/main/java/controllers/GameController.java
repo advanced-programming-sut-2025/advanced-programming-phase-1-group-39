@@ -51,7 +51,8 @@ public class GameController {
 
         Player player = game.getPlayerInTurn();
         return new Result(true, AnsiColors.ANSI_CYAN_BOLD +
-                "Next turn: " + player.getUsername() + AnsiColors.ANSI_RESET);
+                "Next turn: " + player.getUsername() + game.showMessages(game.getPlayerInTurn()) +
+                game.showGiftMessages(game.getPlayerInTurn()) + AnsiColors.ANSI_RESET);
     }
 
     public String showTime() {

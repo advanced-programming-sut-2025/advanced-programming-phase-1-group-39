@@ -570,7 +570,7 @@ public class GameController {
         animal.changeFriendship(amount);
         return new Result(true, "You changed friendship with " + animalName + " by amount " + amount);
     }
-    public Result showAnimalsInfo(Matcher matcher) {
+    public Result showAnimalsInfo() {
         ArrayList<Animal> animals = App.getApp().getCurrentGame().getPlayerInTurn().getAnimals();
         StringBuilder sb = new StringBuilder();
         sb.append("Your Animals: \n");

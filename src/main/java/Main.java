@@ -41,9 +41,7 @@ public class Main {
 
         // TODO : delete up
         AppDataManager.loadApp();
-//        UsersDataManager.loadUsers();
         new AppView().run();
-//        UsersDataManager.saveUsers(App.getApp().getUsers());
         SaveAppManager.saveApp();
     }
 }

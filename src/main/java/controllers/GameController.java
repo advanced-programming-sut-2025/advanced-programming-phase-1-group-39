@@ -47,16 +47,32 @@ public class GameController {
     public Result saveGame() {return null;}
 
     public String exitGame() {
-        App.getApp().setCurrentGame(null);
-        App.getApp().setCurrentMenu(Menu.MAIN_MENU);
-        return "You exited from the game! game saved.\nNow you are in main menu.";
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+
+        if (!game.getMainPlayer().equals(player)) {
+            return "Only main player is allowed to request to leave the game.";
+        } else {
+            App.getApp().setCurrentGame(null);
+            App.getApp().setCurrentMenu(Menu.MAIN_MENU);
+            return "You exited from the game! game saved.\nNow you are in main menu.";
+        }
     }
 
     public void exitApp() {
         App.getApp().setCurrentMenu(Menu.ExitMenu);
     }
 
-    public Result deleteGame() {return null;}
+    public Result deleteGame() {
+
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        if (!game.getPlayerInTurn().equals(game.getMainPlayer())) {
+            return new Result(false, "You are not allowed to delete the game.");
+        } else {
+            return new Result(true, "To delete the game, all players must agree. Remaining players need to confirm their approval one by one.");
+        }
+    }
 
     public String showCurrentMenu() {
         return "Now you are in game!";
@@ -73,7 +89,8 @@ public class GameController {
 
         Player player = game.getPlayerInTurn();
         return new Result(true, AnsiColors.ANSI_CYAN_BOLD +
-                "Next turn: " + player.getUsername() + AnsiColors.ANSI_RESET);
+                "Next turn: " + player.getUsername() + "\n" +game.showMessages(game.getPlayerInTurn()) + "\n" +
+                game.showGiftMessages(game.getPlayerInTurn()) + AnsiColors.ANSI_RESET);
     }
 
     public String showTime() {

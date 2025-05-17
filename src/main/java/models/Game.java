@@ -4,6 +4,7 @@ import controllers.AppControllers;
 import models.Enums.Season;
 import models.Enums.WeatherStatus;
 import models.NPC.*;
+import models.PlayerInteraction.Gift;
 import models.Shops.*;
 import models.animals.Animal;
 import models.PlayerInteraction.Friendship;
@@ -69,6 +70,10 @@ public class Game {
     public int getId() {
         return id;
     }
+
+    public void setMainPlayer(Player mainPlayer) { this.mainPlayer = mainPlayer; }
+
+    public Player getMainPlayer() { return mainPlayer; }
 
     // NPC
     public ArrayList<NPC> getNpcs() {
@@ -408,6 +413,16 @@ public class Game {
         return true;
     }
 
+    public int getMoneyOfPlayer(Player player) {
+        if (!players.contains(player)) return 0;
+
+        if (player.getSpouseName() != null) {
+            Player spouse = getPlayerByUsername(player.getSpouseName());
+            return player.getMoney() + spouse.getMoney();
+        }
+        return player.getMoney();
+    }
+
     // weather
     public Weather getTodayWeather() {
         return todayWeather;
@@ -524,7 +539,7 @@ public class Game {
         return otherPlayers;
     }
 
-    private String showMessages(Player player) {
+    public String showMessages(Player player) {
         StringBuilder messages = new StringBuilder();
         ArrayList<Player> otherPlayers = getOtherPlayers(player.getUsername());
         for (Player otherPlayer : otherPlayers) {
@@ -583,6 +598,29 @@ public class Game {
     // gift
     public void setCurrentGiftNumber() {
         this.currentGiftNumber += 1;
+    }
+    public int getCurrentGiftNumber() { return this.currentGiftNumber; }
+
+    public String showGiftMessages(Player player) {
+        Game game = App.getApp().getCurrentGame();
+        Player currentPlayer = playerInTurn;
+        StringBuilder output = new StringBuilder();
+        ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());
+        output.append("Gifts You've Received : \n");
+        for (Player otherPlayer : otherPlayers) {
+            for (Gift gift : game.getFriendship(currentPlayer, otherPlayer).getGifts()) {
+                if (gift.getSender().equals(otherPlayer.getUsername()) && gift.isNew()) {
+                    output.append("gift id : ").append(gift.getGiftId()).append(" |");
+                    output.append("sender : ").append(gift.getSender()).append(" |");
+                    output.append("item name : ").append(gift.getGiftItem().getItem().getName()).append(" |");
+                    output.append("amount : ").append(gift.getGiftItem().getAmount()).append("\n");
+                    output.append("---------------\n");
+                    gift.setNew(false);
+                }
+            }
+        }
+        output.deleteCharAt(output.length() - 1);
+        return output.toString();
     }
 
 }

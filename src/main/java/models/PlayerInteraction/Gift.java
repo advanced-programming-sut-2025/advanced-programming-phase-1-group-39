@@ -3,17 +3,23 @@ package models.PlayerInteraction;
 import models.ItemStack;
 
 public class Gift {
+    private int giftId;
     private final String sender;
     private final String receiver;
     private final ItemStack giftItem;
+    int rate;
     boolean isNew;
 
-    public Gift(String sender, String receiver, ItemStack giftItem) {
+    public Gift(String sender, String receiver, ItemStack giftItem, int giftId) {
         this.sender = sender;
         this.receiver = receiver;
         this.giftItem = giftItem;
         this.isNew = true;
+        this.giftId = giftId;
+        rate = 0;
     }
+
+    public int getGiftId() { return giftId; }
 
     public String getSender() {
         return sender;
@@ -27,6 +33,8 @@ public class Gift {
         return giftItem;
     }
 
+    public int getRate() { return rate; }
+
     public boolean isNew() {
         return isNew;
     }
@@ -34,4 +42,6 @@ public class Gift {
     public void setNew(boolean aNew) {
         isNew = aNew;
     }
+
+    public void setRate(int rate) { this.rate = rate; }
 }

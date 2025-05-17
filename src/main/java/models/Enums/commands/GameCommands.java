@@ -5,9 +5,11 @@ import java.util.regex.Pattern;
 
 public enum GameCommands {
     SHOW_CURRENT_MENU("show current menu"),
-    EXIT_GAME("menu exit"),
+    EXIT_GAME("exit\\s+game"),
     EXIT_APP("exit"),
+    DELETE_GAME("delete game"),
     NEXT_TURN("next\\s+turn"),
+
 
     TIME("time"),
     DATE("date"),

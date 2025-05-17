@@ -15,7 +15,10 @@ public enum InteractionsCommand {
 
     Gift("gift\\s+-u\\s+(?<username>.*?)\\s+-i\\s+(?<item>.*?)\\s+-a\\s+(?<amount>\\d+)"),
     GiftList("gift\\s+list"),
-    GiftRate("gift\\s+rate\\s+")
+    GiftRate("gift\\s+rate\\s+-i\\s+(?<giftNumber>\\d+)\\s+-r\\s+(?<rate>\\S+)"),
+    GiftHistory("gifts\\s+history\\s+-u\\s+(?<username>.*?)"),
+
+    GetFlower("flower\\s+-u\\s+(?<username>.*?)"),
 
 
     // gift history -u <username>
@@ -24,6 +27,7 @@ public enum InteractionsCommand {
     // talk -u <username> -m <message>
     // talk history -u <username>
     // hug -u <username>
+    // flower -u <username>
 
     ;
 

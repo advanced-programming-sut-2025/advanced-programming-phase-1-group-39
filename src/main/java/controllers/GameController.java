@@ -6,7 +6,6 @@ import models.Enums.Menu;
 import models.Enums.WeatherStatus;
 import models.PlayerInteraction.Friendship;
 import models.Shops.CarpentersShop;
-import models.Shops.MarniesRanch;
 import models.animals.Fish;
 import models.buildings.Cabin;
 import models.buildings.ShippingBin;

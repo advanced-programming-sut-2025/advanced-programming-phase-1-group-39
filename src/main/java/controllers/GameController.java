@@ -10,6 +10,7 @@ import models.Shops.MarniesRanch;
 import models.animals.Fish;
 import models.buildings.Cabin;
 import models.buildings.ShippingBin;
+import models.crafting.CraftingRecipe;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
 import models.inventory.Inventory;
@@ -488,12 +489,24 @@ public class GameController {
         inv.placeItem(itemName, tile);
         return new Result(true, "You have placed this item to tile successfully!");
     }
+    public Result cheatAddCraftingRecipe(Matcher matcher) {
+        String name = matcher.group(1);
+        CraftingRecipe recipe = CraftingRecipe.getRecipeByName(name);
+        if (recipe == null) {
+            return new Result(false, "Not found");
+        }
+        App.getApp().getCurrentGame().getPlayerInTurn().learnCraftingRecipe(recipe);
+        return new Result(true, "You have successfully learned " + name);
+    }
     public Result cheatAddToInventory(Matcher matcher) {
         String name = matcher.group(1);
         int count = Integer.parseInt(matcher.group(2));
 
         Inventory inv = App.getApp().getCurrentGame().getPlayerInTurn().getInventory();
         Item itemT0oAdd = ItemManager.getItemByName(name);
+        if (itemT0oAdd == null) {
+            return new Result(false, name + " not found");
+        }
         if (!inv.hasSpace(new ItemStack(itemT0oAdd, count))) {
             return new Result(false, "Your inventory has not space anymore");
         }

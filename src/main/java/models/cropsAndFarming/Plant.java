@@ -85,9 +85,9 @@ public class Plant {
             productStack = 1;
         }
 
-        if (needsWater) {
-            isWateredToday = false;
-        } // cheat: comment this
+//        if (needsWater) {
+//            isWateredToday = false;
+//        } // cheat: comment this
     }
 
     public boolean isAlive() {

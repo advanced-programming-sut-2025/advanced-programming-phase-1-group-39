@@ -75,7 +75,7 @@ public class Tree{
     public void updateDaily() {
         if (isBurnt) return;
 
-        if (currentStage < stages.size()) {
+        if (currentStage < stages.size() - 1) {
             daysOfCurrentStage--;
             if (daysOfCurrentStage <= 0) {
                 currentStage++;

@@ -174,8 +174,10 @@ public class Inventory {
         if (item == null) {
             return;
         }
-        if (tile.getItemOnTile() == null)
+        if (tile.getItemOnTile() == null) {
             tile.placeItem(item);
+            pickItem(item.getItem().getName(), item.getAmount());
+        }
     }
 
     public void setInHand(ItemStack itemStack) {

@@ -158,6 +158,8 @@ public class CarpentersShop extends Shop{
 
     @Override
     public void endDay() {
-
+        for (ShopItem item : shopItems.values()) {
+            item.resetDailyLimit();
+        }
     }
 }

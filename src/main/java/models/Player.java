@@ -44,14 +44,13 @@ public class Player {
     private Inventory inventory;
 
 
-    private ArrayList<CraftingRecipe> craftingRecipes;
-    private ArrayList<ArtisanMachineRecipe> artisanMachineRecipes;
-    private ArrayList<FoodRecipe> foodRecipes;
+    private ArrayList<CraftingRecipe> craftingRecipes = new ArrayList<>();
+    private ArrayList<ArtisanMachineRecipe> artisanMachineRecipes = new ArrayList<>();
+    private ArrayList<FoodRecipe> foodRecipes = new ArrayList<>();
 
-//    private HashMap<Player, Integer> playersFriendship;
-    private HashMap<NPC, Integer> NPCsFriendship;
+    private HashMap<NPC, Integer> NPCsFriendship = new HashMap<>();
 
-    private ArrayList<Quest> activeQuests;
+    private ArrayList<Quest> activeQuests = new ArrayList<>();
 
     // animals
     private HashMap<String, Animal> animals = new HashMap<>();

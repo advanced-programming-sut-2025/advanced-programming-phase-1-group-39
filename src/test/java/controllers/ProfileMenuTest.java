@@ -185,6 +185,4 @@ public class ProfileMenuTest {
         result = validatePassword("1234").toString();
         assertEquals(result, controller.changePassword(matcher).message());
     }
-
-
 }

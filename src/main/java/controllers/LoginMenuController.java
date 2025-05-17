@@ -103,8 +103,6 @@ public class LoginMenuController {
             App.getApp().setCurrentMenu(Menu.MAIN_MENU);
             return new Result(true, "login was successful. you are now in the main menu.");
         }
-
-
 //        if (!newPassword.equals(App.getApp().getPendingUser().getPassword())) {
 //            App.getApp().setPendingUser(null);
 //            return new Result(false, "the new password entered is incorrect. to log in, you must start over.");

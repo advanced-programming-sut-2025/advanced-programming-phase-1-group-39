@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public enum GameMenuCommands {
 
-    NewGame("game\\s+new\\s+-u\\s+(?<username1>\\S+)((\\s+(?<username2>\\S+))?)((\\s+(?<username3>\\S+))?)((\\s+(?<otherUsers>\\S+))?)"),
+    NewGame("game\\s+new\\s+-u\\s+(?<username1>\\S+)?((\\s+(?<username2>\\S+))?)((\\s+(?<username3>\\S+))?)((\\s+(?<otherUsers>\\S+))?)"),
 
     ChooseMap("game\\s+map\\s+(?<mapNumber>\\S+)"),
 

@@ -5,6 +5,7 @@ import models.Enums.Direction;
 import models.Enums.Menu;
 import models.Enums.WeatherStatus;
 import models.PlayerInteraction.Friendship;
+import models.Shops.CarpentersShop;
 import models.animals.Fish;
 import models.buildings.Cabin;
 import models.buildings.ShippingBin;
@@ -544,7 +545,25 @@ public class GameController {
     }
 
     // TODO : complete these
-    public Result build(Matcher matcher) {return null;}
+    public Result build(Matcher matcher) {
+        String buildingName = matcher.group(1).toLowerCase();
+        int x = Integer.parseInt(matcher.group(2));
+        int y = Integer.parseInt(matcher.group(3));
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        Shop shop = App.getApp().getCurrentGame().getShopPlayerIsIn(player);
+        if (shop == null) {
+            return new Result(false, "You should be in a shop");
+        }
+        if (!shop.getName().equalsIgnoreCase("Carpenter's Shop")) {
+            return new Result(false, "You should be in Carpenter's Shop");
+        }
+        CarpentersShop carpentersShop = (CarpentersShop) shop;
+
+        return carpentersShop.buildFarmBuilding(buildingName, x, y);
+    }
+
     public Result buyAnimal(Matcher matcher) {return null;}
     public Result petAnimal(Matcher matcher) {
         String name = matcher.group(1);

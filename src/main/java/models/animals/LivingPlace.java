@@ -31,10 +31,23 @@ public enum LivingPlace {
     }
 
     public static LivingPlace fromString(String name) {
-        for (LivingPlace type : values()) {
-            if (name.equalsIgnoreCase(type.name())) {
-                return type;
-            }
+        if (name.equalsIgnoreCase("Coop")) {
+            return COOP;
+        }
+        if (name.equalsIgnoreCase("Big Coop")) {
+            return BIG_COOP;
+        }
+        if (name.equalsIgnoreCase("Deluxe Coop")) {
+            return DELUXE_COOP;
+        }
+        if (name.equalsIgnoreCase("Barn")) {
+            return BARN;
+        }
+        if (name.equalsIgnoreCase("Big Barn")) {
+            return BIG_BARN;
+        }
+        if (name.equalsIgnoreCase("Deluxe Barn")) {
+            return DELUXE_BARN;
         }
         return null;
     }

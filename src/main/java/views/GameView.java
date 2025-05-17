@@ -178,6 +178,8 @@ public class GameView implements View {
             System.out.println(controller.responseToTrade(matcher));
         } else if ((matcher = GameCommands.CHEAT_ADD_MONEY.getMatcher(command)) != null) {
             System.out.println(controller.cheatAddMoney(matcher));
+        } else if ((matcher = GameCommands.BUILD.getMatcher(command)) != null) {
+            System.out.println(controller.build(matcher));
         }
 
         // NPC and friendships
@@ -203,7 +205,6 @@ public class GameView implements View {
         }
 
 
-        // todo: check
         // Time checking
         result = controller.checkTime();
         if (result.success()) {

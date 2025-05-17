@@ -208,7 +208,7 @@ public class PlayersInteractionController {
             currentPlayer.getInventory().pickItem("Bouquet", 1);
             game.getPlayerByUsername(otherPlayer).getInventory().addItem(ItemManager.getItemByName("Bouquet"), 1);
             game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).setFriendshipLevel(3);
-            game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).setXp(300);
+            game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).setXp(601);
             return new Result(true, "You gave a flower to " + otherPlayer + " ! Your bond blossoms beautifully — Friendship Level 3 unlocked!");
         }
     }
@@ -246,28 +246,28 @@ public class PlayersInteractionController {
 
     public static String increaseXP(Friendship friendship, int xp, String playerName) {
         int currentXP = friendship.getXp();
-        if (friendship.getFriendshipLevel() == 0 && currentXP < 100 && currentXP + xp >= 100) {
+        if (currentXP < 100 && currentXP + xp >= 100) {
             friendship.setXp(currentXP + xp);
             return "Congratulations! You've reached Friendship Level 1 with " + playerName + " !" + "XP gained: " + xp;
-        } else if (friendship.getFriendshipLevel() == 0 && currentXP < 100 && currentXP + xp < 100) {
+        } else if (currentXP < 100 && currentXP + xp < 100) {
             friendship.setXp(currentXP + xp);
             return "Congratulations! Your friendship XP increased by " + xp + " !" + "XP gained: " + xp;
-        } else if (friendship.getFriendshipLevel() == 1 && currentXP < 200 && currentXP + xp >= 200) {
+        } else if (currentXP < 300 && currentXP + xp >= 300) {
             friendship.setXp(currentXP + xp);
             return "Congratulations! You've managed to grow your friendship with Player " + playerName + " and reached Friendship Level 2!" + "XP gained: " + xp;
-        } else if (friendship.getFriendshipLevel() == 1 && currentXP < 200 && currentXP + xp < 200) {
+        } else if (currentXP < 300 && currentXP + xp < 300) {
             friendship.setXp(currentXP + xp);
             return "Congratulations! Your friendship XP increased by " + xp + " !" + "XP gained: " + xp;
-        } else if (friendship.getFriendshipLevel() == 2 && currentXP < 300 && currentXP + xp >= 300) {
-            friendship.setXp(299);
+        } else if (currentXP < 600 && currentXP + xp >= 600) {
+            friendship.setXp(599);
             return "You've built a great friendship with " + playerName + " ! To strengthen this bond and reach the next friendship level, consider buying your friend a flower!" + "XP gained: " + (299 - currentXP);
-        } else if (friendship.getFriendshipLevel() == 2 && currentXP < 300 && currentXP + xp < 300) {
+        } else if (currentXP < 600 && currentXP + xp < 600) {
             friendship.setXp(currentXP + xp);
             return "Congratulations! Your friendship XP increased by " + xp + " !" + "XP gained: " + xp;
-        } else if (friendship.getFriendshipLevel() == 3 && currentXP < 400 && currentXP + xp >= 400) {
-            friendship.setXp(400);
+        } else if (currentXP < 1000 && currentXP + xp >= 1000) {
+            friendship.setXp(999);
             return "Your friendship has reached its peak! If you're of opposite genders, marriage is the only path to deepen your bond. Otherwise, you've reached the highest level of friendship possible! (:" + "XP gained: " + xp;
-        } else if (friendship.getFriendshipLevel() == 3 && currentXP < 400 && currentXP + xp < 400) {
+        } else if (currentXP < 1000 && currentXP + xp < 1000) {
             friendship.setXp(currentXP + xp);
             return "Congratulations! Your friendship XP increased by " + xp + " !";
         } else {
@@ -280,35 +280,14 @@ public class PlayersInteractionController {
     }
 
     public static String decreaseXP(Friendship friendship, int xp, String playerName) {
-        int currentXP = friendship.getXp();
 
-        if (friendship.getFriendshipLevel() == 0 && currentXP - xp < 0) {
-            friendship.setXp(0);
-            return "The connection with " + playerName + " feels a bit distant… Your friendship XP has dropped.";
-        } else if (friendship.getFriendshipLevel() == 0) {
-            friendship.setXp(currentXP - xp);
-            return "The connection with " + playerName + " feels a bit distant… Your friendship XP has dropped.";
-        } else if (friendship.getFriendshipLevel() == 1 && currentXP - xp < 100) {
-            friendship.setXp(currentXP - xp);
-            return "Unfortunately, your bond with " + playerName + " has weakened… You lost some friendship XP, and your friendship level has dropped by 1.";
-        } else if (friendship.getFriendshipLevel() == 1 && currentXP - xp >= 100) {
-            friendship.setXp(currentXP - xp);
-            return "The connection with " + playerName + " feels a bit distant… Your friendship XP has dropped.";
-        } else if (friendship.getFriendshipLevel() == 2 && currentXP - xp < 200) {
-            friendship.setXp(currentXP - xp);
-            return "Unfortunately, your bond with " + playerName + " has weakened… You lost some friendship XP, and your friendship level has dropped by 1.";
-        } else if (friendship.getFriendshipLevel() == 2 && currentXP - xp >= 200) {
-            friendship.setXp(currentXP - xp);
-            return "The connection with " + playerName + " feels a bit distant… Your friendship XP has dropped.";
-        } else if (friendship.getFriendshipLevel() == 3 && currentXP - xp < 300) {
-            friendship.setXp(currentXP - xp);
-            return "Unfortunately, your bond with " + playerName + " has weakened… You lost some friendship XP, and your friendship level has dropped by 1.";
-        } else if (friendship.getFriendshipLevel() == 3 && currentXP - xp >= 300) {
-            friendship.setXp(currentXP - xp);
-            return "The connection with " + playerName + " feels a bit distant… Your friendship XP has dropped.";
-        } else {
-            return "Since your friendship level with player " + playerName + " is 4, your friendship XP will remain unchanged.";
+        int currentXP = friendship.getXp();
+        if (currentXP > 1000) {
+            return "Your friendship level is now 4! From now on, both friendship level and XP will remain constant — a bond that has truly settled.";
         }
+        friendship.setXp(currentXP - xp);
+        return "Oh no! You just lost " + xp + " friendship XP! Your current friendship level is now " + friendship.getFriendshipLevel() + " and your XP stands at " + friendship.getXp() + ". Better watch those choices!";
+
     }
 
     public static StringBuilder printFriendship(Friendship friendship, String otherPlayerName) {

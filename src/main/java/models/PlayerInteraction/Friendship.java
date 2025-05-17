@@ -54,11 +54,11 @@ public class Friendship {
     }
 
     public int getFriendshipLevel() {
-        if (xp >= 450) {
+        if (xp > 1000) {
             return 4;
-        } else if (xp >= 300) {
+        } else if (xp > 600) {
             return 3;
-        } else if (xp >= 200) {
+        } else if (xp >= 300) {
             return 2;
         } else if (xp >= 100) {
             return 1;
@@ -124,8 +124,6 @@ public class Friendship {
     public void addGift(Gift gift) {
         gifts.add(gift);
     }
-
-
 
 
 }

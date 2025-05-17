@@ -1,8 +1,10 @@
 package models.cooking;
 
+import models.App;
 import models.ItemStack;
 import models.Player;
 import models.Result;
+import models.buildings.Cabin;
 import models.inventory.Inventory;
 
 import java.util.Map;
@@ -11,9 +13,10 @@ public class FoodManager {
 
     public static Result cook(String foodName, Player player) {
 
-//        if (!player.isAtHome()) {
-//            return new Result(false, "You need to be at home to cook.");
-//        } Todo: check is in home with isInBuilding (mireslami)
+        Cabin cabin = (Cabin) player.getBuildingByName("cabin");
+        if (!App.getApp().getCurrentGame().getMap().isInBuilding(cabin, player)) {
+            return new Result(false, "You need to be at home to cook.");
+        }
 
         FoodRecipe recipe = getRecipeByName(foodName);
         if (recipe == null) {
@@ -46,10 +49,12 @@ public class FoodManager {
         for (Map.Entry<String, Integer> entry : recipe.ingredients.entrySet()) {
             String itemName = entry.getKey();
             int count = entry.getValue();
+            Cabin cabin = (Cabin) player.getBuildingByName("cabin");
 
-//            if (!inv.hasEnoughStack(itemName, count) && !player.getHome().getRefrigerator().getInventory().hasEnoughStack(itemName, count)) {
-//                return false; Todo: needs to check is in home
-//            }
+            if (!inv.hasEnoughStack(itemName, count)
+                    && !cabin.getRefrigerator().getInventory().hasEnoughStack(itemName, count)) {
+                return false;
+            }
         }
         return true;
     }

@@ -5,7 +5,6 @@ import models.Enums.Menu;
 import java.util.ArrayList;
 
 public class App {
-
     private static App app;
     private ArrayList<User> users = new ArrayList<>();
     private ArrayList<Game> games = new ArrayList<>();
@@ -127,5 +126,12 @@ public class App {
 
     public void setGames(ArrayList<Game> games) {
         this.games = games;
+    }
+
+    public User getUserByUsername(String username) {
+        for (User user : users) {
+            if (user.getUserName().equals(username)) return user;
+        }
+        return null;
     }
 }

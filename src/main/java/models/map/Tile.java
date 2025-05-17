@@ -144,17 +144,16 @@ public class Tile {
             this.tree = newTree;
         }
     }
-    public String showPlant() {
-        return plant.toString();
-    }
-
 
     // placed Items
     public boolean canAddItemToTile() {
         if (type != TileType.SOIL) return false;
-        if (itemOnTile != null) return false;
         if (tree != null) return false;
         if (plant != null) return false;
+        if (itemOnTile != null) {
+            if (itemOnTile.getItem().getName().equals("Grass")) return true;
+            return false;
+        }
         return true;
     }
 

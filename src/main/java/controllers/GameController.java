@@ -5,6 +5,7 @@ import models.Enums.Direction;
 import models.Enums.Menu;
 import models.Enums.WeatherStatus;
 import models.animals.Fish;
+import models.buildings.Cabin;
 import models.buildings.ShippingBin;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
@@ -501,8 +502,8 @@ public class GameController {
         String itemName = matcher.group(2);
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
 
-        // Todo: fridge bayad az khoone biad
-        Refrigerator refrigerator = new Refrigerator();
+        Refrigerator refrigerator = ((Cabin) App.getApp().getCurrentGame().getPlayerInTurn()
+                .getBuildingByName("cabin")).getRefrigerator();
         Inventory inv = player.getInventory();
         Item item = ItemManager.getItemByName(itemName);
         if (method.equalsIgnoreCase("pick")) {

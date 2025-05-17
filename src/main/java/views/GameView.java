@@ -156,8 +156,6 @@ public class GameView implements View {
             System.out.println(controller.showAnimalsProducts(matcher));
         } else if ((matcher = GameCommands.COLLECT_PRODUCE.getMatcher(command)) != null) {
             System.out.println(controller.collectProducts(matcher));
-        } else if ((matcher = GameCommands.FISHING.getMatcher(command)) != null) {
-            System.out.println(controller.fishing(matcher));
         } else if ((matcher = GameCommands.ARTISAN_USE.getMatcher(command)) != null) {
             System.out.println(controller.artisanUse(matcher));
         } else if ((matcher = GameCommands.ARTISAN_GET.getMatcher(command)) != null) {
@@ -178,6 +176,8 @@ public class GameView implements View {
             System.out.println(controller.showTradeHistory(matcher));
         } else if ((matcher = GameCommands.TRADE_RESPONSE.getMatcher(command)) != null) {
             System.out.println(controller.responseToTrade(matcher));
+        } else if ((matcher = GameCommands.CHEAT_ADD_MONEY.getMatcher(command)) != null) {
+            System.out.println(controller.cheatAddMoney(matcher));
         }
 
         // NPC and friendships

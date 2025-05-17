@@ -552,7 +552,9 @@ public class GameController {
         if (animal == null) {
             return new Result(false, "You don't have this animal ):");
         }
-        //Todo: check is near animal
+        if (!App.getApp().getCurrentGame().getPlayerInTurn().isNearLocation(animal.getLocation())) {
+            return new Result(false, "You must be near to animal");
+        }
         animal.pet();
 
         return new Result(false, "\"Thank you (:\" said " + name +
@@ -588,7 +590,14 @@ public class GameController {
 
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
 
-        //Todo: check x and y validate
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(x, y);
+        if (tile == null) {
+            return new Result(false, "Invalid tile");
+        }
+        if (!tile.canWalkOnTile()) {
+            return new Result(false, "This tile is unavailable to go");
+        }
+
         Animal animal = player.getAnimal(animalName);
         if (animal == null) {
             return new Result(false, "You don't have this animal");
@@ -767,8 +776,12 @@ public class GameController {
         return shop.purchase(productName, count);
     }
 
-    // TODO : complete
-    public void cheatAddToShopStock(Matcher matcher) {}
+    public Result cheatAddMoney(Matcher matcher) {
+        int money = Integer.parseInt(matcher.group(1));
+
+        App.getApp().getCurrentGame().getPlayerInTurn().changeMoney(money);
+        return new Result(true, "You have successfully added " + money + " dollars to your wallet.");
+    }
 
     public Result sellProduct(Matcher matcher) {
         String productName = matcher.group("product");
@@ -1022,7 +1035,6 @@ public class GameController {
     }
 
     public String goNextDay() {
-        // TODO : complete
         Game game = App.getApp().getCurrentGame();
 
         return "Next day\n" + game.goToNextDay();

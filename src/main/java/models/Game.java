@@ -562,22 +562,21 @@ public class Game {
     public int getCurrentGiftNumber() { return this.currentGiftNumber; }
 
     public String showGiftMessages(Player player) {
+        Game game = App.getApp().getCurrentGame();
+        Player currentPlayer = playerInTurn;
         StringBuilder output = new StringBuilder();
-        ArrayList<Player> otherPlayers = getOtherPlayers(player.getUsername());
+        ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());
+        output.append("Gifts You've Received : \n");
         for (Player otherPlayer : otherPlayers) {
-            int count = 0;
-            output.append("Gifts sent by player ").append(otherPlayer.getUsername()).append(" :\n");
-            for (Gift gift : getFriendship(player, otherPlayer).getGifts()) {
+            for (Gift gift : game.getFriendship(currentPlayer, otherPlayer).getGifts()) {
                 if (gift.getSender().equals(otherPlayer.getUsername()) && gift.isNew()) {
-                    output.append("\t").append("gift id : ").append(gift.getGiftId()).append(" |");
+                    output.append("gift id : ").append(gift.getGiftId()).append(" |");
+                    output.append("sender : ").append(gift.getSender()).append(" |");
                     output.append("item name : ").append(gift.getGiftItem().getItem().getName()).append(" |");
                     output.append("amount : ").append(gift.getGiftItem().getAmount()).append("\n");
-                    count++;
+                    output.append("---------------\n");
                     gift.setNew(false);
                 }
-            }
-            if (count == 0) {
-                output.append("\t").append("Player ").append(otherPlayer.getUsername()).append(" hasn’t sent you any gifts.\n");
             }
         }
         output.deleteCharAt(output.length() - 1);

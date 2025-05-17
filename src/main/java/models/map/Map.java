@@ -563,5 +563,16 @@ public class Map {
                 tile.getLocation().y() >= building.getLocation().y() &&
                 tile.getLocation().y() <= building.getLocation().y() + building.getHeight());
     }
+
+    public boolean canAddBuilding(Location start, int width, int height) {
+        for (int i = start.x(); i < start.x() + width; i++) {
+            for (int j = start.y(); j < start.y() + height; j++) {
+                Tile tile = tiles[j][i];
+
+                if (!tile.canAddItemToTile()) return false;
+            }
+        }
+        return true;
+    }
 }
 

@@ -180,6 +180,10 @@ public class GameView implements View {
             System.out.println(controller.cheatAddMoney(matcher));
         } else if ((matcher = GameCommands.BUILD.getMatcher(command)) != null) {
             System.out.println(controller.build(matcher));
+        } else if ((matcher = GameCommands.BUY_ANIMAL.getMatcher(command)) != null) {
+            System.out.println(controller.buyAnimal(matcher));
+        } else if ((matcher = GameCommands.SELL_ANIMAL.getMatcher(command)) != null) {
+            System.out.println(controller.sellAnimal(matcher));
         }
 
         // NPC and friendships

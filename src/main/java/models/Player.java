@@ -331,7 +331,16 @@ public class Player {
         int money = (int) (animal.getPrice() * (((double) animal.getFriendship() /1000) + 0.3));
         changeMoney(money);
         animals.remove(animal.getName());
-        //TODO : remove from building animals
+
+        AnimalBuilding animalBuilding;
+        for (Building building : this.playerFarmBuildings) {
+            if (building instanceof AnimalBuilding) {
+                if (((AnimalBuilding) building).hasAnimal(animal)) {
+                    animalBuilding = (AnimalBuilding) building;
+                    animalBuilding.removeAnimal(animal);
+                }
+            }
+        }
         return money;
     }
 

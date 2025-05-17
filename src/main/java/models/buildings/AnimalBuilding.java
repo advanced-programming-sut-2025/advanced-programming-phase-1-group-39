@@ -32,6 +32,12 @@ public class AnimalBuilding extends Building {
         if (animals.size() >= getCapacity()) return false;
         return animals.add(animal);
     }
+    public void removeAnimal(Animal animal) {
+        animals.remove(animal);
+    }
+    public boolean hasAnimal(Animal animal) {
+        return animals.contains(animal);
+    }
 
     public ArrayList<Animal> getAnimals() {
         return animals;

@@ -381,6 +381,7 @@ public class Map {
                     if (j == player.getLocation().x() && i == player.getLocation().y()) {
                         text.append(playerColors[playerCounter++] + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
                         doesSetPlayer = true;
+                        break;
                     }
                 }
                 if (doesSetPlayer) continue;
@@ -389,6 +390,7 @@ public class Map {
                     if (j == npc.getLocation().x() + npcMapStartX && i == npc.getLocation().y() + npcMapStartY) {
                         text.append(AnsiColors.ANSI_REVERSE + npcColors[npcCounter++] + tile.getTileColor() + " N " + AnsiColors.ANSI_RESET);
                         doesSetNpc = true;
+                        break;
                     }
                 }
                 if (doesSetNpc) continue;

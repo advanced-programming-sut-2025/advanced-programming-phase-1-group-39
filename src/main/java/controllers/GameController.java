@@ -89,8 +89,8 @@ public class GameController {
 
         Player player = game.getPlayerInTurn();
         return new Result(true, AnsiColors.ANSI_CYAN_BOLD +
-                "Next turn: " + player.getUsername() + "\n" +game.showMessages(game.getPlayerInTurn()) + "\n" +
-                game.showGiftMessages(game.getPlayerInTurn()) + AnsiColors.ANSI_RESET);
+                "Next turn: " + player.getUsername() + "\n" //+game.showMessages(game.getPlayerInTurn()) + "\n" +
+                /*game.showGiftMessages(game.getPlayerInTurn())*/ + AnsiColors.ANSI_RESET);
     }
 
     public String showTime() {
@@ -593,7 +593,7 @@ public class GameController {
     }
 
     public Result build(Matcher matcher) {
-        String buildingName = matcher.group(1).toLowerCase();
+        String buildingName = matcher.group(1);
         int x = Integer.parseInt(matcher.group(2));
         int y = Integer.parseInt(matcher.group(3));
 

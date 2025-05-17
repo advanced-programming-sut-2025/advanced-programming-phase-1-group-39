@@ -268,16 +268,16 @@ public class GameView implements View {
                 } else {
                     System.out.println("The game cannot be deleted because not all players agreed to the removal.");
                 }
-            } else {
-                System.out.println("invalid command.");
             }
+        } else {
+            System.out.println("invalid command.");
+        }
 
-            // Time checking
-            result = controller.checkTime();
-            if (result.success()) {
-                System.out.println(result);
-                System.out.println(controller.goNextDay());
-            }
+        // Time checking
+        result = controller.checkTime();
+        if (result.success()) {
+            System.out.println(result);
+            System.out.println(controller.goNextDay());
         }
     }
 }

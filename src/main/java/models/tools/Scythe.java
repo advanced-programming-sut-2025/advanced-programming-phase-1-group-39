@@ -12,7 +12,7 @@ public class Scythe extends Tool {
     }
 
     @Override
-    public Result useTool(Tile tile, Player player) {
+    public Result useTool(Tile tile, Player player, Skill skill) {
         if (tile.getType() == TileType.SOIL) {
             Plant plant = tile.getPlant();
             if (plant != null) {
@@ -24,8 +24,9 @@ public class Scythe extends Tool {
                     ItemStack product = plant.harvest();
                     if (!player.getInventory().hasSpace(product))
                         return new Result(false, "You don't have enough space to get objects!");
+                    skill.addToFarmingXP(5);
                     player.getInventory().addItem(product.getItem(), product.getAmount());
-                    return new Result(true, "You have gotten products!");
+                    return new Result(true, "You have gotten products! (Farming XP + 5)");
                 }
                 else
                     return new Result(false, "Nothing to harvest.");

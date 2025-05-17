@@ -17,7 +17,7 @@ public class WateringCan extends Tool {
     }
 
     @Override
-    public Result useTool(Tile tile, Player player) {
+    public Result useTool(Tile tile, Player player, Skill skill) {
         if (tilesWaterNumRemaining <= 0)
             return new Result(false, "You don't have water!\nYou should fill your Watering Can by water");
         tilesWaterNumRemaining--;

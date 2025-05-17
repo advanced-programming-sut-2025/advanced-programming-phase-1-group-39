@@ -1,8 +1,10 @@
 package models.tools;
 
 import models.*;
+import models.cropsAndFarming.ForagingCrop;
+import models.cropsAndFarming.ForagingManager;
+import models.cropsAndFarming.ForagingMineral;
 import models.map.Tile;
-import models.map.TileType;
 
 public class Pickaxe extends Tool {
     public Pickaxe() {
@@ -26,7 +28,7 @@ public class Pickaxe extends Tool {
 
 
     @Override
-    public Result useTool(Tile tile, Player player) {
+    public Result useTool(Tile tile, Player player, Skill skill) {
         ItemStack item;
         switch (tile.getType()) {
             case QUARRY:
@@ -39,10 +41,14 @@ public class Pickaxe extends Tool {
                     if (!player.getInventory().hasSpace(item))
                         return new Result(false, "You don't have enough space to get objects!");
 
-
+                    skill.addToMiningXP(10);
                     player.getInventory().addItem(item.getItem(), item.getAmount());
+                    if (skill.getMiningLevel() >= 2) {
+                        ForagingMineral rewardItem = ForagingManager.getRandomMineral();
+                        player.getInventory().addItem(rewardItem, (int) Math.random() * 3);
+                    }
                     tile.removeItemOnTile();
-                    return new Result(true, "You broke and got the Minerals!");
+                    return new Result(true, "You broke and got the Minerals! (Mining XP + 10)");
                 }
 
             case SOIL:
@@ -57,8 +63,14 @@ public class Pickaxe extends Tool {
                     if (!player.getInventory().hasSpace(item))
                         return new Result(false, "You don't have enough space to get objects!");
                     player.getInventory().addItem(item.getItem(), item.getAmount());
-                    tile.removeItemOnTile();
-                    return new Result(true, "You got the " + item.getItem().getName());
+                    if (item.getItem() instanceof ForagingCrop) {
+                        skill.addToForagingXP(10);
+                        tile.removeItemOnTile();
+                        return new Result(true, "You got the " + item.getItem().getName() + ". (Foraging XP + 10)");
+                    } else {
+                        tile.removeItemOnTile();
+                        return new Result(true, "You got the " + item.getItem().getName());
+                    }
                 }
 
                 if (!tile.isPlowed() || tile.getPlant() != null) {

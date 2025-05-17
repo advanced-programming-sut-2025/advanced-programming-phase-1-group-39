@@ -66,4 +66,17 @@ public class Skill {
 
     // TODO : add update skills :
     //          - add foodRecepies , CraftingRecepies
+
+    public void addToFarmingXP(int amount) {
+        farmingXP += amount;
+    }
+    public void addToMiningXP(int amount) {
+        miningXP += amount;
+    }
+    public void addToForagingXP(int amount) {
+        foragingXP += amount;
+    }
+    public void addToFishingXP(int amount) {
+        fishingXP += amount;
+    }
 }

@@ -15,7 +15,7 @@ public class FishingPole extends Tool {
     }
 
     @Override
-    public Result useTool(Tile tile, Player player) {
+    public Result useTool(Tile tile, Player player, Skill skill) {
         return null;
     }
 

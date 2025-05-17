@@ -13,7 +13,7 @@ public abstract class Tool extends Item {
         this.baseUsingEnergy = baseUsingEnergy;
     }
 
-    public abstract Result useTool(Tile tile, Player player);
+    public abstract Result useTool(Tile tile, Player player, Skill skill);
     public ToolType getType() {
         return type;
     }

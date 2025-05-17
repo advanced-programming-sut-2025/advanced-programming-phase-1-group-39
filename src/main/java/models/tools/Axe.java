@@ -11,7 +11,7 @@ public class Axe extends Tool {
     }
 
     @Override
-    public Result useTool(Tile tile, Player player) {
+    public Result useTool(Tile tile, Player player, Skill skill) {
         if (tile.getType() == TileType.SOIL) {
             ItemStack itemStack = tile.getItemOnTile();
             if (itemStack == null && tile.getTree() == null) {

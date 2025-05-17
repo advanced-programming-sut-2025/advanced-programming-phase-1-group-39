@@ -13,7 +13,7 @@ public class Shear extends Tool {
     }
 
     @Override
-    public Result useTool(Tile tile, Player player) {
+    public Result useTool(Tile tile, Player player, Skill skill) {
         Location location = tile.getLocation();
         Animal animal = player.getAnimalByLocation(location);
         if (animal == null)
@@ -33,7 +33,7 @@ public class Shear extends Tool {
             animal.changeFriendship(5);
             ItemStack products = new ItemStack(animal.collectProduct(), 1);
             player.getInventory().addItem(products.getItem(), 1);
-            return new Result(true, "You got Wool of Your "+animal.getName()+" !");
+            return new Result(true, "You got Wool of Your "+animal.getName()+" ! (Farming XP + 5)");
         }
     }
 

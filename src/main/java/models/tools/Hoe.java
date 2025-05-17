@@ -1,6 +1,5 @@
 package models.tools;
 
-import models.Enums.WeatherStatus;
 import models.Player;
 import models.Result;
 import models.Skill;
@@ -14,7 +13,7 @@ public class Hoe extends Tool {
     }
 
     @Override
-    public Result useTool(Tile tile, Player player) {
+    public Result useTool(Tile tile, Player player, Skill skill) {
         if (tile.getType() == TileType.SOIL) {
             if (tile.getTree() != null ||
                 tile.getPlant() != null ||

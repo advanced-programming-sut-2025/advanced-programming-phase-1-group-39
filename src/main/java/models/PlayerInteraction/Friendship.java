@@ -10,14 +10,14 @@ public class Friendship {
     private final String user1;
     private final String user2;
     private int xp;
-    private int friendshipLevel;
     private Time lastInteraction;
 
     private boolean isFirstTalking;
     private boolean hasGiftedEachOther;
     private boolean isFirstHug;
 
-    private boolean isMarried;
+    private boolean askedMarriage = false;
+    private boolean isMarried = false;
 
     private ArrayList<Message> messages = new ArrayList<>();
     private ArrayList<Gift> gifts = new ArrayList<>();
@@ -26,7 +26,6 @@ public class Friendship {
     public Friendship(String user1, String user2) {
         this.user1 = user1;
         this.user2 = user2;
-        this.friendshipLevel = 0;
         this.xp = 0;
         this.isFirstTalking = false;
     }
@@ -91,10 +90,6 @@ public class Friendship {
         return isFirstHug;
     }
 
-    public boolean isMarried() {
-        return isMarried;
-    }
-
     public void setFirstTalking(boolean firstTalking) {
         isFirstTalking = firstTalking;
     }
@@ -111,10 +106,6 @@ public class Friendship {
         this.xp = xp;
     }
 
-    public void setFriendshipLevel(int friendshipLevel) {
-        this.friendshipLevel = friendshipLevel;
-    }
-
     // Auxiliary functions :
 
     public void addMessage(Message message) {
@@ -125,7 +116,22 @@ public class Friendship {
         gifts.add(gift);
     }
 
+    // MARRIAGE
+    public void askMarriage() {
+        askedMarriage = true;
+    }
+    public void notAskMarriage() {
+        askedMarriage = false;
+    }
+    public boolean isAskedMarriage() {
+        return askedMarriage;
+    }
 
+    public boolean isMarried() {
+        return isMarried;
+    }
 
-
+    public void marriage() {
+        isMarried = true;
+    }
 }

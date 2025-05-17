@@ -333,6 +333,15 @@ public class Game {
         return players;
     }
 
+    public int getMoneyOfPlayer(Player player) {
+        if (!players.contains(player)) return 0;
+        //TODO : complete
+        if (player.getSpouseName() != null) {
+            int money = player.getMoney() + ;
+        }
+        return player.getMoney();
+    }
+
     //turn
     public Player getPlayerInTurn() {
         return playerInTurn;
@@ -550,7 +559,6 @@ public class Game {
     }
 
     // gift
-
     public void setCurrentGiftNumber() {
         this.currentGiftNumber += 1;
     }

@@ -4,6 +4,7 @@ import models.Enums.Season;
 import models.NPC.NPC;
 import models.NPC.PlayerNPCInteraction;
 import models.NPC.Quest;
+import models.PlayerInteraction.Friendship;
 import models.animals.Animal;
 import models.animals.AnimalProductQuality;
 import models.animals.Fish;
@@ -69,6 +70,8 @@ public class Player {
     // NPC
     private ArrayList<PlayerNPCInteraction> friendships = initialPlayersFriendship();
 
+    private String spouseName;
+
     public Player(String username, int gameId) {
         ItemStack hoe = new ItemStack(new Hoe(), 1);
         ItemStack pickaxe = new ItemStack(new Pickaxe(), 1);
@@ -93,6 +96,7 @@ public class Player {
     public boolean haveBadDay() {
         return numOfBadDays > 0;
     }
+
     public void changeBadDays(int amount) {
         numOfBadDays += amount;
     }
@@ -266,6 +270,10 @@ public class Player {
         return money >= amount;
     }
 
+    public int getMoney() {
+        return money;
+    }
+
     public boolean canBuildGreenHouse() {
         return inventory.hasEnoughStack("Wood", 500) && money >= 1000;
     }
@@ -395,5 +403,11 @@ public class Player {
 
     public String getUsername() {
         return username;
+    }
+
+    // marriage
+
+    public String getSpouseName() {
+        return spouseName;
     }
 }

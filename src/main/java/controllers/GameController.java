@@ -830,16 +830,46 @@ public class GameController {
         if (!user1.getIsMale()) return new Result(false, "Only men can ask marriage in this town!");
         if (user2.getIsMale()) return new Result(false, "The 2nd person should be woman! :|");
 
-        if (!player.getInventory().hasItem("Wedding Ring"))
+        if (!player.getInventory().hasItem(ring))
             return new Result(false, "You don't have ring to ask marriage!\nYou can buy it from pierre's shop");
 
         String message = "Player " + player.getUsername() + " asked for marriage From You! To accept/reject use this:\n\t" +
                 "respondToMarriage -(accept|reject) -u <username>";
+        friendship.askMarriage();
         friendship.addMessage(new Message(message, player.getUsername(), player2.getUsername()));
         return new Result(true, "You send a message to player " + player2.getUsername() + " for marriage! wait to be accepted!");
     }
 
-    public Result respondToMarriage(Matcher matcher) {return null;}
+    public Result respondToMarriage(Matcher matcher) {
+        String answer = matcher.group("answer");
+        String username = matcher.group("username");
+
+        App app = App.getApp();
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+        Player player2 = game.getPlayerByUsername(username);
+
+        User user1 = app.getUserByUsername(player.getUsername());
+        User user2 = app.getUserByUsername(username);
+
+        Friendship friendship = game.getFriendship(player, player2);
+        if (!friendship.isAskedMarriage())
+            return new Result(false, "You don't have a marriage ask to respond!");
+
+        friendship.notAskMarriage();
+        if (answer.equals("accept")) {
+            friendship.marriage();
+            ItemStack ring = player2.getInventory().pickItem("Wedding Ring", 1);
+            player.getInventory().addItem(ring.getItem(), ring.getAmount());
+            return new Result(true, "Congralluation!\n"
+                    + player.getUsername() + " and " + player2.getUsername() + " now married and can live together!");
+        } else {
+            player2.changeBadDays(7);
+            friendship.setXp(0);
+
+            return new Result(true, "You rejected player " + player2.getUsername() + "! Now he is depressed! :(\nYour friendship XP with him decreased to 0!");
+        }
+    }
 
     public Result startTrade(Matcher matcher) {
         ArrayList<Player> players = App.getApp().getCurrentGame().getPlayers();

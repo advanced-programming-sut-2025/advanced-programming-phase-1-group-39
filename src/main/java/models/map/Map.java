@@ -357,10 +357,10 @@ public class Map {
                                  ArrayList<NPC> npcs, ArrayList<Shop> shops) {
         StringBuilder text = new StringBuilder();
         int i1 = Math.max(y - size/2, 0);
-        int i2 = Math.min(y + size - size/2, height);
+        int i2 = Math.min(y + size - size/2, height - 1);
 
         int j1 = Math.max(x - size/2, 0);
-        int j2 = Math.min(x + size - size/2, width);
+        int j2 = Math.min(x + size - size/2, width - 1);
 
         int npcMapStartX = Constants.FARM_WIDTH;
         int npcMapStartY = Constants.DISABLED_HEIGHT;
@@ -385,24 +385,27 @@ public class Map {
                 boolean doesSetNpc = false;
 
                 boolean shopNameSet = false;
-                for (Shop shop : shops) {
-                    String name = shop.getName();
-                    Location loc = shop.getLocation();
-                    if (i == loc.y() - 2 && j == loc.x() + shop.getWidth()/2 - name.length()/3/2 - 1) {
-                        if (name.length()%3 == 0) {
-                            text.append(name);
-                            j += name.length()/3 - 1;
-                        }
-                        else if (name.length()%3 == 1) {
-                            text.append(" " + name + " ");
-                            j += name.length()/3;
-                        }
-                        else {
-                            text.append(name + " ");
-                            j += name.length()/3;
-                        }
-                        shopNameSet = true;
+                if (j >= Constants.FARM_WIDTH && j < Constants.WORLD_MAP_WIDTH - Constants.FARM_WIDTH
+                    && i > Constants.DISABLED_HEIGHT && i <= Constants.WORLD_MAP_HEIGHT - Constants.DISABLED_HEIGHT) {
+                    for (Shop shop : shops) {
+                        String name = shop.getName();
+                        Location loc = shop.getLocation();
+                        if (i == loc.y() - 2 && j == loc.x() + shop.getWidth()/2 - name.length()/3/2 - 1) {
+                            if (name.length()%3 == 0) {
+                                text.append(name);
+                                j += name.length()/3 - 1;
+                            }
+                            else if (name.length()%3 == 1) {
+                                text.append(" " + name + " ");
+                                j += name.length()/3;
+                            }
+                            else {
+                                text.append(name + " ");
+                                j += name.length()/3;
+                            }
+                            shopNameSet = true;
 
+                        }
                     }
                 }
                 if (shopNameSet) continue;

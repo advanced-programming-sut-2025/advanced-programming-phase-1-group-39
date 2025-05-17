@@ -1,5 +1,8 @@
 package models.cooking;
 
+import models.crafting.CraftingItem;
+import models.crafting.CraftingRecipe;
+
 import java.util.Map;
 
 public enum FoodRecipe {
@@ -56,5 +59,18 @@ public enum FoodRecipe {
     FoodRecipe(Food data, Map<String, Integer> ingredients) {
         this.data = data;
         this.ingredients = ingredients;
+    }
+
+    public static FoodRecipe getRecipeByName(String name) {
+        for (FoodRecipe recipe : values()) {
+            if (recipe.data.getName().equalsIgnoreCase(name)) return recipe;
+        }
+        return null;
+    }
+    public static Food getItemByName(String name) {
+        for (FoodRecipe recipe : values()) {
+            if (recipe.data.getName().equalsIgnoreCase(name)) return recipe.data;
+        }
+        return null;
     }
 }

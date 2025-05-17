@@ -97,7 +97,7 @@ public class CarpentersShop extends Shop{
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         Inventory inv = player.getInventory();
 
-        //Todo: check validate build building for player
+
         BuildingData data = buildings.get(name);
         if (data == null) {
             return new Result(false, name + " isn't in our services!");
@@ -109,24 +109,37 @@ public class CarpentersShop extends Shop{
             return new Result(false, "Sorry you don't have enough ingredients ):");
         }
 
-        player.changeMoney(data.goldCost);
-        inv.pickItem("Wood", data.woodCost);
-        inv.pickItem("Stone", data.stoneCost);
 
         if (name.equalsIgnoreCase("Well")) {
+            if (!game.getMap().canAddBuilding(new Location(x, y), 3, 2)) {
+                return new Result(false, "You can't build " + name + " in this tile");
+            }
             Well newWell = new Well("Well", new Location(x,y), data.width, data.height);
             game.addBuilding(newWell);
             player.addToBuildings(newWell);
+            newWell.updateMap(game.getMap());
         } else if (name.equalsIgnoreCase("Shipping Bin")) {
+            if (!game.getMap().canAddBuilding(new Location(x, y), 1, 1)) {
+                return new Result(false, "You can't build " + name + " in this tile");
+            }
             ShippingBin bin = new ShippingBin("Shipping Bin", new Location(x,y), data.width, data.height);
             game.addBuilding(bin);
             player.addToBuildings(bin);
+            bin.updateMap(game.getMap());
         } else {
             LivingPlace type = LivingPlace.fromString(name);
+            if (!game.getMap().canAddBuilding(new Location(x, y), type.getWidth(), type.getHeight())) {
+                return new Result(false, "You can't build " + name + " in this tile");
+            }
             AnimalBuilding building = new AnimalBuilding(name, new Location(x, y), data.width, data.height, type);
             game.addBuilding(building);
             player.addToBuildings(building);
+            building.updateMap(game.getMap());
         }
+
+        player.changeMoney(data.goldCost);
+        inv.pickItem("Wood", data.woodCost);
+        inv.pickItem("Stone", data.stoneCost);
 
         return new Result(true, name + " successfully created!");
     }
@@ -145,6 +158,8 @@ public class CarpentersShop extends Shop{
 
     @Override
     public void endDay() {
-
+        for (ShopItem item : shopItems.values()) {
+            item.resetDailyLimit();
+        }
     }
 }

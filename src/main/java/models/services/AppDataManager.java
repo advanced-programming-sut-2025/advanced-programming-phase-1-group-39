@@ -156,5 +156,3 @@ public class AppDataManager {
         app.setGames(new ArrayList<>());
     }
 }
-
-

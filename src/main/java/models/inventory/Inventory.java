@@ -24,7 +24,9 @@ public class Inventory {
 
     public Inventory(List<ItemStack> firstItems) {
         inventoryItems.addAll(firstItems);
-        inHand = firstItems.get(0);
+        if (!firstItems.isEmpty()) {
+            inHand = firstItems.get(0);
+        }
     }
 
     public String getItemAndColor(ItemStack itemStack) {
@@ -145,7 +147,7 @@ public class Inventory {
             if (amount > item.getAmount()) {
                 return null;
             }
-
+            addItem(item.getItem(), -amount);
             return new ItemStack(item.getItem(), amount);
         }
         return null;
@@ -173,8 +175,10 @@ public class Inventory {
         if (item == null) {
             return;
         }
-        if (tile.getItemOnTile() == null)
+        if (tile.getItemOnTile() == null) {
             tile.placeItem(item);
+            pickItem(item.getItem().getName(), item.getAmount());
+        }
     }
 
     public void setInHand(ItemStack itemStack) {

@@ -55,20 +55,26 @@ public enum GameCommands {
     SHOW_TREE_INFO("tree\\s+info\\s+-n\\s+(.+?)"),
     SHOW_PLANT("show\\s+plant\\s+-l\\s+(\\d+)\\s+(\\d+)"),
     SHOW_TREE("show\\s+tree\\s+-l\\s+(\\d+)\\s+(\\d+)"),
-    FERTILIZE("fertilize\\s+-f\\s+(.+?)\\s+-d\\+s(.+?)"),
+    FERTILIZE("fertilize\\s+-f\\s+(.+?)\\s+-d\\s+(.+?)"),
 
     PLANT("plant\\s+-s\\s+(.+?)\\s+-d\\s+(.+?)"),
 
     SHOW_CRAFTING_RECIPES("show\\s+crafting\\s+recipes"),
     CRAFT("crafting\\s+craft\\s+(.+?)"),
+    CHEAT_ADD_CRAFTING_RECIPE("cheat\\s+add\\s+crafting\\s+recipe\\s+-n\\s+(.+?)"),
     CHEAT_ADD_ITEM("cheat\\s+add\\s+item\\s+-n\\s+(.+?)\\s+-c\\s+(\\d+)"),
+
+    PLACE_ITEM("place\\s+item\\s+-n\\s+(.+?)\\s+-d\\s+(.+?)"),
 
     COOKING_REFRIGERATOR("cooking\\s+refrigerator\\s+(put|pick)\\s+(.+?)"),
     COOK("cooking\\s+prepare\\s+(.+?)"),
+    CHEAT_ADD_FOOD_RECIPE("cheat\\s+add\\s+food\\s+recipe\\s+-n\\s+(.+?)"),
     EAT("eat\\s+(.+?)"),
 
     SHOW_FOOD_RECIPES("show\\s+food\\s+recipes"),
 
+    BUILD("build\\s+-a\\s+(.+?)\\s+-l\\s+(\\d+)\\s+(\\d+)"),
+    BUY_ANIMAL("buy\\s+animal\\s+-a\\s+(.+?)\\s+-n\\s+(.+?)"),
     PET("pet\\s+-n\\s+(.+?)"),
     CHEAT_FRIENDSHIP_ANIMAL("cheat\\s+set\\s+friendship\\s+-n\\s+(.+?)\\s+-c\\s+(\\d+)"),
     SHOW_ANIMALS("animals"),
@@ -76,7 +82,7 @@ public enum GameCommands {
     FEED_ANIMAL("feed\\s+hay\\s+-n\\s+(.+?)"),
     SHOW_ANIMAL_PRODUCTS("show\\s+animal\\s+products"),
     COLLECT_PRODUCE("collect\\s+produce\\s+-n\\s+(.+?)"),
-    FISHING("fishing\\s+-p\\s+(.+?)"),
+    SELL_ANIMAL("sell\\s+animal\\s+-n\\s+(.+?)"),
 
     ARTISAN_USE("artisan\\s+use\\s+\"(.*?)\"(?:\\s+\"(.*?)\")+"),
     ARTISAN_GET("artisan\\s+get\\s+(.+?)"),
@@ -84,6 +90,7 @@ public enum GameCommands {
 
     SHOW_ALL_PRODUCTS("show\\s+all\\s+products"),
     SHOW_AVAILABLE_PRODUCTS("show\\s+all\\s+available\\s+products"),
+    CHEAT_ADD_MONEY("cheat\\s+add\\s+(\\d+)\\s+dollars"),
 
     START_TRADE("start\\s+trade"),
     TRADE("trade\\s+-u\\s+(.+?)\\s+-t\\s+(request|offer)\\s+-i\\s+(.+?)\\s+-a\\s+(\\d+)(?:\\s+-p\\s+(?<money>\\d+)|\\s+-ti\\s+(?<item>.+?)\\s+-ta\\s+(\\d+))"),

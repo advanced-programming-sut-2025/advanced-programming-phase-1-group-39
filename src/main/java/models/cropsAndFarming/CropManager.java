@@ -42,7 +42,12 @@ public class CropManager {
     }
 
     public static FarmingProduct getCropByName(String name) {
-        CropData data = crops.get(name);
+        CropData data = null;
+        for (CropData check : crops.values()) {
+            if (check.name.equalsIgnoreCase(name)) {
+                data = check;
+            }
+        }
         if (data == null) {
             return null;
         }
@@ -57,6 +62,14 @@ public class CropManager {
         );
 
         return product;
+    }
+    public static Seed getSeedByName(String name) {
+        CropData data = crops.get(name);
+        if (data == null) {
+            return null;
+        }
+
+        return new Seed(name, data.seasons);
     }
     public static Plant createPlantBySeed(String seedName, Tile tile) {
         if (seedName.equalsIgnoreCase("Mixed Seeds")) {

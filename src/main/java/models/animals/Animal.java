@@ -30,6 +30,9 @@ public class Animal {
 
     public AnimalType getType() { return type; }
     public String getName() { return name; }
+    public void setName(String name) {
+        this.name = name;
+    }
     public int getPrice() { return price; }
     public LivingPlace getPlace() { return place; }
     public ArrayList<AnimalProduct> getProducts() { return products; }

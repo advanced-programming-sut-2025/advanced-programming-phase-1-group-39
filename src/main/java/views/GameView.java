@@ -140,12 +140,85 @@ public class GameView implements View {
             System.out.println(result.message());
         }
 
+        else if ((matcher = GameCommands.SHOW_CRAFT_INFO.getMatcher(command)) != null) {
+            System.out.println(controller.showCraftInfo(matcher));
+        } else if ((matcher = GameCommands.SHOW_TREE_INFO.getMatcher(command)) != null) {
+            System.out.println(controller.showTreeInfo(matcher));
+        } else if ((matcher = GameCommands.SHOW_PLANT.getMatcher(command)) != null) {
+            System.out.println(controller.showPlant(matcher));
+        } else if ((matcher = GameCommands.SHOW_TREE.getMatcher(command)) != null) {
+            System.out.println(controller.showTree(matcher));
+        } else if ((matcher = GameCommands.FERTILIZE.getMatcher(command)) != null) {
+            System.out.println(controller.fertilize(matcher));
+        } else if ((matcher = GameCommands.PLANT.getMatcher(command)) != null) {
+            System.out.println(controller.plant(matcher));
+        } else if ((GameCommands.SHOW_CRAFTING_RECIPES.getMatcher(command)) != null) {
+            System.out.println(controller.showCraftingRecipes());
+        } else if ((matcher = GameCommands.CRAFT.getMatcher(command)) != null) {
+            System.out.println(controller.Craft(matcher));
+        } else if ((matcher = GameCommands.CHEAT_ADD_CRAFTING_RECIPE.getMatcher(command)) != null) {
+            System.out.println(controller.cheatAddCraftingRecipe(matcher));
+        } else if ((matcher = GameCommands.CHEAT_ADD_FOOD_RECIPE.getMatcher(command)) != null) {
+            System.out.println(controller.cheatAddFoodRecipe(matcher));
+        } else if ((matcher = GameCommands.CHEAT_ADD_ITEM.getMatcher(command)) != null) {
+            System.out.println(controller.cheatAddToInventory(matcher));
+        } else if ((matcher = GameCommands.PLACE_ITEM.getMatcher(command)) != null) {
+            System.out.println(controller.placeItem(matcher));
+        }  else if ((matcher = GameCommands.COOKING_REFRIGERATOR.getMatcher(command)) != null) {
+            System.out.println(controller.manageRefrigerator(matcher));
+        } else if ((matcher = GameCommands.COOK.getMatcher(command)) != null) {
+            System.out.println(controller.cook(matcher));
+        } else if ((matcher = GameCommands.EAT.getMatcher(command)) != null) {
+            System.out.println(controller.eatFood(matcher));
+        } else if ((GameCommands.SHOW_FOOD_RECIPES.getMatcher(command)) != null) {
+            System.out.println(controller.showCookingRecipes());
+        } else if ((matcher = GameCommands.PET.getMatcher(command)) != null) {
+            System.out.println(controller.petAnimal(matcher));
+        } else if ((matcher = GameCommands.CHEAT_FRIENDSHIP_ANIMAL.getMatcher(command)) != null) {
+            System.out.println(controller.cheatFriendshipAnimal(matcher));
+        } else if ((GameCommands.SHOW_ANIMALS.getMatcher(command)) != null) {
+            System.out.println(controller.showAnimalsInfo());
+        } else if ((matcher = GameCommands.SHEPHERD_ANIMALS.getMatcher(command)) != null) {
+            System.out.println(controller.shepherdAnimals(matcher));
+        } else if ((matcher = GameCommands.FEED_ANIMAL.getMatcher(command)) != null) {
+            System.out.println(controller.feedHayAnimal(matcher));
+        } else if ((matcher = GameCommands.SHOW_ANIMAL_PRODUCTS.getMatcher(command)) != null) {
+            System.out.println(controller.showAnimalsProducts(matcher));
+        } else if ((matcher = GameCommands.COLLECT_PRODUCE.getMatcher(command)) != null) {
+            System.out.println(controller.collectProducts(matcher));
+        } else if ((matcher = GameCommands.ARTISAN_USE.getMatcher(command)) != null) {
+            System.out.println(controller.artisanUse(matcher));
+        } else if ((matcher = GameCommands.ARTISAN_GET.getMatcher(command)) != null) {
+            System.out.println(controller.artisanGet(matcher));
+        } else if ((matcher = GameCommands.PURCHASE.getMatcher(command)) != null) {
+            System.out.println(controller.purchaseProduct(matcher));
+        } else if ((GameCommands.SHOW_ALL_PRODUCTS.getMatcher(command)) != null) {
+            System.out.println(controller.showAllProducts());
+        } else if ((GameCommands.SHOW_AVAILABLE_PRODUCTS.getMatcher(command)) != null) {
+            System.out.println(controller.showAllAvailableProducts());
+        } else if ((matcher = GameCommands.START_TRADE.getMatcher(command)) != null) {
+            System.out.println(controller.startTrade(matcher));
+        } else if ((matcher = GameCommands.TRADE.getMatcher(command)) != null) {
+            System.out.println(controller.trade(matcher));
+        } else if ((matcher = GameCommands.SHOW_TRADES_LIST.getMatcher(command)) != null) {
+            System.out.println(controller.ShowTradeList(matcher));
+        } else if ((matcher = GameCommands.TRADE_HISTORY.getMatcher(command)) != null) {
+            System.out.println(controller.showTradeHistory(matcher));
+        } else if ((matcher = GameCommands.TRADE_RESPONSE.getMatcher(command)) != null) {
+            System.out.println(controller.responseToTrade(matcher));
+        } else if ((matcher = GameCommands.CHEAT_ADD_MONEY.getMatcher(command)) != null) {
+            System.out.println(controller.cheatAddMoney(matcher));
+        } else if ((matcher = GameCommands.BUILD.getMatcher(command)) != null) {
+            System.out.println(controller.build(matcher));
+        } else if ((matcher = GameCommands.BUY_ANIMAL.getMatcher(command)) != null) {
+            System.out.println(controller.buyAnimal(matcher));
+        } else if ((matcher = GameCommands.SELL_ANIMAL.getMatcher(command)) != null) {
+            System.out.println(controller.sellAnimal(matcher));
+        }
+
         else {
             System.out.println("invalid command.");
         }
-
-
-        // todo: check
 
         // Time checking
         result = controller.checkTime();

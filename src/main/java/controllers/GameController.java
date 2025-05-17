@@ -6,8 +6,13 @@ import models.Enums.Menu;
 import models.Enums.WeatherStatus;
 import models.PlayerInteraction.Friendship;
 import models.PlayerInteraction.Message;
+import models.Shops.CarpentersShop;
+import models.Shops.MarniesRanch;
 import models.animals.Fish;
+import models.buildings.Cabin;
 import models.buildings.ShippingBin;
+import models.cooking.FoodRecipe;
+import models.crafting.CraftingRecipe;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
 import models.inventory.Inventory;
@@ -20,14 +25,19 @@ import models.tools.*;
 import models.Shops.Shop;
 import models.animals.Animal;
 import models.animals.AnimalProduct;
+import models.animals.Fish;
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
+import models.buildings.Building;
 import models.cooking.FoodManager;
 import models.crafting.CraftingManager;
 import models.cropsAndFarming.*;
+import models.inventory.Inventory;
+import models.map.Tile;
 import models.tools.FishingPole;
 import models.trading.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
@@ -368,6 +378,7 @@ public class GameController {
         if (!player.getInventory().hasItem(seedName)) {
             return new Result(false, "You don't have " + seedName);
         }
+        player.getInventory().pickItem(seedName, 1);
         tile.plantSeed(seedName);
         return new Result(false, "You have successfully planted " + seedName);
     }
@@ -481,17 +492,29 @@ public class GameController {
         inv.placeItem(itemName, tile);
         return new Result(true, "You have placed this item to tile successfully!");
     }
+    public Result cheatAddCraftingRecipe(Matcher matcher) {
+        String name = matcher.group(1);
+        CraftingRecipe recipe = CraftingRecipe.getRecipeByName(name);
+        if (recipe == null) {
+            return new Result(false, "Not found");
+        }
+        App.getApp().getCurrentGame().getPlayerInTurn().learnCraftingRecipe(recipe);
+        return new Result(true, "You have successfully learned " + name);
+    }
     public Result cheatAddToInventory(Matcher matcher) {
         String name = matcher.group(1);
         int count = Integer.parseInt(matcher.group(2));
 
         Inventory inv = App.getApp().getCurrentGame().getPlayerInTurn().getInventory();
-        Item itemT0oAdd = ItemManager.getItemByName(name);
-        if (!inv.hasSpace(new ItemStack(itemT0oAdd, count))) {
+        Item itemToAdd = ItemManager.getItemByName(name);
+        if (itemToAdd == null) {
+            return new Result(false, name + " not found");
+        }
+        if (!inv.hasSpace(new ItemStack(itemToAdd, count))) {
             return new Result(false, "Your inventory has not space anymore");
         }
 
-        inv.addItem(itemT0oAdd, count);
+        inv.addItem(itemToAdd, count);
         return new Result(true, "You have successfully add " + name + " " + count + "x to your inventory");
     }
     public Result manageRefrigerator(Matcher matcher) {
@@ -499,8 +522,12 @@ public class GameController {
         String itemName = matcher.group(2);
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
 
-        // Todo: fridge bayad az khoone biad
-        Refrigerator refrigerator = new Refrigerator();
+        Cabin cabin = (Cabin) player.getBuildingByName("cabin");
+        if (!App.getApp().getCurrentGame().getMap().isInBuilding(cabin, player)) {
+            return new Result(false, "You need to be at home to cook.");
+        }
+
+        Refrigerator refrigerator = cabin.getRefrigerator();
         Inventory inv = player.getInventory();
         Item item = ItemManager.getItemByName(itemName);
         if (method.equalsIgnoreCase("pick")) {
@@ -533,15 +560,57 @@ public class GameController {
 
         return FoodManager.cook(recipeName, App.getApp().getCurrentGame().getPlayerInTurn());
     }
+    public Result cheatAddFoodRecipe(Matcher matcher) {
+        String name = matcher.group(1);
+        FoodRecipe recipe = FoodRecipe.getRecipeByName(name);
+        if (recipe == null) {
+            return new Result(false, "Not found");
+        }
+        App.getApp().getCurrentGame().getPlayerInTurn().learnFoodRecipe(recipe);
+        return new Result(true, "You have successfully learned " + name);
+    }
 
     public Result eatFood(Matcher matcher) {
         String foodName = matcher.group(1);
         return FoodManager.eat(foodName, App.getApp().getCurrentGame().getPlayerInTurn());
     }
 
-    // TODO : complete these
-    public Result build(Matcher matcher) {return null;}
-    public Result buyAnimal(Matcher matcher) {return null;}
+    public Result build(Matcher matcher) {
+        String buildingName = matcher.group(1).toLowerCase();
+        int x = Integer.parseInt(matcher.group(2));
+        int y = Integer.parseInt(matcher.group(3));
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        Shop shop = App.getApp().getCurrentGame().getShopPlayerIsIn(player);
+        if (shop == null) {
+            return new Result(false, "You should be in Carpenter's shop");
+        }
+        if (!shop.getName().equalsIgnoreCase("Carpenter's Shop")) {
+            return new Result(false, "You should be in Carpenter's Shop");
+        }
+        CarpentersShop carpentersShop = (CarpentersShop) shop;
+
+        return carpentersShop.buildFarmBuilding(buildingName, x, y);
+    }
+
+    public Result buyAnimal(Matcher matcher) {
+        String animalStr = matcher.group(1);
+        String name = matcher.group(2);
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        Shop shop = App.getApp().getCurrentGame().getShopPlayerIsIn(player);
+        if (shop == null) {
+            return new Result(false, "You should be in a shop");
+        }
+        if (!shop.getName().equalsIgnoreCase("Marnie's Ranch")) {
+            return new Result(false, "You should be in Marnie's Ranch");
+        }
+        MarniesRanch marniesRanch = (MarniesRanch) shop;
+
+        return marniesRanch.buyAnimal(animalStr, name);
+    }
     public Result petAnimal(Matcher matcher) {
         String name = matcher.group(1);
         Animal animal = App.getApp().getCurrentGame().getPlayerInTurn().getAnimal(name);
@@ -549,7 +618,9 @@ public class GameController {
         if (animal == null) {
             return new Result(false, "You don't have this animal ):");
         }
-        //Todo: check is near animal
+        if (!App.getApp().getCurrentGame().getPlayerInTurn().isNearLocation(animal.getLocation())) {
+            return new Result(false, "You must be near to animal");
+        }
         animal.pet();
 
         return new Result(false, "\"Thank you (:\" said " + name +
@@ -568,7 +639,7 @@ public class GameController {
         animal.changeFriendship(amount);
         return new Result(true, "You changed friendship with " + animalName + " by amount " + amount);
     }
-    public Result showAnimalsInfo(Matcher matcher) {
+    public Result showAnimalsInfo() {
         ArrayList<Animal> animals = App.getApp().getCurrentGame().getPlayerInTurn().getAnimals();
         StringBuilder sb = new StringBuilder();
         sb.append("Your Animals: \n");
@@ -585,7 +656,14 @@ public class GameController {
 
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
 
-        //Todo: check x and y validate
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(x, y);
+        if (tile == null) {
+            return new Result(false, "Invalid tile");
+        }
+        if (!tile.canWalkOnTile()) {
+            return new Result(false, "This tile is unavailable to go");
+        }
+
         Animal animal = player.getAnimal(animalName);
         if (animal == null) {
             return new Result(false, "You don't have this animal");
@@ -773,8 +851,12 @@ public class GameController {
         return shop.purchase(productName, count);
     }
 
-    // TODO : complete
-    public void cheatAddToShopStock(Matcher matcher) {}
+    public Result cheatAddMoney(Matcher matcher) {
+        int money = Integer.parseInt(matcher.group(1));
+
+        App.getApp().getCurrentGame().getPlayerInTurn().changeMoney(money);
+        return new Result(true, "You have successfully added " + money + " dollars to your wallet.");
+    }
 
     public Result sellProduct(Matcher matcher) {
         String productName = matcher.group("product");
@@ -991,7 +1073,8 @@ public class GameController {
 
         if (action.equals("-reject")) {
             trade.reject();
-            //FriendshipManager.decreaseXP(currentPlayer, sender, 30);
+            Friendship friendship = App.getApp().getCurrentGame().getFriendship(currentPlayer, sender);
+            PlayersInteractionController.decreaseXP(friendship, 30, sender.getUsername());
             return new Result(true, "You rejected trade request #" + tradeId);
         }
 
@@ -1062,7 +1145,8 @@ public class GameController {
         }
 
         trade.accept();
-        //FriendshipManager.increaseXP(currentPlayer, sender, 50);
+        Friendship friendship = App.getApp().getCurrentGame().getFriendship(currentPlayer, sender);
+        PlayersInteractionController.increaseXP(friendship, 50, sender.getUsername());
 
         return new Result(true, "Trade #" + tradeId + " accepted successfully.");
     }

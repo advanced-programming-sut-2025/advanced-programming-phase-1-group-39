@@ -53,7 +53,7 @@ public class FishSmoker extends ArtisanMachine {
 
     public ArtisanRecipe getRecipeByFish(String fishName) {
         for (ArtisanRecipe recipe : recipes) {
-            if (recipe.getIngredients().containsKey(fishName)) {
+            if (recipe.getName().equalsIgnoreCase(fishName)) {
                 return recipe;
             }
         }

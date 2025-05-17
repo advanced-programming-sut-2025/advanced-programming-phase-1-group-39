@@ -39,6 +39,24 @@ public class TreeManager {
         return tree;
     }
 
+    public static FarmingProduct getFruitByName(String name) {
+        for (TreeData data : trees.values()) {
+            if (data.fruitName.equalsIgnoreCase(name)) {
+                return new FarmingProduct(data.fruitName, data.fruitBaseSellPrice, true, data.fruitEnergy,
+                        data.fruitHealth, data.seasons, false);
+            }
+        }
+        return null;
+    }
+    public static Seed getSeedByName(String name) {
+        for (TreeData data : trees.values()) {
+            if (data.source.getName().equalsIgnoreCase(name)) {
+                    return data.source;
+            }
+        }
+        return null;
+    }
+
     public static String getTreeInfo(String seedName) {
         TreeData treeData = trees.get(seedName);
         if (treeData == null) {

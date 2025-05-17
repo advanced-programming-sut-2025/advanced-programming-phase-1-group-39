@@ -60,7 +60,7 @@ public class Plant {
             return;
         }
 
-        if (currentStage < stages.size()) {
+        if (currentStage < stages.size() - 1) {
             int speedBonus = (type == FertilizerType.SPEED) ? 2 : 1;
 
             daysOfCurrentStage -= speedBonus;
@@ -85,12 +85,11 @@ public class Plant {
             productStack = 1;
         }
 
-        if (needsWater) {
-            isWateredToday = false;
-        }
+//        if (needsWater) {
+//            isWateredToday = false;
+//        } // cheat: comment this
     }
 
-    // TODO : change scythe working
     public boolean isAlive() {
         return isAlive;
     }
@@ -109,15 +108,38 @@ public class Plant {
             productStack = 0;
             hasCrop = false;
             tile.removePlant();
-            return new ItemStack(product, productStack);
+            return new ItemStack(product, 1);
         } else {
-            productStack = 0;
             hasCrop = false;
-            return new ItemStack(product, productStack);
+            ItemStack stack = new ItemStack(product, productStack);
+            productStack = 0;
+            return stack;
         }
     }
 
     public boolean hasCrop() {
         return hasCrop;
+    }
+
+    @Override
+    public String toString() {
+        return "Plant{" +
+                "tile=" + tile +
+                ", seed=" + seed +
+                ", product=" + product +
+                ", productStack=" + productStack +
+                ", stages=" + stages +
+                ", currentStage=" + currentStage +
+                ", daysOfCurrentStage=" + daysOfCurrentStage +
+                ", daysWithoutWater=" + daysWithoutWater +
+                ", isWateredToday=" + isWateredToday +
+                ", hasFertilizer=" + hasFertilizer +
+                ", oneTimeHarvest=" + oneTimeHarvest +
+                ", regrowthTime=" + regrowthTime +
+                ", cropIntervalDays=" + cropIntervalDays +
+                ", canBecomeGiant=" + canBecomeGiant +
+                ", hasCrop=" + hasCrop +
+                ", isAlive=" + isAlive +
+                '}';
     }
 }

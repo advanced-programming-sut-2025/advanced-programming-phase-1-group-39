@@ -103,7 +103,8 @@ public class FishingShop extends Shop {
             }
             String[] str = product.split(" ");
             String typeStr = str[0];
-            // Todo: return pole with type
+            FishingPole pole = new FishingPole(product, FishingPoleType.getType(product));
+            player.getInventory().addItem(pole, 1);
             item.purchase(quantity);
         }
         return new Result(true, "Purchased " + quantity + " x " + product + " for " + (item.getPrice() * quantity) + "g.");

@@ -4,17 +4,9 @@ import models.Enums.Season;
 import models.NPC.NPC;
 import models.NPC.PlayerNPCInteraction;
 import models.NPC.Quest;
-import models.PlayerInteraction.Friendship;
-import models.animals.Animal;
-import models.animals.AnimalProductQuality;
-import models.animals.Fish;
-import models.animals.FishType;
+import models.animals.*;
 import models.artisan.ArtisanMachineRecipe;
-import models.buildings.Building;
-import models.buildings.Cabin;
-import models.buildings.GreenHouse;
-import models.buildings.ShippingBin;
-import models.cooking.Food;
+import models.buildings.*;
 import models.cooking.FoodBuff;
 import models.cooking.FoodRecipe;
 import models.crafting.CraftingItem;
@@ -53,13 +45,13 @@ public class Player {
     private Inventory inventory;
 
 
-    private ArrayList<CraftingRecipe> craftingRecipes;
-    private ArrayList<ArtisanMachineRecipe> artisanMachineRecipes;
-    private ArrayList<FoodRecipe> foodRecipes;
+    private ArrayList<CraftingRecipe> craftingRecipes = new ArrayList<>();
+    private ArrayList<ArtisanMachineRecipe> artisanMachineRecipes = new ArrayList<>();
+    private ArrayList<FoodRecipe> foodRecipes = new ArrayList<>();
 
-    private HashMap<NPC, Integer> NPCsFriendship;
+    private HashMap<NPC, Integer> NPCsFriendship = new HashMap<>();
 
-    private ArrayList<Quest> activeQuests;
+    private ArrayList<Quest> activeQuests = new ArrayList<>();
 
     // animals
     private HashMap<String, Animal> animals = new HashMap<>();
@@ -223,7 +215,7 @@ public class Player {
         return new Location(startOfFarm.x() + 74, startOfFarm.y() + 8);
     }
 
-    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) { // Todo: not complete (legendary + type fishing pole)
+    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) {
         double M = weather.getFishingFactor();
         double R = Math.random();
         int skill = skills.getFishingLevel();
@@ -233,13 +225,14 @@ public class Player {
 
         List<FishType> seasonal = Arrays.stream(FishType.values())
                 .filter(f -> f.season == season)
+                .filter(f -> !f.isLegendary())
                 .collect(Collectors.toList());
 
         if (skill == Constants.MAX_SKILL_LEVEL) {
             seasonal.addAll(Arrays.stream(FishType.values())
-                    .filter(f -> f.name().equals(f.name().toUpperCase()))
+                    .filter(FishType::isLegendary)
                     .filter(f -> f.season == season)
-                    .toList());
+                    .collect(Collectors.toList()));
         }
 
         List<Fish> result = new ArrayList<>();
@@ -367,7 +360,16 @@ public class Player {
         int money = (int) (animal.getPrice() * (((double) animal.getFriendship() /1000) + 0.3));
         changeMoney(money);
         animals.remove(animal.getName());
-        //TODO : remove from building animals
+
+        AnimalBuilding animalBuilding;
+        for (Building building : this.playerFarmBuildings) {
+            if (building instanceof AnimalBuilding) {
+                if (((AnimalBuilding) building).hasAnimal(animal)) {
+                    animalBuilding = (AnimalBuilding) building;
+                    animalBuilding.removeAnimal(animal);
+                }
+            }
+        }
         return money;
     }
 
@@ -435,6 +437,18 @@ public class Player {
         return spouseName;
     }
 
+    public AnimalBuilding getAnimalBuilding(LivingPlace type) {
+        for (Building building : playerFarmBuildings) {
+            if (building instanceof AnimalBuilding) {
+                AnimalBuilding animalBuilding = (AnimalBuilding) building;
+                if (animalBuilding.getType() == type && animalBuilding.hasCapacity(1)) {
+                    return animalBuilding;
+                }
+            }
+        }
+        return null;
+    }
+
     // skill
     public void learnNewRecipes() {
         // Foraging level
@@ -477,7 +491,7 @@ public class Player {
                 learnRecipes(
                         List.of(FoodRecipe.FARMERS_LUNCH), List.of(
                                 CraftingRecipe.SPRINKLER, CraftingRecipe.BEE_HOUSE
-                                )
+                        )
                 );
                 break;
             case 2:

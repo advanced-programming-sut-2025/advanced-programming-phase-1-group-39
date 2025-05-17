@@ -11,6 +11,7 @@ import models.Shops.Shop;
 import models.artisan.ArtisanMachine;
 import models.buildings.Building;
 import models.buildings.GreenHouse;
+import models.cooking.FoodRecipe;
 import models.cropsAndFarming.*;
 
 import java.io.FileReader;
@@ -530,8 +531,13 @@ public class Map {
 
         for (int i = startX; i < startX + 3; i++) {
             for (int j = startY; j < startY + 3; j++) {
-                Tile tile = tiles[i][j];
-                Item machine = tile.getItemOnTile().getItem();
+                Tile tile = tiles[j][i];
+                Item machine;
+                if (tile.getItemOnTile() != null) {
+                    machine = tile.getItemOnTile().getItem();
+                } else {
+                    continue;
+                }
                 if (machine instanceof ArtisanMachine
                         && machine.getName().equalsIgnoreCase(name)) {
                     return (ArtisanMachine) machine;

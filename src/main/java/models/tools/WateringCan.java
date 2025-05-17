@@ -24,6 +24,7 @@ public class WateringCan extends Tool {
         if (tile.getType() == TileType.SOIL) {
             if (tile.isPlowed() || tile.getPlant() != null) {
                 tile.setIsWatered();
+                tile.getPlant().setIsWateredToday();
                 return new Result(true, AnsiColors.ANSI_BLUE_BOLD + "Watered" + AnsiColors.ANSI_RESET);
             } else if (tile.getTree() != null) {
                 return new Result(false, AnsiColors.ANSI_RED_BOLD + "A tree is on Tile! You watered Tree! :|" + AnsiColors.ANSI_RESET);

@@ -1,8 +1,10 @@
 package models.crafting;
 
+import models.App;
 import models.ItemStack;
 import models.Player;
 import models.Result;
+import models.buildings.Cabin;
 import models.inventory.Inventory;
 
 import java.util.*;
@@ -15,6 +17,11 @@ public class CraftingManager {
     }
 
     public static Result craft(String itemName, Player player) {
+        Cabin cabin = (Cabin) App.getApp().getCurrentGame().getPlayerInTurn().getBuildingByName("cabin");
+        if (!App.getApp().getCurrentGame().getMap().isInBuilding(cabin, player)) {
+            return new Result(false, "You should be at your home");
+        }
+
         if (player.getEnergy() < 2) {
             return new Result(false, "Not enough energy to craft.");
         }

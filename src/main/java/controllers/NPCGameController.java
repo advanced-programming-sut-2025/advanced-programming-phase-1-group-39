@@ -221,11 +221,6 @@ public class NPCGameController {
         }
     }
 
-    public Result Marriage() {
-        // TODO : complete this function
-        return new Result(true, "Well done, adventurer!");
-    }
-
     // Auxiliary functions :
 
     private boolean isNpcNearPlayer(Location playerLocation, Location npcLocation) {

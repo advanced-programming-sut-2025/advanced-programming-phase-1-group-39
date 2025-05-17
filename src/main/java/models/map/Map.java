@@ -267,9 +267,16 @@ public class Map {
         int startX = Constants.FARM_WIDTH;
         int startY = Constants.DISABLED_HEIGHT;
 
+        for (int i = startX; i < Constants.WORLD_MAP_WIDTH - startX; i++) {
+            for (int j = startY; j < Constants.WORLD_MAP_HEIGHT - startY; j++) {
+                Tile tile = tiles[j][i];
+                tile.setType(TileType.Lawn);
+            }
+        }
         for (Shop shop : shops) {
             addObjectToMap(shop, "shop", 0, 0);
         }
+
 
         try (FileReader reader = new FileReader("src/main/resources/data/Map/npcMap.json")) {
             Gson gson = new Gson();
@@ -347,7 +354,7 @@ public class Map {
 
     // printing
     public String printMapBySize(int x, int y, int size, ArrayList<Player> players,
-                                 ArrayList<NPC> npcs) {
+                                 ArrayList<NPC> npcs, ArrayList<Shop> shops) {
         StringBuilder text = new StringBuilder();
         int i1 = Math.max(y - size/2, 0);
         int i2 = Math.min(y + size - size/2, height);
@@ -377,7 +384,28 @@ public class Map {
                 boolean doesSetPlayer = false;
                 boolean doesSetNpc = false;
 
+                boolean shopNameSet = false;
+                for (Shop shop : shops) {
+                    String name = shop.getName();
+                    Location loc = shop.getLocation();
+                    if (i == loc.y() - 2 && j == loc.x() + shop.getWidth()/2 - name.length()/3/2 - 1) {
+                        if (name.length()%3 == 0) {
+                            text.append(name);
+                            j += name.length()/3 - 1;
+                        }
+                        else if (name.length()%3 == 1) {
+                            text.append(" " + name + " ");
+                            j += name.length()/3;
+                        }
+                        else {
+                            text.append(name + " ");
+                            j += name.length()/3;
+                        }
+                        shopNameSet = true;
 
+                    }
+                }
+                if (shopNameSet) continue;
                 for (Player player : players) {
                     if (j == player.getLocation().x() && i == player.getLocation().y()) {
                         text.append(tile.getTileColor() + playerColors[playerCounter++] + " @ " + AnsiColors.ANSI_RESET);
@@ -405,8 +433,8 @@ public class Map {
     }
 
 
-    public String printColorMap(ArrayList<Player> players, ArrayList<NPC> npcs) {
-        return printMapBySize(150, 75, 150, players, npcs);
+    public String printColorMap(ArrayList<Player> players, ArrayList<NPC> npcs, ArrayList<Shop> shops) {
+        return printMapBySize(150, 75, 150, players, npcs, shops);
     }
 
 

@@ -58,6 +58,7 @@ public class Tile {
     public String getTileColor() {
         char c = getSymbol();
         if (c == '.'){
+            if (type == TileType.Lawn) return AnsiColors.ANSI_DARK_GREEN_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
             if (canPlant && isWatered)
                 return AnsiColors.ANSI_WATERED_TILE_BACKGROUND;
             else if (canPlant)

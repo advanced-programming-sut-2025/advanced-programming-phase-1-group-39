@@ -10,6 +10,7 @@ public enum TileType {
     SELL_BASKET('B', false),
     DISABLE(' ', false),
     PATH('#', true),
+    Lawn('.', true)
     ;
 
     private final char symbol;

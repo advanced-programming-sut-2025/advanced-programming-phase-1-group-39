@@ -245,7 +245,7 @@ public class GameController {
 
         Game game = App.getApp().getCurrentGame();
 
-        return new Result(true, game.getMap().printMapBySize(x, y, size, game.getPlayers(), game.getNpcs()));
+        return new Result(true, game.getMap().printMapBySize(x, y, size, game.getPlayers(), game.getNpcs(), game.getNpcShops()));
     }
     public Result helpReadingMap() {
         Game game = App.getApp().getCurrentGame();

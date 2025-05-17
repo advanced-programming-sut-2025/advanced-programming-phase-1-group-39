@@ -10,6 +10,7 @@ import models.animals.Animal;
 import models.PlayerInteraction.Friendship;
 import models.PlayerInteraction.Message;
 import models.buildings.Building;
+import models.map.AnsiColors;
 import models.map.FarmType;
 import models.map.Map;
 import models.map.Tile;
@@ -534,8 +535,12 @@ public class Game {
         ArrayList<Player> otherPlayers = getOtherPlayers(player.getUsername());
         for (Player otherPlayer : otherPlayers) {
             int count = 0;
-            messages.append("Messages received from player ").append(otherPlayer.getUsername()).append(" :\n");
-            for (Message message : getFriendship(player, otherPlayer).getMessages()) {
+            messages.append(AnsiColors.ANSI_ORANGE_BOLD + "Messages received from player ")
+                    .append(otherPlayer.getUsername())
+                    .append(" :\n" + AnsiColors.ANSI_RESET);
+            Friendship friendship = getFriendship(player, otherPlayer);
+            if (friendship == null) continue;
+            for (Message message : friendship.getMessages()) {
                 if (message.getSender().equals(otherPlayer.getUsername()) && message.isNew()) {
                     count++;
                     messages.append("\t").append(message.getMessage()).append("\n");
@@ -543,7 +548,7 @@ public class Game {
                 }
             }
             if (count == 0) {
-                messages.append("\tYou have no messages from player ").append(otherPlayer.getUsername()).append(" .\n");
+                messages.append("\tYou don't have any message from player ").append(otherPlayer.getUsername()).append(" .\n");
             }
         }
         messages.deleteCharAt(messages.length() - 1);
@@ -596,9 +601,11 @@ public class Game {
         Player currentPlayer = playerInTurn;
         StringBuilder output = new StringBuilder();
         ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());
-        output.append("Gifts You've Received : \n");
+        output.append(AnsiColors.ANSI_ORANGE_BOLD + "Gifts You've Received : \n" + AnsiColors.ANSI_RESET);
         for (Player otherPlayer : otherPlayers) {
-            for (Gift gift : game.getFriendship(currentPlayer, otherPlayer).getGifts()) {
+            Friendship friendship = game.getFriendship(currentPlayer, otherPlayer);
+            if (friendship == null) continue;
+            for (Gift gift : friendship.getGifts()) {
                 if (gift.getSender().equals(otherPlayer.getUsername()) && gift.isNew()) {
                     output.append("gift id : ").append(gift.getGiftId()).append(" |");
                     output.append("sender : ").append(gift.getSender()).append(" |");

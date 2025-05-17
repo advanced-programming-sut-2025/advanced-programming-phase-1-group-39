@@ -64,8 +64,6 @@ public class Skill {
     public boolean isForagingLevelMax() {return getForagingLevel() == 4;}
     public boolean isFishingLevelMax() {return getFishingLevel() == 4;}
 
-    // TODO : add update skills :
-    //          - add foodRecepies , CraftingRecepies
 
     public void addToFarmingXP(int amount) {
         farmingXP += amount;

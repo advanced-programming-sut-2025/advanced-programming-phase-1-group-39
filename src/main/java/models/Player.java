@@ -14,8 +14,10 @@ import models.buildings.Building;
 import models.buildings.Cabin;
 import models.buildings.GreenHouse;
 import models.buildings.ShippingBin;
+import models.cooking.Food;
 import models.cooking.FoodBuff;
 import models.cooking.FoodRecipe;
+import models.crafting.CraftingItem;
 import models.crafting.CraftingRecipe;
 import models.inventory.Inventory;
 import models.map.AnsiColors;
@@ -328,6 +330,7 @@ public class Player {
     }
 
     public void learnFoodRecipe(FoodRecipe recipe) {
+        if (hasLearnedFoodRecipe(recipe)) return;
         foodRecipes.add(recipe);
     }
     public boolean hasLearnedFoodRecipe(FoodRecipe recipe) {
@@ -340,6 +343,20 @@ public class Player {
         }
         return sb.toString();
     }
+
+    public void learnRecipes(List<FoodRecipe> foodRecipes, List<CraftingRecipe> craftingRecipes) {
+        if (foodRecipes != null) {
+            for (FoodRecipe recipe : foodRecipes) {
+                learnFoodRecipe(recipe);
+            }
+        }
+        if (craftingRecipes != null) {
+            for (CraftingRecipe craftingRecipe : craftingRecipes) {
+                learnCraftingRecipe(craftingRecipe);
+            }
+        }
+    }
+
 
 
     public void addAnimal(Animal animal) {
@@ -416,5 +433,74 @@ public class Player {
 
     public String getSpouseName() {
         return spouseName;
+    }
+
+    // skill
+    public void learnNewRecipes() {
+        // Foraging level
+        switch (skills.getForagingLevel()) {
+            case 0 :
+                learnRecipes(
+                        List.of(FoodRecipe.FRIED_EGG, FoodRecipe.BAKED_FISH, FoodRecipe.SALAD),
+                        null
+                );
+                break;
+            case 1 :
+                learnCraftingRecipe(CraftingRecipe.CHARCOAL_KILN);
+                break;
+            case 2:
+                learnFoodRecipe(FoodRecipe.VEGETABLE_MEDLEY);
+                break;
+            case 3:
+                learnFoodRecipe(FoodRecipe.SURVIVAL_BURGER);
+                break;
+            case 4:
+                learnCraftingRecipe(CraftingRecipe.MYSTIC_TREE_SEED);
+        }
+        // Mining level
+        switch (skills.getMiningLevel()) {
+            case 1 :
+                learnFoodRecipe(FoodRecipe.MINERS_TREAT);
+                learnCraftingRecipe(CraftingRecipe.CHERRY_BOMB);
+                break;
+            case 2 :
+                learnCraftingRecipe(CraftingRecipe.BOMB);
+                break;
+            case 3 :
+                learnCraftingRecipe(CraftingRecipe.MEGA_BOMB);
+                break;
+        }
+
+        // Farming level
+        switch (skills.getFarmingLevel()) {
+            case 1 :
+                learnRecipes(
+                        List.of(FoodRecipe.FARMERS_LUNCH), List.of(
+                                CraftingRecipe.SPRINKLER, CraftingRecipe.BEE_HOUSE
+                                )
+                );
+                break;
+            case 2:
+                learnRecipes(
+                        null, List.of (CraftingRecipe.QUALITY_SPRINKLER, CraftingRecipe.DELUXE_SCARECROW,
+                                CraftingRecipe.CHEESE_PRESS, CraftingRecipe.PRESERVES_JAR)
+                );
+                break;
+            case 3 :
+                learnRecipes(
+                        null, List.of (CraftingRecipe.IRIDIUM_SPRINKLER, CraftingRecipe.KEG ,
+                                CraftingRecipe.LOOM, CraftingRecipe.OIL_MAKER)
+                );
+                break;
+        }
+
+        // Fishing
+        switch (skills.getFishingLevel()) {
+            case 2 :
+                learnFoodRecipe(FoodRecipe.DISH_O_THE_SEA);
+                break;
+            case 3 :
+                learnFoodRecipe(FoodRecipe.SEAFOAM_PUDDING);
+        }
     }
 }

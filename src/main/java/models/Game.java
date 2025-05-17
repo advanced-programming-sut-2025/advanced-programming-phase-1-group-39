@@ -12,11 +12,9 @@ import models.buildings.Building;
 import models.map.FarmType;
 import models.map.Map;
 import models.map.Tile;
-import models.trading.TradeItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 
 public class Game {
     // TODO : remove currentId from APP
@@ -252,6 +250,8 @@ public class Game {
 
         endDayForShopsAndAnimalBuildings();
 
+        playersLearnNewRecipes();
+
         return lastDayReport.toString();
     }
 
@@ -312,6 +312,11 @@ public class Game {
     public void addPlayersRevenueToMoney() {
         for (Player player : players) {
             player.addNightRevenueToMoney();
+        }
+    }
+    public void playersLearnNewRecipes() {
+        for (Player player : players) {
+            player.learnNewRecipes();
         }
     }
 
@@ -414,10 +419,6 @@ public class Game {
 
     public void setTomorrowWeather(WeatherStatus status) {
         tomorrowWeather.setStatus(status);
-    }
-
-    public void setTomorrowWeatherRandom() {
-        tomorrowWeather.setWeatherRandom(this.time.getSeason());
     }
 
     public void setLoadedPlayerUsername(String PlayerUsername) {

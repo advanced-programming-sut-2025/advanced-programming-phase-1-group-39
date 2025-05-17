@@ -688,6 +688,7 @@ public class GameController {
                 text.append(caughtFish.getType().name().toLowerCase() + "\n");
                 player.getInventory().addItem(fishItem.getItem(), fishItem.getAmount());
             }
+            player.getSkills().addToFishingXP(5);
             return new Result(true, "You caught " + num + " fishes! (Fishing XP + 5)\n" + text);
         } else {
             return new Result(false, "You need to be near water to get Fish!");

@@ -535,9 +535,9 @@ public class Game {
         ArrayList<Player> otherPlayers = getOtherPlayers(player.getUsername());
         for (Player otherPlayer : otherPlayers) {
             int count = 0;
-            messages.append(AnsiColors.ANSI_ORANGE_BOLD + "Messages received from player ")
+            messages.append("Messages received from player ")
                     .append(otherPlayer.getUsername())
-                    .append(" :\n" + AnsiColors.ANSI_RESET);
+                    .append(" :\n");
             Friendship friendship = getFriendship(player, otherPlayer);
             if (friendship == null) continue;
             for (Message message : friendship.getMessages()) {
@@ -601,7 +601,7 @@ public class Game {
         Player currentPlayer = playerInTurn;
         StringBuilder output = new StringBuilder();
         ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());
-        output.append(AnsiColors.ANSI_ORANGE_BOLD + "Gifts You've Received : \n" + AnsiColors.ANSI_RESET);
+        output.append("Gifts You've Received : \n");
         for (Player otherPlayer : otherPlayers) {
             Friendship friendship = game.getFriendship(currentPlayer, otherPlayer);
             if (friendship == null) continue;

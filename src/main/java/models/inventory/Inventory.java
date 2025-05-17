@@ -24,7 +24,9 @@ public class Inventory {
 
     public Inventory(List<ItemStack> firstItems) {
         inventoryItems.addAll(firstItems);
-        //inHand = firstItems.get(0); // Todo: bara yakhchal eror mide
+        if (!firstItems.isEmpty()) {
+            inHand = firstItems.get(0);
+        }
     }
 
     public String getItemAndColor(ItemStack itemStack) {
@@ -144,7 +146,7 @@ public class Inventory {
             if (amount > item.getAmount()) {
                 return null;
             }
-
+            addItem(item.getItem(), -amount);
             return new ItemStack(item.getItem(), amount);
         }
         return null;

@@ -60,7 +60,7 @@ public class Plant {
             return;
         }
 
-        if (currentStage < stages.size()) {
+        if (currentStage < stages.size() - 1) {
             int speedBonus = (type == FertilizerType.SPEED) ? 2 : 1;
 
             daysOfCurrentStage -= speedBonus;
@@ -87,7 +87,7 @@ public class Plant {
 
         if (needsWater) {
             isWateredToday = false;
-        }
+        } // cheat: comment this
     }
 
     public boolean isAlive() {
@@ -108,11 +108,12 @@ public class Plant {
             productStack = 0;
             hasCrop = false;
             tile.removePlant();
-            return new ItemStack(product, productStack);
+            return new ItemStack(product, 1);
         } else {
-            productStack = 0;
             hasCrop = false;
-            return new ItemStack(product, productStack);
+            ItemStack stack = new ItemStack(product, productStack);
+            productStack = 0;
+            return stack;
         }
     }
 

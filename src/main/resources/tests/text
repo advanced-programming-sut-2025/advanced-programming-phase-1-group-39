@@ -21,10 +21,11 @@ game map 2
 
 exit
 print map -l 150,75 -s 300
+print map -l 40,25 -s 80
 
  walk -l 72,13
 print map -l 70,10 -s 20
-tools equip hoe
+tools equip axe
 tools use -d
 tools equip watering can
 inventory show

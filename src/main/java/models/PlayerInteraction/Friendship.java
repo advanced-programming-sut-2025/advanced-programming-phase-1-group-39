@@ -133,5 +133,6 @@ public class Friendship {
 
     public void marriage() {
         isMarried = true;
+        setXp(1100);
     }
 }

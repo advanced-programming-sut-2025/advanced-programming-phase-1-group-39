@@ -228,7 +228,8 @@ public class GameController {
 
     public String showEnergy() {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
-        return "Your Energy: " + player.getColoredEnergy();
+        return "Your Energy: " + player.getColoredEnergy() + "   Limit of this turn: "
+                + AnsiColors.ANSI_ORANGE_BOLD + Math.floor(player.getTurnEnergy()*100)/100 + AnsiColors.ANSI_RESET;
     }
     public String cheatSetEnergy(Matcher matcher) {
         int value = Integer.parseInt(matcher.group("value"));
@@ -325,7 +326,7 @@ public class GameController {
             return new Result(false, AnsiColors.ANSI_ORANGE_BOLD + "You don't have enough energy!😓" + AnsiColors.ANSI_RESET);
         }
 
-        Result toolResult = tool.useTool(tile, player);
+        Result toolResult = tool.useTool(tile, player, player.getSkills());
 
         if (!toolResult.success()) {
             if (tool instanceof Pickaxe || tool instanceof Axe)
@@ -634,7 +635,8 @@ public class GameController {
             return new Result(false, "Your inventory has not space anymore!");
         }
         player.getInventory().addItem(product, 1);
-        return new Result(true, "You have collected " + product.getName() + " from " + animalName);
+        player.getSkills().addToFarmingXP(5);
+        return new Result(true, "You have collected " + product.getName() + " from " + animalName + ". (Farming XP + 5)");
     }
     public Result sellAnimal(Matcher matcher) {
         String animalName = matcher.group(1);
@@ -666,7 +668,7 @@ public class GameController {
         if (game.getMap().isNearWater(player)) {
             ArrayList<Fish> caughtFishes = player.goFishing(fishingPole, game.getTodayWeather(), game.getTime().getSeason());
             player.changeEnergy(-usingEnergy);
-            if (caughtFishes.size() == 0) {
+            if (caughtFishes.isEmpty()) {
                 return new Result(true, "You didn't got any fish!" + "Energy consumed: " + usingEnergy);
             }
             int num = 0;
@@ -686,7 +688,7 @@ public class GameController {
                 text.append(caughtFish.getType().name().toLowerCase() + "\n");
                 player.getInventory().addItem(fishItem.getItem(), fishItem.getAmount());
             }
-            return new Result(true, "You caught " + num + " fishes!\n" + text);
+            return new Result(true, "You caught " + num + " fishes! (Fishing XP + 5)\n" + text);
         } else {
             return new Result(false, "You need to be near water to get Fish!");
         }

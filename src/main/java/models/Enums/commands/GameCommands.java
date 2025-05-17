@@ -89,8 +89,11 @@ public enum GameCommands {
     TRADE("trade\\s+-u\\s+(.+?)\\s+-t\\s+(request|offer)\\s+-i\\s+(.+?)\\s+-a\\s+(\\d+)(?:\\s+-p\\s+(?<money>\\d+)|\\s+-ti\\s+(?<item>.+?)\\s+-ta\\s+(\\d+))"),
     SHOW_TRADES_LIST("trade\\s+list"),
     TRADE_RESPONSE("trade\\s+response\\s+(–accept|–reject)\\s+-i\\s+(\\d+)"),
-    TRADE_HISTORY("trade\\s+history");
+    TRADE_HISTORY("trade\\s+history"),
 
+    ASK_MARRIAGE("ask\\s+marriage-u\\s+(?<username>.+)-r\\s+(?<ring>.+)"),
+    RESPOND_MARRIAGE("respondToMarriage\\s+-(?<answer>accept|reject)\\s+-u\\s+(?<username>.+)")
+    ;
     private final String pattern;
 
     GameCommands(String pattern) {

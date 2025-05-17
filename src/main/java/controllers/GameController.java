@@ -4,6 +4,8 @@ import models.*;
 import models.Enums.Direction;
 import models.Enums.Menu;
 import models.Enums.WeatherStatus;
+import models.PlayerInteraction.Friendship;
+import models.PlayerInteraction.Message;
 import models.animals.Fish;
 import models.buildings.ShippingBin;
 import models.cropsAndFarming.CropManager;
@@ -18,19 +20,14 @@ import models.tools.*;
 import models.Shops.Shop;
 import models.animals.Animal;
 import models.animals.AnimalProduct;
-import models.animals.Fish;
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
-import models.buildings.Building;
 import models.cooking.FoodManager;
 import models.crafting.CraftingManager;
 import models.cropsAndFarming.*;
-import models.inventory.Inventory;
-import models.map.Tile;
 import models.tools.FishingPole;
 import models.trading.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
@@ -807,8 +804,42 @@ public class GameController {
     public Result showGiftHistory(Matcher matcher) {return null;}
     public Result hug(Matcher matcher) {return null;}
     public Result buyFlower(Matcher matcher) {return null;}
-    public Result askMarriage(Matcher matcher) {return null;}
-    public Result respond(Matcher matcher) {return null;}
+
+    public Result askMarriage(Matcher matcher) {
+        String username = matcher.group("username");
+        String ring = matcher.group("ring");
+
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+        Player player2 = game.getPlayerByUsername(username);
+
+        if (player2 == null)
+            return new Result(false, "username not found");
+
+        if (!player.isNearLocation(player2.getLocation()))
+            return new Result(false, "You need to be near second player to ask marriage!");
+
+        Friendship friendship = game.getFriendship(player, player2);
+        if (friendship.getFriendshipLevel() != 3)
+            return new Result(false, "Your level of firendship must be 3 to ask marriage!");
+
+        App app = App.getApp();
+
+        User user1 = app.getUserByUsername(player.getUsername());
+        User user2 = app.getUserByUsername(username);
+        if (!user1.getIsMale()) return new Result(false, "Only men can ask marriage in this town!");
+        if (user2.getIsMale()) return new Result(false, "The 2nd person should be woman! :|");
+
+        if (!player.getInventory().hasItem("Wedding Ring"))
+            return new Result(false, "You don't have ring to ask marriage!\nYou can buy it from pierre's shop");
+
+        String message = "Player " + player.getUsername() + " asked for marriage From You! To accept/reject use this:\n\t" +
+                "respondToMarriage -(accept|reject) -u <username>";
+        friendship.addMessage(new Message(message, player.getUsername(), player2.getUsername()));
+        return new Result(true, "You send a message to player " + player2.getUsername() + " for marriage! wait to be accepted!");
+    }
+
+    public Result respondToMarriage(Matcher matcher) {return null;}
 
     public Result startTrade(Matcher matcher) {
         ArrayList<Player> players = App.getApp().getCurrentGame().getPlayers();
@@ -1021,7 +1052,6 @@ public class GameController {
     }
 
     public String goNextDay() {
-        // TODO : complete
         Game game = App.getApp().getCurrentGame();
 
         return "Next day\n" + game.goToNextDay();

@@ -115,8 +115,14 @@ public class GameView implements View {
         else if ((matcher = GameCommands.SELL_PRODUCTS.getMatcher(command)) != null) {
             System.out.println(controller.sellProduct(matcher));
         }
+        // friendship
+        else if ((matcher = GameCommands.ASK_MARRIAGE.getMatcher(command)) != null) {
+            System.out.println(controller.askMarriage(matcher));
+        } else if ((matcher = GameCommands.RESPOND_MARRIAGE.getMatcher(command)) != null) {
+            System.out.println(controller.respondToMarriage(matcher));
+        }
 
-        // NPC and friendships
+        // NPC
         else if ((matcher = NPCGameCommand.MeetNPC.getMatcher(command)) != null) {
             result = npcController.meetNPC(matcher);
             System.out.println(result.message());
@@ -140,6 +146,7 @@ public class GameView implements View {
 
 
         // todo: check
+
         // Time checking
         result = controller.checkTime();
         if (result.success()) {

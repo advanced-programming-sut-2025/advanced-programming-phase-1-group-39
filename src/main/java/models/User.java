@@ -10,13 +10,10 @@ public class User {
     private boolean isMale;
     private SecurityQuestion securityQuestion;
 
-    // private boolean isStayLoggedIn = false;
-
     private int numberOfGamesPlayed;
     private int highestMoneyEarnedInASingleGame;
 
     private Game currentGame = null;
-    private Game savedGame = null;
 
     private ArrayList<Player> players = new ArrayList<>();
 
@@ -54,19 +51,10 @@ public class User {
         this.highestMoneyEarnedInASingleGame = highestMoneyEarnedInASingleGame;
     }
 
-    public void setNumberOfGamesPlayed(int numberOfGamesPlayed) {
-        this.numberOfGamesPlayed = numberOfGamesPlayed;
-    }
-
     public void setCurrentGame(Game currentGame) { this.currentGame = currentGame; }
 
-    public void setSavedGame(Game savedGame) { this.savedGame = savedGame; }
-
-    // public void setStayLoggedIn(boolean stayLoggedIn) { this.isStayLoggedIn = stayLoggedIn; }
 
     public void addPlayer(Player player) { players.add(player); }
-
-
 
 
     public String getUserName() {
@@ -103,13 +91,7 @@ public class User {
 
     public Game getCurrentGame() { return currentGame; }
 
-    public Game getSavedGame() { return savedGame; }
-
-    // public boolean getIsStayLoggedIn() { return isStayLoggedIn; }
-
     public ArrayList<Player> getPlayers() { return players; }
-
-    //
 
     public void ensureInitialized() {
         if (players == null) players = new ArrayList<>();

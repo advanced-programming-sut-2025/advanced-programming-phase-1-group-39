@@ -1,12 +1,11 @@
 package controllers;
 
-import models.App;
+import models.*;
 import models.Enums.Menu;
 import models.Enums.commands.SignupMenuCommands;
-import models.Result;
-import models.User;
 import models.services.HashSHA256;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class ProfileMenuController {
@@ -84,6 +83,7 @@ public class ProfileMenuController {
         output.append("username : ").append(App.getApp().getLoggedInUser().getUserName()).append("\n");
         output.append("nickname : ").append(App.getApp().getLoggedInUser().getNickname()).append("\n");
         output.append("number of games played : ").append(App.getApp().getLoggedInUser().getNumberOfGamesPlayed()).append("\n");
+        setHighScore(App.getApp().getLoggedInUser().getUserName());
         output.append("highest score in on game : ").append(App.getApp().getLoggedInUser().getHighestMoneyEarnedInASingleGame());
         return new Result(true, output.toString());
     }
@@ -109,7 +109,7 @@ public class ProfileMenuController {
         return false;
     }
 
-    private int getIndexInUsers(String username) {
+    public static int getIndexInUsers(String username) {
         for (int i = 0; i < App.getApp().getUsers().size(); i++) {
             if (App.getApp().getUsers().get(i).getUserName().equals(username)) {
                 return i;
@@ -137,6 +137,31 @@ public class ProfileMenuController {
             errors.append("Password must contain at least one special character (e.g. !, @, #, $...).");
         }
         return errors;
+    }
+
+    public static ArrayList<Game> getGamesForUser() {
+        ArrayList<Game> games = new ArrayList<>();
+        for (Game game : App.getApp().getGames()) {
+            if(game.getPlayerByUsername(App.getApp().getLoggedInUser().getUserName()) != null) {
+                games.add(game);
+            }
+        }
+        return games;
+    }
+
+    public static void setHighScore(String username) {
+        App app = App.getApp();
+        int highScore = 0;
+        if (getGamesForUser().isEmpty()) {
+            app.getUsers().get(getIndexInUsers(username)).setHighestMoneyEarnedInASingleGame(highScore);}
+        else {
+            for (Game game : getGamesForUser()) {
+                if (game.getMoneyOfPlayer(game.getPlayerByUsername(username)) > highScore) {
+                    highScore = game.getMoneyOfPlayer(game.getPlayerByUsername(App.getApp().getLoggedInUser().getUserName()));
+                }
+            }
+            app.getUsers().get(getIndexInUsers(username)).setHighestMoneyEarnedInASingleGame(highScore);
+        }
     }
 
 }

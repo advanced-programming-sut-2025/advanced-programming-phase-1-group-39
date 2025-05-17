@@ -13,25 +13,19 @@ import models.inventory.TrashType;
 import models.map.AnsiColors;
 import models.map.MapMinPathFinder;
 import models.map.Tile;
-import models.services.AppDataManager;
 import models.tools.*;
 
 import models.Shops.Shop;
 import models.animals.Animal;
 import models.animals.AnimalProduct;
-import models.animals.Fish;
 import models.artisan.ArtisanGood;
 import models.artisan.ArtisanMachine;
-import models.buildings.Building;
 import models.cooking.FoodManager;
 import models.crafting.CraftingManager;
 import models.cropsAndFarming.*;
-import models.inventory.Inventory;
-import models.map.Tile;
 import models.tools.FishingPole;
 import models.trading.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
@@ -41,7 +35,7 @@ public class GameController {
     public Result saveGame() {return null;}
 
     public String exitGame() {
-        if (!App.getApp().getCurrentGame().getMainPlayers().getUsername().equals(App.getApp().getCurrentGame().getPlayerInTurn().getUsername())) {
+        if (!App.getApp().getCurrentGame().getMainPlayer().getUsername().equals(App.getApp().getCurrentGame().getPlayerInTurn().getUsername())) {
             return "Only main player is allowed to request to leave the game.";
         } else {
             App.getApp().setCurrentGame(null);
@@ -54,7 +48,22 @@ public class GameController {
         App.getApp().setCurrentMenu(Menu.ExitMenu);
     }
 
-    public Result deleteGame() {return null;}
+    public Result deleteGame() {
+
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        if (!game.getPlayerInTurn().getUsername().equals(game.getMainPlayer().getUsername())) {
+            return new Result(false, "You are not allowed to delete the game.");
+        } else {
+            return new Result(true, "To delete the game, all players must agree. Remaining players need to confirm their approval one by one.");
+        }
+
+
+
+
+
+
+    }
 
     public String showCurrentMenu() {
         return "Now you are in game!";

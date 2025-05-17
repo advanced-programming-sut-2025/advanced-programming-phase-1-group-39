@@ -274,6 +274,9 @@ public class Player {
         }
     }
 
+    public int getMoney() {
+        return money;
+    }
     public void addFirstBuildingObjects(Game game) {
         Building cabin = new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5));
         Building greenhouse = new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0));

@@ -13,7 +13,6 @@ import models.buildings.Building;
 import models.map.FarmType;
 import models.map.Map;
 import models.map.Tile;
-import models.trading.TradeItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class Game {
 
     private ArrayList<Player> players;
     private String loadedPlayerUsername;
-    private Player mainPlayers;
+    private Player mainPlayer;
     private Player playerInTurn;
 
 
@@ -47,7 +46,7 @@ public class Game {
     public Game(int gameId, Player one, Player two, Player three, Player four) {
         this.id = lastGameId++;
         this.players = new ArrayList<>(List.of(one, two, three, four));
-        this.mainPlayers = one;
+        this.mainPlayer = one;
         this.playerInTurn = one;
         this.gameMap = new Map();
 
@@ -72,9 +71,9 @@ public class Game {
         return id;
     }
 
-    public void setMainPlayers(Player mainPlayers) { this.mainPlayers = mainPlayers; }
+    public void setMainPlayer(Player mainPlayer) { this.mainPlayer = mainPlayer; }
 
-    public Player getMainPlayers() { return mainPlayers; }
+    public Player getMainPlayer() { return mainPlayer; }
 
     // NPC
     public ArrayList<NPC> getNpcs() {
@@ -376,6 +375,16 @@ public class Game {
         showMessages(playerInTurn);
 
         return true;
+    }
+
+    public int getMoneyOfPlayer(Player player) {
+        if (!players.contains(player)) return 0;
+
+        if (player.getSpouseName() != null) {
+            Player spouse = getPlayerByUsername(player.getSpouseName());
+            return player.getMoney() + spouse.getMoney();
+        }
+        return player.getMoney();
     }
 
     // weather

@@ -3,7 +3,6 @@ package controllers;
 import models.*;
 import models.Enums.Menu;
 import models.map.FarmType;
-import models.map.Map;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,6 @@ public class GameMenuController {
             Player player4 = new Player(username3, Game.lastGameId);
             ArrayList<Player> players = new ArrayList<>(List.of(player1, player2, player3, player4));
             ArrayList<User> users = app.getUsers();
-            // TODO : change to  "for" (CLEAN CODE)
             for (Player player : players) {
                 users.get(getIndexInUsers(player.getUsername())).addPlayer(player);
                 users.get(getIndexInUsers(player.getUsername())).addNumberOfGamesPlayed();
@@ -108,7 +106,7 @@ public class GameMenuController {
             app.setCurrentGame(app.getLoggedInUser().getCurrentGame());
             app.getCurrentGame().setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
                     app.getLoggedInUser().getUserName()));
-            app.getCurrentGame().setMainPlayers(app.getCurrentGame().getPlayerByUsername(app.getLoggedInUser().getUserName()));
+            app.getCurrentGame().setMainPlayer(app.getCurrentGame().getPlayerByUsername(app.getLoggedInUser().getUserName()));
             app.getCurrentGame().startGame();
             app.setCurrentMenu(Menu.GAME);
             return new Result(true, "the game was loaded successfully. you can now continue your game.");
@@ -118,7 +116,7 @@ public class GameMenuController {
         } else {
             app.setCurrentGame(app.getLoggedInUser().getSavedGame());
             app.getCurrentGame().setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(), app.getLoggedInUser().getUserName()));
-            app.getCurrentGame().setMainPlayers(app.getCurrentGame().getPlayerByUsername(app.getLoggedInUser().getUserName()));
+            app.getCurrentGame().setMainPlayer(app.getCurrentGame().getPlayerByUsername(app.getLoggedInUser().getUserName()));
             for (Player player : app.getCurrentGame().getPlayers()) {
                 app.getUsers().get(getIndexInUsers(player.getUsername())).setCurrentGame(app.getCurrentGame());
                 app.getUsers().get(getIndexInUsers(player.getUsername())).setSavedGame(null);

@@ -1,14 +1,11 @@
 package views;
 
-import controllers.AppControllers;
-import controllers.GameController;
-import controllers.NPCGameController;
-import controllers.PlayersInteractionController;
+import controllers.*;
+import models.*;
+import models.Enums.Menu;
 import models.Enums.commands.InteractionsCommand;
 import models.Enums.commands.NPCGameCommand;
 import models.Enums.commands.GameCommands;
-import models.Input;
-import models.Result;
 
 import java.util.regex.Matcher;
 
@@ -165,9 +162,45 @@ public class GameView implements View {
         } else if ((matcher = InteractionsCommand.GetFlower.getMatcher(command)) != null) {
             result = interactionsController.getFlower(matcher);
             System.out.println(result.message());
-        }
+        } else if ((matcher = GameCommands.DELETE_GAME.getMatcher(command)) != null) {
+            result = controller.deleteGame();
+            System.out.println(result.message());
+            if (result.success()) {
+                int count = 1;
+                int tru = 0;
+                while (count != 3) {
+                    System.out.println("next player enter yse or no :");
+                    String input = Input.getNextLine();
+                    if (input.equalsIgnoreCase("yes")) {
+                        System.out.println("next player enter yse or no :");
+                        input = Input.getNextLine();
+                        count ++;
+                        tru ++;
+                    } else if (input.equalsIgnoreCase("no")) {
+                        System.out.println("next player enter yse or no :");
+                        input = Input.getNextLine();
+                        count ++;
+                    } else {
+                        System.out.println("next player enter yse or no :");
+                        input = Input.getNextLine();
+                    }
+                }
+                if (tru == 3) {
+                    App app = App.getApp();
+                    Game game = app.getCurrentGame();
+                    for (Player player : game.getPlayers()) {
+                        ProfileMenuController.setHighScore(player.getUsername());
+                        app.getUsers().get(ProfileMenuController.getIndexInUsers(player.getUsername())).setCurrentGame(null);
+                    }
+                    app.setCurrentGame(null);
+                    app.setCurrentMenu(Menu.MAIN_MENU);
+                    System.out.println("The game has been successfully deleted. You're now back at the main menu!");
+                } else {
+                    System.out.println("The game cannot be deleted because not all players agreed to the removal.");
+                }
+            }
 
-        else {
+        } else {
             System.out.println("invalid command.");
         }
 

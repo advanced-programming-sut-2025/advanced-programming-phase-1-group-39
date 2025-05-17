@@ -250,6 +250,8 @@ public class Game {
         hasNoInteraction();
         resetFriendships();
 
+        endDayForShopsAndAnimalBuildings();
+
         return lastDayReport.toString();
     }
 
@@ -321,7 +323,12 @@ public class Game {
             }
         }
     }
-
+    public void endDayForShopsAndAnimalBuildings() {
+        for (Shop shop : getNpcShops()) {
+            shop.endDay();
+        }
+        // TODO : add end day for animal buildings
+    }
 
     public Time getTime() {
         return time;

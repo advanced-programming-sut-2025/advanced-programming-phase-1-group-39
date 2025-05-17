@@ -21,4 +21,21 @@ public enum FishingPoleType {
     public int getUsingEnergy() {
         return usingEnergy;
     }
+
+    public static FishingPoleType getType(String name) {
+        if (name.equalsIgnoreCase("Bamboo Pole")) {
+            return BAMBOO_POLE;
+        }
+        if (name.equalsIgnoreCase("Training Rod")) {
+            return TRAINING_ROD;
+        }
+        if (name.equalsIgnoreCase("Fiberglass Rod")) {
+            return FIBERGLASS_ROD;
+        }
+        if (name.equalsIgnoreCase("Iridium Rod")) {
+            return IRIDIUM_ROD;
+        }
+
+        return null;
+    }
 }

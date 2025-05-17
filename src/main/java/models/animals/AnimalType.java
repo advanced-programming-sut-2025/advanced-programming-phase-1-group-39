@@ -73,8 +73,8 @@ public enum AnimalType {
             this.produceCycleDays = produceCycleDays;
         }
 
-        public Animal create(String name, LivingPlace place) {
-            return new Animal(this, name, price, place, products);
+        public Animal create(String name) {
+            return new Animal(this, name, price, livingPlace, products);
         }
 
         public static List<AnimalProduct> getAllAnimalProducts() {
@@ -85,5 +85,13 @@ public enum AnimalType {
                 return all;
         }
 
+        public static AnimalType getType(String input) {
+                for (AnimalType type : values()) {
+                        if (type.name().equalsIgnoreCase(input)) {
+                                return type;
+                        }
+                }
+                return null;
+        }
 
 }

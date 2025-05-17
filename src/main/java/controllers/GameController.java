@@ -6,6 +6,7 @@ import models.Enums.Menu;
 import models.Enums.WeatherStatus;
 import models.PlayerInteraction.Friendship;
 import models.Shops.CarpentersShop;
+import models.Shops.MarniesRanch;
 import models.animals.Fish;
 import models.buildings.Cabin;
 import models.buildings.ShippingBin;
@@ -564,7 +565,23 @@ public class GameController {
         return carpentersShop.buildFarmBuilding(buildingName, x, y);
     }
 
-    public Result buyAnimal(Matcher matcher) {return null;}
+    public Result buyAnimal(Matcher matcher) {
+        String animalStr = matcher.group(1);
+        String name = matcher.group(2);
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        Shop shop = App.getApp().getCurrentGame().getShopPlayerIsIn(player);
+        if (shop == null) {
+            return new Result(false, "You should be in a shop");
+        }
+        if (!shop.getName().equalsIgnoreCase("Marnie's Ranch")) {
+            return new Result(false, "You should be in Marnie's Ranch");
+        }
+        MarniesRanch marniesRanch = (MarniesRanch) shop;
+
+        Result result = marniesRanch.buyAnimal(animalStr, name);
+    }
     public Result petAnimal(Matcher matcher) {
         String name = matcher.group(1);
         Animal animal = App.getApp().getCurrentGame().getPlayerInTurn().getAnimal(name);

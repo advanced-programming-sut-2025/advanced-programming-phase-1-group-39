@@ -4,15 +4,9 @@ import models.Enums.Season;
 import models.NPC.NPC;
 import models.NPC.PlayerNPCInteraction;
 import models.NPC.Quest;
-import models.animals.Animal;
-import models.animals.AnimalProductQuality;
-import models.animals.Fish;
-import models.animals.FishType;
+import models.animals.*;
 import models.artisan.ArtisanMachineRecipe;
-import models.buildings.Building;
-import models.buildings.Cabin;
-import models.buildings.GreenHouse;
-import models.buildings.ShippingBin;
+import models.buildings.*;
 import models.cooking.FoodBuff;
 import models.cooking.FoodRecipe;
 import models.crafting.CraftingRecipe;
@@ -397,5 +391,17 @@ public class Player {
 
     public String getUsername() {
         return username;
+    }
+
+    public AnimalBuilding getAnimalBuilding(LivingPlace type) {
+        for (Building building : playerFarmBuildings) {
+            if (building instanceof AnimalBuilding) {
+                AnimalBuilding animalBuilding = (AnimalBuilding) building;
+                if (animalBuilding.getType() == type && animalBuilding.hasCapacity(1)) {
+                    return animalBuilding;
+                }
+            }
+        }
+        return null;
     }
 }

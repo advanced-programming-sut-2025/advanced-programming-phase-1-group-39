@@ -97,7 +97,7 @@ public class GameMenuController {
             } else {
                 currentGame.addRandomFarmForPlayer(currentGame.getPlayerInTurn(),
                         FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
-                int index = currentGame.getPlayers().indexOf(currentGame.getPlayerInTurn();
+                int index = currentGame.getPlayers().indexOf(currentGame.getPlayerInTurn());
                 currentGame.setPlayerInTurn(currentGame.getPlayers().get(index + 1));
                 return new Result(true, "the game map was successfully selected. " + currentGame.getPlayerInTurn().getUsername() + "! choose your map please.");
             }
@@ -107,12 +107,14 @@ public class GameMenuController {
     public Result loadGame() {
         App app = App.getApp();
         User user = app.getLoggedInUser();
-        if (user.getCurrentGame() == null) {
+        Game currentGame = user.getCurrentGame();
+        if (currentGame == null) {
             return new Result(false, "You don't have any game. please create a game first.");
-        } else if (user.getCurrentGame() != null && haveOtherPlayersCurrentGame(user.getCurrentGame().getPlayers())) {
+        } else if (currentGame != null &&
+                haveOtherPlayersAnotherCurrentGame(currentGame.getPlayers(), currentGame.getId())) {
             return new Result(false, "to start loading a game, none of the players must have another active game.");
         } else {
-            app.setCurrentGame(user.getCurrentGame());
+            app.setCurrentGame(currentGame);
             Game game = app.getCurrentGame();
             game.setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
                     user.getUserName()));

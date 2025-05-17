@@ -134,4 +134,8 @@ public class App {
         }
         return null;
     }
+
+    public void removeGame(Game game) {
+        games.remove(game);
+    }
 }

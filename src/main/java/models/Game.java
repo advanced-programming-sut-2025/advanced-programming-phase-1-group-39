@@ -413,16 +413,6 @@ public class Game {
         return true;
     }
 
-    public int getMoneyOfPlayer(Player player) {
-        if (!players.contains(player)) return 0;
-
-        if (player.getSpouseName() != null) {
-            Player spouse = getPlayerByUsername(player.getSpouseName());
-            return player.getMoney() + spouse.getMoney();
-        }
-        return player.getMoney();
-    }
-
     // weather
     public Weather getTodayWeather() {
         return todayWeather;

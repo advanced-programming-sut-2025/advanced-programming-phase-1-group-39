@@ -5,6 +5,7 @@ import models.PlayerInteraction.Friendship;
 import models.PlayerInteraction.Gift;
 import models.PlayerInteraction.Message;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class PlayersInteractionController {
@@ -106,7 +107,7 @@ public class PlayersInteractionController {
                 game.getPlayerByUsername(otherPlayer).changeEnergy(50);
             }
             game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).addGift(
-                    new Gift(currentPlayer.getUsername(), otherPlayer, new ItemStack(ItemManager.getItemByName(item), amount)));
+                    new Gift(currentPlayer.getUsername(), otherPlayer, new ItemStack(ItemManager.getItemByName(item), amount), game.getCurrentGiftNumber()));
             currentPlayer.getInventory().pickItem(item, amount);
             game.getPlayerByUsername(otherPlayer).getInventory().addItem(ItemManager.getItemByName(item), amount);
             return new Result(true, "Your gift has been successfully delivered to Player " + otherPlayer + "! Let the friendship blossom!");
@@ -192,8 +193,8 @@ public class PlayersInteractionController {
         } else if (!isPlayersNear(currentPlayer.getLocation(), game.getPlayerByUsername(otherPlayer).getLocation())) {
             return new Result(false, "To give a flower to player " + otherPlayer + "you need to be standing right next to them.");
         } else if (game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getFriendshipLevel() != 2 ||
-                game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getXp() != 299) {
-            return new Result(false, "To give a flower, you must be at Friendship Level 2 and have exactly 299 XP with the player " + otherPlayer + " .");
+                game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getXp() != 599) {
+            return new Result(false, "To give a flower, you must be at Friendship Level 2 and have exactly 599 XP with the player " + otherPlayer + " .");
         } else if (!game.getPlayerByUsername(otherPlayer).getInventory().hasSpace(new ItemStack(ItemManager.getItemByName("Bouquet"), 1))) {
             return new Result(false, "Player " + otherPlayer + " doesn’t have enough space to accept your flower.");
         } else if (!currentPlayer.getInventory().hasItem("Bouquet")) {
@@ -201,7 +202,6 @@ public class PlayersInteractionController {
         } else {
             currentPlayer.getInventory().pickItem("Bouquet", 1);
             game.getPlayerByUsername(otherPlayer).getInventory().addItem(ItemManager.getItemByName("Bouquet"), 1);
-            game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).setFriendshipLevel(3);
             game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).setXp(601);
             return new Result(true, "You gave a flower to " + otherPlayer + " ! Your bond blossoms beautifully — Friendship Level 3 unlocked!");
         }

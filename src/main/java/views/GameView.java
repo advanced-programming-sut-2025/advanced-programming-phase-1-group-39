@@ -1,9 +1,6 @@
 package views;
 
-import controllers.AppControllers;
-import controllers.GameController;
-import controllers.NPCGameController;
-import controllers.ProfileMenuController;
+import controllers.*;
 import models.*;
 import models.Enums.Menu;
 import models.Enums.commands.NPCGameCommand;
@@ -283,3 +280,4 @@ public class GameView implements View {
             }
         }
     }
+}

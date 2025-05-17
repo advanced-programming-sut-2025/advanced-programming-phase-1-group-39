@@ -63,13 +63,13 @@ public enum FoodRecipe {
 
     public static FoodRecipe getRecipeByName(String name) {
         for (FoodRecipe recipe : values()) {
-            if (recipe.name().equalsIgnoreCase(name)) return recipe;
+            if (recipe.data.getName().equalsIgnoreCase(name)) return recipe;
         }
         return null;
     }
     public static Food getItemByName(String name) {
         for (FoodRecipe recipe : values()) {
-            if (recipe.name().equalsIgnoreCase(name)) return recipe.data;
+            if (recipe.data.getName().equalsIgnoreCase(name)) return recipe.data;
         }
         return null;
     }

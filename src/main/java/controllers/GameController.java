@@ -520,8 +520,12 @@ public class GameController {
         String itemName = matcher.group(2);
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
 
-        Refrigerator refrigerator = ((Cabin) App.getApp().getCurrentGame().getPlayerInTurn()
-                .getBuildingByName("cabin")).getRefrigerator();
+        Cabin cabin = (Cabin) player.getBuildingByName("cabin");
+        if (!App.getApp().getCurrentGame().getMap().isInBuilding(cabin, player)) {
+            return new Result(false, "You need to be at home to cook.");
+        }
+
+        Refrigerator refrigerator = cabin.getRefrigerator();
         Inventory inv = player.getInventory();
         Item item = ItemManager.getItemByName(itemName);
         if (method.equalsIgnoreCase("pick")) {

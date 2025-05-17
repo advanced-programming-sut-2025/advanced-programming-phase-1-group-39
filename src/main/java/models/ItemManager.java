@@ -9,6 +9,7 @@ import models.cooking.FoodManager;
 import models.crafting.CraftingRecipe;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.ForagingManager;
+import models.cropsAndFarming.Tree;
 import models.cropsAndFarming.TreeManager;
 
 import java.util.HashMap;
@@ -76,6 +77,12 @@ public class ItemManager {
         }
         if (CropManager.getSeedByName(name) != null) {
             return CropManager.getSeedByName(name);
+        }
+        if (TreeManager.getFruitByName(name) != null) {
+            return TreeManager.getFruitByName(name);
+        }
+        if (TreeManager.getSeedByName(name) != null) {
+            return TreeManager.getSeedByName(name);
         }
         if (ForagingManager.getCropByName(name) != null) {
             return ForagingManager.getCropByName(name);

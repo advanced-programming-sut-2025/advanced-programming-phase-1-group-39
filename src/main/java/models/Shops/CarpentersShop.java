@@ -97,6 +97,8 @@ public class CarpentersShop extends Shop{
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         Inventory inv = player.getInventory();
 
+        LivingPlace type = LivingPlace.fromString(name);
+
         //Todo: check validate build building for player
         BuildingData data = buildings.get(name);
         if (data == null) {
@@ -122,7 +124,6 @@ public class CarpentersShop extends Shop{
             game.addBuilding(bin);
             player.addToBuildings(bin);
         } else {
-            LivingPlace type = LivingPlace.fromString(name);
             AnimalBuilding building = new AnimalBuilding(name, new Location(x, y), data.width, data.height, type);
             game.addBuilding(building);
             player.addToBuildings(building);

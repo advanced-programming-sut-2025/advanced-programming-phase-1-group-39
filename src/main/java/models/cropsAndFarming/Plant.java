@@ -90,7 +90,6 @@ public class Plant {
         }
     }
 
-    // TODO : change scythe working
     public boolean isAlive() {
         return isAlive;
     }

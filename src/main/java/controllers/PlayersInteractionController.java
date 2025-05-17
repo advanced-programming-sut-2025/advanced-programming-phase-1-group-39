@@ -12,7 +12,6 @@ public class PlayersInteractionController {
     static App app = App.getApp();
 
 
-
     public Result showFriendshipsList() {
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
@@ -37,6 +36,10 @@ public class PlayersInteractionController {
             return new Result(false, "Get closer to the player  " + playerName + " if you want to start a conversation.");
         } else {
             Friendship friendship = game.getFriendship(currentPlayer, player2);
+            if (friendship.isMarried()) {
+                currentPlayer.changeEnergy(50);
+                game.getPlayerByUsername(playerName).changeEnergy(50);
+            }
             friendship.addMessage(new Message(message, currentPlayer.getUsername(), playerName));
             if (friendship.isFirstHug()) {
                 String output = increaseXP(friendship, 20, playerName);
@@ -71,6 +74,10 @@ public class PlayersInteractionController {
         } else if (game.getFriendship(game.getPlayerByUsername(otherPlayer), currentPlayer).getFriendshipLevel() < 2) {
             return new Result(false, "you need to reach friendship level 2 with " + otherPlayer + " before you can give them a hug!");
         } else {
+            if (game.getFriendship(game.getPlayerByUsername(otherPlayer), currentPlayer).isMarried()) {
+                currentPlayer.changeEnergy(50);
+                game.getPlayerByUsername(otherPlayer).changeEnergy(50);
+            }
             if (game.getFriendship(game.getPlayerByUsername(otherPlayer), currentPlayer).isFirstHug()) {
                 String output = increaseXP(game.getFriendship(game.getPlayerByUsername(otherPlayer), currentPlayer), 60, otherPlayer);
                 return new Result(true, "you gave " + otherPlayer + " a warm hug! your bond feels stronger already.\n" + output);
@@ -99,6 +106,10 @@ public class PlayersInteractionController {
         } else if (!game.getPlayerByUsername(otherPlayer).getInventory().hasSpace(new ItemStack(ItemManager.getItemByName(item), amount))) {
             return new Result(false, "Player " + otherPlayer + " doesn't have enough space in their inventory to receive your gift!");
         } else {
+            if (game.getFriendship(game.getPlayerByUsername(otherPlayer), currentPlayer).isMarried()) {
+                currentPlayer.changeEnergy(50);
+                game.getPlayerByUsername(otherPlayer).changeEnergy(50);
+            }
             game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).addGift(
                     new Gift(currentPlayer.getUsername(), otherPlayer, new ItemStack(ItemManager.getItemByName(item), amount), game.getCurrentGiftNumber()));
             game.setCurrentGiftNumber();
@@ -278,13 +289,13 @@ public class PlayersInteractionController {
             friendship.setXp(currentXP - xp);
             return "The connection with " + playerName + " feels a bit distant… Your friendship XP has dropped.";
         } else if (friendship.getFriendshipLevel() == 1 && currentXP - xp < 100) {
-            friendship.setFriendshipLevel(0);
+            friendship.setXp(currentXP - xp);
             return "Unfortunately, your bond with " + playerName + " has weakened… You lost some friendship XP, and your friendship level has dropped by 1.";
         } else if (friendship.getFriendshipLevel() == 1 && currentXP - xp >= 100) {
             friendship.setXp(currentXP - xp);
             return "The connection with " + playerName + " feels a bit distant… Your friendship XP has dropped.";
         } else if (friendship.getFriendshipLevel() == 2 && currentXP - xp < 200) {
-            friendship.setFriendshipLevel(1);
+            friendship.setXp(currentXP - xp);
             return "Unfortunately, your bond with " + playerName + " has weakened… You lost some friendship XP, and your friendship level has dropped by 1.";
         } else if (friendship.getFriendshipLevel() == 2 && currentXP - xp >= 200) {
             friendship.setXp(currentXP - xp);

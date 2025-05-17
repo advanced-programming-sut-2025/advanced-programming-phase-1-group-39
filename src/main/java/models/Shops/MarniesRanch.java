@@ -3,6 +3,10 @@ package models.Shops;
 import com.google.gson.Gson;
 import models.*;
 import models.NPC.NPC;
+import models.animals.Animal;
+import models.animals.AnimalType;
+import models.animals.LivingPlace;
+import models.buildings.AnimalBuilding;
 import models.tools.MilkPail;
 import models.tools.Shear;
 
@@ -96,37 +100,70 @@ public class MarniesRanch extends Shop {
 
         ShopItem item = supplies.get(product);
         if (item == null) {
-            item = livestock.get(product);
-        }
-
-        if (item == null) {
-            return new Result(false, "Item \"" + product + "\" not found at Marnie's Ranch.");
+            return new Result(false, "Item \"" + product + "\" not found in ranch supplies.");
         }
 
         if (quantity > item.getAvailableQuantity()) {
-            return new Result(false, "Limit exceeded for \""
-                    + product + "\". Limit: " + item.getAvailableQuantity());
+            return new Result(false, "Limit exceeded for \"" + product + "\". Limit: " + item.getAvailableQuantity());
         }
 
-        if (!player.hasEnoughMoney(item.getPrice() * quantity)) {
+        int totalPrice = item.getPrice() * quantity;
+        if (!player.hasEnoughMoney(totalPrice)) {
             return new Result(false, "You don't have enough money ):");
         }
 
         item.purchase(quantity);
-        if (supplies.containsValue(item)) {
-            if (product.equalsIgnoreCase("Hay")) {
-                player.getInventory().addItem(new OddItems(item.getName()), quantity);
-            } else if (product.equalsIgnoreCase("Milk Pail")) {
-                player.getInventory().addItem(new MilkPail(), 1);
-            } else {
-                player.getInventory().addItem(new Shear(), 1);
-            }
-        } else {
-            // Todo: add new animal to where?
+        player.changeMoney(-totalPrice);
+
+        switch (product.toLowerCase()) {
+            case "Hay" -> player.getInventory().addItem(new OddItems(item.getName()), quantity);
+            case "Milk Pail" -> player.getInventory().addItem(new MilkPail(), 1);
+            case "Shears" -> player.getInventory().addItem(new Shear(), 1);
+            default -> {}
         }
-        return new Result(true, "Purchased " + quantity + " x "
-                + product + " for " + (item.getPrice() * quantity) + "g.");
+
+        return new Result(true, "Purchased " + quantity + " x " + product + " for " + totalPrice + "g.");
     }
+
+
+    public Result buyAnimal(String animalStr, String name) {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        ShopItem item = livestock.get(animalStr);
+        if (item == null) {
+            return new Result(false, "Animal \"" + animalStr + "\" not available.");
+        }
+
+        if (item.getAvailableQuantity() < 1) {
+            return new Result(false, "Only " + item.getAvailableQuantity() + " " + animalStr + "(s) available.");
+        }
+
+        int totalPrice = item.getPrice();
+        if (!player.hasEnoughMoney(totalPrice)) {
+            return new Result(false, "You can't afford " + 1 + " x " + animalStr);
+        }
+
+        AnimalType type = AnimalType.getType(animalStr);
+        if (type == null) {
+            return new Result(false, "Invalid animal type");
+        }
+        LivingPlace buildingType = type.livingPlace;
+
+        AnimalBuilding building = player.getAnimalBuilding(buildingType);
+        if (building == null) {
+            return new Result(false, "There is no building for you to put this animal");
+        }
+
+        Animal animal = type.create(name);
+        player.addAnimal(animal);
+        building.addAnimal(animal);
+
+        item.purchase(1);
+        player.changeMoney(-totalPrice);
+
+        return new Result(true, "You purchased " + " 1x " + animalStr + " successfully.");
+    }
+
 
     @Override
     public String showAllProducts() {

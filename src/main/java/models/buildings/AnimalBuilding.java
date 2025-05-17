@@ -16,7 +16,16 @@ public class AnimalBuilding extends Building {
     }
 
     public int getCapacity() {
-        return type.getCapacity();
+        if (type.getCapacity() - animals.size() <= 0) {
+            return 0;
+        }
+        return type.getCapacity() - animals.size();
+    }
+    public Boolean hasCapacity(int amount) {
+        if (amount <= (getCapacity() - animals.size())) {
+            return true;
+        }
+        return false;
     }
 
     public boolean addAnimal(Animal animal) {

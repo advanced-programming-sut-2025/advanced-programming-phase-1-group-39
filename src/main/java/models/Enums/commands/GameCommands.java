@@ -70,6 +70,7 @@ public enum GameCommands {
     SHOW_FOOD_RECIPES("show\\s+food\\s+recipes"),
 
     BUILD("build\\s+-a\\s+(.+?)\\s+-l\\s+(\\d+)\\s+(\\d+)"),
+    BUY_ANIMAL("buy\\s+animal\\s+-a\\s+(.+?)\\s+-n\\s+(.+?)"),
     PET("pet\\s+-n\\s+(.+?)"),
     CHEAT_FRIENDSHIP_ANIMAL("cheat\\s+set\\s+friendship\\s+-n\\s+(.+?)\\s+-c\\s+(\\d+)"),
     SHOW_ANIMALS("animals"),

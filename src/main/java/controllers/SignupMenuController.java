@@ -35,7 +35,7 @@ public class SignupMenuController {
             return new Result(false, "The username you want is already in use. You can use this username: " +
                     "((" + newUsername + ")). If you'd like to use it, or choose a different username.");
         } else if ((matcher1 = SignupMenuCommands.UserName.getMatcher(username)) == null) {
-            return new Result(false, "The username format is incorrect. Please make sure it contains only letters, numbers, - ,and no spaces.");
+            return new Result(false, "The username format is incorrect. Please make sure it contains only letters, numbers, '-', no spaces, and does not exceed 8 characters.");
         } else if ((matcher1 = SignupMenuCommands.Email.getMatcher(email)) == null) {
             return new Result(false, "The email address you entered is invalid. Please enter a valid email address.");
         } else if (password != null && (matcher1 = SignupMenuCommands.Password.getMatcher(password)) == null) {
@@ -179,20 +179,21 @@ public class SignupMenuController {
         StringBuilder errors = new StringBuilder();
 
         if (password.length() < 8) {
-            errors.append("Password must be at least 8 characters long. \n");
+            errors.append("Password must be at least 8 characters long.\n");
         }
         if (!password.matches(".*[a-z].*")) {
             errors.append("Password must include at least one lowercase letter.\n");
         }
         if (!password.matches(".*[A-Z].*")) {
-            errors.append("Password must include at least one uppercase letter. \n");
+            errors.append("Password must include at least one uppercase letter.\n");
         }
         if (!password.matches(".*[0-9].*")) {
-            errors.append("Password must contain at least one digit. \n");
+            errors.append("Password must contain at least one digit.\n");
         }
         if (!password.matches(".*[?<>,\"';:/\\\\|\\]\\[\\}\\{\\+=\\)\\(\\*&\\^%\\$#!].*")) {
-            errors.append("Password must contain at least one special character (e.g. !, @, #, $...).");
+            errors.append("Password must contain at least one special character (e.g. !, @, #, $...). ");
         }
+        errors.deleteCharAt(errors.length() - 1);
         return errors;
     }
 

@@ -70,7 +70,7 @@ public class App {
     }
 
     public int getLastGameId() {
-        return lastGameId;
+        return Game.lastGameId;
     }
 
     public Game getCurrentGame() {

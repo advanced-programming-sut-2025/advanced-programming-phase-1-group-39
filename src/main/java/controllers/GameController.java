@@ -4,6 +4,7 @@ import models.*;
 import models.Enums.Direction;
 import models.Enums.Menu;
 import models.Enums.WeatherStatus;
+import models.PlayerInteraction.Friendship;
 import models.animals.Fish;
 import models.buildings.Cabin;
 import models.buildings.ShippingBin;
@@ -933,7 +934,8 @@ public class GameController {
 
         if (action.equals("-reject")) {
             trade.reject();
-            //FriendshipManager.decreaseXP(currentPlayer, sender, 30);
+            Friendship friendship = App.getApp().getCurrentGame().getFriendship(currentPlayer, sender);
+            PlayersInteractionController.decreaseXP(friendship, 30, sender.getUsername());
             return new Result(true, "You rejected trade request #" + tradeId);
         }
 
@@ -1004,7 +1006,8 @@ public class GameController {
         }
 
         trade.accept();
-        //FriendshipManager.increaseXP(currentPlayer, sender, 50);
+        Friendship friendship = App.getApp().getCurrentGame().getFriendship(currentPlayer, sender);
+        PlayersInteractionController.increaseXP(friendship, 50, sender.getUsername());
 
         return new Result(true, "Trade #" + tradeId + " accepted successfully.");
     }

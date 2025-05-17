@@ -16,6 +16,7 @@ import models.trading.TradeItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Condition;
 
 public class Game {
     // TODO : remove currentId from APP
@@ -296,6 +297,8 @@ public class Game {
             if (!player.isConscious()) player.setEnergy(0.75 * Constants.MAX_ENERGY);
             else if (player.haveBadDay()) {
                 player.setEnergy(0.5 * Constants.MAX_ENERGY);
+                player.resetHourlyEnergyLimit();
+
                 player.changeBadDays(-1);
             } else player.setEnergy(Constants.MAX_ENERGY);
 
@@ -333,13 +336,24 @@ public class Game {
         return players;
     }
 
+    // MONEY of player after marriage
     public int getMoneyOfPlayer(Player player) {
         if (!players.contains(player)) return 0;
-        //TODO : complete
+
         if (player.getSpouseName() != null) {
-            int money = player.getMoney() + ;
+            Player spouse = getPlayerByUsername(player.getSpouseName());
+            return player.getMoney() + spouse.getMoney();
         }
         return player.getMoney();
+    }
+    public boolean hasEnoughMoney(Player player, int amount) {
+        if (!players.contains(player)) return false;
+
+        if (player.getSpouseName() != null) {
+            Player spouse = getPlayerByUsername(player.getSpouseName());
+            return (player.getMoney() + spouse.getMoney()) >= amount;
+        }
+        return player.getMoney() >= amount;
     }
 
     //turn

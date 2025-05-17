@@ -405,34 +405,6 @@ public class Map {
 
 
     public String printColorMap(ArrayList<Player> players, ArrayList<NPC> npcs) {
-//        StringBuilder text = new StringBuilder();
-//
-//        String[] playerColors = new String[]{AnsiColors.ANSI_PURPLE_BOLD, AnsiColors.ANSI_RED_BOLD, AnsiColors.ANSI_DARK_GREEN_BOLD, AnsiColors.ANSI_ORANGE_BOLD};
-//        String[] npcColors = new String[]{
-//                AnsiColors.ANSI_PURPLE_BOLD, AnsiColors.ANSI_RED_BOLD, AnsiColors.ANSI_DARK_GREEN_BOLD, AnsiColors.ANSI_ORANGE_BOLD,
-//
-//        };
-//
-//        int playerCounter = 0;
-//        int npcCounter = 0;
-//        for (int i = 0; i < height; i++) {
-//            for (int j = 0; j < width; j++) {
-//                boolean doesSet = false;
-//                Tile tile = tiles[i][j];
-//                for (Player player : players) {
-//                    if (j == player.getLocation().x() && i == player.getLocation().y()) {
-//                        text.append(colors[playerCounter++] + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
-//                        doesSet = true;
-//                    }
-//                }
-//                if (!doesSet)
-//                    text.append(tile.getTileColor() + " " + tile.getSymbol() + " " + AnsiColors.ANSI_RESET);
-//            }
-//            text.append("\n");
-//        }
-//
-//        return text.toString();
-
         return printMapBySize(150, 75, 150, players, npcs);
     }
 
@@ -491,10 +463,9 @@ public class Map {
     }
 
     // walking
-    public Result canWalkTo(Location start, Location end, Player player) {
-        MapMinPathFinder pathFinder = new MapMinPathFinder();
-        if (!player.isInPlayerFarm(end))
-            return new Result(false, "The end of path is not in your farm!");
+    public Result canWalkTo(Location start, Location end, Player player, ArrayList<Player> gamePlayers) {
+        if (!player.isInPlayerFarm(end) && !isInNPCMap(end) && !isInSpouseFarm(end, player, gamePlayers))
+            return new Result(false, "You aren't allowed to go to this location!");
         else return new Result(true, "");
     }
 
@@ -504,6 +475,24 @@ public class Map {
     }
 
     // player place check
+    public boolean isInSpouseFarm(Location location, Player player, ArrayList<Player> gamePlayers) {
+        Player spouse = null;
+        for (Player p : gamePlayers) {
+            if (p.getUsername().equals(player.getSpouseName())) spouse = p;
+        }
+        if (spouse != null)
+            return spouse.isInPlayerFarm(location);
+
+        return false;
+    }
+
+    public boolean isInNPCMap(Location location) {
+        return (location.x() >= Constants.FARM_WIDTH &&
+                location.x() <= (Constants.WORLD_MAP_WIDTH - Constants.FARM_WIDTH) &&
+                location.y() >= Constants.DISABLED_HEIGHT &&
+                location.y() <= Constants.WORLD_MAP_HEIGHT - Constants.DISABLED_HEIGHT);
+    }
+
     public boolean isNearWater(Player player) {
         int startX = player.getLocation().x() - 1;
         int startY = player.getLocation().y() - 1;

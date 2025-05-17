@@ -161,7 +161,7 @@ public class GameController {
         Player player = game.getPlayerInTurn();
         Location start = player.getLocation();
         Result result;
-        if (!(result = game.getMap().canWalkTo(start, end, player)).success()) {
+        if (!(result = game.getMap().canWalkTo(start, end, player, game.getPlayers())).success()) {
             return result;
         }
 
@@ -862,7 +862,8 @@ public class GameController {
             ItemStack ring = player2.getInventory().pickItem("Wedding Ring", 1);
             player.getInventory().addItem(ring.getItem(), ring.getAmount());
             return new Result(true, "Congralluation!\n"
-                    + player.getUsername() + " and " + player2.getUsername() + " now married and can live together!");
+                    + player.getUsername() + " and " + player2.getUsername() + " now married and can live together!\n" +
+                    "Money of you and your spouse: " + game.getMoneyOfPlayer(player));
         } else {
             player2.changeBadDays(7);
             friendship.setXp(0);

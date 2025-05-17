@@ -184,6 +184,10 @@ public class Player {
         this.energy = Math.max(0, this.energy);
     }
 
+    public void setTurnEnergy(double turnEnergy) {
+        this.turnEnergy = turnEnergy;
+    }
+
     public void setCheatedEnergy() {
         energyCheated = true;
     }
@@ -267,6 +271,9 @@ public class Player {
         if (money < 0) money = 0;
     }
     public boolean hasEnoughMoney(int amount) {
+        if (spouseName != null) {
+            return App.getApp().getCurrentGame().hasEnoughMoney(this, amount);
+        }
         return money >= amount;
     }
 

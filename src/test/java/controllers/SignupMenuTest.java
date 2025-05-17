@@ -1,6 +1,7 @@
 package controllers;
 
 import models.App;
+import models.Enums.Menu;
 import models.Enums.SecurityQuestionCommands;
 import models.Enums.commands.SignupMenuCommands;
 import models.Result;
@@ -236,6 +237,13 @@ public class SignupMenuTest {
         matcher = SignupMenuCommands.Register.getMatcher(input);
         result = "Please enter a valid gender. Accepted values are 'male' or 'female'.";
         assertEquals(result, controller.register(matcher).message());
+    }
+
+    // show current menu
+    @Test
+    void showCurrentMenu() {
+        result = "You are now in signup menu.";
+        assertEquals(result, controller.showCurrentManu().message());
     }
 }
 

@@ -582,7 +582,7 @@ public class GameController {
 
         Shop shop = App.getApp().getCurrentGame().getShopPlayerIsIn(player);
         if (shop == null) {
-            return new Result(false, "You should be in a shop");
+            return new Result(false, "You should be in Carpenter's shop");
         }
         if (!shop.getName().equalsIgnoreCase("Carpenter's Shop")) {
             return new Result(false, "You should be in Carpenter's Shop");

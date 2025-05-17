@@ -379,7 +379,7 @@ public class Map {
 
                 for (Player player : players) {
                     if (j == player.getLocation().x() && i == player.getLocation().y()) {
-                        text.append(playerColors[playerCounter++] + tile.getTileColor() + " @ " + AnsiColors.ANSI_RESET);
+                        text.append(tile.getTileColor() + playerColors[playerCounter++] + " @ " + AnsiColors.ANSI_RESET);
                         doesSetPlayer = true;
                         break;
                     }

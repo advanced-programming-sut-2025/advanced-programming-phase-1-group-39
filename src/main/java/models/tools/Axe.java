@@ -17,8 +17,8 @@ public class Axe extends Tool {
             if (itemStack == null && tile.getTree() == null) {
                 return new Result(false, "Did nothing!");
             }
-            Item item = itemStack.getItem();
-            if (item.getName().equals("Wood")) {
+            Item item;
+            if (itemStack != null && (item = itemStack.getItem()).getName().equals("Wood")) {
                 if (!player.getInventory().hasSpace(itemStack))
                     return new Result(false, "You don't have enough space to get wood!");
                 else{
@@ -33,13 +33,14 @@ public class Axe extends Tool {
                 if (!player.getInventory().hasSpace(treeProducts))
                     return new Result(false, "You don't have enough space to get tree products!");
                 else{
-                    ItemStack woods = new ItemStack(ItemManager.getItemByName("wood"), (tree.getCurrentStage() * 5 + 5));
+                    ItemStack woods = new ItemStack(ItemManager.getItemByName("Wood"), (tree.getCurrentStage() * 5 + 5));
                     player.getInventory().addItem(treeProducts.getItem(), treeProducts.getAmount());
                     tile.removeTree();
                     if (!player.getInventory().hasSpace(woods)) {
                         tile.placeItem(woods);
                         return new Result(true, "You don't have enough space to get woods!");
                     }
+                    player.getInventory().addItem(woods.getItem(), woods.getAmount());
                     return new Result(true, "You got wood and tree seeds!");
                 }
             } else

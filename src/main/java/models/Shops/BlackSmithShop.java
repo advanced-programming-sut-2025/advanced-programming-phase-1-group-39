@@ -128,6 +128,7 @@ public class BlackSmithShop extends Shop{
         return new Result (true, "Successfully upgraded to" + type + ".");
     }
 
+    @Override
     public void endDay() {
         for (ToolType key : toolUpgrade.keySet()) {
             toolUpgrade.put(key, true);

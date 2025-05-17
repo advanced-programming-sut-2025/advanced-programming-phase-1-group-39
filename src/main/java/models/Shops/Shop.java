@@ -24,5 +24,17 @@ public class Shop extends Building {
     public String showAllProducts(){return null;}
     public String showAvailableProducts() {return null;}
     public void endDay() {};
+
+    public boolean isInWorkingHour(int hour) {
+        return hour >= openHour && hour <= closeHour;
+    }
+
+    public int getOpenHour() {
+        return openHour;
+    }
+
+    public int getCloseHour() {
+        return closeHour;
+    }
 }
 

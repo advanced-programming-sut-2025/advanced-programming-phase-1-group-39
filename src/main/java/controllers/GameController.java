@@ -734,9 +734,16 @@ public class GameController {
         Player player = game.getPlayerInTurn();
 
         Shop shop = game.getShopPlayerIsIn(player);
+
+        Time time = game.getTime();
+
         if (shop == null) {
             return new Result(false, "You should be in a shop");
         }
+
+        if (!shop.isInWorkingHour(time.getHour()))
+            return new Result(false, "Shop closed! It's working hour:\n" +
+                    AnsiColors.ANSI_CYAN_BOLD + "\t" + shop.getOpenHour() + " - " + shop.getCloseHour());
         return new Result(true, shop.showAllProducts());
     }
     public Result showAllAvailableProducts() {

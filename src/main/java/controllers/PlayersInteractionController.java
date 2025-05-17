@@ -171,15 +171,13 @@ public class PlayersInteractionController {
             friendship.setXp(currentXP - xp);
             return "The connection with " + playerName + " feels a bit distant… Your friendship XP has dropped.";
         } else if (friendship.getFriendshipLevel() == 1 && currentXP - xp < 100) {
-            // TODO : change with setXP
-            friendship.setFriendshipLevel(0);
+            friendship.setXp(currentXP - xp);
             return "Unfortunately, your bond with " + playerName + " has weakened… You lost some friendship XP, and your friendship level has dropped by 1.";
         } else if (friendship.getFriendshipLevel() == 1 && currentXP - xp >= 100) {
             friendship.setXp(currentXP - xp);
             return "The connection with " + playerName + " feels a bit distant… Your friendship XP has dropped.";
         } else if (friendship.getFriendshipLevel() == 2 && currentXP - xp < 200) {
-            // TODO : change with setXP
-            friendship.setFriendshipLevel(1);
+            friendship.setXp(currentXP - xp);
             return "Unfortunately, your bond with " + playerName + " has weakened… You lost some friendship XP, and your friendship level has dropped by 1.";
         } else if (friendship.getFriendshipLevel() == 2 && currentXP - xp >= 200) {
             friendship.setXp(currentXP - xp);

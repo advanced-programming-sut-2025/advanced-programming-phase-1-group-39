@@ -214,7 +214,7 @@ public class Player {
         return new Location(startOfFarm.x() + 74, startOfFarm.y() + 8);
     }
 
-    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) { // Todo: not complete (legendary + type fishing pole)
+    public ArrayList<Fish> goFishing(FishingPole pole, Weather weather, Season season) {
         double M = weather.getFishingFactor();
         double R = Math.random();
         int skill = skills.getFishingLevel();
@@ -224,13 +224,14 @@ public class Player {
 
         List<FishType> seasonal = Arrays.stream(FishType.values())
                 .filter(f -> f.season == season)
+                .filter(f -> !f.isLegendary())
                 .collect(Collectors.toList());
 
         if (skill == Constants.MAX_SKILL_LEVEL) {
             seasonal.addAll(Arrays.stream(FishType.values())
-                    .filter(f -> f.name().equals(f.name().toUpperCase()))
+                    .filter(FishType::isLegendary)
                     .filter(f -> f.season == season)
-                    .toList());
+                    .collect(Collectors.toList()));
         }
 
         List<Fish> result = new ArrayList<>();

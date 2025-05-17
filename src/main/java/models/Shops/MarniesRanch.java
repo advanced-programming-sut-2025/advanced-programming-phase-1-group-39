@@ -117,9 +117,9 @@ public class MarniesRanch extends Shop {
             if (product.equalsIgnoreCase("Hay")) {
                 player.getInventory().addItem(new OddItems(item.getName()), quantity);
             } else if (product.equalsIgnoreCase("Milk Pail")) {
-                //player.getInventory().addItem(new MilkPail(), 1); Todo: not comment
+                player.getInventory().addItem(new MilkPail(), 1);
             } else {
-                //player.getInventory().addItem(new Shear(), 1);
+                player.getInventory().addItem(new Shear(), 1);
             }
         } else {
             // Todo: add new animal to where?

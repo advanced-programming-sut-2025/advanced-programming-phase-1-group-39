@@ -545,7 +545,6 @@ public class GameController {
         return FoodManager.eat(foodName, App.getApp().getCurrentGame().getPlayerInTurn());
     }
 
-    // TODO : complete these
     public Result build(Matcher matcher) {
         String buildingName = matcher.group(1).toLowerCase();
         int x = Integer.parseInt(matcher.group(2));

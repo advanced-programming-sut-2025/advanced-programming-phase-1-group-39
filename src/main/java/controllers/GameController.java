@@ -374,6 +374,7 @@ public class GameController {
         if (!player.getInventory().hasItem(seedName)) {
             return new Result(false, "You don't have " + seedName);
         }
+        player.getInventory().pickItem(seedName, 1);
         tile.plantSeed(seedName);
         return new Result(false, "You have successfully planted " + seedName);
     }

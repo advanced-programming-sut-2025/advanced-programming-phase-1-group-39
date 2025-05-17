@@ -119,4 +119,26 @@ public class Plant {
     public boolean hasCrop() {
         return hasCrop;
     }
+
+    @Override
+    public String toString() {
+        return "Plant{" +
+                "tile=" + tile +
+                ", seed=" + seed +
+                ", product=" + product +
+                ", productStack=" + productStack +
+                ", stages=" + stages +
+                ", currentStage=" + currentStage +
+                ", daysOfCurrentStage=" + daysOfCurrentStage +
+                ", daysWithoutWater=" + daysWithoutWater +
+                ", isWateredToday=" + isWateredToday +
+                ", hasFertilizer=" + hasFertilizer +
+                ", oneTimeHarvest=" + oneTimeHarvest +
+                ", regrowthTime=" + regrowthTime +
+                ", cropIntervalDays=" + cropIntervalDays +
+                ", canBecomeGiant=" + canBecomeGiant +
+                ", hasCrop=" + hasCrop +
+                ", isAlive=" + isAlive +
+                '}';
+    }
 }

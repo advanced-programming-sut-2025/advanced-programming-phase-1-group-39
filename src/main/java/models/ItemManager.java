@@ -74,6 +74,9 @@ public class ItemManager {
         if (CropManager.getCropByName(name) != null) {
             return CropManager.getCropByName(name);
         }
+        if (CropManager.getSeedByName(name) != null) {
+            return CropManager.getSeedByName(name);
+        }
         if (ForagingManager.getCropByName(name) != null) {
             return ForagingManager.getCropByName(name);
         }

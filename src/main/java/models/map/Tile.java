@@ -191,7 +191,10 @@ public class Tile {
     // walk
     public boolean canWalkOnTile() {
         if (!type.isWalkable()) return false;
-        if (itemOnTile != null) return false; // TODO : for grass it is walkable
+        if (itemOnTile != null) {
+            if (itemOnTile.getItem().getName().equals("Grass")) return true;
+            return false;
+        }
         if (tree != null) return false;
         if (plant != null) return false;
         return true;

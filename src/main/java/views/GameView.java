@@ -134,6 +134,8 @@ public class GameView implements View {
             System.out.println(controller.Craft(matcher));
         } else if ((matcher = GameCommands.CHEAT_ADD_CRAFTING_RECIPE.getMatcher(command)) != null) {
             System.out.println(controller.cheatAddCraftingRecipe(matcher));
+        } else if ((matcher = GameCommands.CHEAT_ADD_FOOD_RECIPE.getMatcher(command)) != null) {
+            System.out.println(controller.cheatAddFoodRecipe(matcher));
         } else if ((matcher = GameCommands.CHEAT_ADD_ITEM.getMatcher(command)) != null) {
             System.out.println(controller.cheatAddToInventory(matcher));
         } else if ((matcher = GameCommands.PLACE_ITEM.getMatcher(command)) != null) {

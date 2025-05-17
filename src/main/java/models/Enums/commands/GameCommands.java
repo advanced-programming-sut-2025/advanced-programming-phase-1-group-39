@@ -68,6 +68,7 @@ public enum GameCommands {
 
     COOKING_REFRIGERATOR("cooking\\s+refrigerator\\s+(put|pick)\\s+(.+?)"),
     COOK("cooking\\s+prepare\\s+(.+?)"),
+    CHEAT_ADD_FOOD_RECIPE("cheat\\s+add\\s+food\\s+recipe\\s+-n\\s+(.+?)"),
     EAT("eat\\s+(.+?)"),
 
     SHOW_FOOD_RECIPES("show\\s+food\\s+recipes"),

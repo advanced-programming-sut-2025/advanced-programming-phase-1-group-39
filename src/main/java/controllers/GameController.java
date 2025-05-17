@@ -10,6 +10,7 @@ import models.Shops.MarniesRanch;
 import models.animals.Fish;
 import models.buildings.Cabin;
 import models.buildings.ShippingBin;
+import models.cooking.FoodRecipe;
 import models.crafting.CraftingRecipe;
 import models.cropsAndFarming.CropManager;
 import models.cropsAndFarming.TreeManager;
@@ -552,6 +553,15 @@ public class GameController {
         String recipeName = matcher.group(1);
 
         return FoodManager.cook(recipeName, App.getApp().getCurrentGame().getPlayerInTurn());
+    }
+    public Result cheatAddFoodRecipe(Matcher matcher) {
+        String name = matcher.group(1);
+        FoodRecipe recipe = FoodRecipe.getRecipeByName(name);
+        if (recipe == null) {
+            return new Result(false, "Not found");
+        }
+        App.getApp().getCurrentGame().getPlayerInTurn().learnFoodRecipe(recipe);
+        return new Result(true, "You have successfully learned " + name);
     }
 
     public Result eatFood(Matcher matcher) {

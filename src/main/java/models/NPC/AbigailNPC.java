@@ -28,7 +28,7 @@ public class AbigailNPC extends NPC {
                 , new ItemStack(ItemManager.getItemByName("Pumpkin"), 1)
                 , new ItemStack(ItemManager.getItemByName("Wheat"), 50)));
         super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/abigailMissions.json");
-        super.quests = generateNPCQuests(tasks, missions);
+        super.quests = generateNPCQuests(tasks);
     }
 
     @Override

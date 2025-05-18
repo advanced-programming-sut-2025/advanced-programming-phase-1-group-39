@@ -7,7 +7,7 @@ public enum NPCGameCommand {
 
     MeetNPC("meet\\s+NPC\\s+(?<NPCName>.*?)"),
     GiveGiftToNPC("gift\\s+NPC\\s+(?<NPCName>.*?)\\s+-i\\s+(?<item>.*?)"),
-    ShowFriendShipList("friendship\\s+NP\\s+list"),
+    ShowFriendShipList("friendship\\s+NPC\\s+list"),
     ShowQuestsList("quests\\s+list"),
     QuestsFinish("quests\\s+finish\\s+-i(?<index>\\d+)"),
 

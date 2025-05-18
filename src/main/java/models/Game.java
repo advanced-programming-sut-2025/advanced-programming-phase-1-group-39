@@ -498,19 +498,18 @@ public class Game {
 
     // interactions
 
-    private ArrayList<Friendship> initializeFriendships() {
-        ArrayList<Friendship> friendships = new ArrayList<>();
+    private void initializeFriendships() {
+        friendships = new ArrayList<>();
         friendships.add(new Friendship(players.get(0).getUsername(), players.get(1).getUsername()));
         friendships.add(new Friendship(players.get(0).getUsername(), players.get(2).getUsername()));
         friendships.add(new Friendship(players.get(0).getUsername(), players.get(3).getUsername()));
         friendships.add(new Friendship(players.get(1).getUsername(), players.get(2).getUsername()));
         friendships.add(new Friendship(players.get(1).getUsername(), players.get(3).getUsername()));
         friendships.add(new Friendship(players.get(2).getUsername(), players.get(3).getUsername()));
-        return friendships;
     }
 
     public Friendship getFriendship(Player player1, Player player2) {
-        for (Friendship friendship : getFriendships()) {
+        for (Friendship friendship : friendships) {
             if ((friendship.getUser1().equals(player1.getUsername()) && friendship.getUser2().equals(player2.getUsername())) ||
                     (friendship.getUser1().equals(player2.getUsername()) && friendship.getUser2().equals(player1.getUsername()))) {
                 return friendship;

@@ -144,10 +144,9 @@ public class NPCGameController {
     }
 
     public Result showQuestsList() {
-        StringBuilder output = new StringBuilder();
+        String output;
         output = activeMissions();
-        String output2 = output.toString();
-        return new Result(true, output2);
+        return new Result(true, output);
     }
 
     public Result finishQuests(Matcher matcher) {
@@ -371,10 +370,11 @@ public class NPCGameController {
         return output;
     }
 
-    private StringBuilder activeMissions() {
+    private String activeMissions() {
         App app = App.getApp();
         Game game = app.getCurrentGame();
         Player currentPlayer = game.getPlayerInTurn();
+        String Output;
         StringBuilder output = new StringBuilder();
         output.append("Quests in Progress :");
         int count = 0;
@@ -393,9 +393,10 @@ public class NPCGameController {
                 count++;
                 output.append(count).append(") ").append(getMission(3, friendship.getNPCName())).append("\n");
             }
-            output.deleteCharAt(output.length() - 1);
         }
-        return output;
+        output.deleteCharAt(output.length() - 1);
+        Output = output.toString();
+        return Output;
     }
 
     private String getMission(int level, String NPCName) {

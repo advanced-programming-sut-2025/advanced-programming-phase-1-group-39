@@ -28,6 +28,9 @@ login -u reza -p paSS12#$ -stay-logged-in
 
 menu enter game
 load game
+greenhouse build
+cheat add item -n Wood -c 500
+
 
 // map show
 // Total Map

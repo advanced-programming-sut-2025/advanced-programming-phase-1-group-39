@@ -26,8 +26,9 @@ public class Friendship {
         this.user1 = user1;
         this.user2 = user2;
         this.xp = 0;
-
-        this.isFirstTalking = false;
+        this.isFirstHug = true;
+        this.isFirstTalking = true;
+        this.hasGiftedEachOther = true;
     }
 
 

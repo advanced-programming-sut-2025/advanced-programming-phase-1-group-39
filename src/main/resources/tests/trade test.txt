@@ -18,33 +18,19 @@ game map 1
 game map 2
 game map 1
 game map 2
-
-exit
-
-
-// load
-menu enter login
-login -u reza -p paSS12#$ -stay-logged-in
-
-menu enter game
-load game
-greenhouse build
-cheat add item -n Wood -c 500
-
-
-// map show
-// Total Map
-print map -l 150,75 -s 300
-// NPC map
-print map -l 150,75 -s 100
-
-print map -l 40,25 -s 80
-
-
-// Walk
- walk -l 72,13
-print map -l 70,10 -s 20
-tools equip axe
-tools use -d
-tools equip watering can
-inventory show
+next turn
+walk -l 72,13
+y
+walk -l 72,14
+y
+cheat add item -n Wood -c 300
+cheat add item -n Copper Bar -c 10
+cheat add item -n Iron Bar -c 10
+cheat add item -n Coal -c 50
+set location -l 185 80
+trade -u reza -t offer -i Wood -a 100 -p 1000
+trade list
+next turn
+next turn
+next turn
+trade response -accept -i 1

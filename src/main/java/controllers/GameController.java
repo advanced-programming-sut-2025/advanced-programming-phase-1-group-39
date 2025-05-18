@@ -1126,10 +1126,10 @@ public class GameController {
         }
 
         if (trade.getType() == TradeType.REQUEST) {
-            if (!currentPlayer.getInventory().hasEnoughStack(trade.getOfferedItem().getItemName(),
-                    trade.getOfferedItem().getAmount())) {
+            if (!currentPlayer.getInventory().hasEnoughStack(trade.getRequestedItem().getItemName(),
+                    trade.getRequestedItem().getAmount())) {
                 return new Result(false, "You don’t have enough "
-                        + trade.getOfferedItem().getItemName() + " to complete the trade.");
+                        + trade.getRequestedItem().getItemName() + " to complete the trade.");
             }
         } else if (trade.getType() == TradeType.OFFER) {
             if (!sender.getInventory().hasEnoughStack(trade.getOfferedItem().getItemName(), trade.getOfferedItem().getAmount())) {
@@ -1178,13 +1178,13 @@ public class GameController {
                         targetItem.getAmount());
 
             } else {
-                if (!currentPlayer.getInventory().hasEnoughStack(trade.getRequestedItem().getItemName(), trade.getRequestedItem().getAmount())) {
-                    return new Result(false, "You don’t have enough " + trade.getRequestedItem().getItemName());
+                if (!currentPlayer.getInventory().hasEnoughStack(targetItem.getItemName(), targetItem.getAmount())) {
+                    return new Result(false, "You don’t have enough " + targetItem.getItemName());
                 }
 
-                sender.getInventory().pickItem(trade.getOfferedItem().getItemName(), trade.getOfferedItem().getAmount());
-                currentPlayer.getInventory().addItem(ItemManager.getItemByName(trade.getOfferedItem().getItemName()),
-                        trade.getOfferedItem().getAmount());
+                sender.getInventory().pickItem(trade.getRequestedItem().getItemName(), trade.getRequestedItem().getAmount());
+                currentPlayer.getInventory().addItem(ItemManager.getItemByName(trade.getRequestedItem().getItemName()),
+                        trade.getRequestedItem().getAmount());
 
                 currentPlayer.getInventory().pickItem(targetItem.getItemName(), targetItem.getAmount());
                 sender.getInventory().addItem(ItemManager.getItemByName(targetItem.getItemName()), targetItem.getAmount());
@@ -1207,14 +1207,14 @@ public class GameController {
         }
         return new Result(true, sb.toString());
     }
+    
+    public String showMoney() {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
 
-
-    public Result meetNPC(Matcher matcher) {return null;}
-    public Result giftNPC(Matcher matcher) {return null;}
-    public Result showFriendshipNPCList() {return null;}
-    public Result finishQuest(Matcher matcher) {return null;}
-
-
+        return "Your Total Money : " + game.getMoneyOfPlayer(player);
+    }
+    
     // Time checking and handling
     public Result checkTime() {
         Game game = App.getApp().getCurrentGame();

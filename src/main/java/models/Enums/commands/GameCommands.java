@@ -102,7 +102,9 @@ public enum GameCommands {
     TRADE_HISTORY("trade\\s+history"),
 
     ASK_MARRIAGE("ask\\s+marriage-u\\s+(?<username>.+)-r\\s+(?<ring>.+)"),
-    RESPOND_MARRIAGE("respondToMarriage\\s+-(?<answer>accept|reject)\\s+-u\\s+(?<username>.+)")
+    RESPOND_MARRIAGE("respondToMarriage\\s+-(?<answer>accept|reject)\\s+-u\\s+(?<username>.+)"),
+
+    SHOW_MONEY("show\\s+money")
     ;
     private final String pattern;
 

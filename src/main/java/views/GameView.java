@@ -271,6 +271,8 @@ public class GameView implements View {
                     System.out.println("The game cannot be deleted because not all players agreed to the removal.");
                 }
             }
+        } else if ((GameCommands.SHOW_MONEY.getMatcher(command)) != null) {
+            System.out.println(controller.showMoney());
         } else {
             System.out.println("invalid command.");
         }

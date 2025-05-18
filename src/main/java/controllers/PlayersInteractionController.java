@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class PlayersInteractionController {
-    static App app = App.getApp();
 
 
     public Result showFriendshipsList() {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         StringBuilder output = new StringBuilder();
@@ -24,6 +24,7 @@ public class PlayersInteractionController {
     }
 
     public Result talk(Matcher matcher) {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         String playerName = matcher.group("username");
@@ -46,6 +47,7 @@ public class PlayersInteractionController {
     }
 
     public Result talkHistory(Matcher matcher) {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         String otherPlayer = matcher.group("username");
@@ -59,6 +61,7 @@ public class PlayersInteractionController {
     }
 
     public Result hug(Matcher matcher) {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         String otherPlayer = matcher.group("username");
@@ -83,6 +86,7 @@ public class PlayersInteractionController {
     }
 
     public Result buyGift(Matcher matcher) {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         String otherPlayer = matcher.group("username");
@@ -115,6 +119,7 @@ public class PlayersInteractionController {
     }
 
     public Result showGiftsList() {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         StringBuilder output = new StringBuilder();
@@ -137,6 +142,7 @@ public class PlayersInteractionController {
     }
 
     public Result getRateToGift(Matcher matcher) {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         int giftId = Integer.parseInt(matcher.group("giftNumber"));
@@ -166,6 +172,7 @@ public class PlayersInteractionController {
     }
 
     public Result showGiftHistory(Matcher matcher) {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         String otherPlayer = matcher.group("username");
@@ -184,6 +191,7 @@ public class PlayersInteractionController {
     }
 
     public Result getFlower(Matcher matcher) {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         String otherPlayer = matcher.group("username");
@@ -211,6 +219,7 @@ public class PlayersInteractionController {
     // Auxiliary functions :
 
     private static boolean isPlayerExists(String playerName) {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         for (Player player : game.getPlayers()) {
@@ -301,6 +310,7 @@ public class PlayersInteractionController {
     }
 
     public static String printGiftsList() {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         StringBuilder output = new StringBuilder();
@@ -323,6 +333,7 @@ public class PlayersInteractionController {
     }
 
     private static boolean isGiftExists(int giftId) {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());
@@ -337,6 +348,7 @@ public class PlayersInteractionController {
     }
 
     private static Gift getGift(int giftId) {
+        App app = App.getApp();
         Game game = App.getApp().getCurrentGame();
         Player currentPlayer = app.getCurrentGame().getPlayerInTurn();
         ArrayList<Player> otherPlayers = game.getOtherPlayers(currentPlayer.getUsername());

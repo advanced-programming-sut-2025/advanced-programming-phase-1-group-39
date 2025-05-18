@@ -250,7 +250,7 @@ public class NPCGameController {
         Game game = app.getCurrentGame();
         int levelScore = interaction.getFriendshipScore() % 200;
         if (interaction.getFriendshipLevel() != 3) {
-            if (levelScore + score > 200) {
+            if (levelScore + score >= 200) {
                 interaction.setFriendshipLevel(interaction.getFriendshipLevel() + 1);
                 if (interaction.getFriendshipLevel() == 1) {
                     interaction.setActiveMission3(game.getTime().clone());

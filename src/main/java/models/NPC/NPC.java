@@ -86,4 +86,9 @@ public abstract class NPC {
 
 
 //    protected abstract
+
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }

@@ -420,7 +420,7 @@ public class Map {
                 if (doesSetPlayer) continue;
 
                 for (NPC npc : npcs) {
-                    if (j == npc.getLocation().x() + npcMapStartX && i == npc.getLocation().y() + npcMapStartY) {
+                    if (j == npc.getLocation().x() && i == npc.getLocation().y()) {
                         text.append(AnsiColors.ANSI_REVERSE + npcColors[npcs.indexOf(npc)] + tile.getTileColor() + " N " + AnsiColors.ANSI_RESET);
                         doesSetNpc = true;
                         break;

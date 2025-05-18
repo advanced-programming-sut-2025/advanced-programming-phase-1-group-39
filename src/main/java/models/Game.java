@@ -147,6 +147,12 @@ public class Game {
         npcs.add(new Morris());
         npcs.add(new Pierre());
         npcs.add(new Willy());
+
+        for (NPC npc : npcs) {
+            npc.setLocation(new Location(npc.getLocation().x() + Constants.FARM_WIDTH, npc.getLocation().y() + Constants.DISABLED_HEIGHT));
+        }
+
+
     }
 
     public NPC getNPC(String NPCName) {

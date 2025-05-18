@@ -14,6 +14,7 @@ import models.buildings.*;
 import models.cooking.Food;
 import models.crafting.CraftingItem;
 import models.cropsAndFarming.*;
+import models.map.FarmType;
 import models.tools.*;
 
 import java.io.FileReader;
@@ -113,7 +114,6 @@ public class AppDataManager {
                             .registerSubtype(StardropSaloon.class, "StardropSaloon")
                             .registerSubtype(FishingShop.class, "FishingShop")
             )
-            .setPrettyPrinting()
             .create();
 
     public static void saveApp(App app) {
@@ -139,6 +139,11 @@ public class AppDataManager {
                 for (User user : App.getApp().getUsers()) {
                     user.ensureInitialized();
                 }
+
+                Game game = App.getApp().getCurrentGame();
+                game.setGameMapRandom();
+//                game.startGame();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

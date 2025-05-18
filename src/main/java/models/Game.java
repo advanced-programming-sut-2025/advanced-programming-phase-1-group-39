@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    // TODO : remove currentId from APP
     public static int lastGameId = 101;
     private int id;
 
@@ -60,6 +59,9 @@ public class Game {
         initializeNPCs();
         makeNPCBuildings();
 
+        if (gameMap == null) {
+            setGameMapRandom();
+        }
         gameMap.loadMap(getNpcShops());
 
         for (Player player : players) {
@@ -663,4 +665,11 @@ public class Game {
         return output.toString();
     }
 
+    //Load
+    public void setGameMapRandom() {
+        this.gameMap = new Map();
+        for (Player player : players) {
+            addRandomFarmForPlayer(player, FarmType.getFarmTypeById((int) (Math.random() * 2)));
+        }
+    }
 }

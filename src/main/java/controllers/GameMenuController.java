@@ -119,7 +119,6 @@ public class GameMenuController {
             game.setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
                     user.getUserName()));
             app.getCurrentGame().setMainPlayer(game.getPlayerByUsername(user.getUserName()));
-            app.getGames().set(getIndexInGames(game.getId()), app.getCurrentGame());
             app.getCurrentGame().startGame();
             app.setCurrentMenu(Menu.GAME);
             return new Result(true, "the game was loaded successfully. you can now continue your game.");

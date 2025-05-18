@@ -49,7 +49,13 @@ public class MapMinPathFinder {
         int[] dx = {0, 0, -1, 1};
         int[] dy = {-1, 1, 0, 0};
 
+        int exploredTiles = 0;
+        int maxExploredTiles = 25000;
+
         while (!queue.isEmpty()) {
+            if (exploredTiles++ > maxExploredTiles) {
+                return false;
+            }
             Location current = queue.poll();
 
             if (current.equals(end)) return true;
@@ -85,7 +91,13 @@ public class MapMinPathFinder {
         Node startNode = new Node(start, null, 0, 0, -1);
         queue.add(startNode);
 
+        int exploredTiles = 0;
+        int maxExploredTiles = 25000;
+
         while (!queue.isEmpty()) {
+            if (exploredTiles++ > maxExploredTiles) {
+                return new ArrayList<>();
+            }
             Node currentNode = queue.poll();
 
             if (currentNode.location.equals(end)) {

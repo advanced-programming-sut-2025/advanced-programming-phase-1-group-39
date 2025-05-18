@@ -96,7 +96,7 @@ public enum GameCommands {
     CHEAT_ADD_MONEY("cheat\\s+add\\s+(\\d+)\\s+dollars"),
 
     START_TRADE("start\\s+trade"),
-    TRADE("trade\\s+-u\\s+(.+?)\\s+-t\\s+-(request|offer)\\s+-i\\s+(.+?)\\s+-a\\s+(\\d+)(?:\\s+-p\\s+(?<money>\\d+)|\\s+-ti\\s+(?<item>.+?)\\s+-ta\\s+(\\d+))"),
+    TRADE("trade\\s+-u\\s+(.+?)\\s+-t\\s+(request|offer)\\s+-i\\s+(.+?)\\s+-a\\s+(\\d+)(?:\\s+-p\\s+(?<money>\\d+)|\\s+-ti\\s+(?<item>.+?)\\s+-ta\\s+(\\d+))"),
     SHOW_TRADES_LIST("trade\\s+list"),
     TRADE_RESPONSE("trade\\s+response\\s+-(accept|reject)\\s+-i\\s+(\\d+)"),
     TRADE_HISTORY("trade\\s+history"),

@@ -9,6 +9,7 @@ import models.Shops.*;
 import models.animals.Animal;
 import models.PlayerInteraction.Friendship;
 import models.PlayerInteraction.Message;
+import models.buildings.AnimalBuilding;
 import models.buildings.Building;
 import models.cropsAndFarming.Tree;
 import models.map.AnsiColors;
@@ -380,7 +381,11 @@ public class Game {
         for (Shop shop : getNpcShops()) {
             shop.endDay();
         }
-        // TODO : add end day for animal buildings
+        for (Building building : buildings) {
+            if (building instanceof AnimalBuilding) {
+                ((AnimalBuilding) building).endDay();
+            }
+        }
     }
 
     public Time getTime() {

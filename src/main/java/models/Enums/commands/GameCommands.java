@@ -86,7 +86,7 @@ public enum GameCommands {
     COLLECT_PRODUCE("collect\\s+produce\\s+-n\\s+(.+?)"),
     SELL_ANIMAL("sell\\s+animal\\s+-n\\s+(.+?)"),
 
-    ARTISAN_USE("artisan\\s+use\\s+\"(.*?)\"(?:\\s+\"(.*?)\")+"),
+    ARTISAN_USE("artisan\\s+use\\s+\"(.*?)\"\\s+\\\"(.+?)\\\"(?:\\s+\"(.*?)\")*"),
     ARTISAN_GET("artisan\\s+get\\s+(.+?)"),
     PURCHASE("purchase\\s+(.+?)\\s+-n\\s+(\\d+)"),
 

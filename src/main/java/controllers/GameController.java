@@ -792,8 +792,17 @@ public class GameController {
 
     public Result artisanUse(Matcher matcher) {
         String itemName = matcher.group(1);
-        String ingredients = matcher.group(2);
-        String[] ingredientsParts = ingredients.split(" ");
+        String ingredient1 = matcher.group(2);
+        String ingredient2 = matcher.group(3);
+        String[] ingredientsParts;
+        if (ingredient2 != null) {
+            ingredientsParts = new String[2];
+            ingredientsParts[0] = ingredient1;
+            ingredientsParts[1] = ingredient2;
+        } else {
+            ingredientsParts = new String[1];
+            ingredientsParts[0] = ingredient1;
+        }
 
         ArtisanMachine machine = App.getApp().getCurrentGame().getMap()
                 .getNearArtisanMachine(App.getApp().getCurrentGame().getPlayerInTurn(), ItemManager.getArtisanMachineByGood(itemName));

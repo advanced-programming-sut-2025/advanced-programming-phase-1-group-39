@@ -1,9 +1,7 @@
 package models.cooking;
 
-import models.App;
-import models.ItemStack;
-import models.Player;
-import models.Result;
+import models.*;
+import models.artisan.ArtisanGood;
 import models.buildings.Cabin;
 import models.inventory.Inventory;
 
@@ -76,8 +74,15 @@ public class FoodManager {
         Inventory inv = player.getInventory();
         FoodRecipe recipe = getRecipeByName(foodName);
 
-        if (recipe == null || !inv.hasItem(foodName)) {
+        if (!inv.hasItem(foodName)) {
             return new Result(false, "You don't have " + foodName + " in your inventory.");
+        }
+        Item item = ItemManager.getItemByName(foodName);
+        if (item instanceof ArtisanGood) {
+            inv.pickItem(foodName, 1);
+            player.changeEnergy(((ArtisanGood) item).getEnergy());
+            return new Result(true, "You ate " + foodName + " and gained "
+                    + ((ArtisanGood) item).getEnergy() + " energy.");
         }
 
         inv.pickItem(foodName, 1);

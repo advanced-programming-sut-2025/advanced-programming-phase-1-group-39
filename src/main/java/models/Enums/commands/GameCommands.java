@@ -24,6 +24,7 @@ public enum GameCommands {
     HELP_READING_MAP("help\\s+reading\\s+map"),
 
     WALK("walk\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)"),
+    SET_LOCATION("set\\s+location\\s+-l\\s+(\\d+)\\s+(\\d+)"),
 
     SHOW_ENERGY("energy\\s+show"),
     CHEAT_SET_ENERGY("energy\\s+set\\s+-v\\s+(?<value>\\d+)"),
@@ -86,18 +87,18 @@ public enum GameCommands {
     COLLECT_PRODUCE("collect\\s+produce\\s+-n\\s+(.+?)"),
     SELL_ANIMAL("sell\\s+animal\\s+-n\\s+(.+?)"),
 
-    ARTISAN_USE("artisan\\s+use\\s+\"(.*?)\"(?:\\s+\"(.*?)\")+"),
+    ARTISAN_USE("artisan\\s+use\\s+\"(.*?)\"\\s+\\\"(.+?)\\\"(?:\\s+\"(.*?)\")*"),
     ARTISAN_GET("artisan\\s+get\\s+(.+?)"),
     PURCHASE("purchase\\s+(.+?)\\s+-n\\s+(\\d+)"),
 
     SHOW_ALL_PRODUCTS("show\\s+all\\s+products"),
-    SHOW_AVAILABLE_PRODUCTS("show\\s+all\\s+available\\s+products"),
+    SHOW_AVAILABLE_PRODUCTS("show\\s+available\\s+products"),
     CHEAT_ADD_MONEY("cheat\\s+add\\s+(\\d+)\\s+dollars"),
 
     START_TRADE("start\\s+trade"),
     TRADE("trade\\s+-u\\s+(.+?)\\s+-t\\s+(request|offer)\\s+-i\\s+(.+?)\\s+-a\\s+(\\d+)(?:\\s+-p\\s+(?<money>\\d+)|\\s+-ti\\s+(?<item>.+?)\\s+-ta\\s+(\\d+))"),
     SHOW_TRADES_LIST("trade\\s+list"),
-    TRADE_RESPONSE("trade\\s+response\\s+(–accept|–reject)\\s+-i\\s+(\\d+)"),
+    TRADE_RESPONSE("trade\\s+response\\s+-(accept|reject)\\s+-i\\s+(\\d+)"),
     TRADE_HISTORY("trade\\s+history"),
 
     ASK_MARRIAGE("ask\\s+marriage-u\\s+(?<username>.+)-r\\s+(?<ring>.+)"),

@@ -63,6 +63,8 @@ public class GameView implements View {
                     System.out.println(controller.walkTo());
                 }
             }
+        } else if ((matcher = GameCommands.SET_LOCATION.getMatcher(command)) != null) {
+            System.out.println(controller.setLocation(matcher));
         } else if ((GameCommands.SHOW_ENERGY.getMatcher(command)) != null) {
             System.out.println(controller.showEnergy());
         } else if ((matcher = GameCommands.CHEAT_SET_ENERGY.getMatcher(command)) != null) {
@@ -269,7 +271,7 @@ public class GameView implements View {
                     System.out.println("The game cannot be deleted because not all players agreed to the removal.");
                 }
             }
-        }  else {
+        } else {
             System.out.println("invalid command.");
         }
 

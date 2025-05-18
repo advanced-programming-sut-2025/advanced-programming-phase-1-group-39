@@ -13,7 +13,7 @@ public enum FoodRecipe {
 
     SALAD(new Food("Salad", 113, 110, null), Map.of("Leek", 1, "Dandelion", 1)),
 
-    OLMELET(new Food("Olmelet", 100, 125, null), Map.of("Egg", 1, "Milk", 1)),
+    OMELET(new Food("Omelet", 100, 125, null), Map.of("Egg", 1, "Milk", 1)),
 
     PUMPKIN_PIE(new Food("Pumpkin Pie", 225, 385, null), Map.of("Pumpkin", 1, "Wheat Flour", 1, "Milk", 1, "Sugar", 1)),
 

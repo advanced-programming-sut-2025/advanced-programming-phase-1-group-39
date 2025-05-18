@@ -6,10 +6,10 @@
     { "name": "Gold", "price": 400, "limit": 1000000 }
   ],
   "toolUpgrades": [
-    "Copper Tool",
-    "Steel Tool",
-    "Gold Tool",
-    "Iridium Tool",
+    "Copper",
+    "Iron",
+    "Gold",
+    "Iridium",
     "Copper Trash Can",
     "Steel Trash Can",
     "Gold Trash Can",

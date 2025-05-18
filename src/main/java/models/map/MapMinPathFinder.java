@@ -1,7 +1,6 @@
 package models.map;
 
 import models.Constants;
-import models.Enums.Direction;
 import models.Location;
 
 import java.util.*;
@@ -93,7 +92,7 @@ public class MapMinPathFinder {
         queue.add(startNode);
 
         int exploredTiles = 0;
-        int maxExploredTiles = 10000;
+        int maxExploredTiles = 25000;
 
         while (!queue.isEmpty()) {
             if (exploredTiles++ > maxExploredTiles) {

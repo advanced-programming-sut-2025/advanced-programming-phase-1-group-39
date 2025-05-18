@@ -82,6 +82,9 @@ public class BlackSmithShop extends Shop{
 
     public Result upgradeTool(Tool tool) {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        if (tool == null) {
+            return new Result(false, "You don't have " + tool.getName());
+        }
         ToolType type = ToolType.getNext(tool.getType());
         int price  = 0;
         Boolean available = toolUpgrade.get(type);
@@ -99,7 +102,7 @@ public class BlackSmithShop extends Shop{
                     price = 2000;
                 }
                 case IRON -> {
-                    if (!player.getInventory().hasEnoughStack("Steel Bar", 5)
+                    if (!player.getInventory().hasEnoughStack("Iron Bar", 5)
                             || !player.hasEnoughMoney(5000)) {
                         return new Result(false, "You can't upgrade your tool");
                     }
@@ -125,7 +128,7 @@ public class BlackSmithShop extends Shop{
 
         player.changeMoney(-price);
         toolUpgrade.put(type, false);
-        return new Result (true, "Successfully upgraded to" + type + ".");
+        return new Result (true, "Successfully upgraded to " + type + ".");
     }
 
     @Override

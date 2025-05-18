@@ -6,6 +6,7 @@ import models.Enums.Menu;
 import models.Enums.WeatherStatus;
 import models.PlayerInteraction.Friendship;
 import models.PlayerInteraction.Message;
+import models.Shops.BlackSmithShop;
 import models.Shops.CarpentersShop;
 import models.Shops.MarniesRanch;
 import models.animals.Fish;
@@ -237,6 +238,12 @@ public class GameController {
         if (!player.isConscious()) return new Result(false, text + "\n" + AnsiColors.ANSI_RED + "Now you are not conscious!" + AnsiColors.ANSI_RESET);
         return new Result(true, text.toString());
     }
+    public Result setLocation(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group(1));
+        int y = Integer.parseInt(matcher.group(2));
+        App.getApp().getCurrentGame().getPlayerInTurn().setLocationAbsolut(x, y);
+        return new Result(true, "Your location successfully changed to " + x + "," + y);
+    }
 
     public Result printMap(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
@@ -325,7 +332,21 @@ public class GameController {
         return player.getInventory().showTools();
     }
     public Result upgradeTool(Matcher matcher) {
-        return null;
+        String toolName = matcher.group(1);
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        Tool tool = (Tool) player.getInventory().getItemByName(toolName).getItem();
+
+        Shop shop = App.getApp().getCurrentGame().getShopPlayerIsIn(player);
+        if (shop == null) {
+            return new Result(false, "You should be in BlackSmith Shop");
+        }
+        if (!shop.getName().equalsIgnoreCase("BlackSmith Shop")) {
+            return new Result(false, "You should be in BlackSmith Shop");
+        }
+        BlackSmithShop blackSmithShop = (BlackSmithShop) shop;
+
+        return blackSmithShop.upgradeTool(tool);
     }
     public Result useTool(Matcher matcher) {
         String dir = matcher.group("direction");
@@ -593,7 +614,7 @@ public class GameController {
     }
 
     public Result build(Matcher matcher) {
-        String buildingName = matcher.group(1).toLowerCase();
+        String buildingName = matcher.group(1);
         int x = Integer.parseInt(matcher.group(2));
         int y = Integer.parseInt(matcher.group(3));
 
@@ -792,8 +813,17 @@ public class GameController {
 
     public Result artisanUse(Matcher matcher) {
         String itemName = matcher.group(1);
-        String ingredients = matcher.group(2);
-        String[] ingredientsParts = ingredients.split(" ");
+        String ingredient1 = matcher.group(2);
+        String ingredient2 = matcher.group(3);
+        String[] ingredientsParts;
+        if (ingredient2 != null) {
+            ingredientsParts = new String[2];
+            ingredientsParts[0] = ingredient1;
+            ingredientsParts[1] = ingredient2;
+        } else {
+            ingredientsParts = new String[1];
+            ingredientsParts[0] = ingredient1;
+        }
 
         ArtisanMachine machine = App.getApp().getCurrentGame().getMap()
                 .getNearArtisanMachine(App.getApp().getCurrentGame().getPlayerInTurn(), ItemManager.getArtisanMachineByGood(itemName));
@@ -1088,7 +1118,7 @@ public class GameController {
 
         Player sender = trade.getSender();
 
-        if (action.equals("-reject")) {
+        if (action.equals("reject")) {
             trade.reject();
             Friendship friendship = App.getApp().getCurrentGame().getFriendship(currentPlayer, sender);
             PlayersInteractionController.decreaseXP(friendship, 30, sender.getUsername());

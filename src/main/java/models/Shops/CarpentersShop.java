@@ -128,7 +128,7 @@ public class CarpentersShop extends Shop{
             bin.updateMap(game.getMap());
         } else {
             LivingPlace type = LivingPlace.fromString(name);
-            if (!game.getMap().canAddBuilding(new Location(x, y), type.getWidth(), type.getHeight())) {
+            if (!game.getMap().canAddBuilding(new Location(x, y), data.width, data.height)) {
                 return new Result(false, "You can't build " + name + " in this tile");
             }
             AnimalBuilding building = new AnimalBuilding(name, new Location(x, y), data.width, data.height, type);

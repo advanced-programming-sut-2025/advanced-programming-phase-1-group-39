@@ -141,7 +141,7 @@ public class AppDataManager {
                 }
 
                 Game game = App.getApp().getCurrentGame();
-                game.setGameMapRandom();
+                //game.setGameMapRandom();
 //                game.startGame();
 
             } catch (IOException e) {

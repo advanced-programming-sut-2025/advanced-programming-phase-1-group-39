@@ -86,11 +86,11 @@ public class Trade {
                 .append(" | From: ").append(sender.getUsername())
                 .append(" | To: ").append(receiver.getUsername())
                 .append(" | Type: ").append(type)
-                .append(" | Item: ").append(offeredItem);
-        if (price >= 0) {
+                .append(" | Item: ").append(offeredItem.getItemName());
+        if (price > 0) {
             sb.append(" | Price: ").append(price).append(" coins");
         } else if (requestedItem != null) {
-            sb.append(" | In exchange for: ").append(requestedItem);
+            sb.append(" | In exchange for: ").append(requestedItem.getItemName());
         }
         sb.append(" | Status: ").append(status);
         return sb.toString();

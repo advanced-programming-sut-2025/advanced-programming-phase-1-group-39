@@ -226,13 +226,14 @@ public class Map {
                 if (tile.canAddItemToTile()) {
                     if (Math.random() < foragingPossibility) {
                         if (haveTree) {
-                            if (Math.random() < 0.05) {
+                            double random = Math.random();
+                            if (random < 0.05) {
                                 ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason);
                                 tile.placeItem(new ItemStack(randomCrop, 1));
-                            } else if (Math.random() < 0.5) {
+                            } else if (random < 0.2) {
                                 Tree randomTree = ForagingManager.getRandomTree(nowSeason, tile);
                                 tile.plantTree(randomTree);
-                            } else {
+                            } else if (random < 0.5) {
                                 ForagingMaterial randomMaterial = ForagingManager.getRandomMaterial();
                                 tile.placeItem(new ItemStack(randomMaterial, 1));
                             }

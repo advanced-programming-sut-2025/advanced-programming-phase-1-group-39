@@ -50,7 +50,7 @@ public class MapMinPathFinder {
         int[] dy = {-1, 1, 0, 0};
 
         int exploredTiles = 0;
-        int maxExploredTiles = 10000;
+        int maxExploredTiles = 25000;
 
         while (!queue.isEmpty()) {
             if (exploredTiles++ > maxExploredTiles) {

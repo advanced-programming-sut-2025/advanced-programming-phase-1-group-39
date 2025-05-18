@@ -6,6 +6,7 @@ import models.Enums.Menu;
 import models.Enums.WeatherStatus;
 import models.PlayerInteraction.Friendship;
 import models.PlayerInteraction.Message;
+import models.Shops.BlackSmithShop;
 import models.Shops.CarpentersShop;
 import models.Shops.MarniesRanch;
 import models.animals.Fish;
@@ -237,6 +238,12 @@ public class GameController {
         if (!player.isConscious()) return new Result(false, text + "\n" + AnsiColors.ANSI_RED + "Now you are not conscious!" + AnsiColors.ANSI_RESET);
         return new Result(true, text.toString());
     }
+    public Result setLocation(Matcher matcher) {
+        int x = Integer.parseInt(matcher.group(1));
+        int y = Integer.parseInt(matcher.group(2));
+        App.getApp().getCurrentGame().getPlayerInTurn().setLocationAbsolut(x, y);
+        return new Result(true, "Your location successfully changed to " + x + "," + y);
+    }
 
     public Result printMap(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
@@ -325,7 +332,21 @@ public class GameController {
         return player.getInventory().showTools();
     }
     public Result upgradeTool(Matcher matcher) {
-        return null;
+        String toolName = matcher.group(1);
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        Tool tool = (Tool) player.getInventory().getItemByName(toolName).getItem();
+
+        Shop shop = App.getApp().getCurrentGame().getShopPlayerIsIn(player);
+        if (shop == null) {
+            return new Result(false, "You should be in BlackSmith Shop");
+        }
+        if (!shop.getName().equalsIgnoreCase("BlackSmith Shop")) {
+            return new Result(false, "You should be in BlackSmith Shop");
+        }
+        BlackSmithShop blackSmithShop = (BlackSmithShop) shop;
+
+        return blackSmithShop.upgradeTool(tool);
     }
     public Result useTool(Matcher matcher) {
         String dir = matcher.group("direction");

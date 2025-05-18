@@ -24,6 +24,7 @@ public enum GameCommands {
     HELP_READING_MAP("help\\s+reading\\s+map"),
 
     WALK("walk\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)"),
+    SET_LOCATION("set\\s+location\\s+-l\\s+(\\d+)\\s+(\\d+)"),
 
     SHOW_ENERGY("energy\\s+show"),
     CHEAT_SET_ENERGY("energy\\s+set\\s+-v\\s+(?<value>\\d+)"),

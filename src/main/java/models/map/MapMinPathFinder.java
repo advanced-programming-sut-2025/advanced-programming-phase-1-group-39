@@ -50,7 +50,7 @@ public class MapMinPathFinder {
         int[] dy = {-1, 1, 0, 0};
 
         int exploredTiles = 0;
-        int maxExploredTiles = 25000;
+        int maxExploredTiles = 100000;
 
         while (!queue.isEmpty()) {
             if (exploredTiles++ > maxExploredTiles) {
@@ -92,7 +92,7 @@ public class MapMinPathFinder {
         queue.add(startNode);
 
         int exploredTiles = 0;
-        int maxExploredTiles = 25000;
+        int maxExploredTiles = 100000;
 
         while (!queue.isEmpty()) {
             if (exploredTiles++ > maxExploredTiles) {

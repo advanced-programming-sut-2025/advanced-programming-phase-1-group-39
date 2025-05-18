@@ -1,0 +1,36 @@
+register    -u   mostafa   -p paSS12#$   paSS12#$  -n mosi  -e mostafa@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
+register   -u ahmad -p paSS12#$ paSS12#$ -n ahi -e ahamd@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
+register -u reza -p paSS12#$ paSS12#$ -n reza -e reza@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
+register -u mohsen -p paSS12#$ paSS12#$ -n mohsen -e mohsen@gmail.com -g male
+pick question -q 1 -a salam -c salam
+
+login -u reza -p paSS12#$ -stay-logged-in
+
+menu enter game
+game new -u ahmad mostafa mohsen
+game map 1
+game map 2
+game map 1
+game map 2
+next turn
+walk -l 72,13
+y
+walk -l 72,14
+y
+cheat add item -n Wood -c 300
+cheat add item -n Copper Bar -c 10
+cheat add item -n Iron Bar -c 10
+cheat add item -n Coal -c 50
+set location -l 185 80
+trade -u reza -t offer -i Wood -a 100 -p 1000
+trade list
+next turn
+next turn
+next turn
+trade response -accept -i 1

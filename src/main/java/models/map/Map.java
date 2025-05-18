@@ -556,8 +556,8 @@ public class Map {
         int x = tile.getLocation().x();
         int y = tile.getLocation().y();
 
-        for (int i = x - 1; i <= x + 1; i++) {
-            for (int j = y - 1; j <= y + 1; j++) {
+        for (int i = Math.max(x - 1, 0); i <= Math.min(x + 1, width -1); i++) {
+            for (int j = Math.max(y - 1, 0); j <= Math.min(y + 1, height - 1); j++) {
                 ItemStack itemOnTile = tiles[j][i].getItemOnTile();
                 String itemName = null;
                 if (itemOnTile != null) {

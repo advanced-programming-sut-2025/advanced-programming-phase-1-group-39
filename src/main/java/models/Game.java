@@ -322,7 +322,10 @@ public class Game {
             for (int j = startY; j < startY + Constants.FARM_HEIGHT; j++) {
                 Tile tile = gameMap.getTile(i, j);
                 Tree tree;
-                if ((tile.getPlant() != null || ((tree = tile.getTree()) != null && tree.hasFruit())) && !gameMap.isNearScarecrow(tile)) {
+                if ((tile.getPlant() != null
+                        || ((tree = tile.getTree()) != null && tree.hasFruit()))
+                    && !gameMap.isNearScarecrow(tile)
+                    && !gameMap.isInBuilding(player.getBuildingByName("greenhouse"), tile)) {
                     plantTiles.add(tile);
                 }
             }

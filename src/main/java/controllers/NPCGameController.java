@@ -256,8 +256,8 @@ public class NPCGameController {
                     interaction.setActiveMission3(game.getTime().clone());
                     interaction.getActiveMission3().addToDay(interaction.getDaysPassed());
                 }
-                interaction.setFriendshipScore(interaction.getFriendshipScore() + score);
             }
+            interaction.setFriendshipScore(interaction.getFriendshipScore() + score);
         } else {
             if (interaction.getFriendshipScore() + score > 800) {
                 interaction.setFriendshipScore(799);

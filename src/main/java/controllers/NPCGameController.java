@@ -364,9 +364,8 @@ public class NPCGameController {
             output.append("Congratulations! You've maxed out your friendship with ").append(NPCName).append(" !!!\n");
             output.append("---------------");
         }
-        if (!NPCName.equals("robin")) {
-            output.append("\n");
-        }
+
+        output.append("\n");
         return output;
     }
 

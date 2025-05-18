@@ -1126,10 +1126,10 @@ public class GameController {
         }
 
         if (trade.getType() == TradeType.REQUEST) {
-            if (!currentPlayer.getInventory().hasEnoughStack(trade.getRequestedItem().getItemName(),
-                    trade.getRequestedItem().getAmount())) {
+            if (!currentPlayer.getInventory().hasEnoughStack(trade.getOfferedItem().getItemName(),
+                    trade.getOfferedItem().getAmount())) {
                 return new Result(false, "You don’t have enough "
-                        + trade.getRequestedItem().getItemName() + " to complete the trade.");
+                        + trade.getOfferedItem().getItemName() + " to complete the trade.");
             }
         } else if (trade.getType() == TradeType.OFFER) {
             if (!sender.getInventory().hasEnoughStack(trade.getOfferedItem().getItemName(), trade.getOfferedItem().getAmount())) {
@@ -1178,13 +1178,13 @@ public class GameController {
                         targetItem.getAmount());
 
             } else {
-                if (!currentPlayer.getInventory().hasEnoughStack(targetItem.getItemName(), targetItem.getAmount())) {
-                    return new Result(false, "You don’t have enough " + targetItem.getItemName());
+                if (!currentPlayer.getInventory().hasEnoughStack(trade.getRequestedItem().getItemName(), trade.getRequestedItem().getAmount())) {
+                    return new Result(false, "You don’t have enough " + trade.getRequestedItem().getItemName());
                 }
 
-                sender.getInventory().pickItem(trade.getRequestedItem().getItemName(), trade.getRequestedItem().getAmount());
-                currentPlayer.getInventory().addItem(ItemManager.getItemByName(trade.getRequestedItem().getItemName()),
-                        trade.getRequestedItem().getAmount());
+                sender.getInventory().pickItem(trade.getOfferedItem().getItemName(), trade.getOfferedItem().getAmount());
+                currentPlayer.getInventory().addItem(ItemManager.getItemByName(trade.getOfferedItem().getItemName()),
+                        trade.getOfferedItem().getAmount());
 
                 currentPlayer.getInventory().pickItem(targetItem.getItemName(), targetItem.getAmount());
                 sender.getInventory().addItem(ItemManager.getItemByName(targetItem.getItemName()), targetItem.getAmount());

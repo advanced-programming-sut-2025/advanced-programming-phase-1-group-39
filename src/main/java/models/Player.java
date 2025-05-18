@@ -56,7 +56,7 @@ public class Player {
     // animals
     private HashMap<String, Animal> animals = new HashMap<>();
 
-    private int money = 0;
+    private int money = 5000;
     private int nightRevenue = 0;
 
     private ArrayList<Building> playerFarmBuildings = new ArrayList<>();

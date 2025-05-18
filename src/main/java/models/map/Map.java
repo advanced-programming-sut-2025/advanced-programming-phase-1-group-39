@@ -443,11 +443,12 @@ public class Map {
 
 
     public String helpReadingMap() {
-        return     "Soil : .\n"
+        return     "Soil and NPC map lawn : .\n"
                 + "Water : ~\n"
                 + "Wall : O\n"
                 + "Indoor : *\n"
                 + "Quarry : Q\n"
+                + "Minerals : M\n"
                 + "Plant : P\n"
                 + "Tree : T\n"
                 + "Stone : ●\n"
@@ -456,10 +457,11 @@ public class Map {
                 + "Quarry Minerals : M\n"
 
                 + "Craft : C\n"
-                + "Artisan Machine : M\n"
+                + "Artisan Machine : A\n"
 
                 + "Path : #\n"
-                + "Player : @\n";
+                + "Player : @\n"
+                + "NPCs : N";
     }
 
     public Tile getTile(int x, int y) {

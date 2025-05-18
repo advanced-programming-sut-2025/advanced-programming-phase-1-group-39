@@ -2,6 +2,7 @@ package models.map;
 
 import models.ItemStack;
 import models.Location;
+import models.artisan.ArtisanMachine;
 import models.cropsAndFarming.*;
 
 
@@ -51,6 +52,7 @@ public class Tile {
                 else if (itemOnTile.getItem().getName().equalsIgnoreCase("Stone")) c = '●';
                 else if (itemOnTile.getItem().getName().equalsIgnoreCase("Grass")) c = '=';
             } else if (itemOnTile.getItem() instanceof ForagingMineral) c = 'M';
+            else if (itemOnTile.getItem() instanceof ArtisanMachine) c = 'A';
         }
         return c;
     }
@@ -84,14 +86,15 @@ public class Tile {
         else if (c == 'M') return AnsiColors.ANSI_YELLOW_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;
         else if (c == '=') return AnsiColors.ANSI_DARK_GREEN_BOLD + AnsiColors.ANSI_GOLDEN_BACKGROUND;
 
-            // basket
+        else if (c == 'A') return AnsiColors.ANSI_CYAN_BOLD + AnsiColors.ANSI_BLUE_BACKGROUND;
+
+        // basket
         else if (c == 'B') return AnsiColors.ANSI_YELLOW_BACKGROUND + AnsiColors.ANSI_BLACK_BOLD;
         else if (c == '#') return AnsiColors.ANSI_LIGHT_GOLDEN_BACKGROUND;
         else {
             return AnsiColors.ANSI_WHITE;
         }
     }
-
     public void plow() {
         canPlant = true;
     }

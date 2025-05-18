@@ -10,6 +10,7 @@ import models.animals.Animal;
 import models.PlayerInteraction.Friendship;
 import models.PlayerInteraction.Message;
 import models.buildings.Building;
+import models.cropsAndFarming.Tree;
 import models.map.AnsiColors;
 import models.map.FarmType;
 import models.map.Map;
@@ -237,6 +238,8 @@ public class Game {
         if (todayWeather.getStatus().equals(WeatherStatus.STORM))
             thorTiles();
 
+        attackCOfCrows();
+
         // if weather rain or storm should water all tiles
         if (todayWeather.getStatus().equals(WeatherStatus.STORM)
                 || todayWeather.getStatus().equals(WeatherStatus.RAIN)) {
@@ -273,6 +276,7 @@ public class Game {
     }
 
     private void thorTiles() {
+        // tiles that got lightning
         ArrayList<Tile> tiles = new ArrayList<>();
         for (Player player : players) {
             for (int i = 0; i < 3; i++) {
@@ -280,7 +284,7 @@ public class Game {
                 int tileY = player.getStartOfFarm().y() + (int) (Math.random() * Constants.FARM_HEIGHT);
 
                 Tile tile = gameMap.getTile(tileX, tileY);
-                if (tiles.contains(tile)) {
+                if (tiles.contains(tile) || gameMap.isInBuilding(player.getBuildingByName("greenhouse"), tile)) {
                     i--;
                     continue;
                 }
@@ -289,6 +293,41 @@ public class Game {
                 tiles.add(tile);
             }
         }
+    }
+
+    public void attackCOfCrows() {
+        ArrayList<Tile> tiles;
+        for (Player player : players) {
+            tiles = getPlantTiles(player);
+            int maxNumOfAttacks = tiles.size()/16;
+            for (int i = 0; i < maxNumOfAttacks; i++) {
+                if (Math.random() > 0.25) continue;
+                int randIndex = (int)(Math.random() * 16) + 16 * i;
+
+                Tile tile = tiles.get(randIndex);
+                if (tile.getTree() != null) {
+                    tile.getTree().harvest();
+                } else {
+                    tile.getPlant().die();
+                }
+            }
+        }
+    }
+    public ArrayList<Tile> getPlantTiles(Player player) {
+        int startX = player.getStartOfFarm().x();
+        int startY = player.getStartOfFarm().y();
+
+        ArrayList<Tile> plantTiles = new ArrayList<>();
+        for (int i = startX; i < startX + Constants.FARM_WIDTH; i++) {
+            for (int j = startY; j < startY + Constants.FARM_HEIGHT; j++) {
+                Tile tile = gameMap.getTile(i, j);
+                Tree tree;
+                if ((tile.getPlant() != null || ((tree = tile.getTree()) != null && tree.hasFruit())) && !gameMap.isNearScarecrow(tile)) {
+                    plantTiles.add(tile);
+                }
+            }
+        }
+        return plantTiles;
     }
 
     private void fillFarmsWithRandoms() {

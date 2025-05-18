@@ -540,9 +540,6 @@ public class Map {
     }
 
     public boolean isNearBuilding(Player player, Building building) {
-        int startX = player.getLocation().x() - 1;
-        int startY = player.getLocation().y() - 1;
-
         int buildingX = building.getLocation().x();
         int buildingY = building.getLocation().y();
         int width = building.getWidth();
@@ -554,6 +551,25 @@ public class Map {
             }
         }
 
+        return false;
+    }
+
+    public boolean isNearScarecrow(Tile tile) {
+        int x = tile.getLocation().x();
+        int y = tile.getLocation().y();
+
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                ItemStack itemOnTile = tiles[j][i].getItemOnTile();
+                String itemName = null;
+                if (itemOnTile != null) {
+                    itemName = itemOnTile.getItem().getName();
+                }
+                if (itemName != null && (itemName.equals("Scarecrow") || itemName.equals("Delux Scarecrow"))) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

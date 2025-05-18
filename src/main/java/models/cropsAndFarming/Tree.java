@@ -133,4 +133,8 @@ public class Tree{
     public int getCurrentStage() {
         return currentStage;
     }
+
+    public boolean hasFruit() {
+        return hasFruit;
+    }
 }

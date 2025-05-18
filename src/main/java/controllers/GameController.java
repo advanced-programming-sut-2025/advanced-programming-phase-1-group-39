@@ -1102,7 +1102,7 @@ public class GameController {
                         + trade.getRequestedItem().getItemName() + " to complete the trade.");
             }
         } else if (trade.getType() == TradeType.OFFER) {
-            if (!sender.getInventory().hasEnoughStack(trade.getRequestedItem().getItemName(), trade.getRequestedItem().getAmount())) {
+            if (!sender.getInventory().hasEnoughStack(trade.getOfferedItem().getItemName(), trade.getOfferedItem().getAmount())) {
                 return new Result(false, "Sender no longer has the required items.");
             }
         }

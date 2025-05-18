@@ -42,7 +42,6 @@ public class Game {
     private Weather todayWeather = new Weather();
     private Weather tomorrowWeather = new Weather();
 
-    // TODO: change place of this
     private int currentGiftNumber = 101;
 
     // first player should be the mainPlayer of game
@@ -455,8 +454,6 @@ public class Game {
         playerInTurn = players.get(newIndex);
         if (!playerInTurn.isConscious()) return nextTurn();
 
-        // TODO : show message!!!
-//        showMessages(playerInTurn);
 
         return true;
     }

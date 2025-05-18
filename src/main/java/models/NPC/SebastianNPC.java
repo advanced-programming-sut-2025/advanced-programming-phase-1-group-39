@@ -28,7 +28,7 @@ public class SebastianNPC extends NPC {
                 , new ItemStack(ItemManager.getItemByName("Pumpkin Pie"), 1)
                 , new ItemStack(ItemManager.getItemByName("Stone"), 150)));
         super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/sebastianMissions.json");
-        super.quests = generateNPCQuests(tasks, missions);
+        super.quests = generateNPCQuests(tasks);
     }
 
     @Override

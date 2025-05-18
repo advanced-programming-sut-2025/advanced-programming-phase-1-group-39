@@ -27,7 +27,7 @@ public class HarveyNPC extends NPC {
                 , new ItemStack(ItemManager.getItemByName("Salmon"), 1)
                 , new ItemStack(ItemManager.getItemByName("Orange Wine"), 1)));
         super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/harveyMissions.json");
-        super.quests = generateNPCQuests(tasks, missions);
+        super.quests = generateNPCQuests(tasks);
     }
 
     @Override

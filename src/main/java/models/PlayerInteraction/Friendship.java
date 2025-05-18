@@ -10,7 +10,6 @@ public class Friendship {
     private final String user1;
     private final String user2;
     private int xp;
-    private Time lastInteraction;
 
     private boolean isFirstTalking;
     private boolean hasGiftedEachOther;
@@ -27,15 +26,10 @@ public class Friendship {
         this.user1 = user1;
         this.user2 = user2;
         this.xp = 0;
+
         this.isFirstTalking = false;
     }
 
-
-    public void dailyDecay() {
-//        if (!lastInteraction.isEqual(LocalDate.now())) {
-//            // TODO : complete this function
-//        }
-    }
 
     // Getters & toString...
 
@@ -64,10 +58,6 @@ public class Friendship {
         } else {
             return 0;
         }
-    }
-
-    public Time getLastInteraction() {
-        return lastInteraction;
     }
 
     public ArrayList<Message> getMessages() {

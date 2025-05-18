@@ -30,6 +30,8 @@ public class MainMenuView implements View {
         } else if ((matcher = MainMenuCommands.ExitMenu.getMatcher(command)) != null) {
             result = controller.exit();
             System.out.println(result.message());
+        } else if ((matcher = MainMenuCommands.Exit.getMatcher(command)) != null) {
+            controller.bigExit();
         } else {
             System.out.println("invalid command!");
         }

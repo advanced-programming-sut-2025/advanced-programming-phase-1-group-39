@@ -25,7 +25,7 @@ public class RobinNPC extends NPC {
                 , new ItemStack(ItemManager.getItemByName("Iron Bar"), 10)
                 , new ItemStack(ItemManager.getItemByName("Wood"), 10000)));
         super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/robinMissions.json");
-        super.quests = generateNPCQuests(tasks, missions);
+        super.quests = generateNPCQuests(tasks);
     }
 
     @Override

@@ -58,10 +58,11 @@ public abstract class NPC {
 
     // Auxiliary functions :
 
-    protected ArrayList<Quest> generateNPCQuests(ArrayList<ItemStack> tasks, ArrayList<String> missions ) {
+    protected ArrayList<Quest> generateNPCQuests(ArrayList<ItemStack> tasks) {
         ArrayList<Quest> quests = new ArrayList<>();
         for (int i = 0; i < tasks.size(); i++) {
             Quest quest = new Quest(i+1, tasks.get(i));
+            quests.add(quest);
         }
         return quests;
     }

@@ -15,12 +15,13 @@ import java.util.regex.Matcher;
 
 public class NPCGameController {
 
-    App app = App.getApp();
-    Game game = app.getCurrentGame();
+
     ArrayList<String> NPCNames = new ArrayList<>(List.of("sebastian", "abigail", "leah", "robin", "harvey"));
 
 
     public Result meetNPC(Matcher matcher) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
         String npcName = matcher.group("NPCName");
         String condition;
         String output;
@@ -86,11 +87,13 @@ public class NPCGameController {
     }
 
     public Result giveGift(Matcher matcher) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
         String npcName = matcher.group("NPCName");
         String itemName = matcher.group("item");
         Player currentPlayer = game.getPlayerInTurn();
         if (!NPCNames.contains(npcName)) {
-            return new Result(false, "NPC " + npcName + "is not among the npcs!");
+            return new Result(false, "NPC " + npcName + " is not among the npcs!");
         } else if (npcName.equals("sebastian") && !isNpcNearPlayer(currentPlayer.getLocation(),
                 game.getNPC("sebastian").getLocation())) {
             return new Result(false, "to interact with sebastian, you must be next to him.");
@@ -141,12 +144,14 @@ public class NPCGameController {
     }
 
     public Result showQuestsList() {
-        StringBuilder output = new StringBuilder();
+        String output;
         output = activeMissions();
-        return new Result(true, output.toString());
+        return new Result(true, output);
     }
 
     public Result finishQuests(Matcher matcher) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
         String index = matcher.group("index");
         Player currentPlayer = game.getPlayerInTurn();
         if (!isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation()) &&
@@ -241,6 +246,8 @@ public class NPCGameController {
     }
 
     private void setFriendshipScore(PlayerNPCInteraction interaction, int score) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
         int levelScore = interaction.getFriendshipScore() % 200;
         if (interaction.getFriendshipLevel() != 3) {
             if (levelScore + score > 200) {
@@ -346,6 +353,8 @@ public class NPCGameController {
     }
 
     private StringBuilder printFriendShip(String NPCName) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
         Player currentPlayer = game.getPlayerInTurn();
         StringBuilder output = new StringBuilder();
         output.append(NPCName).append(" ->\n").append("friendShip level : ");
@@ -361,8 +370,11 @@ public class NPCGameController {
         return output;
     }
 
-    private StringBuilder activeMissions() {
+    private String activeMissions() {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
         Player currentPlayer = game.getPlayerInTurn();
+        String Output;
         StringBuilder output = new StringBuilder();
         output.append("Quests in Progress :");
         int count = 0;
@@ -381,12 +393,15 @@ public class NPCGameController {
                 count++;
                 output.append(count).append(") ").append(getMission(3, friendship.getNPCName())).append("\n");
             }
-            output.deleteCharAt(output.length() - 1);
         }
-        return output;
+        output.deleteCharAt(output.length() - 1);
+        Output = output.toString();
+        return Output;
     }
 
     private String getMission(int level, String NPCName) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
         for (Quest quest : game.getNPC(NPCName).getQuests()) {
             if (quest.getLevel() == level) {
                 return game.getNPC(NPCName).getMissions().get(level - 1);
@@ -396,12 +411,16 @@ public class NPCGameController {
     }
 
     private Boolean canDoRequest(int level, String NPCName) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
         Quest quest = game.getNPC(NPCName).getQuest(level);
         Player currentPlayer = game.getPlayerInTurn();
         return currentPlayer.getInventory().hasEnoughStack(quest.getTask().getItem().getName(), quest.getTask().getAmount());
     }
 
     private void getReward(int level, String NPCName, int friendShipLevel) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
         if (level == 1) {
             game.getNPC(NPCName).getRewardMission1(friendShipLevel, game);
         } else if (level == 2) {
@@ -413,6 +432,8 @@ public class NPCGameController {
     }
 
     private void deleteQuest(int level, String NPCName) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
         for (int i = 0; i < game.getNPC(NPCName).getQuests().size(); i++) {
             if (game.getNPC(NPCName).getQuests().get(i).getLevel() == level) {
                 game.getNPC(NPCName).getQuests().remove(i);

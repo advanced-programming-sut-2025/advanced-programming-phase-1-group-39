@@ -36,6 +36,10 @@ public class MainMenuController {
         return new Result(true, "You have been logged out of your account. You are now in the signup menu.");
     }
 
+    public void bigExit() {
+        App.getApp().setCurrentMenu(Menu.ExitMenu);
+    }
+
 
 
 }

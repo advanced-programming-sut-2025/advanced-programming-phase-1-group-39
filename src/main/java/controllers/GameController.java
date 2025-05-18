@@ -1118,7 +1118,7 @@ public class GameController {
 
         Player sender = trade.getSender();
 
-        if (action.equals("-reject")) {
+        if (action.equals("reject")) {
             trade.reject();
             Friendship friendship = App.getApp().getCurrentGame().getFriendship(currentPlayer, sender);
             PlayersInteractionController.decreaseXP(friendship, 30, sender.getUsername());

@@ -9,7 +9,7 @@ public enum NPCGameCommand {
     GiveGiftToNPC("gift\\s+NPC\\s+(?<NPCName>.*?)\\s+-i\\s+(?<item>.*?)"),
     ShowFriendShipList("friendship\\s+NPC\\s+list"),
     ShowQuestsList("quests\\s+list"),
-    QuestsFinish("quests\\s+finish\\s+-i(?<index>\\d+)"),
+    QuestsFinish("quests\\s+finish\\s+-i\\s+(?<index>\\d+)"),
 
     //quests finish -i <index>
 

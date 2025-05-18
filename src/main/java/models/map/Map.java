@@ -412,7 +412,7 @@ public class Map {
                 if (shopNameSet) continue;
                 for (Player player : players) {
                     if (j == player.getLocation().x() && i == player.getLocation().y()) {
-                        text.append(tile.getTileColor() + playerColors[playerCounter++] + " @ " + AnsiColors.ANSI_RESET);
+                        text.append(tile.getTileColor() + playerColors[players.indexOf(player)] + " @ " + AnsiColors.ANSI_RESET);
                         doesSetPlayer = true;
                         break;
                     }
@@ -421,7 +421,7 @@ public class Map {
 
                 for (NPC npc : npcs) {
                     if (j == npc.getLocation().x() + npcMapStartX && i == npc.getLocation().y() + npcMapStartY) {
-                        text.append(AnsiColors.ANSI_REVERSE + npcColors[npcCounter++] + tile.getTileColor() + " N " + AnsiColors.ANSI_RESET);
+                        text.append(AnsiColors.ANSI_REVERSE + npcColors[npcs.indexOf(npc)] + tile.getTileColor() + " N " + AnsiColors.ANSI_RESET);
                         doesSetNpc = true;
                         break;
                     }
@@ -436,10 +436,6 @@ public class Map {
         return text.toString();
     }
 
-
-    public String printColorMap(ArrayList<Player> players, ArrayList<NPC> npcs, ArrayList<Shop> shops) {
-        return printMapBySize(150, 75, 150, players, npcs, shops);
-    }
 
 
     public String helpReadingMap() {

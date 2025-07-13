@@ -1,11 +1,11 @@
 package com.StardewValley.models.tools;
 
+
 import com.StardewValley.models.*;
-import models.cropsAndFarming.ForagingCrop;
-import models.cropsAndFarming.ForagingManager;
-import models.cropsAndFarming.ForagingMineral;
-import models.map.Tile;
-import models.tools.ToolType;
+import com.StardewValley.models.cropsAndFarming.ForagingCrop;
+import com.StardewValley.models.cropsAndFarming.ForagingManager;
+import com.StardewValley.models.cropsAndFarming.ForagingMineral;
+import com.StardewValley.models.map.Tile;
 
 public class Pickaxe extends Tool {
     public Pickaxe() {

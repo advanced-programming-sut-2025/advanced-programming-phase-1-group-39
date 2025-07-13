@@ -1,18 +1,15 @@
 package com.StardewValley.models.Shops;
 
-import com.StardewValley.models.App;
-import com.StardewValley.models.ItemManager;
-import com.StardewValley.models.OddItems;
-import com.StardewValley.models.Player;
+
+import com.StardewValley.models.*;
+import com.StardewValley.models.NPC.NPC;
+import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.animals.AnimalType;
+import com.StardewValley.models.animals.LivingPlace;
+import com.StardewValley.models.buildings.AnimalBuilding;
+import com.StardewValley.models.tools.MilkPail;
+import com.StardewValley.models.tools.Shear;
 import com.google.gson.Gson;
-import models.NPC.NPC;
-import models.Shops.Shop;
-import models.animals.Animal;
-import models.animals.AnimalType;
-import models.animals.LivingPlace;
-import models.buildings.AnimalBuilding;
-import models.tools.MilkPail;
-import models.tools.Shear;
 
 import java.io.FileReader;
 import java.util.HashMap;

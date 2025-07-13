@@ -1,12 +1,11 @@
 package com.StardewValley.models.Shops;
 
 import com.StardewValley.models.*;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.NPC.NPC;
+import com.StardewValley.models.crafting.CraftingRecipe;
+import com.StardewValley.models.inventory.InventoryType;
 import com.google.gson.Gson;
-import models.Enums.Season;
-import models.NPC.NPC;
-import models.Shops.Shop;
-import models.crafting.CraftingRecipe;
-import models.inventory.InventoryType;
 
 import java.io.FileReader;
 import java.util.ArrayList;

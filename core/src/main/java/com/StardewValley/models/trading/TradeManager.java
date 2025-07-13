@@ -1,6 +1,5 @@
 package com.StardewValley.models.trading;
 
-import models.trading.TradeStatus;
 
 import java.util.ArrayList;
 import java.util.List;

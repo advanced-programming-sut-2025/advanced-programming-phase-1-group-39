@@ -1,7 +1,7 @@
 package com.StardewValley.models;
 
-import models.Item;
-import models.inventory.Inventory;
+
+import com.StardewValley.models.inventory.Inventory;
 
 import java.util.ArrayList;
 

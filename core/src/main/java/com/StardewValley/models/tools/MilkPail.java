@@ -1,14 +1,13 @@
 package com.StardewValley.models.tools;
 
-import com.StardewValley.models.ItemStack;
-import com.StardewValley.models.Player;
-import com.StardewValley.models.Skill;
-import com.StardewValley.models.Weather;
-import models.animals.Animal;
-import models.animals.AnimalProduct;
-import models.animals.AnimalType;
-import models.animals.LivingPlace;
-import models.map.Tile;
+
+import com.StardewValley.models.*;
+import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.animals.AnimalProduct;
+import com.StardewValley.models.animals.AnimalType;
+import com.StardewValley.models.animals.LivingPlace;
+import com.StardewValley.models.map.Tile;
+
 
 public class MilkPail extends Tool {
     public MilkPail() {

@@ -1,19 +1,19 @@
 package com.StardewValley.models;
 
+
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.NPC.NPC;
+import com.StardewValley.models.NPC.PlayerNPCInteraction;
+import com.StardewValley.models.NPC.Quest;
 import com.StardewValley.models.animals.*;
+import com.StardewValley.models.artisan.ArtisanMachineRecipe;
 import com.StardewValley.models.buildings.*;
+import com.StardewValley.models.cooking.FoodBuff;
+import com.StardewValley.models.cooking.FoodRecipe;
+import com.StardewValley.models.crafting.CraftingRecipe;
+import com.StardewValley.models.inventory.Inventory;
+import com.StardewValley.models.map.AnsiColors;
 import com.StardewValley.models.tools.*;
-import models.Enums.Season;
-import models.NPC.NPC;
-import models.NPC.PlayerNPCInteraction;
-import models.NPC.Quest;
-import models.artisan.ArtisanMachineRecipe;
-import models.cooking.FoodBuff;
-import models.cooking.FoodRecipe;
-import models.crafting.CraftingRecipe;
-import models.inventory.Inventory;
-import models.map.AnsiColors;
-import models.tools.FishingPole;
 
 import java.util.ArrayList;
 import java.util.Arrays;

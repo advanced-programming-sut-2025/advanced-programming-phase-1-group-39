@@ -1,10 +1,11 @@
 package com.StardewValley.views;
 
-import controllers.AppControllers;
-import controllers.LoginMenuController;
-import models.App;
-import models.Enums.commands.LoginMenuCommands;
-import models.Result;
+
+import com.StardewValley.controllers.AppControllers;
+import com.StardewValley.controllers.LoginMenuController;
+import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.commands.LoginMenuCommands;
+import com.StardewValley.models.Result;
 
 import java.util.regex.Matcher;
 

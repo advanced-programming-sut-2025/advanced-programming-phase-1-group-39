@@ -1,6 +1,7 @@
 package com.StardewValley.models;
 
-import models.Enums.Menu;
+
+import com.StardewValley.models.Enums.Menu;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,7 @@
 package com.StardewValley.models.Shops;
 
-import models.Item;
+
+import com.StardewValley.models.Item;
 
 public class ShopItem extends Item {
     private int price;

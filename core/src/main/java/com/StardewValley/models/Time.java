@@ -1,7 +1,8 @@
 package com.StardewValley.models;
 
-import models.Enums.DayOfWeek;
-import models.Enums.Season;
+
+import com.StardewValley.models.Enums.DayOfWeek;
+import com.StardewValley.models.Enums.Season;
 
 public class Time {
     private int day = 1;

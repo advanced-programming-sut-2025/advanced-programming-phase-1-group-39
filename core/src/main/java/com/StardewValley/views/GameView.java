@@ -1,13 +1,12 @@
 package com.StardewValley.views;
 
+
 import com.StardewValley.controllers.*;
-import com.StardewValley.models.App;
-import com.StardewValley.models.Input;
-import com.StardewValley.models.Player;
-import models.Enums.Menu;
-import models.Enums.commands.GameCommands;
-import models.Enums.commands.InteractionsCommand;
-import models.Enums.commands.NPCGameCommand;
+import com.StardewValley.models.*;
+import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.Enums.commands.GameCommands;
+import com.StardewValley.models.Enums.commands.InteractionsCommand;
+import com.StardewValley.models.Enums.commands.NPCGameCommand;
 
 import java.util.regex.Matcher;
 

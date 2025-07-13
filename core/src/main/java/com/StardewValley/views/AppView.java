@@ -1,8 +1,9 @@
 package com.StardewValley.views;
 
-import models.App;
-import models.Enums.Menu;
-import models.Input;
+
+import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.Input;
 
 public class AppView {
     public void run() {

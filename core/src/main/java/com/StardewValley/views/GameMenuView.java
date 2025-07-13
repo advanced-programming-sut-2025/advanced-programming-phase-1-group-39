@@ -1,7 +1,5 @@
 package com.StardewValley.views;
 
-
-
 import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.controllers.GameMenuController;
 import com.StardewValley.models.Enums.commands.GameMenuCommands;

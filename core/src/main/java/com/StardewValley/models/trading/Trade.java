@@ -1,8 +1,7 @@
 package com.StardewValley.models.trading;
 
-import models.Player;
-import models.trading.TradeStatus;
-import models.trading.TradeType;
+
+import com.StardewValley.models.Player;
 
 public class Trade {
     private static int nextId = 1;

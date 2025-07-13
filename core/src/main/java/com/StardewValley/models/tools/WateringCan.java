@@ -1,14 +1,13 @@
 package com.StardewValley.models.tools;
 
-import models.Player;
-import models.Result;
-import models.Skill;
-import models.Weather;
-import models.map.AnsiColors;
-import models.map.Tile;
-import models.map.TileType;
-import models.tools.Tool;
-import models.tools.ToolType;
+
+import com.StardewValley.models.Player;
+import com.StardewValley.models.Result;
+import com.StardewValley.models.Skill;
+import com.StardewValley.models.Weather;
+import com.StardewValley.models.map.AnsiColors;
+import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.map.TileType;
 
 public class WateringCan extends Tool {
     private int tilesWaterNumRemaining;

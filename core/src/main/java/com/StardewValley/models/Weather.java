@@ -1,8 +1,9 @@
 package com.StardewValley.models;
 
-import models.Enums.Season;
-import models.Enums.WeatherStatus;
-import models.map.Tile;
+
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.Enums.WeatherStatus;
+import com.StardewValley.models.map.Tile;
 
 import java.util.ArrayList;
 

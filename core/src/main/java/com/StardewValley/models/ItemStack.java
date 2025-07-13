@@ -1,6 +1,5 @@
 package com.StardewValley.models;
 
-import models.Item;
 
 public class ItemStack {
     Item item;

@@ -1,10 +1,10 @@
 package com.StardewValley.models.tools;
 
+
 import com.StardewValley.models.*;
-import models.cropsAndFarming.Tree;
-import models.map.Tile;
-import models.map.TileType;
-import models.tools.ToolType;
+import com.StardewValley.models.cropsAndFarming.Tree;
+import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.map.TileType;
 
 public class Axe extends Tool {
     public Axe() {

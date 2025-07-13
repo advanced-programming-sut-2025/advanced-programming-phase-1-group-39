@@ -1,9 +1,10 @@
 package com.StardewValley.models.Shops;
 
-import models.Location;
-import models.NPC.NPC;
-import models.Result;
-import models.buildings.Building;
+
+import com.StardewValley.models.Location;
+import com.StardewValley.models.NPC.NPC;
+import com.StardewValley.models.Result;
+import com.StardewValley.models.buildings.Building;
 
 public class Shop extends Building {
     private int openHour;

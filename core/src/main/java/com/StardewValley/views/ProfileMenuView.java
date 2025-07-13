@@ -1,9 +1,10 @@
 package com.StardewValley.views;
 
-import controllers.AppControllers;
-import controllers.ProfileMenuController;
-import models.Enums.commands.ProfileMenuCommands;
-import models.Result;
+
+import com.StardewValley.controllers.AppControllers;
+import com.StardewValley.controllers.ProfileMenuController;
+import com.StardewValley.models.Enums.commands.ProfileMenuCommands;
+import com.StardewValley.models.Result;
 
 import java.util.regex.Matcher;
 

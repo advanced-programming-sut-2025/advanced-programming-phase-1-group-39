@@ -1,20 +1,21 @@
 package com.StardewValley.models;
 
+
+import com.StardewValley.controllers.AppControllers;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.NPC.*;
+import com.StardewValley.models.PlayerInteraction.Friendship;
+import com.StardewValley.models.PlayerInteraction.Gift;
+import com.StardewValley.models.PlayerInteraction.Message;
 import com.StardewValley.models.Shops.*;
-import controllers.AppControllers;
-import models.Enums.Season;
-import models.Enums.WeatherStatus;
-import models.PlayerInteraction.Friendship;
-import models.PlayerInteraction.Gift;
-import models.PlayerInteraction.Message;
-import models.animals.Animal;
-import models.buildings.AnimalBuilding;
-import models.buildings.Building;
-import models.cropsAndFarming.Tree;
-import models.map.FarmType;
-import models.map.Map;
-import models.map.Tile;
+import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.buildings.AnimalBuilding;
+import com.StardewValley.models.buildings.Building;
+import com.StardewValley.models.cropsAndFarming.Tree;
+import com.StardewValley.models.map.FarmType;
+import com.StardewValley.models.map.Map;
+import com.StardewValley.models.map.Tile;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,5 @@
 package com.StardewValley.models;
 
-import models.Player;
-import models.SecurityQuestion;
 
 import java.util.ArrayList;
 

@@ -1,16 +1,16 @@
 package com.StardewValley.models;
 
+
+import com.StardewValley.models.Shops.ShopItem;
+import com.StardewValley.models.animals.AnimalProduct;
+import com.StardewValley.models.animals.AnimalType;
+import com.StardewValley.models.animals.FishType;
 import com.StardewValley.models.artisan.*;
-import models.Item;
-import models.Shops.ShopItem;
-import models.animals.AnimalProduct;
-import models.animals.AnimalType;
-import models.animals.FishType;
-import models.cooking.FoodManager;
-import models.crafting.CraftingRecipe;
-import models.cropsAndFarming.CropManager;
-import models.cropsAndFarming.ForagingManager;
-import models.cropsAndFarming.TreeManager;
+import com.StardewValley.models.cooking.FoodManager;
+import com.StardewValley.models.crafting.CraftingRecipe;
+import com.StardewValley.models.cropsAndFarming.CropManager;
+import com.StardewValley.models.cropsAndFarming.ForagingManager;
+import com.StardewValley.models.cropsAndFarming.TreeManager;
 
 import java.util.HashMap;
 

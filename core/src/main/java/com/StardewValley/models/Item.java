@@ -1,13 +1,14 @@
 package com.StardewValley.models;
 
-import models.animals.AnimalProduct;
-import models.animals.Fish;
-import models.artisan.ArtisanGood;
-import models.artisan.ArtisanMachine;
-import models.crafting.CraftingItem;
-import models.cropsAndFarming.Crop;
-import models.cropsAndFarming.ForagingMaterial;
-import models.cropsAndFarming.ForagingMineral;
+
+import com.StardewValley.models.animals.AnimalProduct;
+import com.StardewValley.models.animals.Fish;
+import com.StardewValley.models.artisan.ArtisanGood;
+import com.StardewValley.models.artisan.ArtisanMachine;
+import com.StardewValley.models.crafting.CraftingItem;
+import com.StardewValley.models.cropsAndFarming.Crop;
+import com.StardewValley.models.cropsAndFarming.ForagingMaterial;
+import com.StardewValley.models.cropsAndFarming.ForagingMineral;
 
 public abstract class Item {
     protected String name;

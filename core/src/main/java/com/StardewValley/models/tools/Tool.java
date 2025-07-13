@@ -1,11 +1,8 @@
 package com.StardewValley.models.tools;
 
-import com.StardewValley.models.Item;
-import com.StardewValley.models.Player;
-import com.StardewValley.models.Skill;
-import com.StardewValley.models.Weather;
-import models.map.Tile;
-import models.tools.ToolType;
+
+import com.StardewValley.models.*;
+import com.StardewValley.models.map.Tile;
 
 public abstract class Tool extends Item {
     protected ToolType type;

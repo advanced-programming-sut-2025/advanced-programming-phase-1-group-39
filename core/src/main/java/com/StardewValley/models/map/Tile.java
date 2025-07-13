@@ -2,6 +2,7 @@ package com.StardewValley.models.map;
 
 
 import com.StardewValley.models.ItemStack;
+import com.StardewValley.models.Location;
 import com.StardewValley.models.artisan.ArtisanMachine;
 import com.StardewValley.models.cropsAndFarming.*;
 

@@ -7,6 +7,7 @@ import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.NPC.PlayerNPCInteraction;
 import com.StardewValley.models.NPC.Quest;
 import com.StardewValley.models.artisan.ArtisanMachine;
+import com.StardewValley.models.tools.Tool;
 
 import java.util.ArrayList;
 import java.util.HashMap;

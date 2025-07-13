@@ -1,8 +1,9 @@
 package com.StardewValley.controllers;
 
-import models.App;
-import models.Enums.Menu;
-import models.Result;
+
+import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.Result;
 
 public class MainMenuController {
 

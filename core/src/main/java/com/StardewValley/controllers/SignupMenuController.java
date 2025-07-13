@@ -1,23 +1,22 @@
 package com.StardewValley.controllers;
 
-import models.App;
-import models.Enums.Menu;
-import models.Enums.SecurityQuestionCommands;
-import models.Enums.commands.SignupMenuCommands;
-import models.Result;
-import models.SecurityQuestion;
-import models.User;
-import models.services.HashSHA256;
+
+import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.Enums.SecurityQuestionCommands;
+import com.StardewValley.models.Enums.commands.SignupMenuCommands;
+import com.StardewValley.models.Result;
+import com.StardewValley.models.SecurityQuestion;
+import com.StardewValley.models.User;
+import com.StardewValley.models.services.HashSHA256;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Matcher;
 
 public class SignupMenuController {
-
     public Result register(Matcher matcher) {
         String username = matcher.group("username");
         String password = matcher.group("password");

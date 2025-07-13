@@ -1,19 +1,16 @@
 package com.StardewValley.controllers;
 
-import com.StardewValley.models.App;
-import com.StardewValley.models.Game;
-import com.StardewValley.models.Player;
-import com.StardewValley.models.User;
-import models.Enums.Menu;
-import models.map.AnsiColors;
-import models.map.FarmType;
+
+import com.StardewValley.models.*;
+import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.map.AnsiColors;
+import com.StardewValley.models.map.FarmType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 
 public class GameMenuController {
-
     public Result startNewGame(Matcher matcher) {
         App app = App.getApp();
         String username1 = matcher.group("username1");

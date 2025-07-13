@@ -1,19 +1,15 @@
 package com.StardewValley.controllers;
 
-import com.StardewValley.models.App;
-import com.StardewValley.models.ItemManager;
-import com.StardewValley.models.ItemStack;
-import com.StardewValley.models.Player;
-import models.PlayerInteraction.Friendship;
-import models.PlayerInteraction.Gift;
-import models.PlayerInteraction.Message;
+
+import com.StardewValley.models.*;
+import com.StardewValley.models.PlayerInteraction.Friendship;
+import com.StardewValley.models.PlayerInteraction.Gift;
+import com.StardewValley.models.PlayerInteraction.Message;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class PlayersInteractionController {
-
-
     public Result showFriendshipsList() {
         App app = App.getApp();
         Game game = App.getApp().getCurrentGame();

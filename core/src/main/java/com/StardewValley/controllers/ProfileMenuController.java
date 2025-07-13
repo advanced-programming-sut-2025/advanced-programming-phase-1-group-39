@@ -1,10 +1,13 @@
 package com.StardewValley.controllers;
 
+
 import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.Enums.commands.SignupMenuCommands;
+import com.StardewValley.models.Game;
+import com.StardewValley.models.Result;
 import com.StardewValley.models.User;
-import models.Enums.Menu;
-import models.Enums.commands.SignupMenuCommands;
-import models.services.HashSHA256;
+import com.StardewValley.models.services.HashSHA256;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

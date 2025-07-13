@@ -1,11 +1,12 @@
 package com.StardewValley.controllers;
 
-import models.App;
-import models.Enums.Menu;
-import models.Enums.commands.SignupMenuCommands;
-import models.Result;
-import models.User;
-import models.services.HashSHA256;
+
+import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.Enums.commands.SignupMenuCommands;
+import com.StardewValley.models.Result;
+import com.StardewValley.models.User;
+import com.StardewValley.models.services.HashSHA256;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 public class LoginMenuController {
-
     public Result login(Matcher matcher) {
         String username = matcher.group("username");
         String password = matcher.group("password");

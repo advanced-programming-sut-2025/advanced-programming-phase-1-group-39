@@ -157,6 +157,7 @@ public class MarniesRanch extends Shop {
         Animal animal = type.create(name);
         player.addAnimal(animal);
         building.addAnimal(animal);
+        animal.setLocation(building.getLocation());
 
         item.purchase(1);
         player.changeMoney(-totalPrice);

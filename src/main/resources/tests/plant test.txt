@@ -75,3 +75,8 @@ tools use -d down
 cheat advance date 1d
 set location -l 72 14
 tools use -d down
+tools equip scythe
+tools use -d down
+cheat add item -n Speed-Gro -c 5
+inventory show
+fertilize -f Speed-Gro -d down

@@ -69,12 +69,11 @@ public class Animal {
         outsideToday = false;
 
         daysSinceLastProduce++;
-        todayProduct = null;
     }
 
     public void generateProductForNextDay() {
         if (!fedToday) return;
-        if (daysSinceLastProduce < type.produceCycleDays) return;
+        //if (daysSinceLastProduce < type.produceCycleDays) return;
 
         daysSinceLastProduce = 0;
         AnimalProduct baseProduct = type.products.get(0);
@@ -101,7 +100,6 @@ public class Animal {
 
     public AnimalProduct collectProduct() {
         AnimalProduct p = todayProduct;
-        todayProduct = null;
         return p;
     }
 

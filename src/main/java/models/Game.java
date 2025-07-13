@@ -379,8 +379,8 @@ public class Game {
     public void generateAllAnimalsProduct() {
         for (Player player : players) {
             for (Animal animal : player.getAnimals()) {
-                animal.endDay();
                 animal.generateProductForNextDay();
+                animal.endDay();
             }
         }
     }

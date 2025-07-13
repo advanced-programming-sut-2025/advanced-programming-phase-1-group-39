@@ -474,6 +474,7 @@ public class GameController {
             return new Result(false, fertilizerName + " isn't a fertilizer!");
         }
         tile.setFertilizer(fertilizerType);
+        tile.getPlant().setFertilizer();
         return new Result(true, fertilizerName + " has set as tile fertilizer");
     }
     public String howMuchWater() {

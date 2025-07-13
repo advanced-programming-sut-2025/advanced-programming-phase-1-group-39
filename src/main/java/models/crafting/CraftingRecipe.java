@@ -34,7 +34,7 @@ public enum CraftingRecipe {
                 "Foraging Level 1"),
 
         FURNACE(new Furnace("Furnace", 0),
-                Map.of("Copper Ore", 20, "Stone", 25),
+                Map.of("Copper", 20, "Stone", 25),
                 "-"),
 
         SCARECROW(new CraftingItem("Scarecrow", 0),

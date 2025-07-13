@@ -117,6 +117,10 @@ public class Plant {
         }
     }
 
+    public void setFertilizer() {
+        this.hasFertilizer = true;
+    }
+
     public boolean hasCrop() {
         return hasCrop;
     }

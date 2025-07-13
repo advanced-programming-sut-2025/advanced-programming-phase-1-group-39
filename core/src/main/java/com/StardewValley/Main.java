@@ -15,11 +15,14 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create() {
-        AppDataManager.loadApp();
-        new AppView().run(); // TODO : change
-
+//        AppDataManager.loadApp();
         batch = new SpriteBatch();
         image = new Texture("libgdx.png");
+
+        Thread terminalController = new Thread(() -> {
+            new AppView().run(); // TODO : change
+        });
+        terminalController.start();
     }
 
     @Override

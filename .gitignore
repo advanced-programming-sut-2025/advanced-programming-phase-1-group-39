@@ -1,7 +1,25 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+## Gradle:
+.gradle/
+gradle-app.setting
+/build/
+/android/build/
+/core/build/
+/lwjgl2/build/
+/lwjgl3/build/
+/html/build/
+/teavm/build/
+/ios/build/
+/ios-moe/build/
+/headless/build/
+/server/build/
+/shared/build/
+
+## Java:
+*.class
+*.war
+*.ear
+hs_err_pid*
+.attach_pid*
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

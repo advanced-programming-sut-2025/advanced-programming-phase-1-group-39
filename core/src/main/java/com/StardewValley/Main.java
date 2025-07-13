@@ -1,14 +1,39 @@
 package com.StardewValley;
 
-import models.services.AppDataManager;
-import models.services.SaveAppManager;
-import views.AppView;
+import com.StardewValley.models.services.AppDataManager;
+import com.StardewValley.models.services.SaveAppManager;
+import com.StardewValley.views.AppView;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.ScreenUtils;
 
-// TODO : add Main context to the Graphic AppView
-public class Main {
-    public static void main(String[] args) {
+/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
+public class Main extends ApplicationAdapter {
+    private SpriteBatch batch;
+    private Texture image;
+
+    @Override
+    public void create() {
         AppDataManager.loadApp();
-        new AppView().run();
+        new AppView().run(); // TODO : change
+
+        batch = new SpriteBatch();
+        image = new Texture("libgdx.png");
+    }
+
+    @Override
+    public void render() {
+        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        batch.begin();
+        batch.draw(image, 140, 210);
+        batch.end();
+    }
+
+    @Override
+    public void dispose() {
         SaveAppManager.saveApp();
+        batch.dispose();
+        image.dispose();
     }
 }

@@ -1,19 +1,20 @@
 package com.StardewValley.models.services;
 
+
 import com.StardewValley.models.*;
+import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.NPC.*;
 import com.StardewValley.models.Shops.*;
+import com.StardewValley.models.animals.AnimalProduct;
+import com.StardewValley.models.animals.Fish;
 import com.StardewValley.models.artisan.*;
 import com.StardewValley.models.buildings.*;
+import com.StardewValley.models.cooking.Food;
+import com.StardewValley.models.crafting.CraftingItem;
 import com.StardewValley.models.cropsAndFarming.*;
 import com.StardewValley.models.tools.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import models.Enums.Menu;
-import models.animals.AnimalProduct;
-import models.animals.Fish;
-import models.cooking.Food;
-import models.crafting.CraftingItem;
 
 import java.io.File;
 import java.io.FileReader;

@@ -1,8 +1,9 @@
 package com.StardewValley.models.NPC;
 
-import models.Game;
-import models.ItemManager;
-import models.Location;
+
+import com.StardewValley.models.Game;
+import com.StardewValley.models.ItemManager;
+import com.StardewValley.models.Location;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,12 +1,11 @@
 package com.StardewValley.models.NPC;
 
-import com.StardewValley.models.ItemManager;
-import com.StardewValley.models.ItemStack;
-import com.StardewValley.models.Player;
-import models.services.DialogueLoader;
-import models.services.MissionsLoader;
-import models.tools.ToolType;
-import models.tools.WateringCan;
+
+import com.StardewValley.models.*;
+import com.StardewValley.models.services.DialogueLoader;
+import com.StardewValley.models.services.MissionsLoader;
+import com.StardewValley.models.tools.ToolType;
+import com.StardewValley.models.tools.WateringCan;
 
 import java.util.ArrayList;
 import java.util.List;

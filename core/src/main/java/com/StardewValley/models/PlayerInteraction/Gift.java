@@ -1,6 +1,7 @@
 package com.StardewValley.models.PlayerInteraction;
 
-import models.ItemStack;
+
+import com.StardewValley.models.ItemStack;
 
 public class Gift {
     private int giftId;

@@ -1,21 +1,18 @@
 package com.StardewValley.models.map;
 
-import com.StardewValley.models.Constants;
-import com.StardewValley.models.Item;
-import com.StardewValley.models.ItemStack;
-import com.StardewValley.models.Player;
+
+import com.StardewValley.models.*;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.NPC.NPC;
+import com.StardewValley.models.Shops.Shop;
+import com.StardewValley.models.artisan.ArtisanMachine;
+import com.StardewValley.models.buildings.Building;
+import com.StardewValley.models.buildings.GreenHouse;
 import com.StardewValley.models.cropsAndFarming.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import models.Enums.Season;
-import models.NPC.NPC;
-import models.Shops.Shop;
-import models.artisan.ArtisanMachine;
-import models.buildings.Building;
-import models.buildings.GreenHouse;
-import models.map.MapMinPathFinder;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -40,7 +37,6 @@ public class Map {
 
     public String showFarmTypesInfo() {
         StringBuilder text = new StringBuilder();
-
         try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {
             Gson gson = new Gson();
             JsonArray array = gson.fromJson(reader, JsonArray.class);

@@ -1,11 +1,10 @@
 package com.StardewValley.models.NPC;
 
-import com.StardewValley.models.ItemManager;
-import com.StardewValley.models.ItemStack;
-import com.StardewValley.models.Player;
-import models.cooking.FoodRecipe;
-import models.services.DialogueLoader;
-import models.services.MissionsLoader;
+
+import com.StardewValley.models.*;
+import com.StardewValley.models.cooking.FoodRecipe;
+import com.StardewValley.models.services.DialogueLoader;
+import com.StardewValley.models.services.MissionsLoader;
 
 import java.util.ArrayList;
 import java.util.List;

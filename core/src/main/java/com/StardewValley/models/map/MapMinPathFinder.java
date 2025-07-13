@@ -1,7 +1,8 @@
 package com.StardewValley.models.map;
 
-import models.Constants;
-import models.Location;
+
+import com.StardewValley.models.Constants;
+import com.StardewValley.models.Location;
 
 import java.util.*;
 

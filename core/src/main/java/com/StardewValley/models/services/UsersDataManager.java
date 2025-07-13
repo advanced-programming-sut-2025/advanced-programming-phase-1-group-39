@@ -1,8 +1,9 @@
 package com.StardewValley.models.services;
 
+
+import com.StardewValley.models.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import models.User;
 
 import java.io.FileReader;
 import java.io.FileWriter;

@@ -1,12 +1,9 @@
 package com.StardewValley.models.map;
 
-import com.StardewValley.models.cropsAndFarming.*;
-import models.ItemStack;
-import models.Location;
-import models.artisan.ArtisanMachine;
-import models.map.AnsiColors;
-import models.map.TileType;
 
+import com.StardewValley.models.ItemStack;
+import com.StardewValley.models.artisan.ArtisanMachine;
+import com.StardewValley.models.cropsAndFarming.*;
 
 public class Tile {
     int x, y;

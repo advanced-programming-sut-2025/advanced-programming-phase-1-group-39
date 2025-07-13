@@ -1,7 +1,8 @@
 package com.StardewValley.models.services;
 
-import models.App;
-import models.Enums.Menu;
+
+import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
 
 public class SaveAppManager {
 

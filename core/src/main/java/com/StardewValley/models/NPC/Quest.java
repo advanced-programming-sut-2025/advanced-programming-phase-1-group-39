@@ -1,6 +1,7 @@
 package com.StardewValley.models.NPC;
 
-import models.ItemStack;
+
+import com.StardewValley.models.ItemStack;
 
 public class Quest {
 

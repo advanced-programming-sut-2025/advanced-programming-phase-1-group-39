@@ -1,6 +1,7 @@
 package com.StardewValley.models.NPC;
 
-import models.Time;
+
+import com.StardewValley.models.Time;
 
 public class PlayerNPCInteraction {
     private String NPCName;

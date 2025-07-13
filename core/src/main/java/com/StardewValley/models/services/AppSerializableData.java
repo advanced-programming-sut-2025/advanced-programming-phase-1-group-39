@@ -1,8 +1,9 @@
 package com.StardewValley.models.services;
 
-import models.Enums.Menu;
-import models.Game;
-import models.User;
+
+import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.Game;
+import com.StardewValley.models.User;
 
 public class AppSerializableData {
     public String randomPassword;

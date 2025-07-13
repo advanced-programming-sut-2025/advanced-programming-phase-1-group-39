@@ -1,6 +1,6 @@
 package com.StardewValley.models.crafting;
 
-import models.Item;
+import com.StardewValley.models.Item;
 
 public class CraftingItem extends Item {
     private int sellPrice;

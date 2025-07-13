@@ -1,9 +1,9 @@
 package com.StardewValley.models.buildings;
 
-import models.Location;
-import models.map.Map;
-import models.map.Tile;
-import models.map.TileType;
+import com.StardewValley.models.Location;
+import com.StardewValley.models.map.Map;
+import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.map.TileType;
 
 public abstract class Building {
     private String name;

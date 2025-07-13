@@ -1,7 +1,7 @@
 package com.StardewValley.models.cropsAndFarming;
 
-import models.Enums.Season;
-import models.cropsAndFarming.ForagingSource;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.cropsAndFarming.ForagingSource;
 
 public class ForagingSeed extends Seed{
     private ForagingSource source;

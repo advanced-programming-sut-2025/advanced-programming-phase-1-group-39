@@ -1,8 +1,8 @@
 package com.StardewValley.models.cropsAndFarming;
 
-import models.ItemStack;
-import models.cropsAndFarming.Crop;
-import models.map.Tile;
+import com.StardewValley.models.ItemStack;
+import com.StardewValley.models.cropsAndFarming.Crop;
+import com.StardewValley.models.map.Tile;
 
 import java.util.ArrayList;
 

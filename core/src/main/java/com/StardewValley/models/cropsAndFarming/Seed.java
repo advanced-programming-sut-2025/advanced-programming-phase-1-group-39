@@ -1,7 +1,7 @@
 package com.StardewValley.models.cropsAndFarming;
 
-import models.Enums.Season;
-import models.Item;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.Item;
 
 public class Seed extends Item {
     Season[] seasons;

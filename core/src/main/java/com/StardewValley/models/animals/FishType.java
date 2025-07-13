@@ -1,7 +1,7 @@
 package com.StardewValley.models.animals;
 
-import models.Enums.Season;
-import models.animals.Fish;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.animals.Fish;
 
 public enum FishType {
     SALMON(75, Season.FALL),

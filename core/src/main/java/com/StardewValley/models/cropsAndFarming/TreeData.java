@@ -1,6 +1,6 @@
 package com.StardewValley.models.cropsAndFarming;
 
-import models.Enums.Season;
+import com.StardewValley.models.Enums.Season;
 
 import java.util.ArrayList;
 import java.util.Arrays;

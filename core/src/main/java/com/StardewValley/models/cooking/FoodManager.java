@@ -1,11 +1,11 @@
 package com.StardewValley.models.cooking;
 
 import com.StardewValley.models.*;
-import models.artisan.ArtisanGood;
-import models.buildings.Cabin;
-import models.cooking.Food;
-import models.cooking.FoodRecipe;
-import models.inventory.Inventory;
+import com.StardewValley.models.artisan.ArtisanGood;
+import com.StardewValley.models.buildings.Cabin;
+import com.StardewValley.models.cooking.Food;
+import com.StardewValley.models.cooking.FoodRecipe;
+import com.StardewValley.models.inventory.Inventory;
 
 import java.util.Map;
 

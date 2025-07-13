@@ -1,9 +1,10 @@
 package com.StardewValley.models.animals;
 
-import models.Location;
-import models.animals.AnimalProduct;
-import models.animals.AnimalType;
-import models.animals.LivingPlace;
+import com.StardewValley.models.animals.AnimalProductQuality;
+import com.StardewValley.models.Location;
+import com.StardewValley.models.animals.AnimalProduct;
+import com.StardewValley.models.animals.AnimalType;
+import com.StardewValley.models.animals.LivingPlace;
 
 import java.util.ArrayList;
 

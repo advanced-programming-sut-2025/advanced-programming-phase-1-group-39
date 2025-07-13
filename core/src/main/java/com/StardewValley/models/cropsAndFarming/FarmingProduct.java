@@ -1,7 +1,7 @@
 package com.StardewValley.models.cropsAndFarming;
 
-import models.Enums.Season;
-import models.cropsAndFarming.Crop;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.cropsAndFarming.Crop;
 
 public class FarmingProduct extends Crop {
     boolean canBecomeGiant;

@@ -1,16 +1,16 @@
 package com.StardewValley.models.inventory;
 
 import com.StardewValley.models.cropsAndFarming.*;
-import models.Item;
-import models.ItemStack;
-import models.animals.AnimalProduct;
-import models.artisan.ArtisanGood;
-import models.artisan.ArtisanMachine;
-import models.crafting.CraftingItem;
-import models.inventory.TrashType;
-import models.map.AnsiColors;
-import models.map.Tile;
-import models.tools.Tool;
+import com.StardewValley.models.Item;
+import com.StardewValley.models.ItemStack;
+import com.StardewValley.models.animals.AnimalProduct;
+import com.StardewValley.models.artisan.ArtisanGood;
+import com.StardewValley.models.artisan.ArtisanMachine;
+import com.StardewValley.models.crafting.CraftingItem;
+import com.StardewValley.models.inventory.TrashType;
+import com.StardewValley.models.map.AnsiColors;
+import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.tools.Tool;
 
 import java.util.ArrayList;
 import java.util.List;

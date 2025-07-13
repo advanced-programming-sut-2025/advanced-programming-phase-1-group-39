@@ -1,6 +1,6 @@
 package com.StardewValley.models.cropsAndFarming;
 
-import models.Item;
+import com.StardewValley.models.Item;
 
 public class ForagingMineral extends Item {
     private ForagingSource source;

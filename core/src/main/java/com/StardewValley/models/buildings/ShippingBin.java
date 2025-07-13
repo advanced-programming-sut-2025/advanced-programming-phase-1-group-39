@@ -1,6 +1,6 @@
 package com.StardewValley.models.buildings;
 
-import models.Location;
+import com.StardewValley.models.Location;
 
 public class ShippingBin extends Building{
     public ShippingBin(String name, Location location, int width, int height) {

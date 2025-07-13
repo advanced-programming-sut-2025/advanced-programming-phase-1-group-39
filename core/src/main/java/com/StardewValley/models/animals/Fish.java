@@ -1,7 +1,7 @@
 package com.StardewValley.models.animals;
 
-import models.Enums.Season;
-import models.Item;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.Item;
 
 public class Fish extends Item {
     private FishType type;

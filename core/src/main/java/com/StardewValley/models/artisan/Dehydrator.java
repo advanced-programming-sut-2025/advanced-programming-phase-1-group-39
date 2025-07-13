@@ -1,9 +1,9 @@
 package com.StardewValley.models.artisan;
 
-import models.ItemManager;
-import models.Player;
-import models.Result;
-import models.Time;
+import com.StardewValley.models.ItemManager;
+import com.StardewValley.models.Player;
+import com.StardewValley.models.Result;
+import com.StardewValley.models.Time;
 
 import java.util.HashMap;
 

@@ -1,11 +1,11 @@
 package com.StardewValley.models.crafting;
 
-import models.App;
-import models.ItemStack;
-import models.Player;
-import models.Result;
-import models.buildings.Cabin;
-import models.inventory.Inventory;
+import com.StardewValley.models.App;
+import com.StardewValley.models.ItemStack;
+import com.StardewValley.models.Player;
+import com.StardewValley.models.Result;
+import com.StardewValley.models.buildings.Cabin;
+import com.StardewValley.models.inventory.Inventory;
 
 import java.util.HashSet;
 import java.util.Map;

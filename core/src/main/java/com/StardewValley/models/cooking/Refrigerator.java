@@ -1,6 +1,6 @@
 package com.StardewValley.models.cooking;
 
-import models.Item;
+import com.StardewValley.models.Item;
 
 import java.util.HashMap;
 

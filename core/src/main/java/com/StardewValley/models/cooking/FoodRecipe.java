@@ -1,7 +1,7 @@
 package com.StardewValley.models.cooking;
 
-import models.cooking.Food;
-import models.cooking.FoodBuff;
+import com.StardewValley.models.cooking.Food;
+import com.StardewValley.models.cooking.FoodBuff;
 
 import java.util.Map;
 

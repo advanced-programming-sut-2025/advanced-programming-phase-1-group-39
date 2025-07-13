@@ -1,6 +1,6 @@
 package com.StardewValley.models.animals;
 
-import models.Item;
+import com.StardewValley.models.Item;
 
 public class AnimalProduct extends Item {
     private int baseSellPrice;

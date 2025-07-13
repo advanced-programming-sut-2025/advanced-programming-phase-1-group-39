@@ -1,9 +1,9 @@
 package com.StardewValley.models.cropsAndFarming;
 
-import models.Enums.Season;
-import models.ItemStack;
-import models.cropsAndFarming.FarmingProduct;
-import models.map.Tile;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.ItemStack;
+import com.StardewValley.models.cropsAndFarming.FarmingProduct;
+import com.StardewValley.models.map.Tile;
 
 import java.util.ArrayList;
 import java.util.Arrays;

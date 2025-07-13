@@ -1,6 +1,6 @@
 package com.StardewValley.models.artisan;
 
-import models.Item;
+import com.StardewValley.models.Item;
 
 public class ArtisanGood extends Item {
     private final String description;

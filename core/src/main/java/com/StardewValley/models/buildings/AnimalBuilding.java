@@ -1,8 +1,8 @@
 package com.StardewValley.models.buildings;
 
-import models.Location;
-import models.animals.Animal;
-import models.animals.LivingPlace;
+import com.StardewValley.models.Location;
+import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.animals.LivingPlace;
 
 import java.util.ArrayList;
 

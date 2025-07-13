@@ -1,6 +1,6 @@
 package com.StardewValley.models.artisan;
 
-import models.artisan.ArtisanGood;
+import com.StardewValley.models.artisan.ArtisanGood;
 
 import java.util.HashMap;
 

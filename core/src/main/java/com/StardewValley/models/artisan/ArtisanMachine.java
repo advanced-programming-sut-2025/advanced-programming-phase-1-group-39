@@ -1,9 +1,9 @@
 package com.StardewValley.models.artisan;
 
-import models.Player;
-import models.Result;
-import models.Time;
-import models.crafting.CraftingItem;
+import com.StardewValley.models.Player;
+import com.StardewValley.models.Result;
+import com.StardewValley.models.Time;
+import com.StardewValley.models.crafting.CraftingItem;
 
 import java.util.ArrayList;
 

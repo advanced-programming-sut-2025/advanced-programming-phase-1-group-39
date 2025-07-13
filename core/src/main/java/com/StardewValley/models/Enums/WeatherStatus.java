@@ -1,6 +1,6 @@
 package com.StardewValley.models.Enums;
 
-import models.Enums.Season;
+import com.StardewValley.models.Enums.Season;
 
 import java.util.Arrays;
 import java.util.List;

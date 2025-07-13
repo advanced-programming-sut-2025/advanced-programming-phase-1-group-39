@@ -2,13 +2,13 @@ package com.StardewValley.models.cropsAndFarming;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import models.App;
-import models.Enums.Season;
-import models.cropsAndFarming.CropData;
-import models.cropsAndFarming.FarmingProduct;
-import models.cropsAndFarming.Plant;
-import models.cropsAndFarming.Seed;
-import models.map.Tile;
+import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.cropsAndFarming.CropData;
+import com.StardewValley.models.cropsAndFarming.FarmingProduct;
+import com.StardewValley.models.cropsAndFarming.Plant;
+import com.StardewValley.models.cropsAndFarming.Seed;
+import com.StardewValley.models.map.Tile;
 
 import java.io.FileReader;
 import java.io.IOException;

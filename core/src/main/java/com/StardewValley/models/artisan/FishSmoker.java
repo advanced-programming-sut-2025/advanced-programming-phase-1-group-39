@@ -1,12 +1,12 @@
 package com.StardewValley.models.artisan;
 
-import models.ItemManager;
-import models.Player;
-import models.Result;
-import models.Time;
-import models.artisan.ArtisanGood;
-import models.artisan.ArtisanMachine;
-import models.artisan.ArtisanRecipe;
+import com.StardewValley.models.ItemManager;
+import com.StardewValley.models.Player;
+import com.StardewValley.models.Result;
+import com.StardewValley.models.Time;
+import com.StardewValley.models.artisan.ArtisanGood;
+import com.StardewValley.models.artisan.ArtisanMachine;
+import com.StardewValley.models.artisan.ArtisanRecipe;
 
 import java.util.HashMap;
 

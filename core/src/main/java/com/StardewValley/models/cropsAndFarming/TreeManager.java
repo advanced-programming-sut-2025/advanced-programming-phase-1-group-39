@@ -2,7 +2,7 @@ package com.StardewValley.models.cropsAndFarming;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import models.map.Tile;
+import com.StardewValley.models.map.Tile;
 
 import java.io.FileReader;
 import java.io.IOException;

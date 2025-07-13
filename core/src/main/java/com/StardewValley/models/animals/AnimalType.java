@@ -1,6 +1,6 @@
 package com.StardewValley.models.animals;
 
-import models.animals.LivingPlace;
+import com.StardewValley.models.animals.LivingPlace;
 
 import java.util.ArrayList;
 import java.util.List;

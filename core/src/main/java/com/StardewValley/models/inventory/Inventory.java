@@ -1,0 +1,193 @@
+package com.StardewValley.models.inventory;
+
+import com.StardewValley.models.cropsAndFarming.*;
+import models.Item;
+import models.ItemStack;
+import models.animals.AnimalProduct;
+import models.artisan.ArtisanGood;
+import models.artisan.ArtisanMachine;
+import models.crafting.CraftingItem;
+import models.inventory.TrashType;
+import models.map.AnsiColors;
+import models.map.Tile;
+import models.tools.Tool;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Inventory {
+    InventoryType type = InventoryType.BASIC;
+    ArrayList<ItemStack> inventoryItems = new ArrayList<>();
+    TrashType trashType = TrashType.BASIC;
+
+    ItemStack inHand = null;
+
+    public Inventory(List<ItemStack> firstItems) {
+        inventoryItems.addAll(firstItems);
+        if (!firstItems.isEmpty()) {
+            inHand = firstItems.get(0);
+        }
+    }
+
+    public String getItemAndColor(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getItem() == null) {
+            return AnsiColors.ANSI_RESET + "Empty Slot" + AnsiColors.ANSI_RESET;
+        }
+
+        Item item = itemStack.getItem();
+        String itemName = item.getName();
+        String colorCode;
+
+        if (item instanceof Tool) {
+            colorCode = AnsiColors.ANSI_CYAN_BOLD;
+        } else if (item instanceof Seed) {
+            colorCode = AnsiColors.ANSI_LIGHT_YELLOW_BOLD;
+        } else if (item instanceof FarmingProduct) {
+            colorCode = AnsiColors.ANSI_LIGHT_GREEN_BOLD; // Using the custom bold green
+        } else if (item instanceof ForagingCrop) {
+            colorCode = AnsiColors.ANSI_ORANGE_BOLD;
+        } else if (item instanceof ForagingMaterial) {
+            colorCode = AnsiColors.ANSI_BROWN_BOLD;
+        } else if (item instanceof ForagingMineral) {
+            colorCode = AnsiColors.ANSI_DARK_GRAY_BOLD;
+        } else if (item instanceof AnimalProduct) {
+            colorCode = AnsiColors.ANSI_PURPLE_BOLD;
+        } else if (item instanceof ArtisanGood) {
+            colorCode = AnsiColors.ANSI_RED_BOLD; // Using the new golden text color
+        } else if (item instanceof ArtisanMachine) {
+            colorCode = AnsiColors.ANSI_CYAN_BOLD; // Using the new medium gray text color
+        } else if (item instanceof CraftingItem) {
+            colorCode = AnsiColors.ANSI_WHITE;
+        } else if (item instanceof Crop) {
+            colorCode = AnsiColors.ANSI_LIGHT_GREEN_BOLD; // Using standard green for the plant itself
+        } else {
+            colorCode = AnsiColors.ANSI_RESET;
+        }
+
+        return colorCode + itemName + AnsiColors.ANSI_RESET;
+    }
+
+    public String showInventory() {
+        StringBuilder text = new StringBuilder();
+        text.append(AnsiColors.ANSI_LIGHT_GREEN_BOLD + "Your inventory:\n--------------\n" + AnsiColors.ANSI_RESET);
+        for (ItemStack item : inventoryItems) {
+            text.append(getItemAndColor(item));
+            text.append(" : " + item.getAmount());
+            text.append("\n");
+        }
+
+        return text.toString();
+    }
+
+    public String showTools() {
+        StringBuilder text = new StringBuilder();
+        text.append(AnsiColors.ANSI_LIGHT_GREEN_BOLD + "Your Tools:\n--------------\n" + AnsiColors.ANSI_RESET);
+
+        boolean added = false;
+        for (ItemStack itemStack : inventoryItems) {
+            if (itemStack.getItem() instanceof Tool) {
+                text.append(getItemAndColor(itemStack) + "\n");
+                added = true;
+            }
+        }
+        if (!added) {
+            return "You don't have any tools in hand!";
+        }
+
+        return text.toString();
+    }
+
+    public String getTrashTypeName() {
+        return trashType.name();
+    }
+
+    public TrashType getTrashType() {
+        return trashType;
+    }
+
+    public void setInventoryType(InventoryType type) {
+        this.type = type;
+    }
+
+    public int trashItem(ItemStack item, int number) {
+        int itemPrice = item.getItem().getItemPrice() * number;
+        return (int)(trashType.quantifier * itemPrice);
+    }
+
+    public boolean hasSpace(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getItem() == null) return false;
+        if (hasItem(itemStack.getItem().getName())) return true;
+        return inventoryItems.size() < type.getCapacity();
+    }
+
+    public ItemStack getItemByName(String name) {
+        for (ItemStack item : inventoryItems) {
+            if (item.getItem().getName().equalsIgnoreCase(name)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void addItem(Item item, int amount) {
+        ItemStack itemStack = getItemByName(item.getName());
+        if (!hasSpace(new ItemStack(item, amount))) return;
+        if (itemStack != null) {
+            itemStack.addStack(amount);
+            if(!hasEnoughStack(item.getName(), 1)){
+                inventoryItems.remove(itemStack);
+            }
+        } else {
+            inventoryItems.add(new ItemStack(item, amount));
+        }
+    }
+    public ItemStack pickItem(String name, int amount) {
+        ItemStack item = getItemByName(name);
+        if (item != null) {
+            if (amount > item.getAmount()) {
+                return null;
+            }
+            addItem(item.getItem(), -amount);
+            return new ItemStack(item.getItem(), amount);
+        }
+        return null;
+    }
+
+    public boolean hasItem(String name) {
+        for (ItemStack item : inventoryItems) {
+            if (item.getItem().getName().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean hasEnoughStack(String name, int amount) {
+        for (ItemStack item : inventoryItems) {
+            if (item.getItem().getName().equalsIgnoreCase(name) && item.getAmount() >= amount) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void placeItem(String name, Tile tile) {
+        ItemStack item = getItemByName(name);
+        if (item == null) {
+            return;
+        }
+        if (tile.getItemOnTile() == null) {
+            tile.placeItem(item);
+            pickItem(item.getItem().getName(), item.getAmount());
+        }
+    }
+
+    public void setInHand(ItemStack itemStack) {
+        if (inventoryItems.contains(itemStack))
+            inHand = itemStack;
+    }
+
+    public ItemStack getInHand() {
+        return inHand;
+    }
+}

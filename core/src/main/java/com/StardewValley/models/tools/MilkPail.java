@@ -1,0 +1,50 @@
+package com.StardewValley.models.tools;
+
+import com.StardewValley.models.ItemStack;
+import com.StardewValley.models.Player;
+import com.StardewValley.models.Skill;
+import com.StardewValley.models.Weather;
+import models.animals.Animal;
+import models.animals.AnimalProduct;
+import models.animals.AnimalType;
+import models.animals.LivingPlace;
+import models.map.Tile;
+
+public class MilkPail extends Tool {
+    public MilkPail() {
+        super("milk pail", ToolType.BASIC, 4);
+    }
+
+    @Override
+    public Result useTool(Tile tile, Player player, Skill skill) {
+        Location location = tile.getLocation();
+        Animal animal = player.getAnimalByLocation(location);
+        if (animal == null)
+            return new Result(false, "Animal not found");
+        else if (animal.getPlace() != LivingPlace.BARN && animal.getPlace() != LivingPlace.BIG_BARN
+                && animal.getPlace() != LivingPlace.DELUXE_BARN
+                && animal.getType() != AnimalType.COW && animal.getType() != AnimalType.GOAT) {
+            return new Result(false, "This Animal can't produce Milk!");
+        } else {
+            AnimalProduct product = animal.collectProduct();
+            if (product == null)
+                return new Result(false, "No Milk!");
+            if (!player.getInventory().hasSpace(new ItemStack(product, 1)))
+                return new Result(false, "You don't have enough space to get Animal products!");
+            player.getInventory().addItem(product, 1);
+
+            animal.changeFriendship(5);
+            ItemStack products = new ItemStack(animal.collectProduct(), 1);
+            player.getInventory().addItem(products.getItem(), 1);
+            skill.addToFarmingXP(5);
+            return new Result(true, "You got Milk of Your "+animal.getName()+" ! (Farming XP + 5)");
+        }
+    }
+
+
+    @Override
+    public int getUsingEnergy(Skill skill, Weather weather) {
+        return (int)((baseUsingEnergy)
+                * getWeatherMultiplier(weather));
+    }
+}

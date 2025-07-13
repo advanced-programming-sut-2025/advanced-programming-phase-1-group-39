@@ -1,3 +1,5 @@
+package com.StardewValley;
+
 import models.services.AppDataManager;
 import models.services.SaveAppManager;
 import views.AppView;

@@ -1,6 +1,7 @@
 package com.StardewValley.models.crafting;
 
-import com.StardewValley.com.StardewValley.models.artisan.*;
+import com.StardewValley.models.artisan.*;
+import com.StardewValley.models.artisan.*;
 import com.StardewValley.models.crafting.CraftingItem;
 
 import java.util.Map;

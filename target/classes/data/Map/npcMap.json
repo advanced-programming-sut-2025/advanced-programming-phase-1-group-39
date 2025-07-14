@@ -1,0 +1,93 @@
+{
+  "buildings": {
+    "blacksmith": {
+      "name": "Blacksmith",
+      "owner": "Clint",
+      "x": 100,
+      "y": 50,
+      "w": 11,
+      "h": 8
+    },
+    "jojamart": {
+      "name": "JojaMart",
+      "owner": "Morris",
+      "x": 93,
+      "y": 12,
+      "w": 25,
+      "h": 20
+    },
+    "pierres_store": {
+      "name": "Pierre's General Store",
+      "owner": "Pierre",
+      "x": 27,
+      "y": 22,
+      "w": 12,
+      "h": 11
+    },
+    "carpenters_shop": {
+      "name": "Carpenter's Shop",
+      "owner": "Robin",
+      "x": 23,
+      "y": 46,
+      "w": 18,
+      "h": 12
+    },
+    "fish_shop": {
+      "name": "Fish Shop",
+      "owner": "Willy",
+      "x": 96,
+      "y": 76,
+      "w": 18,
+      "h": 12
+    },
+    "marnies_ranch": {
+      "name": "Marnie's Ranch",
+      "owner": "Marnie",
+      "x": 22,
+      "y": 76,
+      "w": 18,
+      "h": 12
+    },
+    "stardrop_saloon": {
+      "name": "Stardrop Saloon",
+      "owner": "Gus",
+      "x": 64,
+      "y": 46,
+      "w": 18,
+      "h": 12
+    }
+  }, "paths" : [
+  {
+    "x" : 0,
+    "y" : 5,
+    "w" : 140,
+    "h" : 3
+  },{
+    "x" : 0,
+    "y" : 92,
+    "w" : 140,
+    "h" : 3
+  },{
+    "x" : 5,
+    "y" : 36,
+    "w" : 130,
+    "h" : 3
+  },{
+    "x" : 5,
+    "y" : 62,
+    "w" : 130,
+    "h" : 3
+  },
+  {
+    "x" : 5,
+    "y" : 5,
+    "w" : 3,
+    "h" : 90
+  },{
+    "x" : 132,
+    "y" : 5,
+    "w" : 3,
+    "h" : 90
+  }
+]
+}

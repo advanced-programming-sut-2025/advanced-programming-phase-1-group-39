@@ -1,0 +1,80 @@
+{
+  "supplies": [
+    {
+      "name": "Hay",
+      "description": "Dried grass used as animal food.",
+      "price": 50,
+      "dailyLimit": 1000000
+    },
+    {
+      "name": "Milk Pail",
+      "description": "Gather milk from your animals.",
+      "price": 1000,
+      "dailyLimit": 1
+    },
+    {
+      "name": "Shears",
+      "description": "Use this to collect wool from sheep",
+      "price": 1000,
+      "dailyLimit": 1
+    }
+  ],
+  "livestock": [
+    {
+      "name": "Chicken",
+      "description": "Well cared-for chickens lay eggs every day. Lives in the coop.",
+      "price": 800,
+      "buildingRequired": "Coop",
+      "dailyLimit": 2
+    },
+    {
+      "name": "Cow",
+      "description": "Can be milked daily. A milk pail is required to harvest the milk. Lives in the barn.",
+      "price": 1500,
+      "buildingRequired": "Barn",
+      "dailyLimit": 2
+    },
+    {
+      "name": "Goat",
+      "description": "Happy provide goat milk every other day. A milk pail is required to harvest the milk. Lives in the barn.",
+      "price": 4000,
+      "buildingRequired": "Big Barn",
+      "dailyLimit": 2
+    },
+    {
+      "name": "Duck",
+      "description": "Happy lay duck eggs every other day. Lives in the coop.",
+      "price": 1200,
+      "buildingRequired": "Big Coop",
+      "dailyLimit": 2
+    },
+    {
+      "name": "Sheep",
+      "description": "Can be shorn for wool. A pair of shears is required to harvest the wool. Lives in the barn.",
+      "price": 8000,
+      "buildingRequired": "Deluxe Barn",
+      "dailyLimit": 2
+    },
+    {
+      "name": "Rabbit",
+      "description": "These are wooly rabbits! They shed precious wool every few days. Lives in the coop.",
+      "price": 8000,
+      "buildingRequired": "Deluxe Coop",
+      "dailyLimit": 2
+    },
+    {
+      "name": "Dinosaur",
+      "description": "The Dinosaur is a farm animal that lives in a Big Coop",
+      "price": 14000,
+      "buildingRequired": "Big Coop",
+      "dailyLimit": 2
+    },
+    {
+      "name": "Pig",
+      "description": "These pigs are trained to find truffles! Lives in the barn.",
+      "price": 16000,
+      "buildingRequired": "Deluxe Barn",
+      "dailyLimit": 2
+    }
+  ]
+}

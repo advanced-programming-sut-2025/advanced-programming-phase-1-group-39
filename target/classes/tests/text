@@ -1,0 +1,50 @@
+register    -u   mostafa   -p paSS12#$   paSS12#$  -n mosi  -e mostafa@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
+register   -u ahmad -p paSS12#$ paSS12#$ -n ahi -e ahamd@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
+register -u reza -p paSS12#$ paSS12#$ -n reza -e reza@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
+register -u mohsen -p paSS12#$ paSS12#$ -n mohsen -e mohsen@gmail.com -g male
+pick question -q 1 -a salam -c salam
+
+login -u reza -p paSS12#$ -stay-logged-in
+
+menu enter game
+game new -u ahmad mostafa mohsen
+game map 1
+game map 2
+game map 1
+game map 2
+
+exit
+
+
+// load
+menu enter login
+login -u reza -p paSS12#$ -stay-logged-in
+
+menu enter game
+load game
+greenhouse build
+cheat add item -n Wood -c 500
+
+
+// map show
+// Total Map
+print map -l 150,75 -s 300
+// NPC map
+print map -l 150,75 -s 100
+
+print map -l 40,25 -s 80
+
+
+// Walk
+ walk -l 72,13
+print map -l 70,10 -s 20
+tools equip axe
+tools use -d
+tools equip watering can
+inventory show

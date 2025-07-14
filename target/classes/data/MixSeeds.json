@@ -1,0 +1,6 @@
+{
+  "SPRING": ["Cauliflower Seeds", "Parsnip Seeds", "Potato Seeds", "Jazz Seeds", "Tulip Bulb"],
+  "SUMMER": ["Corn Seeds", "Pepper Seeds", "Radish Seeds", "Wheat Seeds", "Poppy Seeds", "Sunflower Seeds", "Spangle Seeds"],
+  "FALL": ["Artichoke Seeds", "Corn Seeds", "Eggplant Seeds", "Pumpkin Seeds", "Sunflower Seeds", "Fairy Seeds"],
+  "WINTER": ["Powdermelon Seeds"]
+}

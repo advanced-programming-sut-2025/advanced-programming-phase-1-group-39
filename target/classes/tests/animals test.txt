@@ -1,0 +1,31 @@
+register    -u   mostafa   -p paSS12#$   paSS12#$  -n mosi  -e mostafa@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
+register   -u ahmad -p paSS12#$ paSS12#$ -n ahi -e ahamd@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
+register -u reza -p paSS12#$ paSS12#$ -n reza -e reza@gmail.com -g male
+pick question -q 1 -a salam -c salam
+menu enter signup
+register -u mohsen -p paSS12#$ paSS12#$ -n mohsen -e mohsen@gmail.com -g male
+pick question -q 1 -a salam -c salam
+
+login -u reza -p paSS12#$ -stay-logged-in
+
+menu enter game
+game new -u ahmad mostafa mohsen
+game map 1
+game map 2
+game map 1
+game map 2
+next turn
+cheat add item -n Wood -c 500
+cheat add item -n Stone -c 500
+cheat add 50000 dollars
+set location -l 105 75
+build -a Coop -l 69 14
+set location -l 105 105
+buy animal -a Chicken -n naser
+set location -l 69 15
+pet -n naser
+shepherd animals -n naser -l 70 14

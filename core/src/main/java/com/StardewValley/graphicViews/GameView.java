@@ -61,27 +61,18 @@ public class GameView implements Screen {
 
         int startX = Math.max(0, (int) (cameraLeft / tileSize));
         int startY = Math.max(0, (int) (cameraBottom / tileSize));
-        int endX = Math.min(Constants.FARM_WIDTH, startX + (int)(viewportWidth / tileSize) + 2);
-        int endY = Math.min(Constants.FARM_HEIGHT, startY + (int)(viewportHeight / tileSize) + 2);
+        int endX = Math.min(Constants.FARM_WIDTH, startX + (int) (viewportWidth / tileSize) + 2);
+        int endY = Math.min(Constants.FARM_HEIGHT, startY + (int) (viewportHeight / tileSize) + 2);
 
         Tile[][] tiles = game.getMap().getTiles();
 
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
-//                float drawX = x * tileSize;// - cameraLeft;
-//                float drawY = y * tileSize;// - cameraBottom;
-//                Tile tile = game.getMap().getTiles()[x][y];
-//                TextureRegion texture = tile.getType().getTextureRegion();
-//                if (texture != null) {
-//                    batch.draw(texture, drawX, drawY, tileSize, tileSize);
-//
-//                }
-
                 Location l = new Location(x, y);
                 TextureRegion texture = tileCache.get(l);
 
                 if (texture == null) {
-                    Tile tile = tiles[x][y];
+                    Tile tile = tiles[Constants.FARM_HEIGHT - y][x];
                     texture = tile.getType().getTextureRegion();
                     tileCache.put(l, texture);
                 }
@@ -95,7 +86,7 @@ public class GameView implements Screen {
     }
 
     public void handleCameraMovement(float delta) {
-        float cameraSpeed = 500f;
+        float cameraSpeed = 1500f;
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             camera.position.y += cameraSpeed * delta;

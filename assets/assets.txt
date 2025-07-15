@@ -1,3 +1,6 @@
+characters/Abigail.png
+characters/Abigail/player.png
+characters/Abigail/sprites_player.atlas
 libgdx.png
 map/Flooring_81.png
 map/tiles/destroyed.png

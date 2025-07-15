@@ -14,10 +14,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -27,6 +31,9 @@ public class GameView implements Screen {
     private Game game;
     private GameMenuInputAdapter gameMenuInputAdapter;
     private SpriteBatch batch;
+
+    private TextureAtlas playerAtlas;
+    private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
 
     private final int MAX_CACHE_SIZE = 3000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
@@ -47,6 +54,25 @@ public class GameView implements Screen {
         this.camera = new OrthographicCamera();
     }
 
+    public void loadTextures() {
+        playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
+
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(playerAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(playerAtlas.findRegion(region));
+                }
+            }
+            playerAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
+    }
 
     public void renderTiles() {
         float camX = camera.position.x;
@@ -104,11 +130,25 @@ public class GameView implements Screen {
         camera.update();
     }
 
+    private void renderPlayer() {
+        int tileSize = Map.TILE_SIZE;
+        TextureRegion currentFrame = playerAnimations.get(1).getKeyFrame(0, true);
+
+        if (currentFrame == null) return;
+
+        float drawX = camera.position.x - tileSize / 2f;
+        float drawY = camera.position.y - tileSize;
+
+        batch.draw(currentFrame, drawX, drawY, tileSize, tileSize * 2);
+    }
+
+
+
     @Override
     public void show() {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(game.getPlayerInTurn().getLocation().x(), game.getPlayerInTurn().getLocation().y(), 0);
-
+        loadTextures();
     }
 
     @Override
@@ -121,6 +161,7 @@ public class GameView implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         renderTiles();
+        renderPlayer();
         batch.end();
     }
 

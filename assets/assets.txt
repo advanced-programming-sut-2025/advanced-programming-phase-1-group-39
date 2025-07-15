@@ -1,1 +1,11 @@
 libgdx.png
+map/Flooring_81.png
+map/tiles/destroyed.png
+map/tiles/disable.png
+map/tiles/indoor.png
+map/tiles/lawn.png
+map/tiles/path.png
+map/tiles/quarry.png
+map/tiles/soil.png
+map/tiles/wall.png
+map/tiles/water.png

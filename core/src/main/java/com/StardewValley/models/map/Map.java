@@ -24,6 +24,7 @@ public class Map {
 
     private int npcMapStartX = Constants.FARM_WIDTH;
     private int npcMapStartY = Constants.DISABLED_HEIGHT;
+    public static final int TILE_SIZE = 80;
 
     public Map() {
         tiles = new Tile[height][width];

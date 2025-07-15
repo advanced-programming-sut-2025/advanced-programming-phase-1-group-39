@@ -5,6 +5,7 @@ import com.StardewValley.controllers.GameController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Constants;
 import com.StardewValley.models.Game;
+import com.StardewValley.models.Location;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.badlogic.gdx.Gdx;
@@ -17,14 +18,25 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 
 public class GameView implements Screen {
     private GameController controller;
     private Game game;
     private GameMenuInputAdapter gameMenuInputAdapter;
     private SpriteBatch batch;
-    private TextureRegion[][] tileTextures = new TextureRegion[150][300];
+
+    private final int MAX_CACHE_SIZE = 3000;
+    private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(HashMap.Entry<Location, TextureRegion> eldest) {
+            return size() > MAX_CACHE_SIZE;
+        }
+    };
     private OrthographicCamera camera;
+
 
     public GameView() {
         this.controller = AppControllers.gameController;
@@ -35,15 +47,6 @@ public class GameView implements Screen {
         this.camera = new OrthographicCamera();
     }
 
-    public void loadTextures(int endx, int endy) {
-        Tile[][] tiles = game.getMap().getTiles();
-        for (int i = 0; i < endx; i++) {
-            for (int j = 0; j < endy; j++) {
-                Tile tile = tiles[i][j];
-                tileTextures[i][j] = tile.getType().getTextureRegion();
-            }
-        }
-    }
 
     public void renderTiles() {
         float camX = camera.position.x;
@@ -56,45 +59,74 @@ public class GameView implements Screen {
         float cameraLeft = camX - viewportWidth / 2;
         float cameraBottom = camY - viewportHeight / 2;
 
-        int startX = 0;//Math.max(0, (int) (cameraLeft / tileSize) - 2);
-        int startY = 0;//Math.max(0, (int) (cameraBottom / tileSize) - 2);
-        int endX = 50;//Math.min(Constants.FARM_WIDTH * 160, (int) ((camX + viewportWidth / 2) / tileSize) + 2);
-        int endY = 80;//Math.min(Constants.FARM_HEIGHT * 160, (int) ((camY + viewportHeight / 2) / tileSize) + 2);
+        int startX = Math.max(0, (int) (cameraLeft / tileSize));
+        int startY = Math.max(0, (int) (cameraBottom / tileSize));
+        int endX = Math.min(Constants.FARM_WIDTH, startX + (int)(viewportWidth / tileSize) + 2);
+        int endY = Math.min(Constants.FARM_HEIGHT, startY + (int)(viewportHeight / tileSize) + 2);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            startX += 1;
-            startY += 1;
-            endX += 1;
-            endY += 1;
-        }
-
-        loadTextures(endX, endY);
+        Tile[][] tiles = game.getMap().getTiles();
 
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
-                float drawX = x * tileSize;// - cameraLeft;
-                float drawY = y * tileSize;// - cameraBottom;
+//                float drawX = x * tileSize;// - cameraLeft;
+//                float drawY = y * tileSize;// - cameraBottom;
+//                Tile tile = game.getMap().getTiles()[x][y];
+//                TextureRegion texture = tile.getType().getTextureRegion();
+//                if (texture != null) {
+//                    batch.draw(texture, drawX, drawY, tileSize, tileSize);
+//
+//                }
 
-                TextureRegion texture = tileTextures[x][y];
-                if (texture != null) {
-                    batch.draw(texture, drawX, drawY, tileSize, tileSize);
+                Location l = new Location(x, y);
+                TextureRegion texture = tileCache.get(l);
 
+                if (texture == null) {
+                    Tile tile = tiles[x][y];
+                    texture = tile.getType().getTextureRegion();
+                    tileCache.put(l, texture);
                 }
+
+                float drawX = x * tileSize;
+                float drawY = y * tileSize;
+
+                batch.draw(texture, drawX, drawY, tileSize, tileSize);
             }
         }
+    }
+
+    public void handleCameraMovement(float delta) {
+        float cameraSpeed = 500f;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            camera.position.y += cameraSpeed * delta;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            camera.position.y -= cameraSpeed * delta;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            camera.position.x -= cameraSpeed * delta;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            camera.position.x += cameraSpeed * delta;
+        }
+
+        camera.update();
     }
 
     @Override
     public void show() {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(game.getPlayerInTurn().getLocation().x(), game.getPlayerInTurn().getLocation().y(), 0);
-        //loadTextures();
+
     }
 
     @Override
     public void render(float v) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        handleCameraMovement(v);
+
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         renderTiles();

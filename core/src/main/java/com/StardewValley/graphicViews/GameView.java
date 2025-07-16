@@ -4,6 +4,7 @@ import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.controllers.GameController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Constants;
+import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.Game;
 import com.StardewValley.models.Location;
 import com.StardewValley.models.map.Map;
@@ -34,6 +35,12 @@ public class GameView implements Screen {
 
     private TextureAtlas playerAtlas;
     private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
+
+    private enum Direction { UP, DOWN, LEFT, RIGHT, NONE }
+
+    private Direction currentDirection = Direction.NONE;
+    private float stateTime = 0f;
+
 
     private final int MAX_CACHE_SIZE = 3000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
@@ -113,27 +120,44 @@ public class GameView implements Screen {
 
     public void handleCameraMovement(float delta) {
         float cameraSpeed = 1500f;
+        currentDirection = Direction.NONE;
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             camera.position.y += cameraSpeed * delta;
+            currentDirection = Direction.UP;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             camera.position.y -= cameraSpeed * delta;
+            currentDirection = Direction.DOWN;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             camera.position.x -= cameraSpeed * delta;
+            currentDirection = Direction.LEFT;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             camera.position.x += cameraSpeed * delta;
+            currentDirection = Direction.RIGHT;
         }
 
         camera.update();
     }
 
+
     private void renderPlayer() {
         int tileSize = Map.TILE_SIZE;
-        TextureRegion currentFrame = playerAnimations.get(1).getKeyFrame(0, true);
 
+        int animIndex = switch (currentDirection) {
+            case UP -> 3;
+            case RIGHT -> 2;
+            case DOWN -> 1;
+            case LEFT -> 4;
+            default -> 0;
+        };
+
+        Animation<TextureRegion> currentAnimation = playerAnimations.get(animIndex);
+        float elapsedTime = stateTime;  // توضیح پایین
+
+        TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true);
         if (currentFrame == null) return;
 
         float drawX = camera.position.x - tileSize / 2f;
@@ -141,6 +165,7 @@ public class GameView implements Screen {
 
         batch.draw(currentFrame, drawX, drawY, tileSize, tileSize * 2);
     }
+
 
 
 
@@ -159,6 +184,7 @@ public class GameView implements Screen {
         handleCameraMovement(v);
 
         batch.setProjectionMatrix(camera.combined);
+        stateTime += v;
         batch.begin();
         renderTiles();
         renderPlayer();

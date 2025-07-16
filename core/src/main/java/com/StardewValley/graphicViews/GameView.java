@@ -2,11 +2,8 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.controllers.GameController;
-import com.StardewValley.models.App;
-import com.StardewValley.models.Constants;
+import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Direction;
-import com.StardewValley.models.Game;
-import com.StardewValley.models.Location;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.badlogic.gdx.Gdx;
@@ -15,10 +12,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.utils.Array;
 
 import java.awt.*;
@@ -41,6 +35,8 @@ public class GameView implements Screen {
     private Direction currentDirection = Direction.NONE;
     private float stateTime = 0f;
 
+    private Texture clock;
+    private BitmapFont font;
 
     private final int MAX_CACHE_SIZE = 3000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
@@ -63,6 +59,7 @@ public class GameView implements Screen {
 
     public void loadTextures() {
         playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
+        clock = new Texture(Gdx.files.internal("Clock.png"));
 
         for (int i = 14; i > 9; i--) {
             Array<TextureRegion> walkFrames = new Array<>();
@@ -166,11 +163,27 @@ public class GameView implements Screen {
         batch.draw(currentFrame, drawX, drawY, tileSize, tileSize * 2);
     }
 
+    private void renderClockUI() {
+        float uiWidth = clock.getWidth();
+        float uiHeight = clock.getHeight();
+
+        float drawX = camera.position.x + (camera.viewportWidth / 2) - uiWidth - 20;
+        float drawY = camera.position.y + (camera.viewportHeight / 2) - uiHeight - 20;
+
+
+        batch.draw(clock, drawX, drawY);
+        Time time = App.getApp().getCurrentGame().getTime();
+        font.draw(batch, time.getDayOfWeek() + ". " + time.getDay(), drawX + 100, drawY + 200);
+        font.draw(batch, time.getHourText(), drawX + 150, drawY + 125);
+        font.draw(batch, String.valueOf(400), drawX + 180, drawY + 35);
+    }
 
 
 
     @Override
     public void show() {
+        font = new BitmapFont();
+        font.getData().setScale(2f);
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(game.getPlayerInTurn().getLocation().x(), game.getPlayerInTurn().getLocation().y(), 0);
         loadTextures();
@@ -188,6 +201,7 @@ public class GameView implements Screen {
         batch.begin();
         renderTiles();
         renderPlayer();
+        renderClockUI();
         batch.end();
     }
 

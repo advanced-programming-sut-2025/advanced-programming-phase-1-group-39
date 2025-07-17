@@ -1,16 +1,17 @@
 package com.StardewValley.models.Enums;
 
+import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.views.*;
 import com.badlogic.gdx.Screen;
 
 public enum Menu {
-    SIGNUP_MENU("signup menu", new SignupMenuView(), new com.StardewValley.graphicViews.GameView()),
-    LOGIN_MENU("login menu", new LoginMenuView(), new com.StardewValley.graphicViews.GameView()),
-    MAIN_MENU("main menu", new MainMenuView(), new com.StardewValley.graphicViews.GameView()),
-    PROFILE_MENU("profile menu", new ProfileMenuView(), new com.StardewValley.graphicViews.GameView()),
-    GAME_MENU("game menu", new GameMenuView(), new com.StardewValley.graphicViews.GameView()),
-    GAME("game", new GameView(), new com.StardewValley.graphicViews.GameView()),
-    ExitMenu("exit", new ExitMenuView(), new com.StardewValley.graphicViews.GameView()),;
+    SIGNUP_MENU("signup menu", new SignupMenuView(), new GameScreen()),
+    LOGIN_MENU("login menu", new LoginMenuView(), new GameScreen()),
+    MAIN_MENU("main menu", new MainMenuView(), new GameScreen()),
+    PROFILE_MENU("profile menu", new ProfileMenuView(), new GameScreen()),
+    GAME_MENU("game menu", new GameMenuView(), new GameScreen()),
+    GAME("game", new GameView(), new GameScreen()),
+    ExitMenu("exit", new ExitMenuView(), new GameScreen()),;
 
     private View menuView;
     private String name;

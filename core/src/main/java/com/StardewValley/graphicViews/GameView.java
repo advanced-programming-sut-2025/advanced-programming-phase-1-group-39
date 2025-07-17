@@ -173,7 +173,8 @@ public class GameView implements Screen {
 
         batch.draw(clock, drawX, drawY);
         Time time = App.getApp().getCurrentGame().getTime();
-        font.draw(batch, time.getDayOfWeek() + ". " + time.getDay(), drawX + 100, drawY + 200);
+        String dayOfWeek = (String) time.getDayOfWeek().toString().subSequence(0, 3);
+        font.draw(batch, dayOfWeek + ". " + time.getDay(), drawX + 100, drawY + 200);
         font.draw(batch, time.getHourText(), drawX + 150, drawY + 125);
         font.draw(batch, String.valueOf(400), drawX + 180, drawY + 35);
     }

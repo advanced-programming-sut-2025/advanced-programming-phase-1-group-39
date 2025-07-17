@@ -3,7 +3,6 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.controllers.GameController;
 import com.StardewValley.models.*;
-import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.badlogic.gdx.Gdx;
@@ -15,13 +14,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.utils.Array;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 
-public class GameView implements Screen {
+public class GameScreen implements Screen {
     private GameController controller;
     private Game game;
     private GameMenuInputAdapter gameMenuInputAdapter;
@@ -48,7 +46,7 @@ public class GameView implements Screen {
     private OrthographicCamera camera;
 
 
-    public GameView() {
+    public GameScreen() {
         this.controller = AppControllers.gameController;
         this.game = App.getApp().getCurrentGame();
         gameMenuInputAdapter = new GameMenuInputAdapter(controller);

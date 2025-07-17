@@ -1,18 +1,15 @@
 package com.StardewValley;
 
-import com.StardewValley.graphicViews.GameView;
+import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Player;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.StardewValley.views.AppView;
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
@@ -46,7 +43,7 @@ public class Main extends Game {
 
         /// /////test//////////////
 
-        switchScreen(new GameView());
+        switchScreen(new GameScreen());
 
         Thread terminalController = new Thread(() -> {
             new AppView().run();

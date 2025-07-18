@@ -2,6 +2,7 @@ package com.StardewValley.models;
 
 
 import com.StardewValley.models.Enums.Menu;
+import com.badlogic.gdx.audio.Music;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,8 @@ public class App {
     private Game currentGame = null;
     private int lastGameId = 101;
 
+    private static Music music;
+
     private Menu currentMenu = Menu.SIGNUP_MENU;
 
     private App() {
@@ -28,6 +31,7 @@ public class App {
     public static App getApp() {
         if (app == null) {
             app = new App();
+            music = GameMenuAssetManager.music1;
         }
         return app;
     }
@@ -77,6 +81,7 @@ public class App {
         return currentGame;
     }
 
+    public Music getMusic() { return music; }
 
     public boolean isStayLoggedIn() {
         return stayLoggedIn;

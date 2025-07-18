@@ -1,10 +1,11 @@
 package com.StardewValley.models.Enums;
 
+import com.StardewValley.graphicControllers.SignupMenuController;
 import com.StardewValley.views.*;
 import com.badlogic.gdx.Screen;
 
 public enum Menu {
-    SIGNUP_MENU("signup menu", new SignupMenuView(), new com.StardewValley.graphicViews.GameView()),
+    SIGNUP_MENU("signup menu", new SignupMenuView(), new com.StardewValley.graphicViews.SignupMenuView()),
     LOGIN_MENU("login menu", new LoginMenuView(), new com.StardewValley.graphicViews.GameView()),
     MAIN_MENU("main menu", new MainMenuView(), new com.StardewValley.graphicViews.GameView()),
     PROFILE_MENU("profile menu", new ProfileMenuView(), new com.StardewValley.graphicViews.GameView()),

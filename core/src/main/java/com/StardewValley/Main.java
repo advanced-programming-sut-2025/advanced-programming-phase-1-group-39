@@ -5,6 +5,7 @@ import com.StardewValley.graphicViews.PregameMenuScreen;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Player;
+import com.StardewValley.models.User;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
@@ -28,6 +29,9 @@ public class Main extends Game {
 
         /// /////// test //////////
         App app = App.getApp();
+        User user1 = new User("mmd1", "mmd", "mmd1", "mmd@mmd.m", true);
+        app.setLoggedInUser(user1);
+
         Player player1 = new Player("mmd1", 101);
         Player player2 = new Player("mmd2", 102);
         Player player3 = new Player("mmd3", 103);

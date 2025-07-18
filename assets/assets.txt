@@ -1,3 +1,4 @@
+Clock.png
 characters/Abigail.png
 characters/Abigail/player.png
 characters/Abigail/sprites_player.atlas
@@ -12,3 +13,11 @@ map/tiles/quarry.png
 map/tiles/soil.png
 map/tiles/wall.png
 map/tiles/water.png
+menu_background.jfif
+skin/font-export.fnt
+skin/font-subtitle-export.fnt
+skin/font-title-export.fnt
+skin/pixthulhu-ui.atlas
+skin/pixthulhu-ui.json
+skin/pixthulhu-ui.png
+title-logo.png

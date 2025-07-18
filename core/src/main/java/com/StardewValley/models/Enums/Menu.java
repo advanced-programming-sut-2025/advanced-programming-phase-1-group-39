@@ -1,6 +1,7 @@
 package com.StardewValley.models.Enums;
 
 import com.StardewValley.graphicViews.GameScreen;
+import com.StardewValley.graphicViews.PregameMenuScreen;
 import com.StardewValley.views.*;
 import com.badlogic.gdx.Screen;
 
@@ -9,7 +10,7 @@ public enum Menu {
     LOGIN_MENU("login menu", new LoginMenuView(), new GameScreen()),
     MAIN_MENU("main menu", new MainMenuView(), new GameScreen()),
     PROFILE_MENU("profile menu", new ProfileMenuView(), new GameScreen()),
-    GAME_MENU("game menu", new GameMenuView(), new GameScreen()),
+    GAME_MENU("game menu", new GameMenuView(), new PregameMenuScreen()),
     GAME("game", new GameView(), new GameScreen()),
     ExitMenu("exit", new ExitMenuView(), new GameScreen()),;
 

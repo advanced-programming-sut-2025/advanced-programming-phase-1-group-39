@@ -1,10 +1,13 @@
 package com.StardewValley;
 
 import com.StardewValley.graphicViews.GameScreen;
+import com.StardewValley.graphicViews.PregameMenuScreen;
 import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Player;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.services.AppDataManager;
+import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.StardewValley.views.AppView;
 import com.badlogic.gdx.Game;
@@ -14,11 +17,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends Game {
     private static Main main;
-    private static SpriteBatch batch;
+    public static SpriteBatch batch;
 
     @Override
     public void create() {
         AppDataManager.loadApp();
+
         main = this;
         batch = new SpriteBatch();
 
@@ -42,8 +46,8 @@ public class Main extends Game {
         currentGame.startGame();
 
         /// /////test//////////////
-
-        switchScreen(new GameScreen());
+        App.getApp().setCurrentMenu(Menu.GAME_MENU);
+        switchScreen(new PregameMenuScreen());
 
         Thread terminalController = new Thread(() -> {
             new AppView().run();

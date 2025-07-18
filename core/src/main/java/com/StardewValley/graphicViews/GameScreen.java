@@ -1,5 +1,6 @@
 package com.StardewValley.graphicViews;
 
+import com.StardewValley.Main;
 import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.controllers.GameController;
 import com.StardewValley.models.*;
@@ -51,7 +52,7 @@ public class GameScreen implements Screen {
         this.game = App.getApp().getCurrentGame();
         gameMenuInputAdapter = new GameMenuInputAdapter(controller);
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
-        batch = new SpriteBatch();
+        batch = Main.batch;
         this.camera = new OrthographicCamera();
     }
 

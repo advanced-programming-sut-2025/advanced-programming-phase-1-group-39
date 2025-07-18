@@ -146,6 +146,9 @@ public class AppDataManager {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            // added
+            GameAssetManager.initializeAssets();
         }
     }
 

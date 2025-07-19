@@ -87,10 +87,12 @@ public class GameScreen implements Screen {
         float cameraLeft = camX - viewportWidth / 2;
         float cameraBottom = camY - viewportHeight / 2;
 
-        int startX = Math.max(0, (int) (cameraLeft / tileSize));
-        int startY = Math.max(0, (int) (cameraBottom / tileSize));
-        int endX = Math.min(Constants.FARM_WIDTH, startX + (int) (viewportWidth / tileSize) + 2);
-        int endY = Math.min(Constants.FARM_HEIGHT, startY + (int) (viewportHeight / tileSize) + 2);
+        Player currentPlayer = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        int startX = Math.max(currentPlayer.getStartOfFarm().x(), (int) (cameraLeft / tileSize));
+        int startY = Math.max(currentPlayer.getStartOfFarm().y(), (int) (cameraBottom / tileSize));
+        int endX = Math.min(currentPlayer.getEndOfFarm().x(), startX + (int) (viewportWidth / tileSize) + 2);
+        int endY = Math.min(currentPlayer.getEndOfFarm().y(), startY + (int) (viewportHeight / tileSize) + 2);
 
         Tile[][] tiles = game.getMap().getTiles();
 
@@ -100,7 +102,7 @@ public class GameScreen implements Screen {
                 TextureRegion texture = tileCache.get(l);
 
                 if (texture == null) {
-                    Tile tile = tiles[Constants.FARM_HEIGHT - y][x];
+                    Tile tile = tiles[Constants.FARM_HEIGHT - y + 1][x];
                     texture = tile.getType().getTextureRegion();
                     tileCache.put(l, texture);
                 }
@@ -150,7 +152,7 @@ public class GameScreen implements Screen {
         };
 
         Animation<TextureRegion> currentAnimation = playerAnimations.get(animIndex);
-        float elapsedTime = stateTime;  // توضیح پایین
+        float elapsedTime = stateTime;
 
         TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true);
         if (currentFrame == null) return;
@@ -171,9 +173,9 @@ public class GameScreen implements Screen {
 
         batch.draw(clock, drawX, drawY);
         Time time = App.getApp().getCurrentGame().getTime();
-        font.draw(batch, time.getDayOfWeek() + ". " + time.getDay(), drawX + 100, drawY + 200);
-        font.draw(batch, time.getHourText(), drawX + 150, drawY + 125);
-        font.draw(batch, String.valueOf(400), drawX + 180, drawY + 35);
+        font.draw(batch, time.getDayOfWeek() + ". " + time.getDay(), drawX + 100, drawY + 210);
+        font.draw(batch, time.getHourText(), drawX + 150, drawY + 120);
+        font.draw(batch, String.valueOf(400), drawX + 200, drawY + 40);
     }
 
 
@@ -183,7 +185,7 @@ public class GameScreen implements Screen {
         font = new BitmapFont();
         font.getData().setScale(2f);
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.position.set(game.getPlayerInTurn().getLocation().x(), game.getPlayerInTurn().getLocation().y(), 0);
+        camera.position.set(game.getPlayerInTurn().getLocation().x() * Map.TILE_SIZE, game.getPlayerInTurn().getLocation().y() * Map.TILE_SIZE, 0);
         loadTextures();
     }
 

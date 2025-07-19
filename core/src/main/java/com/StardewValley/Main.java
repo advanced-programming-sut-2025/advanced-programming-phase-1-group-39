@@ -56,9 +56,9 @@ public class Main extends Game {
 //        terminalController.start();
 
         /// /////test//////////////
-        //Main.getMain().setScreen(new SignupMenuView());
+        Main.getMain().setScreen(new SignupMenuView());
         //Main.getMain().setScreen(new SecurityQuestionMenuView());
-        Main.getMain().setScreen(new LoginMenuView());
+        //Main.getMain().setScreen(new LoginMenuView());
         //Main.getMain().setScreen(new ForgetPasswordMenuView());
         //Main.getMain().setScreen(new MainMenuView());
         App.getApp().setLoggedInUser(new User("mostafa", "pass1234", "mosi", "mos@gamil.com", true));

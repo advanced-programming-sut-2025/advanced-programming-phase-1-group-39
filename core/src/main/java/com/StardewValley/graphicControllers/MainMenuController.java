@@ -4,6 +4,7 @@ import com.StardewValley.Main;
 import com.StardewValley.graphicViews.GameView;
 import com.StardewValley.graphicViews.LoginMenuView;
 import com.StardewValley.graphicViews.MainMenuView;
+import com.StardewValley.graphicViews.ProfileMenuView;
 import com.StardewValley.models.App;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -31,7 +32,7 @@ public class MainMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getProfileMenuButton().isChecked()) {
-                        // TODO :
+                        Main.getMain().setScreen(new ProfileMenuView());
                     }
                 }
             });

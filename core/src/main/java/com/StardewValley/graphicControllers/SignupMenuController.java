@@ -39,55 +39,60 @@ public class SignupMenuController {
                     if (view.getSignUpButton().isChecked()) {
                         Matcher matcher;
                         // --- username ---
-                        if (!isUsernameUnique(username)) {
+                        if (username == null || username.equals("Enter your Username")) {
                             cleanMessage();
-                            String newUsername = getUniqueName(username);
-                            view.getUsernameErrorLabel().setText(("This username is already taken. You can use this : " +
-                                    "((" + newUsername + "))."));
-                            view.getSignUpButton().setChecked(false);
-                        } else if ((matcher = SignupMenuCommands.UserName.getMatcher(username)) == null) {
-                            cleanMessage();
-                            view.getUsernameErrorLabel().setText("The username format is incorrect");
+                            view.getUsernameErrorLabel().setText("Username cannot be empty");
                             view.getSignUpButton().setChecked(false);
                         }
-                        // --- password ---
-                        else if (password == null || password.equals("Enter your Password")) {
-                            cleanMessage();
-                            view.getPasswordErrorLabel().setText("the password cannot be empty");
-                            view.getSignUpButton().setChecked(false);
-                        } else if ((matcher = SignupMenuCommands.Password.getMatcher(password)) == null) {
-                            cleanMessage();
-                            view.getPasswordErrorLabel().setText("The password format is incorrect");
-                            view.getSignUpButton().setChecked(false);
-                        } else if ((matcher = SignupMenuCommands.WeakPassword.getMatcher(password)) == null) {
-                            cleanMessage();
-                            StringBuilder output = validatePassword(password);
-                            view.getPasswordErrorLabel().setText(output.toString());
-                            view.getSignUpButton().setChecked(false);
-                        } else if (!password.equals(confirmPassword)) {
-                            cleanMessage();
-                            view.getConfirmPasswordErrorLabel().setText("Password and confirmation do not match");
-                            view.getSignUpButton().setChecked(false);
-                        }
-                        // --- nickname ---
-                        else if (nickname == null || nickname.equals("Enter your Nickname")) {
-                            cleanMessage();
-                            view.getNicknameErrorLabel().setText("The nickname cannot be empty");
-                            view.getSignUpButton().setChecked(false);
-                        }
-                        // --- email ---
-                        else if ((matcher = SignupMenuCommands.Email.getMatcher(email)) == null) {
-                            cleanMessage();
-                            view.getEmailErrorLabel().setText("The email address you entered is invalid");
-                            view.getSignUpButton().setChecked(false);
-                        }
-                        // --- creat an account ---
-                        else {
-                            App app = App.getApp();
-                            boolean isMale = view.getGenderField().getSelected().equals("Male");
-                            app.setPendingUser(new User(username, password, nickname, email, isMale));
-                            Main.getMain().setScreen(new SecurityQuestionMenuView());
-                        }
+                            if (!isUsernameUnique(username)) {
+                                cleanMessage();
+                                String newUsername = getUniqueName(username);
+                                view.getUsernameErrorLabel().setText(("This username is already taken. You can use this : " +
+                                        "((" + newUsername + "))."));
+                                view.getSignUpButton().setChecked(false);
+                            } else if ((matcher = SignupMenuCommands.UserName.getMatcher(username)) == null) {
+                                cleanMessage();
+                                view.getUsernameErrorLabel().setText("The username format is incorrect");
+                                view.getSignUpButton().setChecked(false);
+                            }
+                            // --- password ---
+                            else if (password == null || password.equals("Enter your Password")) {
+                                cleanMessage();
+                                view.getPasswordErrorLabel().setText("the password cannot be empty");
+                                view.getSignUpButton().setChecked(false);
+                            } else if ((matcher = SignupMenuCommands.Password.getMatcher(password)) == null) {
+                                cleanMessage();
+                                view.getPasswordErrorLabel().setText("The password format is incorrect");
+                                view.getSignUpButton().setChecked(false);
+                            } else if ((matcher = SignupMenuCommands.WeakPassword.getMatcher(password)) == null) {
+                                cleanMessage();
+                                StringBuilder output = validatePassword(password);
+                                view.getPasswordErrorLabel().setText(output.toString());
+                                view.getSignUpButton().setChecked(false);
+                            } else if (!password.equals(confirmPassword)) {
+                                cleanMessage();
+                                view.getConfirmPasswordErrorLabel().setText("Password and confirmation do not match");
+                                view.getSignUpButton().setChecked(false);
+                            }
+                            // --- nickname ---
+                            else if (nickname == null || nickname.equals("Enter your Nickname")) {
+                                cleanMessage();
+                                view.getNicknameErrorLabel().setText("The nickname cannot be empty");
+                                view.getSignUpButton().setChecked(false);
+                            }
+                            // --- email ---
+                            else if ((matcher = SignupMenuCommands.Email.getMatcher(email)) == null) {
+                                cleanMessage();
+                                view.getEmailErrorLabel().setText("The email address you entered is invalid");
+                                view.getSignUpButton().setChecked(false);
+                            }
+                            // --- creat an account ---
+                            else {
+                                App app = App.getApp();
+                                boolean isMale = view.getGenderField().getSelected().equals("Male");
+                                app.setPendingUser(new User(username, password, nickname, email, isMale));
+                                Main.getMain().setScreen(new SecurityQuestionMenuView());
+                            }
                     }
                 }
             });
@@ -208,7 +213,6 @@ public class SignupMenuController {
 
         return password.toString();
     }
-
 
 
 }

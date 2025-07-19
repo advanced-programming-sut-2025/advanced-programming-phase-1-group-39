@@ -124,7 +124,7 @@ public class LoginMenuView implements Screen {
         Table buttonsRow = new Table();
         loginButton.setColor(Color.valueOf("E9D8A6"));
         forgotPasswordButton.setColor(Color.valueOf("FFB703"));
-        buttonsRow.add(loginButton).width(450);
+        buttonsRow.add(loginButton).width(450).height(110);
         buttonsRow.row().padTop(20);
         buttonsRow.add(forgotPasswordButton);
         table.add(buttonsRow).colspan(2).center().padBottom(40);

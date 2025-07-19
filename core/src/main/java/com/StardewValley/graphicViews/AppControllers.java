@@ -8,4 +8,5 @@ public class AppControllers {
     public static LoginMenuController loginMenuController = new LoginMenuController();
     public static ForgetPasswordMenuController forgetPasswordMenuController = new ForgetPasswordMenuController();
     public static MainMenuController mainMenuController = new MainMenuController();
+    public static ProfileMenuController profileMenuController = new ProfileMenuController();
 }

@@ -2916,6 +2916,9 @@ Stardew_Valley_Images-main/Weapon/Wind_Spire.png
 Stardew_Valley_Images-main/Weapon/Wood_Club.png
 Stardew_Valley_Images-main/Weapon/Wood_Mallet.png
 Stardew_Valley_Images-main/Weapon/Wooden_Blade.png
+Stardew_Valley_Images-main/sprites/8-bit-graphics-pixels-scene-with-house-trees.jpg
+Stardew_Valley_Images-main/sprites/8-bit-graphics-pixels-scene-with-nature.jpg
+Stardew_Valley_Images-main/sprites/8-bit-graphics-pixels-scene-with-village.jpg
 Stardew_Valley_Images-main/sprites/Abigail.png
 Stardew_Valley_Images-main/sprites/Accessories.png
 Stardew_Valley_Images-main/sprites/Alex.png
@@ -3206,6 +3209,8 @@ Stardew_Valley_Images-main/sprites/Witch Hut.png
 Stardew_Valley_Images-main/sprites/Witch Swamp.png
 Stardew_Valley_Images-main/sprites/Wizard House.png
 Stardew_Valley_Images-main/sprites/Wizard.png
+Stardew_Valley_Images-main/sprites/pixel-art-river-landscape-illustration (1).jpg
+Stardew_Valley_Images-main/sprites/pixel-art-river-landscape-illustration.jpg
 libgdx.png
 map/Flooring_81.png
 map/tiles/destroyed.png

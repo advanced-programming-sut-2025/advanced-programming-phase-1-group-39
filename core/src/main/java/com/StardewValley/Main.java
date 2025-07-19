@@ -58,7 +58,8 @@ public class Main extends Game {
         //Main.getMain().setScreen(new SignupMenuView());
         //Main.getMain().setScreen(new SecurityQuestionMenuView());
         //Main.getMain().setScreen(new LoginMenuView());
-        Main.getMain().setScreen(new ForgetPasswordMenuView());
+        //Main.getMain().setScreen(new ForgetPasswordMenuView());
+        Main.getMain().setScreen(new MainMenuView());
     }
 
     @Override

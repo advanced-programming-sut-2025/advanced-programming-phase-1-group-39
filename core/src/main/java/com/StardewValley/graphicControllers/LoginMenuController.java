@@ -4,6 +4,7 @@ import com.StardewValley.Main;
 import com.StardewValley.controllers.ProfileMenuController;
 import com.StardewValley.graphicViews.ForgetPasswordMenuView;
 import com.StardewValley.graphicViews.LoginMenuView;
+import com.StardewValley.graphicViews.MainMenuView;
 import com.StardewValley.graphicViews.SignupMenuView;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
@@ -50,10 +51,10 @@ public class LoginMenuController {
                         } else if (view.getStayLoggedInCheckBox().isChecked()) {
                             App.getApp().setStayLoggedIn(true);
                             App.getApp().setLoggedInUser(getUserByUsername(username));
-                            Main.getMain().setScreen(new LoginMenuView());
+                            Main.getMain().setScreen(new MainMenuView());
                         } else {
                             App.getApp().setLoggedInUser(getUserByUsername(username));
-                            Main.getMain().setScreen(new LoginMenuView());
+                            Main.getMain().setScreen(new MainMenuView());
                         }
                     }
                 }

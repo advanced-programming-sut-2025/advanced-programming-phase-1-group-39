@@ -61,7 +61,7 @@ public class ForgetPasswordMenuView implements Screen {
         this.changePasswordButton = new TextButton("Change Password", skin);
         this.backButton = new TextButton("Back", skin);
         this.music = GameMenuAssetManager.music1;
-        controller.setView(this);
+        AppControllers.forgetPasswordMenuController.setView(this);
     }
     @Override
     public void show() {

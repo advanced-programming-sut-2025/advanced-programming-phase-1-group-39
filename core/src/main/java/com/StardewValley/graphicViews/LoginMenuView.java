@@ -41,7 +41,7 @@ public class LoginMenuView implements Screen {
     private final LoginMenuController controller;
 
     public LoginMenuView() {
-        this.controller = new LoginMenuController();
+        this.controller = AppControllers.loginMenuController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -57,7 +57,7 @@ public class LoginMenuView implements Screen {
         this.forgotPasswordButton = new TextButton("Forgot Password", skin);
         this.backButton = new TextButton("Back", skin);
         this.music = GameMenuAssetManager.music1;
-        controller.setView(this);
+        AppControllers.loginMenuController.setView(this);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.StardewValley;
 
 import com.StardewValley.graphicControllers.SignupMenuController;
 import com.StardewValley.graphicViews.GameView;
+import com.StardewValley.graphicViews.SecurityQuestionMenuView;
 import com.StardewValley.graphicViews.SignupMenuView;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Player;
@@ -56,7 +57,8 @@ public class Main extends Game {
 //        terminalController.start();
 
         /// /////test//////////////
-        Main.getMain().setScreen(new SignupMenuView());
+        //Main.getMain().setScreen(new SignupMenuView());
+        Main.getMain().setScreen(new SecurityQuestionMenuView());
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.StardewValley.Main;
 import com.StardewValley.graphicViews.LoginMenuView;
 import com.StardewValley.graphicViews.SignupMenuView;
 import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Enums.commands.SignupMenuCommands;
 import com.StardewValley.models.User;
 import com.badlogic.gdx.Gdx;
@@ -85,7 +86,7 @@ public class SignupMenuController {
                             App app = App.getApp();
                             boolean isMale = view.getGenderField().getSelected().equals("Male");
                             app.setPendingUser(new User(username, password, nickname, email, isMale));
-                            Main.getMain().setScreen(new LoginMenuView());
+                            Main.getMain().setScreen(Menu.SECURITY_QUESTION_VIEW.getScreen());
                         }
                     }
                 }
@@ -96,7 +97,7 @@ public class SignupMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getLoginButton().isChecked()) {
-                        Main.getMain().setScreen(new LoginMenuView());
+                        Main.getMain().setScreen(Menu.LOGIN_MENU.getScreen());
                     }
                 }
             });

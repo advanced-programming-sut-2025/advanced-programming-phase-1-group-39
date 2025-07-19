@@ -63,7 +63,7 @@ public class SecurityQuestionMenuView implements Screen {
     @Override
     public void show() {
         music.setLooping(true);
-        //music.play();
+        music.play();
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);

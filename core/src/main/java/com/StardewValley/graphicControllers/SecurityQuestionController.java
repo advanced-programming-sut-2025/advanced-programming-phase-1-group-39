@@ -1,7 +1,9 @@
 package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
+import com.StardewValley.graphicViews.LoginMenuView;
 import com.StardewValley.graphicViews.SecurityQuestionMenuView;
+import com.StardewValley.graphicViews.SignupMenuView;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.SecurityQuestion;
@@ -98,7 +100,7 @@ public class SecurityQuestionController {
                             app.getPendingUser().setPassword(hashPass);
                             app.addUser(app.getPendingUser());
                             app.setPendingUser(null);
-                            Main.getMain().setScreen(Menu.LOGIN_MENU.getScreen());
+                            Main.getMain().setScreen(new LoginMenuView());
                         }
 
                     }
@@ -108,7 +110,7 @@ public class SecurityQuestionController {
             view.getBackButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    Main.getMain().setScreen(Menu.SIGNUP_MENU.getScreen());
+                    Main.getMain().setScreen(new SignupMenuView());
                 }
             });
         }

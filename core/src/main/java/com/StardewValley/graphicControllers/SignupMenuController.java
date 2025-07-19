@@ -2,6 +2,7 @@ package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
 import com.StardewValley.graphicViews.LoginMenuView;
+import com.StardewValley.graphicViews.SecurityQuestionMenuView;
 import com.StardewValley.graphicViews.SignupMenuView;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
@@ -11,7 +12,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,17 +47,17 @@ public class SignupMenuController {
                             view.getSignUpButton().setChecked(false);
                         } else if ((matcher = SignupMenuCommands.UserName.getMatcher(username)) == null) {
                             cleanMessage();
-                            view.getUsernameErrorLabel().setText("The username format is incorrect.");
+                            view.getUsernameErrorLabel().setText("The username format is incorrect");
                             view.getSignUpButton().setChecked(false);
                         }
                         // --- password ---
                         else if (password == null || password.equals("Enter your Password")) {
                             cleanMessage();
-                            view.getPasswordErrorLabel().setText("the password cannot be empty.");
+                            view.getPasswordErrorLabel().setText("the password cannot be empty");
                             view.getSignUpButton().setChecked(false);
                         } else if ((matcher = SignupMenuCommands.Password.getMatcher(password)) == null) {
                             cleanMessage();
-                            view.getPasswordErrorLabel().setText("The password format is incorrect.");
+                            view.getPasswordErrorLabel().setText("The password format is incorrect");
                             view.getSignUpButton().setChecked(false);
                         } else if ((matcher = SignupMenuCommands.WeakPassword.getMatcher(password)) == null) {
                             cleanMessage();
@@ -66,19 +66,19 @@ public class SignupMenuController {
                             view.getSignUpButton().setChecked(false);
                         } else if (!password.equals(confirmPassword)) {
                             cleanMessage();
-                            view.getConfirmPasswordErrorLabel().setText("Password and confirmation do not match.");
+                            view.getConfirmPasswordErrorLabel().setText("Password and confirmation do not match");
                             view.getSignUpButton().setChecked(false);
                         }
                         // --- nickname ---
                         else if (nickname == null || nickname.equals("Enter your Nickname")) {
                             cleanMessage();
-                            view.getNicknameErrorLabel().setText("The nickname cannot be empty.");
+                            view.getNicknameErrorLabel().setText("The nickname cannot be empty");
                             view.getSignUpButton().setChecked(false);
                         }
                         // --- email ---
                         else if ((matcher = SignupMenuCommands.Email.getMatcher(email)) == null) {
                             cleanMessage();
-                            view.getEmailErrorLabel().setText("The email address you entered is invalid.");
+                            view.getEmailErrorLabel().setText("The email address you entered is invalid");
                             view.getSignUpButton().setChecked(false);
                         }
                         // --- creat an account ---
@@ -86,7 +86,7 @@ public class SignupMenuController {
                             App app = App.getApp();
                             boolean isMale = view.getGenderField().getSelected().equals("Male");
                             app.setPendingUser(new User(username, password, nickname, email, isMale));
-                            Main.getMain().setScreen(Menu.SECURITY_QUESTION_VIEW.getScreen());
+                            Main.getMain().setScreen(new SecurityQuestionMenuView());
                         }
                     }
                 }
@@ -97,7 +97,7 @@ public class SignupMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getLoginButton().isChecked()) {
-                        Main.getMain().setScreen(Menu.LOGIN_MENU.getScreen());
+                        Main.getMain().setScreen(new LoginMenuView());
                     }
                 }
             });

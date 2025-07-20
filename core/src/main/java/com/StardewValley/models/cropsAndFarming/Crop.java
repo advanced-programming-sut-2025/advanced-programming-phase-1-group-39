@@ -19,7 +19,5 @@ public abstract class Crop extends Item {
     public int getBaseSellPrice() {
         return baseSellPrice;
     }
-
-    abstract TextureRegion getTexture();
 }
 

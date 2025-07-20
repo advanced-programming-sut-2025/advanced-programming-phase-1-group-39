@@ -4,12 +4,13 @@ package com.StardewValley.models.Shops;
 import com.StardewValley.models.Item;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class ShopItem extends Item {
     private int price;
     private int dailyLimit;
     private int availableQuantity;
-    private Texture texture;
+    private TextureRegion texture;
 
     public ShopItem(String name, int price, int dailyLimit) {
         super(name);
@@ -24,11 +25,11 @@ public class ShopItem extends Item {
     }
 
     public void setTexture(String path) {
-        this.texture = new Texture(Gdx.files.internal(path));
+        this.texture = new TextureRegion(new Texture(Gdx.files.internal(path)));
     }
 
     @Override
-    public Texture getTexture() {
+    public TextureRegion getTexture() {
         return texture;
     }
 

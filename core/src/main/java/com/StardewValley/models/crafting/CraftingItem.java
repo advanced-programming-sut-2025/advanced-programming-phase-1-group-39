@@ -2,19 +2,20 @@ package com.StardewValley.models.crafting;
 
 import com.StardewValley.models.Item;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class CraftingItem extends Item {
     private int sellPrice;
-    private Texture texture;
+    private TextureRegion texture;
 
     public CraftingItem(String name, int sellPrice, Texture texture) {
         super(name);
         this.sellPrice = sellPrice;
-        this.texture = texture;
+        this.texture = new TextureRegion(texture);
     }
 
     @Override
-    public Texture getTexture() {
+    public TextureRegion getTexture() {
         return texture;
     }
 

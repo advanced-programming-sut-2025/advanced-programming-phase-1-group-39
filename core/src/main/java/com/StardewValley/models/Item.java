@@ -10,6 +10,7 @@ import com.StardewValley.models.cropsAndFarming.Crop;
 import com.StardewValley.models.cropsAndFarming.ForagingMaterial;
 import com.StardewValley.models.cropsAndFarming.ForagingMineral;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class Item {
     protected String name;
@@ -21,7 +22,7 @@ public abstract class Item {
 
     public String getName() { return name; }
 
-    public abstract Texture getTexture();
+    public abstract TextureRegion getTexture();
 
     public Boolean isSellable() {
         if (this instanceof ArtisanGood || this instanceof Fish || this instanceof AnimalProduct

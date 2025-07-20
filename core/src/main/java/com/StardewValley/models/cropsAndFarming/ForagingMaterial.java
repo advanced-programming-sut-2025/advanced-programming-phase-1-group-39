@@ -2,11 +2,12 @@ package com.StardewValley.models.cropsAndFarming;
 
 import com.StardewValley.models.Item;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class ForagingMaterial extends Item {
-    private final Texture texture;
+    private final TextureRegion texture;
     int baseSellPrice;
-    public ForagingMaterial(String name, int baseSellPrice, Texture texture) {
+    public ForagingMaterial(String name, int baseSellPrice, TextureRegion texture) {
         super(name);
         this.baseSellPrice = baseSellPrice;
         this.texture = texture;
@@ -29,7 +30,7 @@ public class ForagingMaterial extends Item {
     }
 
     @Override
-    public Texture getTexture() {
+    public TextureRegion getTexture() {
         return texture;
     }
 }

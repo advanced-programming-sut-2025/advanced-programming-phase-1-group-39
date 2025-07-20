@@ -2,6 +2,7 @@ package com.StardewValley.models.cropsAndFarming;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.StardewValley.models.Enums.Season;
@@ -103,7 +104,7 @@ public class ForagingManager {
                         data.name,
                         data.description,
                         data.sellPrice,
-                        new Texture(Gdx.files.internal(data.texturePath))
+                        new TextureRegion(new Texture(Gdx.files.internal(data.texturePath)))
                 );
                 foragingMinerals.put(data.name, mineral);
             }
@@ -129,7 +130,7 @@ public class ForagingManager {
                 ForagingMaterial material = new ForagingMaterial(
                         data.name,
                         data.sellPrice,
-                        new Texture(Gdx.files.internal(data.texturePath))
+                        new TextureRegion(new Texture(Gdx.files.internal(data.texturePath)))
                 );
                 foragingMaterials.put(data.name, material);
             }

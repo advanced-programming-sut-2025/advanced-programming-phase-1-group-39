@@ -1,5 +1,7 @@
 package com.StardewValley.models.cropsAndFarming;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.StardewValley.models.Enums.Season;
@@ -100,7 +102,8 @@ public class ForagingManager {
                 ForagingMineral mineral = new ForagingMineral(
                         data.name,
                         data.description,
-                        data.sellPrice
+                        data.sellPrice,
+                        new Texture(Gdx.files.internal(data.texturePath))
                 );
                 foragingMinerals.put(data.name, mineral);
             }
@@ -112,6 +115,7 @@ public class ForagingManager {
         String name;
         String description;
         int sellPrice;
+        String texturePath;
     }
 
     public static void loadMaterials(String pathToJson) {
@@ -124,7 +128,8 @@ public class ForagingManager {
             for (ForagingMaterialJson data : mineralList) {
                 ForagingMaterial material = new ForagingMaterial(
                         data.name,
-                        data.sellPrice
+                        data.sellPrice,
+                        new Texture(Gdx.files.internal(data.texturePath))
                 );
                 foragingMaterials.put(data.name, material);
             }
@@ -135,6 +140,7 @@ public class ForagingManager {
     private static class ForagingMaterialJson {
         String name;
         int sellPrice;
+        String texturePath;
     }
 
 

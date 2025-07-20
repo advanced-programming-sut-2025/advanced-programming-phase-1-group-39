@@ -9,6 +9,7 @@ import com.StardewValley.models.crafting.CraftingItem;
 import com.StardewValley.models.cropsAndFarming.Crop;
 import com.StardewValley.models.cropsAndFarming.ForagingMaterial;
 import com.StardewValley.models.cropsAndFarming.ForagingMineral;
+import com.badlogic.gdx.graphics.Texture;
 
 public abstract class Item {
     protected String name;
@@ -55,6 +56,8 @@ public abstract class Item {
 
         return 0;
     }
+
+    abstract Texture getTexture();
 
 }
 

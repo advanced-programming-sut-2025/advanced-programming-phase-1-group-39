@@ -7,36 +7,38 @@ import com.StardewValley.models.Time;
 import com.StardewValley.models.artisan.ArtisanGood;
 import com.StardewValley.models.artisan.ArtisanMachine;
 import com.StardewValley.models.artisan.ArtisanRecipe;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
 public class OilMaker extends ArtisanMachine {
-    public OilMaker(String name, int sellPrice) {
-        super(name, sellPrice);
+    public OilMaker(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
 
 
         HashMap<String, Integer> truffleIngredients = new HashMap<>();
         truffleIngredients.put("Truffle", 1);
         recipes.add(new ArtisanRecipe("Truffle Oil", "A gourmet cooking ingredient.",
-                truffleIngredients, 6, 38, 1065));
+                truffleIngredients, 6, 38, 1065, new Texture(Gdx.files.internal("artisanGoods/Truffle_Oil.png"))));
 
 
         HashMap<String, Integer> cornIngredients = new HashMap<>();
         cornIngredients.put("Corn", 1);
         recipes.add(new ArtisanRecipe("Corn Oil", "All purpose cooking oil.",
-                cornIngredients, 6, 13, 100));
+                cornIngredients, 6, 13, 100, new Texture(Gdx.files.internal("artisanGoods/Oil.png"))));
 
 
         HashMap<String, Integer> seedIngredients = new HashMap<>();
         seedIngredients.put("Sunflower Seeds", 1);
         recipes.add(new ArtisanRecipe("Sunflower Seed Oil", "All purpose cooking oil.",
-                seedIngredients, 48, 13, 100));
+                seedIngredients, 48, 13, 100, new Texture(Gdx.files.internal("artisanGoods/Sunflower_Oil.png"))));
 
 
         HashMap<String, Integer> flowerIngredients = new HashMap<>();
         flowerIngredients.put("Sunflower", 1);
         recipes.add(new ArtisanRecipe("Sunflower Oil", "All purpose cooking oil.",
-                flowerIngredients, 1, 13, 100));
+                flowerIngredients, 1, 13, 100, new Texture(Gdx.files.internal("artisanGoods/Sunflower_Oil.png"))));
 
         for (ArtisanRecipe recipe : recipes) {
             ItemManager.addArtisanGood(recipe.getGood(), name);

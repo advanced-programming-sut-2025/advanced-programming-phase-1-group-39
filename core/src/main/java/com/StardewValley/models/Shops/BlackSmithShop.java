@@ -29,7 +29,9 @@ public class BlackSmithShop extends Shop {
             BlackSmithShopData data = gson.fromJson(reader, BlackSmithShopData.class);
 
             for (ShopItemData item : data.items) {
-                shopItems.put(item.name, new ShopItem(item.name, item.price, item.limit));
+                ShopItem itemToAdd = new ShopItem(item.name, item.price, item.limit);
+                itemToAdd.setTexture(item.path);
+                shopItems.put(item.name, itemToAdd);
             }
 
             for (String upgrade : data.toolUpgrades) {
@@ -49,6 +51,7 @@ public class BlackSmithShop extends Shop {
         public String name;
         public int price;
         public int limit;
+        public String path;
     }
 
     public Result purchase(String product, int quantity) {

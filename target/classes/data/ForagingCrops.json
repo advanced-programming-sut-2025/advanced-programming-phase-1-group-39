@@ -1,0 +1,163 @@
+[
+  {
+    "name": "Common Mushroom",
+    "baseSellPrice": 40,
+    "energy": 38,
+    "source": "LAND_CROP",
+    "seasons": ["SPRING", "SUMMER", "FALL", "WINTER"]
+  },
+  {
+    "name": "Daffodil",
+    "baseSellPrice": 30,
+    "energy": 0,
+    "source": "LAND_CROP",
+    "seasons": ["SPRING"]
+  },
+  {
+    "name": "Dandelion",
+    "baseSellPrice": 40,
+    "energy": 25,
+    "source": "LAND_CROP",
+    "seasons": ["SPRING"]
+  },
+  {
+    "name": "Leek",
+    "baseSellPrice": 60,
+    "energy": 40,
+    "source": "LAND_CROP",
+    "seasons": ["SPRING"]
+  },
+  {
+    "name": "Morel",
+    "baseSellPrice": 150,
+    "energy": 20,
+    "source": "LAND_CROP",
+    "seasons": ["SPRING"]
+  },
+  {
+    "name": "Salmonberry",
+    "baseSellPrice": 5,
+    "energy": 25,
+    "source": "LAND_CROP",
+    "seasons": ["SPRING"]
+  },
+  {
+    "name": "Spring Onion",
+    "baseSellPrice": 8,
+    "energy": 13,
+    "source": "LAND_CROP",
+    "seasons": ["SPRING"]
+  },
+  {
+    "name": "Wild Horseradish",
+    "baseSellPrice": 50,
+    "energy": 13,
+    "source": "LAND_CROP",
+    "seasons": ["SPRING"]
+  },
+  {
+    "name": "Fiddlehead Fern",
+    "baseSellPrice": 90,
+    "energy": 25,
+    "source": "LAND_CROP",
+    "seasons": ["SUMMER"]
+  },
+  {
+    "name": "Grape",
+    "baseSellPrice": 80,
+    "energy": 38,
+    "source": "LAND_CROP",
+    "seasons": ["SUMMER"]
+  },
+  {
+    "name": "Red Mushroom",
+    "baseSellPrice": 75,
+    "energy": -50,
+    "source": "LAND_CROP",
+    "seasons": ["SUMMER"]
+  },
+  {
+    "name": "Spice Berry",
+    "baseSellPrice": 80,
+    "energy": 25,
+    "source": "LAND_CROP",
+    "seasons": ["SUMMER"]
+  },
+  {
+    "name": "Sweet Pea",
+    "baseSellPrice": 50,
+    "energy": 0,
+    "source": "LAND_CROP",
+    "seasons": ["SUMMER"]
+  },
+  {
+    "name": "Blackberry",
+    "baseSellPrice": 25,
+    "energy": 25,
+    "source": "LAND_CROP",
+    "seasons": ["FALL"]
+  },
+  {
+    "name": "Chanterelle",
+    "baseSellPrice": 160,
+    "energy": 75,
+    "source": "LAND_CROP",
+    "seasons": ["FALL"]
+  },
+  {
+    "name": "Hazelnut",
+    "baseSellPrice": 40,
+    "energy": 38,
+    "source": "LAND_CROP",
+    "seasons": ["FALL"]
+  },
+  {
+    "name": "Purple Mushroom",
+    "baseSellPrice": 90,
+    "energy": 30,
+    "source": "LAND_CROP",
+    "seasons": ["FALL"]
+  },
+  {
+    "name": "Wild Plum",
+    "baseSellPrice": 80,
+    "energy": 25,
+    "source": "LAND_CROP",
+    "seasons": ["FALL"]
+  },
+  {
+    "name": "Crocus",
+    "baseSellPrice": 60,
+    "energy": 0,
+    "source": "LAND_CROP",
+    "seasons": ["WINTER"]
+  },
+  {
+    "name": "Crystal Fruit",
+    "baseSellPrice": 150,
+    "energy": 63,
+    "source": "LAND_CROP",
+    "seasons": ["WINTER"]
+  },
+  {
+    "name": "Holly",
+    "baseSellPrice": 80,
+    "energy": -37,
+    "source": "LAND_CROP",
+    "seasons": ["WINTER"]
+  },
+  {
+    "name": "Snow Yam",
+    "baseSellPrice": 100,
+    "energy": 30,
+    "source": "LAND_CROP",
+    "seasons": ["WINTER"]
+  },
+  {
+    "name": "Winter Root",
+    "baseSellPrice": 70,
+    "energy": 25,
+    "source": "LAND_CROP",
+    "seasons": ["WINTER"]
+  }
+]

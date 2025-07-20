@@ -5,12 +5,15 @@ import com.StardewValley.models.Player;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.Time;
 import com.StardewValley.models.artisan.ArtisanMachine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 public class BeeHouse extends ArtisanMachine {
-    public BeeHouse(String name, int sellPrice) {
-        super(name, sellPrice);
+    public BeeHouse(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
         recipes.add(new ArtisanRecipe("Honey",
-                "It's a sweet syrup produced by bees.", null, 4, 75, 350));
+                "It's a sweet syrup produced by bees.", null, 4, 75, 350,
+                new Texture(Gdx.files.internal("artisanGoods/Honey.png"))));
 
         for (ArtisanRecipe recipe : recipes) {
             ItemManager.addArtisanGood(recipe.getGood(), name);

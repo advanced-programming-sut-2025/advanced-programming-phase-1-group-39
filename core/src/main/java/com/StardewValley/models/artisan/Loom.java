@@ -5,17 +5,19 @@ import com.StardewValley.models.Player;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.Time;
 import com.StardewValley.models.artisan.ArtisanMachine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
 public class Loom extends ArtisanMachine {
-    public Loom(String name, int sellPrice) {
-        super(name, sellPrice);
+    public Loom(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
 
         HashMap<String, Integer> ingredients = new HashMap<>();
         ingredients.put("Wool", 1);
         recipes.add(new ArtisanRecipe("Cloth", "A bolt of fine wool cloth.",
-                ingredients, 4, 0, 470));
+                ingredients, 4, 0, 470, new Texture(Gdx.files.internal("artisanGoods/Cloth.png"))));
 
         for (ArtisanRecipe recipe : recipes) {
             ItemManager.addArtisanGood(recipe.getGood(), name);

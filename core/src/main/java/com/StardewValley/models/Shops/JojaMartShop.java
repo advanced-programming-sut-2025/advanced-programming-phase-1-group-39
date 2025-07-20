@@ -37,8 +37,10 @@ public class JojaMartShop extends Shop {
             Type type = new TypeToken<JojaMartData>() {}.getType();
             JojaMartData data = gson.fromJson(reader, type);
 
-            for (ShopItemData item : data.permanentStock) {
-                permanentStock.put(item.name, new ShopItem(item.name, item.price, item.limit));
+            for (PermShopItemData item : data.permanentStock) {
+                ShopItem itemToAdd = new ShopItem(item.name, item.price, item.limit);
+                itemToAdd.setTexture(item.path);
+                permanentStock.put(item.name, itemToAdd);
             }
 
             for (Map.Entry<String, List<ShopItemData>> entry : data.seasonalStock.entrySet()) {
@@ -59,10 +61,16 @@ public class JojaMartShop extends Shop {
     }
 
     public static class JojaMartData {
-        List<ShopItemData> permanentStock;
+        List<PermShopItemData> permanentStock;
         Map<String, List<ShopItemData>> seasonalStock;
     }
 
+    public static class PermShopItemData {
+        String name;
+        int price;
+        int limit;
+        String path;
+    }
     public static class ShopItemData {
         String name;
         int price;

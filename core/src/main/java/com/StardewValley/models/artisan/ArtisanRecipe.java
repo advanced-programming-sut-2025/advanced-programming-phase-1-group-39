@@ -1,6 +1,7 @@
 package com.StardewValley.models.artisan;
 
 import com.StardewValley.models.artisan.ArtisanGood;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
@@ -15,14 +16,14 @@ public class ArtisanRecipe {
     private ArtisanGood good;
 
     public ArtisanRecipe(String name, String description, HashMap<String, Integer> ingredients,
-                         int processingTime, int energy, int sellPrice) {
+                         int processingTime, int energy, int sellPrice, Texture texture) {
         this.name = name;
         this.description = description;
         this.ingredients = ingredients;
         this.processingTime = processingTime;
         this.sellPrice = sellPrice;
         this.energy = energy;
-        this.good = new ArtisanGood(name, description, energy, sellPrice);
+        this.good = new ArtisanGood(name, description, energy, sellPrice, texture);
     }
 
     public String getName() {

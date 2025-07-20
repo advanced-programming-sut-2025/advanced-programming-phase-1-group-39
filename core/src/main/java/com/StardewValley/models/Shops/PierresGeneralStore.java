@@ -38,8 +38,10 @@ public class PierresGeneralStore extends Shop {
             FileReader reader = new FileReader(path);
             PierresStoreData data = gson.fromJson(reader, PierresStoreData.class);
 
-            for (ShopItemData item : data.yearRound) {
-                yearRound.put(item.name, new ShopItem(item.name, item.price, item.dailyLimit));
+            for (YRShopItemData item : data.yearRound) {
+                ShopItem itemToAdd = new ShopItem(item.name, item.price, item.dailyLimit);
+                itemToAdd.setTexture(item.path);
+                yearRound.put(item.name, itemToAdd);
                 descriptions.put(item.name, item.description);
             }
 
@@ -221,11 +223,18 @@ public class PierresGeneralStore extends Shop {
     // ---------------- Internal Data Structures ---------------- //
 
     public static class PierresStoreData {
-        public List<ShopItemData> yearRound;
+        public List<YRShopItemData> yearRound;
         public List<ShopItemData> backpacks;
         public Map<String, List<SeasonalItemData>> seasonal;
     }
 
+    public static class YRShopItemData {
+        public String name;
+        public String description;
+        public int price;
+        public int dailyLimit;
+        public String path;
+    }
     public static class ShopItemData {
         public String name;
         public String description;

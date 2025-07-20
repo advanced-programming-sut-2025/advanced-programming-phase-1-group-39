@@ -4,17 +4,19 @@ import com.StardewValley.models.ItemManager;
 import com.StardewValley.models.Player;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.Time;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
 public class Dehydrator extends ArtisanMachine {
-    public Dehydrator(String name, int sellPrice) {
-        super(name, sellPrice);
+    public Dehydrator(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
 
 
-        addDriedMushroomRecipe("Red Mushroom", 75);
-        addDriedMushroomRecipe("Common Mushroom", 40);
-        addDriedMushroomRecipe("Purple Mushroom", 90);
+        addDriedMushroomRecipe("Red", 75);
+        addDriedMushroomRecipe("Common", 40);
+        addDriedMushroomRecipe("Purple", 90);
 
 
         addDriedFruitRecipe("Apple", 100);
@@ -25,7 +27,7 @@ public class Dehydrator extends ArtisanMachine {
         HashMap<String, Integer> raisinsIngredients = new HashMap<>();
         raisinsIngredients.put("Grape", 5);
         recipes.add(new ArtisanRecipe("Raisins", "It's said to be the Junimos' favorite food.",
-                raisinsIngredients, 24, 125, 600));
+                raisinsIngredients, 24, 125, 600, new Texture(Gdx.files.internal("artisanGoods/Raisin.png"))));
 
         for (ArtisanRecipe recipe : recipes) {
             ItemManager.addArtisanGood(recipe.getGood(), name);
@@ -37,7 +39,7 @@ public class Dehydrator extends ArtisanMachine {
         ingredients.put(mushroomName, 5);
         int sellPrice = (int) (basePrice * 7.5 + 25);
         recipes.add(new ArtisanRecipe("Dried " + mushroomName + " Mushroom", "A package of gourmet mushrooms.",
-                ingredients, 24, 50, sellPrice));
+                ingredients, 24, 50, sellPrice, new Texture(Gdx.files.internal("artisanGoods/Dried_"+mushroomName+"_Mushroom.png"))));
     }
 
     private void addDriedFruitRecipe(String fruitName, int basePrice) {
@@ -45,7 +47,7 @@ public class Dehydrator extends ArtisanMachine {
         ingredients.put(fruitName, 5);
         int sellPrice = (int) (basePrice * 7.5 + 25);
         recipes.add(new ArtisanRecipe("Dried " + fruitName, "Chewy pieces of dried fruit.",
-                ingredients, 24, 75, sellPrice));
+                ingredients, 24, 75, sellPrice, new Texture(Gdx.files.internal(fruitName + "_Dried_Fruit.png"))));
     }
 
     public ArtisanRecipe getRecipeByNameAndIngredient(String name, String ingredient) {

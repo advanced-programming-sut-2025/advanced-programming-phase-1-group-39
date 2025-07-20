@@ -12,10 +12,17 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class FishingPole extends Tool {
     private FishingPoleType poleType;
+    private TextureRegion texture;
 
-    public FishingPole(String name, FishingPoleType poleType) {
+    public FishingPole(String name, FishingPoleType poleType, Texture texture) {
         super(name, ToolType.BASIC, poleType.getUsingEnergy());
         this.poleType = poleType;
+        this.texture = new TextureRegion(texture);
+    }
+
+    @Override
+    public TextureRegion getTexture() {
+        return texture;
     }
 
     @Override
@@ -35,10 +42,5 @@ public class FishingPole extends Tool {
 
     public FishingPoleType getPoleType() {
         return poleType;
-    }
-
-    @Override
-    public TextureRegion getTexture() {
-        return new TextureRegion(new Texture(Gdx.files.internal("tools/Fishing_Pole/"+poleType.getPath())));
     }
 }

@@ -21,6 +21,8 @@ public abstract class Item {
 
     public String getName() { return name; }
 
+    public abstract Texture getTexture();
+
     public Boolean isSellable() {
         if (this instanceof ArtisanGood || this instanceof Fish || this instanceof AnimalProduct
                 || this instanceof ArtisanMachine || this instanceof CraftingItem || this instanceof Crop

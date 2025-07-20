@@ -4,6 +4,7 @@ import com.StardewValley.models.Player;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.Time;
 import com.StardewValley.models.crafting.CraftingItem;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 
@@ -15,8 +16,8 @@ public abstract class ArtisanMachine extends CraftingItem {
     protected boolean isWorking;
     protected Time processTime;
 
-    public ArtisanMachine(String name, int sellPrice) {
-        super(name, sellPrice);
+    public ArtisanMachine(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
     }
 
     public Result use(String itemName, String[] ingredients, Time time, Player player) {return null;}

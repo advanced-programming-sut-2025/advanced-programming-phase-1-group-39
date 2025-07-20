@@ -5,12 +5,14 @@ import com.StardewValley.models.Player;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.Time;
 import com.StardewValley.models.artisan.ArtisanMachine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
 public class PreservesJar extends ArtisanMachine {
-    public PreservesJar(String name, int sellPrice) {
-        super(name, sellPrice);
+    public PreservesJar(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
         addPicklesRecipe("Broccoli", 70, 63);
         addPicklesRecipe("Carrot", 35, 75);
         addPicklesRecipe("Corn", 50, 25);
@@ -31,7 +33,7 @@ public class PreservesJar extends ArtisanMachine {
         int sellPrice = (int) (basePrice * 2 + 50);
         int energy = (int) (baseEnergy * 1.75);
         recipes.add(new ArtisanRecipe(name + " Pickle", "A jar of your home-made pickles.",
-                ingredients, 6, energy, sellPrice));
+                ingredients, 6, energy, sellPrice, new Texture(Gdx.files.internal("artisanGoods/"+name+"_Pickles.png"))));
     }
 
     private void addJellyRecipe(String fruitName, int basePrice, int baseEnergy) {
@@ -40,7 +42,7 @@ public class PreservesJar extends ArtisanMachine {
         int sellPrice = (int) (basePrice * 2 + 50);
         int energy = (int) (baseEnergy * 2);
         recipes.add(new ArtisanRecipe(fruitName + " Jelly", "Gooey.",
-                ingredients, 24, energy, sellPrice));
+                ingredients, 24, energy, sellPrice, new Texture(Gdx.files.internal("artisanGoods/"+fruitName+"_Jelly.png"))));
     }
 
     public ArtisanRecipe getRecipeByNameAndIngredient(String name, String ingredient) {

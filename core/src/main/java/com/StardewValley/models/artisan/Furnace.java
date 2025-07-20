@@ -5,40 +5,42 @@ import com.StardewValley.models.Player;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.Time;
 import com.StardewValley.models.artisan.ArtisanMachine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
 public class Furnace extends ArtisanMachine {
-    public Furnace(String name, int sellPrice) {
-        super(name, sellPrice);
+    public Furnace(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
 
 
         HashMap<String, Integer> copperIngredients = new HashMap<>();
         copperIngredients.put("Copper", 5);
         copperIngredients.put("Coal", 1);
         recipes.add(new ArtisanRecipe("Copper Bar", "Turns Copper Ore and Coal into a bar.",
-                copperIngredients, 4, 0, 50));
+                copperIngredients, 4, 0, 50, new Texture(Gdx.files.internal("artisanGoods/Copper_Bar.png"))));
 
 
         HashMap<String, Integer> ironIngredients = new HashMap<>();
         ironIngredients.put("Iron", 5);
         ironIngredients.put("Coal", 1);
         recipes.add(new ArtisanRecipe("Iron Bar", "Turns Iron Ore and Coal into a bar.",
-                ironIngredients, 4, 0, 100));
+                ironIngredients, 4, 0, 100, new Texture(Gdx.files.internal("artisanGoods/Iron_Bar.png"))));
 
 
         HashMap<String, Integer> goldIngredients = new HashMap<>();
         goldIngredients.put("Gold", 5);
         goldIngredients.put("Coal", 1);
         recipes.add(new ArtisanRecipe("Gold Bar", "Turns Gold Ore and Coal into a bar.",
-                goldIngredients, 4, 0, 250));
+                goldIngredients, 4, 0, 250, new Texture(Gdx.files.internal("artisanGoods/Gold_Bar.png"))));
 
 
         HashMap<String, Integer> iridiumIngredients = new HashMap<>();
         iridiumIngredients.put("Iridium", 5);
         iridiumIngredients.put("Coal", 1);
         recipes.add(new ArtisanRecipe("Iridium Bar", "Turns Iridium Ore and Coal into a bar.",
-                iridiumIngredients, 4, 0, 1000));
+                iridiumIngredients, 4, 0, 1000, new Texture(Gdx.files.internal("artisanGoods/Iridium_Bar.png"))));
 
         for (ArtisanRecipe recipe : recipes) {
             ItemManager.addArtisanGood(recipe.getGood(), name);

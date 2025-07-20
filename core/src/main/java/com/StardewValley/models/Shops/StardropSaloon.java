@@ -28,11 +28,15 @@ public class StardropSaloon extends Shop {
             StardropSaloonData data = gson.fromJson(reader, StardropSaloonData.class);
 
             for (ShopItemData item : data.foods) {
-                foods.put(item.name, new ShopItem(item.name, item.price, item.limit));
+                ShopItem itemToAdd = new ShopItem(item.name, item.price, item.limit);
+                itemToAdd.setTexture(item.path);
+                foods.put(item.name, itemToAdd);
             }
 
             for (ShopItemData item : data.recipes) {
-                recipes.put(item.name, new ShopItem(item.name, item.price, item.limit));
+                ShopItem itemToAdd = new ShopItem(item.name, item.price, item.limit);
+                itemToAdd.setTexture(item.path);
+                recipes.put(item.name, itemToAdd);
             }
 
             reader.close();
@@ -48,6 +52,7 @@ public class StardropSaloon extends Shop {
         public String name;
         public int price;
         public int limit;
+        public String path;
     }
 
     @Override

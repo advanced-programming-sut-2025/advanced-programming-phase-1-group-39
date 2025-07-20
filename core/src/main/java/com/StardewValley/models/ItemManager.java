@@ -11,6 +11,8 @@ import com.StardewValley.models.crafting.CraftingRecipe;
 import com.StardewValley.models.cropsAndFarming.CropManager;
 import com.StardewValley.models.cropsAndFarming.ForagingManager;
 import com.StardewValley.models.cropsAndFarming.TreeManager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
@@ -34,17 +36,18 @@ public class ItemManager {
             animalProducts.put(product.getName(), product);
         }
 
-        new BeeHouse("Bee House", 0);
-        new CharcoalKiln("Charcoal Kiln", 0);
-        new CheesePress("Cheese Press", 0);
-        new Dehydrator("Dehydrator", 0);
-        new FishSmoker("Fish Smoker", 0);
-        new Furnace("Furnace", 0);
-        new Keg("Keg", 0);
-        new Loom("Loom", 0);
-        new MayonnaiseMachine("Mayonnaise Machine", 0);
-        new OilMaker("OilMaker", 0);
-        new PreservesJar("Preserves Jar", 0);
+        new BeeHouse("Bee House", 0, new Texture(Gdx.files.internal("crafting/Bee_House.png")));
+        new CharcoalKiln("Charcoal Kiln", 0, new Texture(Gdx.files.internal("crafting/Charcoal_Kiln.png")));
+        new CheesePress("Cheese Press", 0, new Texture(Gdx.files.internal("crafting/Cheese_Press.png")));
+        new Dehydrator("Dehydrator", 0, new Texture(Gdx.files.internal("crafting/Dehydrator.png")));
+        new FishSmoker("Fish Smoker", 0, new Texture(Gdx.files.internal("crafting/Fish_Smoker.png")));
+        new Furnace("Furnace", 0, new Texture(Gdx.files.internal("crafting/Furnace.png")));
+        new Keg("Keg", 0, new Texture(Gdx.files.internal("crafting/Keg.png")));
+        new Loom("Loom", 0, new Texture(Gdx.files.internal("crafting/Loom.png")));
+        new MayonnaiseMachine("Mayonnaise Machine", 0, new Texture(Gdx.files.internal("crafting/Mayonnaise_Machine.png")));
+        new OilMaker("Oil Maker", 0, new Texture(Gdx.files.internal("crafting/Oil_maker.png")));
+        new PreservesJar("Preserves Jar", 0, new Texture(Gdx.files.internal("crafting/Preserves_Jar.png")));
+
     }
 
     public static void addArtisanGood(ArtisanGood good, String machineName) {

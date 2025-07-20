@@ -7,12 +7,14 @@ import com.StardewValley.models.Time;
 import com.StardewValley.models.artisan.ArtisanGood;
 import com.StardewValley.models.artisan.ArtisanMachine;
 import com.StardewValley.models.artisan.ArtisanRecipe;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
 public class FishSmoker extends ArtisanMachine {
-    public FishSmoker(String name, int sellPrice) {
-        super(name, sellPrice);
+    public FishSmoker(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
 
         addSmokedFish("Salmon", 75);
         addSmokedFish("Sardine", 40);
@@ -51,7 +53,7 @@ public class FishSmoker extends ArtisanMachine {
         int sellPrice = basePrice * 2;
 
         recipes.add(new ArtisanRecipe("Smoked " + fishName + " Fish", "A whole fish, smoked to perfection.",
-                ingredients, 1, energy, sellPrice));
+                ingredients, 1, energy, sellPrice, new Texture(Gdx.files.internal("artisanGoods/Smoked_Fish.png"))));
     }
 
     public ArtisanRecipe getRecipeByFish(String fishName) {

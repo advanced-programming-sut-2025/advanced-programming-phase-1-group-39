@@ -6,37 +6,39 @@ import com.StardewValley.models.Result;
 import com.StardewValley.models.Time;
 import com.StardewValley.models.artisan.ArtisanGood;
 import com.StardewValley.models.artisan.ArtisanMachine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
 public class MayonnaiseMachine extends ArtisanMachine {
-    public MayonnaiseMachine(String name, int sellPrice) {
-        super(name, sellPrice);
+    public MayonnaiseMachine(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
 
 
         HashMap<String, Integer> eggIngredients = new HashMap<>();
         eggIngredients.put("Egg", 1);
         recipes.add(new ArtisanRecipe("Mayonnaise", "It looks spreadable.",
-                eggIngredients, 3, 50, 190));
+                eggIngredients, 3, 50, 190, new Texture(Gdx.files.internal("artisanGoods/Mayonnaise.png"))));
 
 
         HashMap<String, Integer> largeEggIngredients = new HashMap<>();
         largeEggIngredients.put("Large Egg", 1);
         recipes.add(new ArtisanRecipe("Large Mayonnaise", "It looks spreadable.",
-                largeEggIngredients, 3, 50, 237));
+                largeEggIngredients, 3, 50, 237, new Texture(Gdx.files.internal("artisanGoods/Mayonnaise.png"))));
 
 
         HashMap<String, Integer> duckIngredients = new HashMap<>();
         duckIngredients.put("Duck Egg", 1);
         recipes.add(new ArtisanRecipe("Duck Mayonnaise", "It's a rich, yellow mayonnaise.",
-                duckIngredients, 3, 75, 375));
+                duckIngredients, 3, 75, 375, new Texture(Gdx.files.internal("artisanGoods/Duck_Mayonnaise.png"))));
 
 
         HashMap<String, Integer> dinoIngredients = new HashMap<>();
         dinoIngredients.put("Dinosaur Egg", 1);
         recipes.add(new ArtisanRecipe("Dinosaur Mayonnaise",
                 "It's thick and creamy, with a vivid green hue.\nIt smells like grass and leather.",
-                dinoIngredients, 3, 125, 800));
+                dinoIngredients, 3, 125, 800, new Texture(Gdx.files.internal("artisanGoods/Dinosaur_Mayonnaise.png"))));
 
         for (ArtisanRecipe recipe : recipes) {
             ItemManager.addArtisanGood(recipe.getGood(), name);

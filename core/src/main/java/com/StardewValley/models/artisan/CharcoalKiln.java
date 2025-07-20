@@ -7,17 +7,19 @@ import com.StardewValley.models.Time;
 import com.StardewValley.models.artisan.ArtisanGood;
 import com.StardewValley.models.artisan.ArtisanMachine;
 import com.StardewValley.models.artisan.ArtisanRecipe;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
 public class CharcoalKiln extends ArtisanMachine {
-    public CharcoalKiln(String name, int sellPrice) {
-        super(name, sellPrice);
+    public CharcoalKiln(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
 
         HashMap<String, Integer> ingredients = new HashMap<>();
         ingredients.put("Wood", 10);
         recipes.add(new ArtisanRecipe("Coal", "Turns 10 pieces of wood into one piece of coal.",
-                ingredients, 1, 0, 50));
+                ingredients, 1, 0, 50, new Texture(Gdx.files.internal("artisanGoods/Coal.png"))));
 
         for (ArtisanRecipe recipe : recipes) {
             ItemManager.addArtisanGood(recipe.getGood(), name);

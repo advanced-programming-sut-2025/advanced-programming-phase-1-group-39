@@ -1,11 +1,11 @@
 {
   "permanentStock": [
-    { "name": "Joja Cola", "price": 75, "limit": 1000000 },
-    { "name": "Ancient Seed", "price": 500, "limit": 1 },
-    { "name": "Grass Starter", "price": 125, "limit": 1000000 },
-    { "name": "Sugar", "price": 125, "limit": 1000000 },
-    { "name": "Wheat Flour", "price": 125, "limit": 1000000 },
-    { "name": "Rice", "price": 250, "limit": 1000000 }
+    { "name": "Joja Cola", "price": 75, "limit": 1000000, "path": "shops/JojaMartShop/Joja_Cola.png" },
+    { "name": "Ancient Seed", "price": 500, "limit": 1, "path": "shops/JojaMartShop/Ancient_Seed.png" },
+    { "name": "Grass Starter", "price": 125, "limit": 1000000, "path": "shops/JojaMartShop/Grass_Starter.png" },
+    { "name": "Sugar", "price": 125, "limit": 1000000, "path": "shops/JojaMartShop/Sugar.png" },
+    { "name": "Wheat Flour", "price": 125, "limit": 1000000, "path": "shops/JojaMartShop/Wheat_Flour.png" },
+    { "name": "Rice", "price": 250, "limit": 1000000, "path": "shops/JojaMartShop/Rice.png" }
   ],
   "seasonalStock": {
     "SPRING": [

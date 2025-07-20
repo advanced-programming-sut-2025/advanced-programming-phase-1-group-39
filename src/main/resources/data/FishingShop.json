@@ -5,42 +5,48 @@
       "description": "A recipe to make Fish Smoker",
       "price": 10000,
       "dailyLimit": 1,
-      "fishingSkillRequired": 0
+      "fishingSkillRequired": 0,
+      "path": "shops/FishingShop/fish_smoker.png"
     },
     {
       "name": "Trout Soup",
       "description": "Pretty Salty",
       "price": 250,
       "dailyLimit": 1,
-      "fishingSkillRequired": 0
+      "fishingSkillRequired": 0,
+      "path": "shops/FishingShop/trout_soup.png"
     },
     {
       "name": "Bamboo Pole",
       "description": "Use in the water to catch fish.",
       "price": 500,
       "dailyLimit": 1,
-      "fishingSkillRequired": 0
+      "fishingSkillRequired": 0,
+      "path": "shops/FishingShop/Bamboo_Pole.png"
     },
     {
       "name": "Training Rod",
       "description": "It's a lot easier to use than other rods, but can only catch basic fish.",
       "price": 25,
       "dailyLimit": 1,
-      "fishingSkillRequired": 0
+      "fishingSkillRequired": 0,
+      "path": "shops/FishingShop/Training_Rod.png"
     },
     {
       "name": "Fiberglass Rod",
       "description": "Use in the water to catch fish.",
       "price": 1800,
       "dailyLimit": 1,
-      "fishingSkillRequired": 2
+      "fishingSkillRequired": 2,
+      "path": "shops/FishingShop/Fiberglass_Rod.png"
     },
     {
       "name": "Iridium Rod",
       "description": "Use in the water to catch fish.",
       "price": 7500,
       "dailyLimit": 1,
-      "fishingSkillRequired": 4
+      "fishingSkillRequired": 4,
+      "path": "shops/FishingShop/Iridium_Rod.png"
     }
   ]
 }

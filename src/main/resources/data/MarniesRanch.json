@@ -4,19 +4,22 @@
       "name": "Hay",
       "description": "Dried grass used as animal food.",
       "price": 50,
-      "dailyLimit": 1000000
+      "dailyLimit": 1000000,
+      "path": "shops/MarniesRanch/Hay.png"
     },
     {
       "name": "Milk Pail",
       "description": "Gather milk from your animals.",
       "price": 1000,
-      "dailyLimit": 1
+      "dailyLimit": 1,
+      "path": "shops/MarniesRanch/Milk_Pail.png"
     },
     {
       "name": "Shears",
       "description": "Use this to collect wool from sheep",
       "price": 1000,
-      "dailyLimit": 1
+      "dailyLimit": 1,
+      "path": "shops/MarniesRanch/Shears.png"
     }
   ],
   "livestock": [
@@ -25,56 +28,64 @@
       "description": "Well cared-for chickens lay eggs every day. Lives in the coop.",
       "price": 800,
       "buildingRequired": "Coop",
-      "dailyLimit": 2
+      "dailyLimit": 2,
+      "path": "shops/MarniesRanch/Chicken.png"
     },
     {
       "name": "Cow",
       "description": "Can be milked daily. A milk pail is required to harvest the milk. Lives in the barn.",
       "price": 1500,
       "buildingRequired": "Barn",
-      "dailyLimit": 2
+      "dailyLimit": 2,
+      "path": "shops/MarniesRanch/Cow.png"
     },
     {
       "name": "Goat",
       "description": "Happy provide goat milk every other day. A milk pail is required to harvest the milk. Lives in the barn.",
       "price": 4000,
       "buildingRequired": "Big Barn",
-      "dailyLimit": 2
+      "dailyLimit": 2,
+      "path": "shops/MarniesRanch/Goat.png"
     },
     {
       "name": "Duck",
       "description": "Happy lay duck eggs every other day. Lives in the coop.",
       "price": 1200,
       "buildingRequired": "Big Coop",
-      "dailyLimit": 2
+      "dailyLimit": 2,
+      "path": "shops/MarniesRanch/Duck.png"
     },
     {
       "name": "Sheep",
       "description": "Can be shorn for wool. A pair of shears is required to harvest the wool. Lives in the barn.",
       "price": 8000,
       "buildingRequired": "Deluxe Barn",
-      "dailyLimit": 2
+      "dailyLimit": 2,
+      "path": "shops/MarniesRanch/Sheep.png"
     },
     {
       "name": "Rabbit",
       "description": "These are wooly rabbits! They shed precious wool every few days. Lives in the coop.",
       "price": 8000,
       "buildingRequired": "Deluxe Coop",
-      "dailyLimit": 2
+      "dailyLimit": 2,
+      "path": "shops/MarniesRanch/Rabbit.png"
     },
     {
       "name": "Dinosaur",
       "description": "The Dinosaur is a farm animal that lives in a Big Coop",
       "price": 14000,
       "buildingRequired": "Big Coop",
-      "dailyLimit": 2
+      "dailyLimit": 2,
+      "path": "shops/MarniesRanch/Dinosaur.png"
     },
     {
       "name": "Pig",
       "description": "These pigs are trained to find truffles! Lives in the barn.",
       "price": 16000,
       "buildingRequired": "Deluxe Barn",
-      "dailyLimit": 2
+      "dailyLimit": 2,
+      "path": "shops/MarniesRanch/Pig.png"
     }
   ]
 }

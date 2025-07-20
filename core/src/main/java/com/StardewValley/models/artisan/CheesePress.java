@@ -5,25 +5,27 @@ import com.StardewValley.models.Player;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.Time;
 import com.StardewValley.models.artisan.ArtisanMachine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.HashMap;
 
 public class CheesePress extends ArtisanMachine {
 
-    public CheesePress(String name, int sellPrice) {
-        super(name, sellPrice);
+    public CheesePress(String name, int sellPrice, Texture texture) {
+        super(name, sellPrice, texture);
 
         HashMap<String, Integer> milkCheeseIngredients = new HashMap<>();
         milkCheeseIngredients.put("Milk", 1);
         recipes.add(new ArtisanRecipe("Cheese",
                 "It's your basic cheese.",
-                milkCheeseIngredients, 3, 100, 230));
+                milkCheeseIngredients, 3, 100, 230, new Texture(Gdx.files.internal("artisanGoods/Cheese.png"))));
 
         HashMap<String, Integer> largeMilkCheeseIngredients = new HashMap<>();
         largeMilkCheeseIngredients.put("Large Milk", 1);
         recipes.add(new ArtisanRecipe("Large Cheese",
                 "It's your basic cheese (from large milk).",
-                largeMilkCheeseIngredients, 3, 100, 345));
+                largeMilkCheeseIngredients, 3, 100, 345, new Texture(Gdx.files.internal("artisanGoods/Cheese.png"))));
 
 
         // Goat Cheese
@@ -31,13 +33,13 @@ public class CheesePress extends ArtisanMachine {
         goatCheeseIngredients.put("Goat Milk", 1);
         recipes.add(new ArtisanRecipe("Goat Cheese",
                 "Soft cheese made from goat's milk.",
-                goatCheeseIngredients, 3, 100, 400));
+                goatCheeseIngredients, 3, 100, 400, new Texture(Gdx.files.internal("artisanGoods/Goat_Cheese.png"))));
 
         HashMap<String, Integer> largeGoatCheeseIngredients = new HashMap<>();
         largeGoatCheeseIngredients.put("Large Goat Milk", 1);
         recipes.add(new ArtisanRecipe("Large Goat Cheese",
                 "Soft cheese made from goat's milk. (large milk)",
-                largeGoatCheeseIngredients, 3, 100, 600));
+                largeGoatCheeseIngredients, 3, 100, 600, new Texture(Gdx.files.internal("artisanGoods/Goat_Cheese.png"))));
 
         for (ArtisanRecipe recipe : recipes) {
             ItemManager.addArtisanGood(recipe.getGood(), name);

@@ -6,13 +6,22 @@ import com.StardewValley.models.Result;
 import com.StardewValley.models.Skill;
 import com.StardewValley.models.Weather;
 import com.StardewValley.models.map.Tile;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 
 public class FishingPole extends Tool {
     private FishingPoleType poleType;
+    private Texture texture;
 
-    public FishingPole(String name, FishingPoleType poleType) {
+    public FishingPole(String name, FishingPoleType poleType, Texture texture) {
         super(name, ToolType.BASIC, poleType.getUsingEnergy());
         this.poleType = poleType;
+        this.texture = texture;
+    }
+
+    @Override
+    public Texture getTexture() {
+        return texture;
     }
 
     @Override

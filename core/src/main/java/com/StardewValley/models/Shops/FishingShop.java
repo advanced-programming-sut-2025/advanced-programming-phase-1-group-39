@@ -31,8 +31,10 @@ public class FishingShop extends Shop {
             FishingShopData data = gson.fromJson(reader, FishingShopData.class);
 
             for (ShopItemData item : data.stock) {
-                items.put(item.name, new FishingShopItem(item.name, item.description, item.price,
-                        item.dailyLimit, item.fishingSkillRequired));
+                FishingShopItem itemToAdd = new FishingShopItem(item.name, item.description, item.price,
+                        item.dailyLimit, item.fishingSkillRequired);
+                itemToAdd.setTexture(item.path);
+                items.put(item.name, itemToAdd);
             }
 
             reader.close();
@@ -51,6 +53,7 @@ public class FishingShop extends Shop {
         public int price;
         public int dailyLimit;
         public int fishingSkillRequired; // use 0 if N/A
+        public String path;
     }
 
     public class FishingShopItem extends ShopItem {
@@ -103,7 +106,7 @@ public class FishingShop extends Shop {
             }
             String[] str = product.split(" ");
             String typeStr = str[0];
-            FishingPole pole = new FishingPole(product, FishingPoleType.getType(product));
+            FishingPole pole = new FishingPole(product, FishingPoleType.getType(product), item.getTexture());
             player.getInventory().addItem(pole, 1);
             item.purchase(quantity);
         }

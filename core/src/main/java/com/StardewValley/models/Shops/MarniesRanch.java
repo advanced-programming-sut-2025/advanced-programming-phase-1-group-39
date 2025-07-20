@@ -34,12 +34,16 @@ public class MarniesRanch extends Shop {
             RanchData data = gson.fromJson(reader, RanchData.class);
 
             for (ShopItemData item : data.supplies) {
-                supplies.put(item.name, new ShopItem(item.name, item.price, item.dailyLimit));
+                ShopItem itemToAdd = new ShopItem(item.name, item.price, item.dailyLimit);
+                itemToAdd.setTexture(item.path);
+                supplies.put(item.name, itemToAdd);
             }
 
             for (LivestockData animal : data.livestock) {
-                livestock.put(animal.name, new LivestockItem(animal.name, animal.description,
-                        animal.price, animal.buildingRequired, animal.dailyLimit));
+                LivestockItem itemToAdd = new LivestockItem(animal.name, animal.description,
+                        animal.price, animal.buildingRequired, animal.dailyLimit);
+                itemToAdd.setTexture(animal.path);
+                livestock.put(animal.name, itemToAdd);
             }
 
             reader.close();
@@ -58,6 +62,7 @@ public class MarniesRanch extends Shop {
         public String description;
         public int price;
         public int dailyLimit; // Allow "unlimited"
+        public String path;
     }
 
     public class LivestockData {
@@ -66,6 +71,7 @@ public class MarniesRanch extends Shop {
         public int price;
         public String buildingRequired;
         public int dailyLimit;
+        public String path;
     }
 
     public class LivestockItem extends ShopItem {

@@ -57,7 +57,7 @@ public abstract class Item {
         return 0;
     }
 
-    abstract Texture getTexture();
+    public abstract Texture getTexture();
 
 }
 

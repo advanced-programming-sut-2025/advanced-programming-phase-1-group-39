@@ -27,4 +27,9 @@ public class ForagingMaterial extends Item {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    @Override
+    public Texture getTexture() {
+        return texture;
+    }
 }

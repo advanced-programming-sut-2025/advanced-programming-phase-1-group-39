@@ -35,4 +35,9 @@ public class ForagingMineral extends Item {
     protected ForagingMineral clone(){
         return new ForagingMineral(this.getName(), this.description, this.baseSellPrice, this.texture);
     }
+
+    @Override
+    public  Texture getTexture() {
+        return texture;
+    }
 }

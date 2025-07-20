@@ -51,7 +51,7 @@ public class Main extends Game {
 
         /// /////test//////////////
         App.getApp().setCurrentMenu(Menu.GAME_MENU);
-        switchScreen(new PregameMenuScreen());
+        switchScreen(new GameScreen());
 
         Thread terminalController = new Thread(() -> {
             new AppView().run();
@@ -79,5 +79,9 @@ public class Main extends Game {
             getScreen().dispose();
         }
         setScreen(screen);
+    }
+
+    public static SpriteBatch getBatch() {
+        return batch;
     }
 }

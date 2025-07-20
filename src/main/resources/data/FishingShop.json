@@ -6,7 +6,7 @@
       "price": 10000,
       "dailyLimit": 1,
       "fishingSkillRequired": 0,
-      "path": "shops/FishingShop/fish_smoker.png"
+      "path": "crafting/Fish_Smoker.png"
     },
     {
       "name": "Trout Soup",

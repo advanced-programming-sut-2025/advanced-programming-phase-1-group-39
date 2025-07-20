@@ -9,6 +9,9 @@ import com.StardewValley.models.animals.LivingPlace;
 import com.StardewValley.models.buildings.AnimalBuilding;
 import com.StardewValley.models.tools.MilkPail;
 import com.StardewValley.models.tools.Shear;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.gson.Gson;
 
 import java.io.FileReader;
@@ -123,7 +126,7 @@ public class MarniesRanch extends Shop {
         player.changeMoney(-totalPrice);
 
         switch (product.toLowerCase()) {
-            case "Hay" -> player.getInventory().addItem(new OddItems(item.getName()), quantity);
+            case "Hay" -> player.getInventory().addItem(new OddItems(item.getName(), new TextureRegion(new Texture(Gdx.files.internal("shops/MarniesRanch/Hay.png")))), quantity);
             case "Milk Pail" -> player.getInventory().addItem(new MilkPail(), 1);
             case "Shears" -> player.getInventory().addItem(new Shear(), 1);
             default -> {}

@@ -2,6 +2,7 @@ package com.StardewValley.models.animals;
 
 import com.StardewValley.models.Enums.Season;
 import com.StardewValley.models.Item;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Fish extends Item {
     private FishType type;
@@ -15,6 +16,11 @@ public class Fish extends Item {
         this.price = price;
         this.season = season;
         this.quality = AnimalProductQuality.NORMAL;
+    }
+
+    @Override
+    public TextureRegion getTexture() {
+        return type.texture;
     }
 
     public FishType getType() {

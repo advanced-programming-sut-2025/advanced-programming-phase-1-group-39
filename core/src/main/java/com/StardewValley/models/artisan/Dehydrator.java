@@ -47,7 +47,7 @@ public class Dehydrator extends ArtisanMachine {
         ingredients.put(fruitName, 5);
         int sellPrice = (int) (basePrice * 7.5 + 25);
         recipes.add(new ArtisanRecipe("Dried " + fruitName, "Chewy pieces of dried fruit.",
-                ingredients, 24, 75, sellPrice, new Texture(Gdx.files.internal(fruitName + "_Dried_Fruit.png"))));
+                ingredients, 24, 75, sellPrice, new Texture(Gdx.files.internal("artisanGoods/" + fruitName + "_Dried_Fruit.png"))));
     }
 
     public ArtisanRecipe getRecipeByNameAndIngredient(String name, String ingredient) {

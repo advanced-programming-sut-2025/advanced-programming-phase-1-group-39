@@ -5,6 +5,9 @@ import com.StardewValley.models.Enums.Season;
 import com.StardewValley.models.NPC.NPC;
 import com.StardewValley.models.crafting.CraftingRecipe;
 import com.StardewValley.models.inventory.InventoryType;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.google.gson.Gson;
 
 import java.io.FileReader;
@@ -147,7 +150,7 @@ public class PierresGeneralStore extends Shop {
             } else if (ItemManager.getItemByName(product) != null) {
                 player.getInventory().addItem(ItemManager.getItemByName(product), quantity);
             } else {
-                player.getInventory().addItem(new OddItems(product), quantity);
+                player.getInventory().addItem(new OddItems(product, new TextureRegion(new Texture(Gdx.files.internal("map/tiles/soil.png")))), quantity);
             }
         }
 

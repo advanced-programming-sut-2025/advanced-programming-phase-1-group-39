@@ -14,10 +14,10 @@ public class FishingPole extends Tool {
     private FishingPoleType poleType;
     private TextureRegion texture;
 
-    public FishingPole(String name, FishingPoleType poleType, Texture texture) {
+    public FishingPole(String name, FishingPoleType poleType, TextureRegion texture) {
         super(name, ToolType.BASIC, poleType.getUsingEnergy());
         this.poleType = poleType;
-        this.texture = new TextureRegion(texture);
+        this.texture = texture;
     }
 
     @Override

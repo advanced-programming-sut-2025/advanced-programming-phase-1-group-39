@@ -6,10 +6,12 @@ import com.StardewValley.views.*;
 import com.badlogic.gdx.Screen;
 
 public enum Menu {
-    SIGNUP_MENU("signup menu", new SignupMenuView(), new GameScreen()),
-    LOGIN_MENU("login menu", new LoginMenuView(), new GameScreen()),
-    MAIN_MENU("main menu", new MainMenuView(), new GameScreen()),
-    PROFILE_MENU("profile menu", new ProfileMenuView(), new GameScreen()),
+    SIGNUP_MENU("signup menu", new SignupMenuView(), new com.StardewValley.graphicViews.SignupMenuView()),
+    SECURITY_QUESTION_MENu("securityQuestion menu", new SignupMenuView(), new SecurityQuestionMenuView()),
+    LOGIN_MENU("login menu", new LoginMenuView(), new com.StardewValley.graphicViews.LoginMenuView()),
+    FORGET_PASSWORD_MENU("forget password", new LoginMenuView(), new ForgetPasswordMenuView()),
+    MAIN_MENU("main menu", new MainMenuView(), new com.StardewValley.graphicViews.GameView()),
+    PROFILE_MENU("profile menu", new ProfileMenuView(), new com.StardewValley.graphicViews.GameView()),
     GAME_MENU("game menu", new GameMenuView(), new PregameMenuScreen()),
     GAME("game", new GameView(), new GameScreen()),
     ExitMenu("exit", new ExitMenuView(), new GameScreen()),;

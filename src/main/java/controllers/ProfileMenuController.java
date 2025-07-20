@@ -58,22 +58,22 @@ public class ProfileMenuController {
     }
 
     public Result changePassword(Matcher matcher) {
-        String password = matcher.group("password");
+        String newPassword = matcher.group("password");
         String oldPassword = matcher.group("oldPassword");
         Matcher matcher1;
 
         if (!HashSHA256.checkPassword(oldPassword, App.getApp().getLoggedInUser().getPassword())) {
             return new Result(false, "The old password you entered is incorrect.");
-        } else if (HashSHA256.checkPassword(password, App.getApp().getLoggedInUser().getPassword())) {
+        } else if (HashSHA256.checkPassword(newPassword, App.getApp().getLoggedInUser().getPassword())) {
             return new Result(false, "the new password is the same as the previous one.");
-        } else if ((matcher1 = SignupMenuCommands.Password.getMatcher(password)) == null) {
+        } else if ((matcher1 = SignupMenuCommands.Password.getMatcher(newPassword)) == null) {
             return new Result(false, "the password format is invalid.");
-        } else if ((matcher1 = SignupMenuCommands.WeakPassword.getMatcher(password)) == null) {
-            StringBuilder output = validatePassword(password);
+        } else if ((matcher1 = SignupMenuCommands.WeakPassword.getMatcher(newPassword)) == null) {
+            StringBuilder output = validatePassword(newPassword);
             return new Result(false, output.toString());
         } else {
-            App.getApp().getLoggedInUser().setPassword(HashSHA256.hashPassword(password));
-            App.getApp().getUsers().get(getIndexInUsers(App.getApp().getLoggedInUser().getUserName())).setPassword(HashSHA256.hashPassword(password));
+            App.getApp().getLoggedInUser().setPassword(HashSHA256.hashPassword(newPassword));
+            App.getApp().getUsers().get(getIndexInUsers(App.getApp().getLoggedInUser().getUserName())).setPassword(HashSHA256.hashPassword(newPassword));
             return new Result(true, "password changed successfully.");
         }
     }

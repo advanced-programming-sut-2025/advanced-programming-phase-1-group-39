@@ -3,6 +3,9 @@ package com.StardewValley.models.tools;
 
 import com.StardewValley.models.*;
 import com.StardewValley.models.map.Tile;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class Tool extends Item {
     protected ToolType type;
@@ -32,4 +35,18 @@ public abstract class Tool extends Item {
     }
 
     public abstract int getUsingEnergy(Skill skill, Weather weather);
+
+    public TextureRegion getTexture() {
+        return new TextureRegion(new Texture(Gdx.files.internal("tools/" + type.getPrefixForTexture() + getName() + ".png")));
+    }
+
+    public String getName() {
+        String[] nameSplit = this.getClass().getName().split("\\.");
+        String name = nameSplit[nameSplit.length - 1];
+        if (name.equals("WateringCan"))
+            return "Watering_Can";
+        if (name.equals("MilkPail"))
+            return "Milk_Pail";
+        return name;
+    }
 }

@@ -3,6 +3,10 @@ package com.StardewValley.models.cropsAndFarming;
 import com.StardewValley.models.ItemStack;
 import com.StardewValley.models.cropsAndFarming.Crop;
 import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.services.GameAssetManager;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 
@@ -120,6 +124,25 @@ public class Plant {
 
     public boolean hasCrop() {
         return hasCrop;
+    }
+
+    // Graphics
+    // TODO : check
+    public TextureRegion getTexture() throws Exception {
+        TextureAtlas cropsAtlas = GameAssetManager.getCropsAtlas();
+
+        String name = product.getName().replace(" " , "_");
+        int stagesNum = stages.size();
+
+        Array<TextureRegion> plantStageRegions = new Array<>(cropsAtlas.findRegions( name+ "_Stage"));
+        if (currentStage < stagesNum) {
+            return plantStageRegions.get(currentStage);
+        }
+
+        if (hasCrop) return plantStageRegions.get(stagesNum);
+        else if (oneTimeHarvest) return plantStageRegions.get(stagesNum + 1);
+
+        throw new Exception("No plants found for stage: " + stagesNum);
     }
 
     @Override

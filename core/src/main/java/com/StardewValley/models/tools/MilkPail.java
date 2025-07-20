@@ -7,6 +7,9 @@ import com.StardewValley.models.animals.AnimalProduct;
 import com.StardewValley.models.animals.AnimalType;
 import com.StardewValley.models.animals.LivingPlace;
 import com.StardewValley.models.map.Tile;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
 public class MilkPail extends Tool {
@@ -45,5 +48,10 @@ public class MilkPail extends Tool {
     public int getUsingEnergy(Skill skill, Weather weather) {
         return (int)((baseUsingEnergy)
                 * getWeatherMultiplier(weather));
+    }
+
+    @Override
+    public TextureRegion getTexture() {
+        return new TextureRegion(new Texture(Gdx.files.internal("tools/" + getName() + ".png")));
     }
 }

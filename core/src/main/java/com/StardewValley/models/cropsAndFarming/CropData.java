@@ -1,6 +1,7 @@
 package com.StardewValley.models.cropsAndFarming;
 
 import com.StardewValley.models.Enums.Season;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +24,7 @@ public class CropData {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Name: " + name + "\n");
-        sb.append("Suorce: " + source + "\n");
+        sb.append("Source: " + source + "\n");
         sb.append("Stages: " + stages + "\n");
         sb.append("Total Harvest Time: " + totalHarvestTime + "\n");
         sb.append("One Time Harvest: " + oneTimeHarvest + "\n");

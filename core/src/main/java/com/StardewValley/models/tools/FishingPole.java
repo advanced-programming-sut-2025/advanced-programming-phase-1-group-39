@@ -6,6 +6,9 @@ import com.StardewValley.models.Result;
 import com.StardewValley.models.Skill;
 import com.StardewValley.models.Weather;
 import com.StardewValley.models.map.Tile;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class FishingPole extends Tool {
     private FishingPoleType poleType;
@@ -32,5 +35,10 @@ public class FishingPole extends Tool {
 
     public FishingPoleType getPoleType() {
         return poleType;
+    }
+
+    @Override
+    public TextureRegion getTexture() {
+        return new TextureRegion(new Texture(Gdx.files.internal("tools/Fishing_Pole/"+poleType.getPath())));
     }
 }

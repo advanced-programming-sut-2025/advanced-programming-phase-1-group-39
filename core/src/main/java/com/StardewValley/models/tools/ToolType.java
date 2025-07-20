@@ -1,12 +1,14 @@
 package com.StardewValley.models.tools;
 
 public enum ToolType {
-    BASIC(0), COPPER(1), IRON(2), GOLD(3), IRIDIUM(4);
+    BASIC(0, ""), COPPER(1, "Copper_"), IRON(2, "Steel_"), GOLD(3, "Gold_"), IRIDIUM(4, "Iridium_");
 
     private final int energyReduce;
+    private final String prefixForTexture;
 
-    ToolType(int energyReduce) {
+    ToolType(int energyReduce, String prefix) {
         this.energyReduce = energyReduce;
+        this.prefixForTexture = prefix;
     }
 
     public int getEnergyReduce() {
@@ -37,5 +39,9 @@ public enum ToolType {
             }
         }
         return null;
+    }
+
+    public String getPrefixForTexture() {
+        return prefixForTexture;
     }
 }

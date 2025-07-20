@@ -1,0 +1,891 @@
+crops.png
+size: 504, 1638
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+pma: false
+Amaranth
+  bounds: 0, 0, 24, 24
+Amaranth_Seeds
+  bounds: 0, 72, 48, 48
+Amaranth_Stage
+  bounds: 426, 994, 48, 72
+  index: 1
+Amaranth_Stage
+  bounds: 0, 1066, 48, 72
+  index: 2
+Amaranth_Stage
+  bounds: 48, 1066, 48, 72
+  index: 3
+Amaranth_Stage
+  bounds: 96, 1066, 48, 72
+  index: 4
+Amaranth_Stage
+  bounds: 144, 1066, 48, 72
+  index: 5
+Ancient_Fruit
+  bounds: 24, 0, 24, 24
+Ancient_Fruit_Stage
+  bounds: 96, 510, 26, 56
+  index: 1
+Ancient_Fruit_Stage
+  bounds: 122, 510, 26, 56
+  index: 2
+Ancient_Fruit_Stage
+  bounds: 148, 510, 26, 56
+  index: 3
+Ancient_Fruit_Stage
+  bounds: 174, 510, 26, 56
+  index: 4
+Ancient_Fruit_Stage
+  bounds: 200, 510, 26, 56
+  index: 5
+Ancient_Fruit_Stage
+  bounds: 226, 510, 26, 56
+  index: 6
+Ancient_Fruit_Stage
+  bounds: 252, 510, 26, 56
+  index: 7
+Ancient_Seed
+  bounds: 48, 0, 24, 24
+Ancient_Seeds
+  bounds: 48, 72, 48, 48
+Artichoke
+  bounds: 72, 0, 24, 24
+Artichoke_Dip
+  bounds: 96, 0, 24, 24
+Artichoke_Seeds
+  bounds: 120, 0, 24, 24
+Artichoke_Stage
+  bounds: 126, 994, 50, 70
+  index: 1
+Artichoke_Stage
+  bounds: 176, 994, 50, 70
+  index: 2
+Artichoke_Stage
+  bounds: 226, 994, 50, 70
+  index: 3
+Artichoke_Stage
+  bounds: 276, 994, 50, 70
+  index: 4
+Artichoke_Stage
+  bounds: 326, 994, 50, 70
+  index: 5
+Artichoke_Stage
+  bounds: 376, 994, 50, 70
+  index: 6
+Beet
+  bounds: 144, 0, 24, 24
+Beet_Seeds
+  bounds: 96, 72, 48, 48
+Beet_Stage
+  bounds: 48, 623, 45, 60
+  index: 1
+Beet_Stage
+  bounds: 93, 623, 45, 60
+  index: 2
+Beet_Stage
+  bounds: 138, 623, 45, 60
+  index: 3
+Beet_Stage
+  bounds: 183, 623, 45, 60
+  index: 4
+Beet_Stage
+  bounds: 228, 623, 45, 60
+  index: 5
+Blue_Jazz
+  bounds: 168, 0, 24, 24
+Blue_Jazz_Stage
+  bounds: 144, 72, 48, 48
+  index: 1
+Blue_Jazz_Stage
+  bounds: 192, 72, 48, 48
+  index: 2
+Blue_Jazz_Stage
+  bounds: 240, 72, 48, 48
+  index: 3
+Blue_Jazz_Stage
+  bounds: 288, 72, 48, 48
+  index: 4
+Blue_Jazz_Stage
+  bounds: 278, 510, 56, 56
+  index: 5
+Blueberry
+  bounds: 192, 0, 24, 24
+Blueberry_Seeds
+  bounds: 216, 0, 24, 24
+Blueberry_Stage
+  bounds: 240, 1138, 55, 80
+  index: 1
+Blueberry_Stage
+  bounds: 295, 1138, 55, 80
+  index: 2
+Blueberry_Stage
+  bounds: 350, 1138, 55, 80
+  index: 3
+Blueberry_Stage
+  bounds: 405, 1138, 55, 80
+  index: 4
+Blueberry_Stage
+  bounds: 0, 1218, 55, 80
+  index: 5
+Blueberry_Stage
+  bounds: 55, 1218, 55, 80
+  index: 6
+Blueberry_Stage
+  bounds: 110, 1218, 55, 80
+  index: 7
+Bok_Choy
+  bounds: 240, 0, 24, 24
+Bok_Choy_Seeds
+  bounds: 336, 72, 48, 48
+Bok_Choy_Stage
+  bounds: 384, 72, 48, 48
+  index: 1
+Bok_Choy_Stage
+  bounds: 432, 72, 48, 48
+  index: 2
+Bok_Choy_Stage
+  bounds: 0, 120, 48, 48
+  index: 3
+Bok_Choy_Stage
+  bounds: 48, 120, 48, 48
+  index: 4
+Bok_Choy_Stage
+  bounds: 96, 120, 48, 48
+  index: 5
+Broccoli
+  bounds: 264, 0, 24, 24
+Broccoli_Seeds
+  bounds: 144, 120, 48, 48
+Broccoli_Stage
+  bounds: 96, 456, 45, 51
+  index: 1
+Broccoli_Stage
+  bounds: 141, 456, 45, 51
+  index: 2
+Broccoli_Stage
+  bounds: 186, 456, 45, 51
+  index: 3
+Broccoli_Stage
+  bounds: 231, 456, 45, 51
+  index: 4
+Broccoli_Stage
+  bounds: 276, 456, 45, 51
+  index: 5
+Carrot
+  bounds: 288, 0, 24, 24
+Carrot_Seeds
+  bounds: 192, 120, 48, 48
+Carrot_Stage
+  bounds: 144, 866, 48, 64
+  index: 1
+Carrot_Stage
+  bounds: 192, 866, 48, 64
+  index: 2
+Carrot_Stage
+  bounds: 240, 866, 48, 64
+  index: 3
+Carrot_Stage
+  bounds: 288, 866, 48, 64
+  index: 4
+Cauliflower
+  bounds: 312, 0, 24, 24
+Cauliflower_Seeds
+  bounds: 336, 0, 24, 24
+Cauliflower_Stage
+  bounds: 240, 120, 48, 48
+  index: 1
+Cauliflower_Stage
+  bounds: 288, 120, 48, 48
+  index: 2
+Cauliflower_Stage
+  bounds: 336, 120, 48, 48
+  index: 3
+Cauliflower_Stage
+  bounds: 384, 120, 48, 48
+  index: 4
+Cauliflower_Stage
+  bounds: 432, 120, 48, 48
+  index: 5
+Cauliflower_Stage
+  bounds: 0, 168, 48, 48
+  index: 6
+Coffee_Bean
+  bounds: 360, 0, 24, 24
+Coffee_Stage
+  bounds: 400, 1298, 48, 81
+  index: 1
+Coffee_Stage
+  bounds: 448, 1298, 48, 81
+  index: 2
+Coffee_Stage
+  bounds: 0, 1379, 48, 81
+  index: 3
+Coffee_Stage
+  bounds: 48, 1379, 48, 81
+  index: 4
+Coffee_Stage
+  bounds: 96, 1379, 48, 81
+  index: 5
+Coffee_Stage
+  bounds: 144, 1379, 48, 81
+  index: 6
+Coffee_Stage
+  bounds: 192, 1379, 48, 81
+  index: 7
+Corn
+  bounds: 384, 0, 24, 24
+Corn_Seeds
+  bounds: 408, 0, 24, 24
+Corn_Stage
+  bounds: 192, 1547, 41, 91
+  index: 1
+Corn_Stage
+  bounds: 233, 1547, 41, 91
+  index: 2
+Corn_Stage
+  bounds: 274, 1547, 41, 91
+  index: 3
+Corn_Stage
+  bounds: 315, 1547, 41, 91
+  index: 4
+Corn_Stage
+  bounds: 356, 1547, 41, 91
+  index: 5
+Corn_Stage
+  bounds: 397, 1547, 41, 91
+  index: 6
+Corn_Stage
+  bounds: 438, 1547, 41, 91
+  index: 7
+Cranberry
+  bounds: 48, 168, 48, 48
+Cranberry_Seeds
+  bounds: 96, 168, 48, 48
+Cranberry_Stage
+  bounds: 273, 623, 45, 60
+  index: 1
+Cranberry_Stage
+  bounds: 318, 623, 45, 60
+  index: 2
+Cranberry_Stage
+  bounds: 363, 623, 45, 60
+  index: 3
+Cranberry_Stage
+  bounds: 408, 623, 45, 60
+  index: 4
+Cranberry_Stage
+  bounds: 453, 623, 50, 60
+  index: 5
+Cranberry_Stage
+  bounds: 0, 683, 50, 60
+  index: 6
+Cranberry_Stage
+  bounds: 50, 683, 48, 60
+  index: 7
+Eggplant
+  bounds: 432, 0, 24, 24
+Eggplant_Seeds
+  bounds: 456, 0, 24, 24
+Eggplant_Stage
+  bounds: 98, 683, 45, 60
+  index: 1
+Eggplant_Stage
+  bounds: 143, 683, 45, 60
+  index: 2
+Eggplant_Stage
+  bounds: 188, 683, 45, 60
+  index: 3
+Eggplant_Stage
+  bounds: 233, 683, 45, 60
+  index: 4
+Eggplant_Stage
+  bounds: 278, 683, 45, 60
+  index: 5
+Eggplant_Stage
+  bounds: 323, 683, 45, 60
+  index: 6
+Eggplant_Stage
+  bounds: 368, 683, 45, 60
+  index: 7
+Fairy_Rose
+  bounds: 480, 0, 24, 24
+Fairy_Rose_Stage
+  bounds: 165, 1218, 50, 80
+  index: 1
+Fairy_Rose_Stage
+  bounds: 215, 1218, 50, 80
+  index: 2
+Fairy_Rose_Stage
+  bounds: 265, 1218, 50, 80
+  index: 3
+Fairy_Rose_Stage
+  bounds: 315, 1218, 50, 80
+  index: 4
+Fairy_Rose_Stage
+  bounds: 365, 1218, 50, 80
+  index: 5
+Fairy_Seeds
+  bounds: 0, 24, 24, 24
+Garlic
+  bounds: 24, 24, 24, 24
+Garlic_Seeds
+  bounds: 144, 168, 48, 48
+Garlic_Stage
+  bounds: 192, 168, 48, 48
+  index: 1
+Garlic_Stage
+  bounds: 240, 168, 48, 48
+  index: 2
+Garlic_Stage
+  bounds: 288, 168, 48, 48
+  index: 3
+Garlic_Stage
+  bounds: 336, 168, 48, 48
+  index: 4
+Garlic_Stage
+  bounds: 334, 510, 56, 56
+  index: 5
+Grape
+  bounds: 48, 24, 24, 24
+Grape_Stage
+  bounds: 354, 1460, 48, 87
+  index: 1
+Grape_Stage
+  bounds: 402, 1460, 48, 87
+  index: 2
+Grape_Stage
+  bounds: 450, 1460, 48, 87
+  index: 3
+Grape_Stage
+  bounds: 0, 1547, 48, 87
+  index: 4
+Grape_Stage
+  bounds: 48, 1547, 48, 87
+  index: 5
+Grape_Stage
+  bounds: 96, 1547, 48, 87
+  index: 6
+Grape_Stage
+  bounds: 144, 1547, 48, 87
+  index: 7
+Grape_Starter
+  bounds: 384, 168, 48, 48
+Green_Bean
+  bounds: 72, 24, 24, 24
+Green_Bean_Stage
+  bounds: 240, 1379, 39, 81
+  index: 2
+Green_Bean_Stage
+  bounds: 279, 1379, 39, 81
+  index: 3
+Green_Bean_Stage
+  bounds: 318, 1379, 39, 81
+  index: 4
+Green_Bean_Stage
+  bounds: 357, 1379, 39, 81
+  index: 5
+Green_Bean_Stage
+  bounds: 396, 1379, 39, 81
+  index: 6
+Green_Bean_Stage
+  bounds: 435, 1379, 39, 81
+  index: 7
+Green_Bean_Stage
+  bounds: 0, 1460, 39, 81
+  index: 8
+Green_Bean_Starter
+  bounds: 432, 168, 48, 48
+Hops
+  bounds: 96, 24, 24, 24
+Hops_Stage
+  bounds: 39, 1460, 45, 85
+  index: 1
+Hops_Stage
+  bounds: 84, 1460, 45, 85
+  index: 2
+Hops_Stage
+  bounds: 129, 1460, 45, 85
+  index: 3
+Hops_Stage
+  bounds: 174, 1460, 45, 85
+  index: 4
+Hops_Stage
+  bounds: 219, 1460, 45, 85
+  index: 5
+Hops_Stage
+  bounds: 264, 1460, 45, 85
+  index: 6
+Hops_Stage
+  bounds: 309, 1460, 45, 85
+  index: 7
+Hops_Starter
+  bounds: 0, 216, 48, 48
+Hot_Pepper
+  bounds: 120, 24, 24, 24
+Hot_Pepper_Stage
+  bounds: 336, 866, 42, 64
+  index: 1
+Hot_Pepper_Stage
+  bounds: 378, 866, 42, 64
+  index: 2
+Hot_Pepper_Stage
+  bounds: 420, 866, 42, 64
+  index: 3
+Hot_Pepper_Stage
+  bounds: 462, 866, 42, 64
+  index: 4
+Hot_Pepper_Stage_4b
+  bounds: 0, 930, 42, 64
+Hot_Pepper_Stage
+  bounds: 42, 930, 42, 64
+  index: 5
+Hot_Pepper_Stage
+  bounds: 84, 930, 42, 64
+  index: 6
+Jazz_Seeds
+  bounds: 144, 24, 24, 24
+Kale
+  bounds: 168, 24, 24, 24
+Kale_Seeds
+  bounds: 48, 216, 48, 48
+Kale_Stage
+  bounds: 96, 216, 48, 48
+  index: 1
+Kale_Stage
+  bounds: 144, 216, 48, 48
+  index: 2
+Kale_Stage
+  bounds: 192, 216, 48, 48
+  index: 3
+Kale_Stage
+  bounds: 240, 216, 48, 48
+  index: 4
+Kale_Stage
+  bounds: 413, 683, 60, 60
+  index: 5
+Melon
+  bounds: 192, 24, 24, 24
+Melon_Seeds
+  bounds: 216, 24, 24, 24
+Melon_Stage
+  bounds: 33, 803, 48, 63
+  index: 1
+Melon_Stage
+  bounds: 81, 803, 48, 63
+  index: 2
+Melon_Stage
+  bounds: 129, 803, 48, 63
+  index: 3
+Melon_Stage
+  bounds: 177, 803, 48, 63
+  index: 4
+Melon_Stage
+  bounds: 225, 803, 48, 63
+  index: 5
+Melon_Stage
+  bounds: 273, 803, 48, 63
+  index: 6
+Parsnip
+  bounds: 240, 24, 24, 24
+Parsnip_Seeds
+  bounds: 264, 24, 24, 24
+Parsnip_Stage
+  bounds: 288, 216, 48, 48
+  index: 1
+Parsnip_Stage
+  bounds: 336, 216, 48, 48
+  index: 2
+Parsnip_Stage
+  bounds: 384, 216, 48, 48
+  index: 3
+Parsnip_Stage
+  bounds: 432, 216, 48, 48
+  index: 4
+Parsnip_Stage
+  bounds: 0, 264, 48, 48
+  index: 5
+Pepper_Seeds
+  bounds: 288, 24, 24, 24
+Poppy
+  bounds: 312, 24, 24, 24
+Poppy_Seeds
+  bounds: 336, 24, 24, 24
+Poppy_Stage
+  bounds: 48, 264, 48, 48
+  index: 1
+Poppy_Stage
+  bounds: 96, 264, 48, 48
+  index: 2
+Poppy_Stage
+  bounds: 144, 264, 48, 48
+  index: 3
+Poppy_Stage
+  bounds: 192, 264, 48, 48
+  index: 4
+Poppy_Stage
+  bounds: 126, 930, 42, 64
+  index: 6
+Potato
+  bounds: 360, 24, 24, 24
+Potato_Seeds
+  bounds: 384, 24, 24, 24
+Potato_Stage
+  bounds: 240, 264, 48, 48
+  index: 1
+Potato_Stage
+  bounds: 288, 264, 48, 48
+  index: 2
+Potato_Stage
+  bounds: 336, 264, 48, 48
+  index: 3
+Potato_Stage
+  bounds: 384, 264, 48, 48
+  index: 4
+Potato_Stage
+  bounds: 432, 264, 48, 48
+  index: 5
+Potato_Stage
+  bounds: 390, 510, 56, 56
+  index: 6
+Powdermelon
+  bounds: 408, 24, 24, 24
+Powdermelon_Seeds
+  bounds: 0, 312, 48, 48
+Powdermelon_Stage
+  bounds: 321, 803, 48, 63
+  index: 1
+Powdermelon_Stage
+  bounds: 369, 803, 48, 63
+  index: 2
+Powdermelon_Stage
+  bounds: 417, 803, 48, 63
+  index: 3
+Powdermelon_Stage
+  bounds: 0, 866, 48, 63
+  index: 4
+Powdermelon_Stage
+  bounds: 48, 866, 48, 63
+  index: 5
+Powdermelon_Stage
+  bounds: 96, 866, 48, 63
+  index: 6
+Pumpkin
+  bounds: 432, 24, 24, 24
+Pumpkin_Pie
+  bounds: 456, 24, 24, 24
+Pumpkin_Seeds
+  bounds: 480, 24, 24, 24
+Pumpkin_Soup
+  bounds: 0, 48, 24, 24
+Pumpkin_Stage
+  bounds: 192, 1066, 48, 72
+  index: 1
+Pumpkin_Stage
+  bounds: 240, 1066, 48, 72
+  index: 2
+Pumpkin_Stage
+  bounds: 288, 1066, 48, 72
+  index: 3
+Pumpkin_Stage
+  bounds: 336, 1066, 48, 72
+  index: 4
+Pumpkin_Stage
+  bounds: 384, 1066, 48, 72
+  index: 5
+Pumpkin_Stage
+  bounds: 432, 1066, 48, 72
+  index: 6
+Radish
+  bounds: 24, 48, 24, 24
+Radish_Seeds
+  bounds: 48, 48, 24, 24
+Radish_Stage
+  bounds: 48, 312, 48, 48
+  index: 1
+Radish_Stage
+  bounds: 96, 312, 48, 48
+  index: 2
+Radish_Stage
+  bounds: 144, 312, 48, 48
+  index: 3
+Radish_Stage
+  bounds: 192, 312, 48, 48
+  index: 4
+Radish_Stage
+  bounds: 240, 312, 48, 48
+  index: 5
+Rare_Seed
+  bounds: 288, 312, 48, 48
+Red_Cabbage
+  bounds: 72, 48, 24, 24
+Red_Cabbage_Seeds
+  bounds: 336, 312, 48, 48
+Red_Cabbage_Stage
+  bounds: 384, 312, 48, 48
+  index: 1
+Red_Cabbage_Stage
+  bounds: 432, 312, 48, 48
+  index: 2
+Red_Cabbage_Stage
+  bounds: 0, 360, 48, 48
+  index: 3
+Red_Cabbage_Stage
+  bounds: 48, 360, 48, 48
+  index: 4
+Red_Cabbage_Stage
+  bounds: 321, 456, 48, 54
+  index: 5
+Red_Cabbage_Stage
+  bounds: 160, 566, 48, 57
+  index: 6
+Rhubarb
+  bounds: 96, 48, 24, 24
+Rhubarb_Seeds
+  bounds: 120, 48, 24, 24
+Rhubarb_Stage
+  bounds: 0, 743, 48, 60
+  index: 1
+Rhubarb_Stage
+  bounds: 48, 743, 48, 60
+  index: 2
+Rhubarb_Stage
+  bounds: 96, 743, 48, 60
+  index: 3
+Rhubarb_Stage
+  bounds: 144, 743, 48, 60
+  index: 4
+Rhubarb_Stage
+  bounds: 192, 743, 48, 60
+  index: 5
+Rhubarb_Stage
+  bounds: 240, 743, 48, 60
+  index: 6
+Starfruit
+  bounds: 144, 48, 24, 24
+Starfruit_Seeds
+  bounds: 96, 360, 48, 48
+Starfruit_Stage
+  bounds: 288, 743, 39, 60
+  index: 1
+Starfruit_Stage
+  bounds: 327, 743, 39, 60
+  index: 2
+Starfruit_Stage
+  bounds: 366, 743, 39, 60
+  index: 3
+Starfruit_Stage
+  bounds: 405, 743, 39, 60
+  index: 4
+Starfruit_Stage
+  bounds: 444, 743, 39, 60
+  index: 5
+Starfruit_Stage
+  bounds: 415, 1218, 50, 80
+  index: 6
+Strawberry
+  bounds: 168, 48, 24, 24
+Strawberry_Seeds
+  bounds: 144, 360, 48, 48
+Strawberry_Stage
+  bounds: 208, 566, 48, 57
+  index: 1
+Strawberry_Stage
+  bounds: 256, 566, 48, 57
+  index: 2
+Strawberry_Stage
+  bounds: 304, 566, 48, 57
+  index: 3
+Strawberry_Stage
+  bounds: 352, 566, 48, 57
+  index: 4
+Strawberry_Stage
+  bounds: 400, 566, 48, 57
+  index: 5
+Strawberry_Stage
+  bounds: 448, 566, 48, 57
+  index: 6
+Strawberry_Stage
+  bounds: 0, 623, 48, 57
+  index: 7
+Summer_Spangle
+  bounds: 192, 48, 24, 24
+Summer_Spangle_Stage
+  bounds: 192, 360, 48, 48
+  index: 1
+Summer_Spangle_Stage
+  bounds: 240, 360, 48, 48
+  index: 2
+Summer_Spangle_Stage
+  bounds: 288, 360, 48, 48
+  index: 3
+Summer_Spangle_Stage
+  bounds: 336, 360, 48, 48
+  index: 4
+Summer_Spangle_Stage
+  bounds: 0, 803, 33, 60
+  index: 5
+Summer_Squash
+  bounds: 216, 48, 24, 24
+Summer_Squash_Seeds
+  bounds: 384, 360, 48, 48
+Summer_Squash_Stage
+  bounds: 168, 930, 48, 64
+  index: 1
+Summer_Squash_Stage
+  bounds: 216, 930, 48, 64
+  index: 2
+Summer_Squash_Stage
+  bounds: 264, 930, 48, 64
+  index: 3
+Summer_Squash_Stage
+  bounds: 312, 930, 48, 64
+  index: 4
+Summer_Squash_Stage
+  bounds: 360, 930, 48, 64
+  index: 5
+Summer_Squash_Stage
+  bounds: 408, 930, 48, 64
+  index: 6
+Summer_Squash_Stage
+  bounds: 456, 930, 48, 64
+  index: 7
+Sunflower
+  bounds: 240, 48, 24, 24
+Sunflower_Seeds
+  bounds: 264, 48, 24, 24
+Sunflower_Stage
+  bounds: 0, 1298, 50, 80
+  index: 1
+Sunflower_Stage
+  bounds: 50, 1298, 50, 80
+  index: 2
+Sunflower_Stage
+  bounds: 100, 1298, 50, 80
+  index: 3
+Sunflower_Stage
+  bounds: 150, 1298, 50, 80
+  index: 4
+Sunflower_Stage
+  bounds: 200, 1298, 50, 80
+  index: 5
+Sweet_Gem_Berry
+  bounds: 288, 48, 24, 24
+Sweet_Gem_Berry_Stage
+  bounds: 446, 510, 26, 56
+  index: 1
+Sweet_Gem_Berry_Stage
+  bounds: 472, 510, 26, 56
+  index: 2
+Sweet_Gem_Berry_Stage
+  bounds: 0, 566, 26, 56
+  index: 3
+Sweet_Gem_Berry_Stage
+  bounds: 26, 566, 26, 56
+  index: 4
+Sweet_Gem_Berry_Stage
+  bounds: 52, 566, 26, 56
+  index: 5
+Sweet_Gem_Berry_Stage
+  bounds: 78, 566, 26, 56
+  index: 6
+Tomato
+  bounds: 312, 48, 24, 24
+Tomato_Seeds
+  bounds: 432, 360, 48, 48
+Tomato_Stage
+  bounds: 369, 456, 48, 54
+  index: 1
+Tomato_Stage
+  bounds: 417, 456, 48, 54
+  index: 2
+Tomato_Stage
+  bounds: 0, 510, 48, 54
+  index: 3
+Tomato_Stage
+  bounds: 48, 510, 48, 54
+  index: 4
+Tomato_Stage
+  bounds: 0, 994, 42, 64
+  index: 5
+Tomato_Stage
+  bounds: 42, 994, 42, 64
+  index: 6
+Tomato_Stage
+  bounds: 84, 994, 42, 64
+  index: 7
+Tulip
+  bounds: 336, 48, 24, 24
+Tulip_Bulb
+  bounds: 360, 48, 24, 24
+Tulip_Stage
+  bounds: 0, 408, 48, 48
+  index: 1
+Tulip_Stage
+  bounds: 48, 408, 48, 48
+  index: 2
+Tulip_Stage
+  bounds: 96, 408, 48, 48
+  index: 3
+Tulip_Stage
+  bounds: 144, 408, 48, 48
+  index: 4
+Tulip_Stage
+  bounds: 104, 566, 56, 56
+  index: 6
+Unmilled_Rice
+  bounds: 384, 48, 24, 24
+Unmilled_Rice_Stage
+  bounds: 0, 1138, 48, 72
+  index: 1
+Unmilled_Rice_Stage
+  bounds: 48, 1138, 48, 72
+  index: 2
+Unmilled_Rice_Stage
+  bounds: 96, 1138, 48, 72
+  index: 3
+Unmilled_Rice_Stage
+  bounds: 144, 1138, 48, 72
+  index: 4
+Unmilled_Rice_Stage
+  bounds: 192, 1138, 48, 72
+  index: 5
+Wheat
+  bounds: 408, 48, 24, 24
+Wheat_Seeds
+  bounds: 432, 48, 24, 24
+Wheat_Stage
+  bounds: 192, 408, 48, 48
+  index: 1
+Wheat_Stage
+  bounds: 240, 408, 48, 48
+  index: 2
+Wheat_Stage
+  bounds: 250, 1298, 50, 80
+  index: 3
+Wheat_Stage
+  bounds: 300, 1298, 50, 80
+  index: 4
+Wheat_Stage
+  bounds: 350, 1298, 50, 80
+  index: 5
+Yam
+  bounds: 456, 48, 24, 24
+Yam_Seeds
+  bounds: 288, 408, 48, 48
+Yam_Stage
+  bounds: 336, 408, 48, 48
+  index: 1
+Yam_Stage
+  bounds: 384, 408, 48, 48
+  index: 2
+Yam_Stage
+  bounds: 432, 408, 48, 48
+  index: 3
+Yam_Stage
+  bounds: 0, 456, 48, 48
+  index: 4
+Yam_Stage
+  bounds: 48, 456, 48, 48
+  index: 5

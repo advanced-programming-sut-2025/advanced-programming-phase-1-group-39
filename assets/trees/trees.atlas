@@ -1,0 +1,368 @@
+trees.png
+size: 1812, 1073
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+pma: false
+Acorns
+  bounds: 76, 0, 24, 24
+Apple
+  bounds: 100, 0, 24, 24
+Apple_Sapling
+  bounds: 1508, 0, 48, 48
+Apple_Stage
+  bounds: 1044, 48, 96, 160
+  index: 1
+Apple_Stage
+  bounds: 1140, 48, 96, 160
+  index: 2
+Apple_Stage
+  bounds: 1236, 48, 96, 160
+  index: 3
+Apple_Stage
+  bounds: 1332, 48, 96, 160
+  index: 4
+Apple_Stage
+  bounds: 1428, 48, 384, 160
+  index: 5
+Apple_Stage_5_Fruit
+  bounds: 0, 208, 96, 160
+Apricot
+  bounds: 124, 0, 24, 24
+Apricot_Sapling
+  bounds: 1556, 0, 48, 48
+Apricot_Stage
+  bounds: 96, 208, 96, 160
+  index: 1
+Apricot_Stage
+  bounds: 192, 208, 96, 160
+  index: 2
+Apricot_Stage
+  bounds: 288, 208, 96, 160
+  index: 3
+Apricot_Stage
+  bounds: 384, 208, 96, 160
+  index: 4
+Apricot_Stage
+  bounds: 480, 208, 384, 160
+  index: 5
+Apricot_Stage_5_Fruit
+  bounds: 864, 208, 96, 160
+Banana
+  bounds: 148, 0, 24, 24
+Banana_Sapling
+  bounds: 1604, 0, 48, 48
+Banana_Stage
+  bounds: 960, 208, 100, 160
+  index: 1
+Banana_Stage
+  bounds: 1060, 208, 100, 160
+  index: 2
+Banana_Stage
+  bounds: 1160, 208, 100, 160
+  index: 3
+Banana_Stage
+  bounds: 1260, 208, 100, 160
+  index: 4
+Banana_Stage
+  bounds: 1360, 208, 384, 160
+  index: 5
+Banana_Stage_5_Fruit
+  bounds: 0, 368, 96, 160
+Cherry
+  bounds: 172, 0, 24, 24
+Cherry_Sapling
+  bounds: 1652, 0, 48, 48
+Cherry_Stage
+  bounds: 96, 368, 96, 160
+  index: 1
+Cherry_Stage
+  bounds: 192, 368, 96, 160
+  index: 2
+Cherry_Stage
+  bounds: 288, 368, 96, 160
+  index: 3
+Cherry_Stage
+  bounds: 384, 368, 96, 160
+  index: 4
+Cherry_Stage
+  bounds: 480, 368, 384, 160
+  index: 5
+Cherry_Stage_5_Fruit
+  bounds: 864, 368, 96, 160
+Common_Mushroom
+  bounds: 196, 0, 24, 24
+Cranberry_Candy
+  bounds: 220, 0, 24, 24
+Dragon_Tooth
+  bounds: 244, 0, 24, 24
+Energy
+  bounds: 0, 0, 20, 20
+Fiddlehead_Fern
+  bounds: 268, 0, 24, 24
+Mahogany_Seeds
+  bounds: 292, 0, 24, 24
+Mahogany_Stage
+  bounds: 1416, 0, 28, 44
+  index: 1
+Mahogany_Stage
+  bounds: 1444, 0, 28, 44
+  index: 2
+Mahogany_Stage
+  bounds: 708, 48, 36, 56
+  index: 3
+Mahogany_Stage
+  bounds: 744, 48, 36, 56
+  index: 4
+Mahogany_Stage
+  bounds: 1168, 688, 420, 182
+  index: 5
+Mahogany_stump_Fall
+  bounds: 1472, 0, 36, 45
+Mahogany_stump_Spring
+  bounds: 1700, 0, 48, 48
+Mahogany_stump_Winter
+  bounds: 672, 48, 36, 55
+Mango
+  bounds: 316, 0, 24, 24
+Mango_Sapling
+  bounds: 1748, 0, 48, 48
+Mango_Stage
+  bounds: 960, 368, 100, 160
+  index: 1
+Mango_Stage
+  bounds: 1060, 368, 100, 160
+  index: 2
+Mango_Stage
+  bounds: 1160, 368, 100, 160
+  index: 3
+Mango_Stage
+  bounds: 1260, 368, 100, 160
+  index: 4
+Mango_Stage
+  bounds: 1360, 368, 384, 160
+  index: 5
+Mango_Stage_5_Fruit
+  bounds: 0, 528, 96, 160
+Mango_Sticky_Rice
+  bounds: 340, 0, 24, 24
+Maple_Seeds
+  bounds: 364, 0, 24, 24
+Maple_Stage
+  bounds: 853, 0, 28, 28
+  index: 1
+Maple_Stage
+  bounds: 881, 0, 28, 28
+  index: 2
+Maple_Stage
+  bounds: 1065, 0, 36, 36
+  index: 3
+Maple_Stage
+  bounds: 816, 48, 36, 62
+  index: 4
+Maple_Stage
+  bounds: 802, 870, 382, 190
+  index: 5
+Maple_stump_Fall
+  bounds: 0, 48, 48, 48
+Maple_stump_Spring
+  bounds: 48, 48, 48, 48
+Maple_stump_Summer
+  bounds: 96, 48, 48, 48
+Maple_stump_Winter
+  bounds: 144, 48, 48, 48
+Maple_Syrup
+  bounds: 388, 0, 24, 24
+Mossy_Seeds
+  bounds: 412, 0, 24, 24
+Mushroom_stump
+  bounds: 192, 48, 48, 48
+Mushroom_Tree_Seeds
+  bounds: 436, 0, 24, 24
+Mushroom_Stage
+  bounds: 1101, 0, 36, 36
+  index: 1
+Mushroom_Stage
+  bounds: 829, 0, 24, 27
+  index: 2
+Mushroom_Stage
+  bounds: 1137, 0, 36, 36
+  index: 3
+Mushroom_Stage
+  bounds: 780, 48, 36, 56
+  index: 4
+Mushroom_Stage_5_not4Season
+  bounds: 960, 688, 100, 167
+Mussel
+  bounds: 460, 0, 24, 24
+Mystic_Syrup
+  bounds: 484, 0, 24, 24
+Mystic_Tree_Seeds
+  bounds: 508, 0, 24, 24
+Mystic_Stage
+  bounds: 772, 0, 19, 26
+  index: 1
+Mystic_Stage
+  bounds: 791, 0, 19, 26
+  index: 2
+Mystic_Stage
+  bounds: 810, 0, 19, 26
+  index: 3
+Mystic_Stage
+  bounds: 1021, 0, 22, 34
+  index: 4
+Mystic_Stage
+  bounds: 996, 48, 48, 97
+  index: 5
+Mystic_Tree_Stump
+  bounds: 1043, 0, 22, 34
+Oak_Resin
+  bounds: 532, 0, 24, 24
+Oak_Stage
+  bounds: 909, 0, 28, 28
+  index: 1
+Oak_Stage
+  bounds: 937, 0, 28, 28
+  index: 2
+Oak_Stage
+  bounds: 1173, 0, 36, 36
+  index: 3
+Oak_Stage
+  bounds: 888, 48, 36, 72
+  index: 4
+Oak_Stage
+  bounds: 405, 870, 397, 188
+  index: 5
+Oak_stump_Spring
+  bounds: 240, 48, 48, 48
+Oak_stump_Winter
+  bounds: 288, 48, 48, 48
+Orange
+  bounds: 556, 0, 24, 24
+Orange_Sapling
+  bounds: 336, 48, 48, 48
+Orange_Stage
+  bounds: 96, 528, 96, 160
+  index: 1
+Orange_Stage
+  bounds: 192, 528, 96, 160
+  index: 2
+Orange_Stage
+  bounds: 288, 528, 96, 160
+  index: 3
+Orange_Stage
+  bounds: 384, 528, 96, 160
+  index: 4
+Orange_Stage
+  bounds: 480, 528, 384, 160
+  index: 5
+Orange_Stage_5_Fruit
+  bounds: 864, 528, 96, 160
+Palm_Stage
+  bounds: 1209, 0, 36, 36
+  index: 1
+Palm_Stage
+  bounds: 852, 48, 36, 68
+  index: 2
+Palm_Stage
+  bounds: 1060, 688, 108, 175
+  index: 3
+Palm_stump
+  bounds: 384, 48, 48, 48
+Palm_Tree_Island_Portrait
+  bounds: 1584, 870, 88, 203
+Peach
+  bounds: 580, 0, 24, 24
+Peach_Sapling
+  bounds: 432, 48, 48, 48
+Peach_Stage
+  bounds: 960, 528, 96, 160
+  index: 1
+Peach_Stage
+  bounds: 1056, 528, 96, 160
+  index: 2
+Peach_Stage
+  bounds: 1152, 528, 96, 160
+  index: 3
+Peach_Stage
+  bounds: 1248, 528, 96, 160
+  index: 4
+Peach_Stage
+  bounds: 1344, 528, 384, 160
+  index: 5
+Peach_Stage_5_Fruit
+  bounds: 0, 688, 96, 160
+Pine_Cones
+  bounds: 604, 0, 24, 24
+Pine_Stage
+  bounds: 965, 0, 28, 28
+  index: 1
+Pine_Stage
+  bounds: 993, 0, 28, 28
+  index: 2
+Pine_Stage
+  bounds: 1245, 0, 36, 36
+  index: 3
+Pine_Stage
+  bounds: 924, 48, 36, 72
+  index: 4
+Pine_Stage
+  bounds: 0, 870, 405, 182
+  index: 5
+Pine_stump_Fall
+  bounds: 480, 48, 48, 48
+Pine_stump_Spring
+  bounds: 528, 48, 48, 48
+Pine_stump_Winter
+  bounds: 576, 48, 48, 48
+Pine_Tar
+  bounds: 628, 0, 24, 24
+Pomegranate
+  bounds: 652, 0, 24, 24
+Pomegranate_Sapling
+  bounds: 624, 48, 48, 48
+Pomegranate_Stage
+  bounds: 96, 688, 96, 160
+  index: 1
+Pomegranate_Stage
+  bounds: 192, 688, 96, 160
+  index: 2
+Pomegranate_Stage
+  bounds: 288, 688, 96, 160
+  index: 3
+Pomegranate_Stage
+  bounds: 384, 688, 96, 160
+  index: 4
+Pomegranate_Stage
+  bounds: 480, 688, 384, 160
+  index: 5
+Pomegranate_Stage_5_Fruit
+  bounds: 864, 688, 96, 160
+Purple_Mushroom
+  bounds: 676, 0, 24, 24
+Red_Mushroom
+  bounds: 700, 0, 24, 24
+Sap
+  bounds: 724, 0, 24, 24
+Wild_Tree_Stage
+  bounds: 20, 0, 28, 21
+  index: 1
+Wild_Tree_Stage
+  bounds: 48, 0, 28, 23
+  index: 2
+Wild_Tree_Stage
+  bounds: 1281, 0, 36, 39
+  index: 3
+Wild_Tree_Stage
+  bounds: 960, 48, 36, 72
+  index: 4
+Wild_Tree_Stage_5_fourSeason
+  bounds: 1184, 870, 400, 202
+Wild_Tree_stump_Fall
+  bounds: 1317, 0, 33, 41
+Wild_Tree_stump_Spring
+  bounds: 1350, 0, 33, 41
+Wild_Tree_stump_Winter
+  bounds: 1383, 0, 33, 41
+Wood
+  bounds: 748, 0, 24, 24

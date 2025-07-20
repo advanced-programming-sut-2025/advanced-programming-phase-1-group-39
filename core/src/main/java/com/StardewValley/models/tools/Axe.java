@@ -5,6 +5,7 @@ import com.StardewValley.models.*;
 import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.map.TileType;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Axe extends Tool {
     public Axe() {
@@ -60,5 +61,9 @@ public class Axe extends Tool {
     public int getUsingEnergy(Skill skill, Weather weather) {
         return (int)((baseUsingEnergy - type.getEnergyReduce() - getSkillEnergyReduce(skill))
                 * getWeatherMultiplier(weather));
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new WateringCan().getName());
     }
 }

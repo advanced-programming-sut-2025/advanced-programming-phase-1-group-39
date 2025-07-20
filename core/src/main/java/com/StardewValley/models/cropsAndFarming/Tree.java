@@ -2,8 +2,13 @@ package com.StardewValley.models.cropsAndFarming;
 
 import com.StardewValley.models.Enums.Season;
 import com.StardewValley.models.ItemStack;
-import com.StardewValley.models.cropsAndFarming.FarmingProduct;
 import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.services.GameAssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -135,5 +140,40 @@ public class Tree{
 
     public boolean hasFruit() {
         return hasFruit;
+    }
+
+    // Graphics
+    public TextureRegion getFruitTexture() {
+        TextureAtlas treesAtlas = GameAssetManager.getTressAtlas();
+        String fruitPath = fruitName.replace(" ", "_");
+
+        return new TextureRegion(treesAtlas.findRegion(fruitPath));
+    }
+
+    public TextureRegion getTexture(Season season) {
+        TextureAtlas treesAtlas = GameAssetManager.getTressAtlas();
+
+        String name = this.name.split(" ")[0];
+        int stagesNum = stages.size();
+
+        Array<TextureRegion> treeStageRegions = new Array<>(treesAtlas.findRegions( name+ "_Stage"));
+        if (currentStage < stagesNum) {
+            return new TextureRegion(treeStageRegions.get(currentStage));
+        } else {
+            // چهار فصل
+            if (hasFruit) {
+                TextureRegion hasFruitTexture = treesAtlas.findRegion(name + "_Stage_5_Fruit");
+                if (hasFruitTexture != null) {
+                    return new TextureRegion(hasFruitTexture);
+                }
+            }
+            if (treeStageRegions.size == stagesNum + 1) {
+                TextureRegion seasonsTextureRegion = treeStageRegions.get(stagesNum);
+                TextureRegion[][] seasonedTrees = seasonsTextureRegion.split(seasonsTextureRegion.getRegionWidth()/4, seasonsTextureRegion.getRegionHeight());
+                return seasonedTrees[0][season.number];
+            } else {
+                return new TextureRegion(treesAtlas.findRegion(name + "_Stage_5_not4Season"));
+            }
+        }
     }
 }

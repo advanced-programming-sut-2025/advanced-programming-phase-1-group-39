@@ -2,6 +2,7 @@ package com.StardewValley.models.cropsAndFarming;
 
 import com.StardewValley.models.Enums.Season;
 import com.StardewValley.models.Item;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class Crop extends Item {
     int baseSellPrice;
@@ -18,5 +19,7 @@ public abstract class Crop extends Item {
     public int getBaseSellPrice() {
         return baseSellPrice;
     }
+
+    abstract TextureRegion getTexture();
 }
 

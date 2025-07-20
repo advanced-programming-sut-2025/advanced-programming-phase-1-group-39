@@ -1,0 +1,327 @@
+foragings.png
+size: 128, 960
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+pma: false
+Autumn%27s_Bounty
+  bounds: 18, 704, 48, 48
+Basic_Fertilizer
+  bounds: 64, 0, 24, 24
+Blackberry
+  bounds: 88, 0, 24, 24
+Blackberry_Cobbler
+  bounds: 0, 24, 24, 24
+Blue_Dried_Fruit
+  bounds: 24, 24, 24, 24
+Blue_Jelly
+  bounds: 48, 24, 24, 24
+Blue_Wine
+  bounds: 72, 24, 24, 24
+Botanist
+  bounds: 96, 24, 24, 24
+Bread
+  bounds: 0, 48, 24, 24
+Brown_Dried_Fruit
+  bounds: 24, 48, 24, 24
+Brown_Jelly
+  bounds: 48, 48, 24, 24
+Brown_Juice
+  bounds: 72, 48, 24, 24
+Brown_Pickles
+  bounds: 96, 48, 24, 24
+Brown_Wine
+  bounds: 0, 72, 24, 24
+Bundle_Blue
+  bounds: 24, 72, 24, 24
+Bundle_Green
+  bounds: 48, 72, 24, 24
+Bundle_Orange
+  bounds: 72, 72, 24, 24
+Bundle_Purple
+  bounds: 96, 72, 24, 24
+Bundle_Red
+  bounds: 0, 96, 24, 24
+Bundle_Teal
+  bounds: 24, 96, 24, 24
+Bundle_Yellow
+  bounds: 48, 96, 24, 24
+Cactus_Fruit
+  bounds: 72, 96, 24, 24
+Cave_Carrot
+  bounds: 96, 96, 24, 24
+Chanterelle
+  bounds: 0, 120, 24, 24
+Charcoal_Kiln
+  bounds: 0, 704, 18, 36
+Chowder
+  bounds: 24, 120, 24, 24
+Clam
+  bounds: 48, 120, 24, 24
+Cockle
+  bounds: 72, 120, 24, 24
+Coconut
+  bounds: 96, 120, 24, 24
+Common_Mushroom
+  bounds: 0, 144, 24, 24
+Cooking_Channel
+  bounds: 48, 672, 22, 28
+Cookout_Kit
+  bounds: 24, 144, 24, 24
+Coral
+  bounds: 48, 144, 24, 24
+Crocus
+  bounds: 72, 144, 24, 24
+Crystal_Fruit
+  bounds: 96, 144, 24, 24
+Daffodil
+  bounds: 0, 168, 24, 24
+Dandelion
+  bounds: 24, 168, 24, 24
+Dark_Blue_Dried_Fruit
+  bounds: 48, 168, 24, 24
+Dark_Blue_Jelly
+  bounds: 72, 168, 24, 24
+Dark_Blue_Wine
+  bounds: 96, 168, 24, 24
+Dark_Pink_Pickles
+  bounds: 0, 192, 24, 24
+Dark_Purple_Jelly
+  bounds: 24, 192, 24, 24
+Dark_Purple_Pickles
+  bounds: 48, 192, 24, 24
+Dark_Purple_Wine
+  bounds: 72, 192, 24, 24
+Defense
+  bounds: 96, 192, 24, 24
+Dried_Chanterelles
+  bounds: 0, 216, 24, 24
+Dried_Common_Mushrooms
+  bounds: 24, 216, 24, 24
+Dried_Magma_Caps
+  bounds: 48, 216, 24, 24
+Dried_Morels
+  bounds: 72, 216, 24, 24
+Dried_Purple_Mushrooms
+  bounds: 96, 216, 24, 24
+Egg
+  bounds: 0, 240, 24, 24
+Eggplant
+  bounds: 24, 240, 24, 24
+Energy
+  bounds: 48, 240, 24, 24
+Fall_Seeds
+  bounds: 72, 240, 24, 24
+Fiber_Seeds
+  bounds: 96, 240, 24, 24
+Fiddlehead_Fern
+  bounds: 0, 264, 24, 24
+Fiddlehead_Risotto
+  bounds: 24, 264, 24, 24
+Field_Snack
+  bounds: 48, 264, 24, 24
+Fish_Pond
+  bounds: 70, 672, 24, 31
+Fish_Stew
+  bounds: 72, 264, 24, 24
+Foraging
+  bounds: 96, 264, 24, 24
+Forester
+  bounds: 0, 288, 24, 24
+Fried_Mushroom
+  bounds: 24, 288, 24, 24
+Gatherer
+  bounds: 48, 288, 24, 24
+Ginger
+  bounds: 72, 288, 24, 24
+Ginger_Ale
+  bounds: 96, 288, 24, 24
+Grape
+  bounds: 0, 312, 24, 24
+Green_Dried_Fruit
+  bounds: 24, 312, 24, 24
+Green_Jelly
+  bounds: 48, 312, 24, 24
+Green_Juice
+  bounds: 72, 312, 24, 24
+Green_Pickles
+  bounds: 96, 312, 24, 24
+Green_Wine
+  bounds: 0, 336, 24, 24
+Hazelnut
+  bounds: 24, 336, 24, 24
+Holly
+  bounds: 48, 336, 24, 24
+Hot_Pepper
+  bounds: 72, 336, 24, 24
+Krobus_Icon
+  bounds: 94, 672, 32, 32
+Leek
+  bounds: 96, 336, 24, 24
+Life_Elixir
+  bounds: 0, 360, 24, 24
+Lightning_Rod
+  bounds: 66, 704, 24, 48
+Lost_Book
+  bounds: 0, 896, 64, 64
+Lumberjack
+  bounds: 24, 360, 24, 24
+Magma_Cap
+  bounds: 48, 360, 24, 24
+Maki_Roll
+  bounds: 72, 360, 24, 24
+Miner%27s_Treat
+  bounds: 96, 360, 24, 24
+Morel
+  bounds: 0, 384, 24, 24
+Moss_Soup
+  bounds: 24, 384, 24, 24
+Mushroom_Log
+  bounds: 90, 704, 24, 48
+Mussel
+  bounds: 48, 384, 24, 24
+Nauseated
+  bounds: 24, 0, 20, 20
+Nautilus_Shell
+  bounds: 72, 384, 24, 24
+Orange_Dried_Fruit
+  bounds: 96, 384, 24, 24
+Orange_Jelly
+  bounds: 0, 408, 24, 24
+Orange_Juice
+  bounds: 24, 408, 24, 24
+Orange_Pickles
+  bounds: 48, 408, 24, 24
+Orange_Wine
+  bounds: 72, 408, 24, 24
+Oyster
+  bounds: 96, 408, 24, 24
+Pancakes
+  bounds: 0, 752, 48, 48
+Pineapple
+  bounds: 0, 432, 24, 24
+Plum_Pudding
+  bounds: 24, 432, 24, 24
+Poison
+  bounds: 44, 0, 20, 20
+Pumpkin
+  bounds: 48, 432, 24, 24
+Purple_Dried_Fruit
+  bounds: 72, 432, 24, 24
+Purple_Jelly
+  bounds: 96, 432, 24, 24
+Purple_Mushroom
+  bounds: 0, 456, 24, 24
+Purple_Wine
+  bounds: 24, 456, 24, 24
+Quality_Bobber
+  bounds: 48, 456, 24, 24
+Rain_Totem
+  bounds: 72, 456, 24, 24
+Rainbow_Shell
+  bounds: 96, 456, 24, 24
+Raisins
+  bounds: 0, 480, 24, 24
+Red_Dried_Fruit
+  bounds: 24, 480, 24, 24
+Red_Jelly
+  bounds: 48, 480, 24, 24
+Red_Mushroom
+  bounds: 72, 480, 24, 24
+Red_Wine
+  bounds: 96, 480, 24, 24
+Roasted_Hazelnuts
+  bounds: 0, 504, 24, 24
+Roots_Platter
+  bounds: 24, 504, 24, 24
+Salad
+  bounds: 48, 504, 24, 24
+Salmonberry
+  bounds: 72, 504, 24, 24
+Sap
+  bounds: 48, 752, 48, 48
+Sea_Urchin
+  bounds: 96, 504, 24, 24
+Seaweed
+  bounds: 0, 528, 24, 24
+Shrimp_Cocktail
+  bounds: 24, 528, 24, 24
+Snow_Yam
+  bounds: 48, 528, 24, 24
+Spice_Berry
+  bounds: 72, 528, 24, 24
+Spring_Onion
+  bounds: 96, 528, 24, 24
+Spring_Seeds
+  bounds: 0, 552, 24, 24
+Statue_Of_Blessings
+  bounds: 96, 752, 24, 48
+Stir_Fry
+  bounds: 24, 552, 24, 24
+Stuffing
+  bounds: 48, 552, 24, 24
+Summer
+  bounds: 0, 0, 24, 16
+Summer_Seeds
+  bounds: 72, 552, 24, 24
+Survival_Burger
+  bounds: 96, 552, 24, 24
+Sweet_Pea
+  bounds: 0, 576, 24, 24
+Tapper
+  bounds: 0, 800, 24, 48
+Tapper_Icon
+  bounds: 24, 576, 24, 24
+Tent_Kit
+  bounds: 48, 576, 24, 24
+Time_Icon
+  bounds: 72, 576, 24, 24
+Tom_Kha_Soup
+  bounds: 96, 576, 24, 24
+Torch
+  bounds: 0, 600, 24, 24
+Tracker
+  bounds: 24, 600, 24, 24
+Trap_Bobber
+  bounds: 48, 600, 24, 24
+Tree_Fertilizer
+  bounds: 72, 600, 24, 24
+Tropical_Curry
+  bounds: 24, 800, 48, 48
+Truffle
+  bounds: 72, 800, 48, 48
+Warp_Totem_Beach
+  bounds: 96, 600, 24, 24
+Warp_Totem_Farm
+  bounds: 0, 624, 24, 24
+Warp_Totem_Mountains
+  bounds: 24, 624, 24, 24
+Wheat_Flour
+  bounds: 48, 624, 24, 24
+White_Juice
+  bounds: 72, 624, 24, 24
+White_Pickles
+  bounds: 96, 624, 24, 24
+Wild_Horseradish
+  bounds: 0, 648, 24, 24
+Wild_Plum
+  bounds: 24, 648, 24, 24
+Wild_Seeds_Stage
+  bounds: 0, 848, 48, 48
+  index: 1
+Wild_Seeds_Stage
+  bounds: 48, 848, 48, 48
+  index: 2
+Wild_Seeds_Stage
+  bounds: 64, 896, 64, 64
+  index: 3
+Winter_Root
+  bounds: 48, 648, 24, 24
+Winter_Seeds
+  bounds: 72, 648, 24, 24
+Yam
+  bounds: 96, 648, 24, 24
+Yellow_Juice
+  bounds: 0, 672, 24, 24
+Yellow_Pickles
+  bounds: 24, 672, 24, 24

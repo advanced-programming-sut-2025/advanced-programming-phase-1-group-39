@@ -2,6 +2,7 @@ package com.StardewValley.models.services;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class GameAssetManager {
@@ -12,4 +13,17 @@ public class GameAssetManager {
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));
         titleImage = new Texture(Gdx.files.internal("title-logo.png"));
     }
+
+    public static TextureAtlas getCropsAtlas() {
+        return new TextureAtlas(Gdx.files.internal("crops/crops.atlas"));
+    }
+
+    public static TextureAtlas getForagingsAtlas() {
+        return new TextureAtlas(Gdx.files.internal("foragings/foragings.atlas"));
+    }
+
+    public static TextureAtlas getTressAtlas() {
+        return new TextureAtlas(Gdx.files.internal("trees/trees.atlas"));
+    }
+
 }

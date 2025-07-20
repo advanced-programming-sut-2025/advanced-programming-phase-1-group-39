@@ -6,6 +6,9 @@ import com.StardewValley.models.cropsAndFarming.Plant;
 import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.map.TileType;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Scythe extends Tool {
     public Scythe() {
@@ -56,5 +59,10 @@ public class Scythe extends Tool {
     public int getUsingEnergy(Skill skill, Weather weather) {
         return (int)((baseUsingEnergy)
                 * getWeatherMultiplier(weather));
+    }
+
+    @Override
+    public TextureRegion getTexture() {
+        return new TextureRegion(new Texture(Gdx.files.internal("tools/" + getName() + ".png")));
     }
 }

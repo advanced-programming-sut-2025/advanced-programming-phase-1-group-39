@@ -3,6 +3,10 @@ package com.StardewValley.models.cropsAndFarming;
 import com.StardewValley.models.Enums.Season;
 import com.StardewValley.models.cropsAndFarming.Crop;
 import com.StardewValley.models.cropsAndFarming.ForagingSource;
+import com.StardewValley.models.services.GameAssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Arrays;
 
@@ -42,4 +46,11 @@ public class ForagingCrop extends Crop {
     protected ForagingCrop clone(){
         return new ForagingCrop(this.name, this.baseSellPrice, this.baseEnergy, this.source, this.seasons);
     }
+
+    @Override
+    public TextureRegion getTexture() {
+        TextureAtlas foragingsAtlas = GameAssetManager.getForagingsAtlas();
+        return foragingsAtlas.findRegion(getName().replace(" ", "_"));
+    }
+
 }

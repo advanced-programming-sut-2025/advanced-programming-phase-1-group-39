@@ -10,8 +10,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
@@ -36,13 +40,14 @@ public class GameScreen implements Screen {
     private Texture clock;
     private BitmapFont font;
 
-    private final int MAX_CACHE_SIZE = 3000;
+    private final int MAX_CACHE_SIZE = 5000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
         @Override
         protected boolean removeEldestEntry(HashMap.Entry<Location, TextureRegion> eldest) {
             return size() > MAX_CACHE_SIZE;
         }
     };
+
     private OrthographicCamera camera;
 
 
@@ -75,6 +80,31 @@ public class GameScreen implements Screen {
             playerAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
         }
     }
+
+    private TextureRegion getTileObjectTexture(Tile tile) {
+        Location loc = tile.getLocation();
+        TextureRegion cached = tileCache.get(loc);
+        if (cached != null)
+            return cached;
+
+        // اولویت: Tree > Plant > Item (فقط یکی رو نشون بده، یا می‌تونی لایه‌ای بزنی)
+        TextureRegion texture = null;
+
+        if (tile.getTree() != null) {
+            texture = tile.getTree().getTexture();
+        } else if (tile.getPlant() != null) {
+            texture = tile.getPlant().getTexture();
+        } else if (tile.getItemOnTile() != null) {
+            texture = tile.getItemOnTile().getItem().getTexture();
+        }
+
+        if (texture != null)
+            tileCache.put(loc, texture);
+
+        return texture;
+    }
+
+
 
     public void renderTiles() {
         float camX = camera.position.x;
@@ -111,6 +141,19 @@ public class GameScreen implements Screen {
                 float drawY = y * tileSize;
 
                 batch.draw(texture, drawX, drawY, tileSize, tileSize);
+            }
+        }
+
+        for (int x = startX; x < endX; x++) {
+            for (int y = startY; y < endY; y++) {
+                Tile tile = tiles[Constants.FARM_HEIGHT - y + 1][x];
+                float drawX = x * tileSize;
+                float drawY = y * tileSize;
+
+                TextureRegion objectTex = getTileObjectTexture(tile);
+                if (objectTex != null)
+                    batch.draw(objectTex, drawX, drawY, tileSize, tileSize);
+
             }
         }
     }

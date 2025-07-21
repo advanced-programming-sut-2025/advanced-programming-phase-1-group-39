@@ -1,5 +1,6 @@
 package com.StardewValley.models.cropsAndFarming;
 
+import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Season;
 import com.StardewValley.models.ItemStack;
 import com.StardewValley.models.map.Tile;
@@ -150,7 +151,8 @@ public class Tree{
         return new TextureRegion(treesAtlas.findRegion(fruitPath));
     }
 
-    public TextureRegion getTexture(Season season) {
+    public TextureRegion getTexture() {
+        Season season = App.getApp().getCurrentGame().getTime().getSeason();
         TextureAtlas treesAtlas = GameAssetManager.getTressAtlas();
 
         String name = this.name.split(" ")[0];

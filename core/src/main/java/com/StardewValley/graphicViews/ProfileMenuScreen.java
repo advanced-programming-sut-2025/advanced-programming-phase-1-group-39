@@ -57,7 +57,7 @@ public class ProfileMenuScreen implements Screen {
 
     public ProfileMenuScreen() {
         User user = App.getApp().getLoggedInUser();
-        this.controller = AppControllers.profileGuiController;
+        this.controller = AppGuiControllers.profileGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture2);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -87,7 +87,7 @@ public class ProfileMenuScreen implements Screen {
         this.changeEmailButton = new TextButton("Change Email", skin);
         this.backButton = new TextButton("Back", skin);
         this.music = GameMenuAssetManager.music1;
-        AppControllers.profileGuiController.setView(this);
+        AppGuiControllers.profileGuiController.setView(this);
     }
 
     @Override

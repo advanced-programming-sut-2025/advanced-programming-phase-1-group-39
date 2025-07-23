@@ -42,7 +42,7 @@ public class ForgetPasswordMenuScreen implements Screen {
     private final ForgetPasswordGuiController controller;
 
     public ForgetPasswordMenuScreen() {
-        this.controller = AppControllers.forgetPasswordGuiController;
+        this.controller = AppGuiControllers.forgetPasswordGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -63,7 +63,7 @@ public class ForgetPasswordMenuScreen implements Screen {
         this.changePasswordButton = new TextButton("Change Password", skin);
         this.backButton = new TextButton("Back", skin);
         this.music = GameMenuAssetManager.music1;
-        AppControllers.forgetPasswordGuiController.setView(this);
+        AppGuiControllers.forgetPasswordGuiController.setView(this);
     }
     @Override
     public void show() {

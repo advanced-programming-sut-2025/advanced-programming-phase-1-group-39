@@ -39,7 +39,7 @@ public class SecurityQuestionMenuScreen implements Screen {
     private final SecurityQuestionGuiController controller;
 
     public SecurityQuestionMenuScreen() {
-        this.controller = AppControllers.securityQuestionGuiController;
+        this.controller = AppGuiControllers.securityQuestionGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -56,7 +56,7 @@ public class SecurityQuestionMenuScreen implements Screen {
         this.registerButton = new TextButton("Register", skin);
         this.backButton = new TextButton("Back", skin);
         this.music = App.getApp().getMusic();
-        AppControllers.securityQuestionGuiController.setView(this);
+        AppGuiControllers.securityQuestionGuiController.setView(this);
     }
 
 

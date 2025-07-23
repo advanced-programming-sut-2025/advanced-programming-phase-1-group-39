@@ -55,7 +55,7 @@ public class SignupMenuScreen implements Screen {
     private final SignupGuiController controller;
 
     public SignupMenuScreen() {
-        this.controller = AppControllers.signupGuiController;
+        this.controller = AppGuiControllers.signupGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -94,7 +94,7 @@ public class SignupMenuScreen implements Screen {
         this.exitButton = new TextButton("Exit", skin);
         this.randomPasswordButton = new TextButton("Random", skin);
         this.music = GameMenuAssetManager.music1;
-        AppControllers.signupGuiController.setView(this);
+        AppGuiControllers.signupGuiController.setView(this);
     }
 
     @Override

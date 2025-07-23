@@ -2,7 +2,7 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.graphicControllers.*;
 
-public class AppControllers {
+public class AppGuiControllers {
     public static SignupGuiController signupGuiController = new SignupGuiController();
     public static SecurityQuestionGuiController securityQuestionGuiController = new SecurityQuestionGuiController();
     public static LoginGuiController loginGuiController = new LoginGuiController();

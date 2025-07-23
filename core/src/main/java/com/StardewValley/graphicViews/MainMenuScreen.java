@@ -31,7 +31,7 @@ public class MainMenuScreen implements Screen {
     private final MainGuiController controller;
 
     public MainMenuScreen() {
-        this.controller = AppControllers.mainGuiController;
+        this.controller = AppGuiControllers.mainGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture2);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -40,7 +40,7 @@ public class MainMenuScreen implements Screen {
         this.profileMenuButton = new TextButton("Profile", skin);
         this.logoutButton = new TextButton("Logout", skin);
         this.music = GameMenuAssetManager.music1;
-        AppControllers.mainGuiController.setMenuView(this);
+        AppGuiControllers.mainGuiController.setMenuView(this);
     }
 
     @Override

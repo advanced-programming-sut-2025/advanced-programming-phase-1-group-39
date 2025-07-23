@@ -8,24 +8,22 @@ import com.StardewValley.views.ProfileMenuView;
 import com.badlogic.gdx.Screen;
 
 public enum Menu {
-    SIGNUP_MENU("signup menu", new SignupMenuView(), new SignupMenuScreen()),
-    SECURITY_QUESTION_MENu("securityQuestion menu", new SignupMenuView(), new SecurityQuestionMenuScreen()),
-    LOGIN_MENU("login menu", new LoginMenuView(), new LoginMenuScreen()),
-    FORGET_PASSWORD_MENU("forget password", new LoginMenuView(), new ForgetPasswordMenuScreen()),
-    MAIN_MENU("main menu", new MainMenuView(), new GameScreen()),
-    PROFILE_MENU("profile menu", new ProfileMenuView(), new GameScreen()),
-    GAME_MENU("game menu", new GameMenuView(), new PregameMenuScreen()),
-    GAME("game", new GameView(), new GameScreen()),
-    ExitMenu("exit", new ExitMenuView(), new GameScreen()),;
+    SIGNUP_MENU("signup menu", new SignupMenuView()),
+    SECURITY_QUESTION_MENu("securityQuestion menu", new SignupMenuView()),
+    LOGIN_MENU("login menu", new LoginMenuView()),
+    FORGET_PASSWORD_MENU("forget password", new LoginMenuView()),
+    MAIN_MENU("main menu", new MainMenuView()),
+    PROFILE_MENU("profile menu", new ProfileMenuView()),
+    GAME_MENU("game menu", new GameMenuView()),
+    GAME("game", new GameView()),
+    ExitMenu("exit", new ExitMenuView());
 
     private View menuView;
     private String name;
-    private Screen screen;
 
-    Menu(String name, View menuView, Screen screen) {
+    Menu(String name, View menuView) {
         this.name = name;
         this.menuView = menuView;
-        this.screen = screen;
     }
 
     public void checkInput(String input) {
@@ -41,6 +39,12 @@ public enum Menu {
     }
 
     public Screen getScreen() {
-        return screen;
+        return switch (this) {
+            case SIGNUP_MENU -> new SignupMenuScreen();
+            case LOGIN_MENU -> new LoginMenuScreen();
+            case MAIN_MENU -> new MainMenuScreen();
+            case GAME_MENU -> new GameScreen();
+            default -> null;
+        };
     }
 }

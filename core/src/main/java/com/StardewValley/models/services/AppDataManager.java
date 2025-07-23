@@ -139,9 +139,10 @@ public class AppDataManager {
                     user.ensureInitialized();
                 }
 
-                Game game = App.getApp().getCurrentGame();
+                // TODO : check
+                //Game game = App.getApp().getCurrentGame();
                 //game.setGameMapRandom();
-//                game.startGame();
+                //game.startGame();
 
             } catch (IOException e) {
                 e.printStackTrace();

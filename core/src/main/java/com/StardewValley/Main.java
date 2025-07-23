@@ -1,8 +1,6 @@
 package com.StardewValley;
 
-import com.StardewValley.graphicViews.GameScreen;
-import com.StardewValley.graphicViews.PregameMenuScreen;
-import com.StardewValley.graphicViews.SignupMenuScreen;
+import com.StardewValley.graphicViews.*;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Player;
@@ -51,8 +49,7 @@ public class Main extends Game {
 //        currentGame.startGame();
 
         /// /////test//////////////
-        App.getApp().setCurrentMenu(Menu.SIGNUP_MENU);
-        switchScreen(new SignupMenuScreen());
+        switchScreen(getScreenByMenu(App.getApp().getCurrentMenu()));
 
         Thread terminalController = new Thread(() -> {
             new AppView().run();
@@ -80,6 +77,16 @@ public class Main extends Game {
             getScreen().dispose();
         }
         setScreen(screen);
+    }
+
+    public Screen getScreenByMenu(Menu menu) {
+        return switch (menu) {
+            case SIGNUP_MENU -> new SignupMenuScreen();
+            case LOGIN_MENU -> new LoginMenuScreen();
+            case MAIN_MENU -> new MainMenuScreen();
+            case GAME_MENU -> new GameScreen();
+            default -> null;
+        };
     }
 
     public static SpriteBatch getBatch() {

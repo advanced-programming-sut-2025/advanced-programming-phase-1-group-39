@@ -6,6 +6,7 @@ import com.StardewValley.controllers.GameMenuController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.services.GameAssetManager;
+import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -92,7 +93,7 @@ public class PregameMenuScreen implements Screen {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 controller.goMainMenu();
-                Main.getMain().switchScreen(Menu.MAIN_MENU.getScreen());
+                Main.getMain().switchScreen(new MainMenuScreen());
             }
         });
     }
@@ -188,6 +189,7 @@ public class PregameMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        SaveAppManager.saveApp();
         stage.dispose();
         background.dispose();
     }

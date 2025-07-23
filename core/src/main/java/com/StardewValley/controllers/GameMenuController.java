@@ -1,6 +1,8 @@
 package com.StardewValley.controllers;
 
 
+import com.StardewValley.Main;
+import com.StardewValley.graphicViews.MainMenuScreen;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.map.AnsiColors;
@@ -126,6 +128,7 @@ public class GameMenuController {
 
     public Result goMainMenu() {
         App.getApp().setCurrentMenu(Menu.MAIN_MENU);
+        Main.getMain().switchScreen(new MainMenuScreen());
         return new Result(true, "you are now in main menu.");
     }
 

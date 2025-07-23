@@ -1,10 +1,7 @@
 package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicViews.GameScreen;
-import com.StardewValley.graphicViews.LoginMenuScreen;
-import com.StardewValley.graphicViews.MainMenuScreen;
-import com.StardewValley.graphicViews.ProfileMenuScreen;
+import com.StardewValley.graphicViews.*;
 import com.StardewValley.models.App;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -23,7 +20,7 @@ public class MainMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getGameMenuButton().isChecked()) {
-                        Main.getMain().setScreen(new GameScreen());
+                        Main.getMain().setScreen(new PregameMenuScreen());
                     }
                 }
             });

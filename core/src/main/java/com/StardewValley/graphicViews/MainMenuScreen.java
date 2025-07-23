@@ -3,6 +3,7 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.MainMenuController;
 import com.StardewValley.models.GameMenuAssetManager;
+import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -44,9 +45,11 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+
+        music.setLooping(true);
+        music.play();
 
         // تنظیم و اضافه‌کردن بک‌گراند
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -124,7 +127,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        SaveAppManager.saveApp();
+        stage.dispose();
     }
 
     // Auxiliary functions :

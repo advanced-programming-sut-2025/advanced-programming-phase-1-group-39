@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class SignupMenuView implements Screen {
+public class SignupMenuScreen implements Screen {
     private Stage stage;
     private final Skin skin;
 
@@ -53,26 +53,37 @@ public class SignupMenuView implements Screen {
     private Music music;
     private final SignupMenuController controller;
 
-    public SignupMenuView() {
+    public SignupMenuScreen() {
         this.controller = AppControllers.signupMenuController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
         this.menuTitle = new Label("Sign Up", skin);
+
         this.usernameLabel = new Label("Username :", skin);
-        this.usernameField = new TextField("Enter your Username", skin);
+        this.usernameField = new TextField("", skin);
+        this.usernameField.setMessageText("Enter your Username");
+
         this.usernameErrorLabel = new Label("", skin);
         this.passwordLabel = new Label("Password :", skin);
-        this.passwordField = new TextField("Enter your Password", skin);
+        this.passwordField = new TextField("", skin);
+        this.passwordField.setMessageText("Enter your Password");
+
         this.passwordErrorLabel = new Label("", skin);
         this.confirmPasswordLabel = new Label("Confirm Password :", skin);
-        this.confirmPasswordField = new TextField(" Re-enter your password", skin);
+        this.confirmPasswordField = new TextField("", skin);
+        this.confirmPasswordField.setMessageText("Re-enter your password");
         this.confirmPasswordErrorLabel = new Label("", skin);
+
         this.nicknameLabel = new Label("Nickname :", skin);
-        this.nicknameField = new TextField("Enter your Nickname", skin);
+        this.nicknameField = new TextField("", skin);
+        this.nicknameField.setMessageText("Enter your Nickname");
         this.nicknameErrorLabel = new Label("", skin);
+
         this.emailLabel = new Label("Email :", skin);
-        this.emailField = new TextField("Enter your Email", skin);
+        this.emailField = new TextField("", skin);
+        this.emailField.setMessageText("Enter your Email");
+
         this.emailErrorLabel = new Label("", skin);
         this.genderLabel = new Label("Gender :", skin);
         this.genderField = new SelectBox<>(skin);

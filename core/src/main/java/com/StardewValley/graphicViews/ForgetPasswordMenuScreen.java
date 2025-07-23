@@ -2,7 +2,6 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.ForgetPasswordMenuController;
-import com.StardewValley.graphicControllers.SignupMenuController;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class ForgetPasswordMenuView implements Screen {
+public class ForgetPasswordMenuScreen implements Screen {
     private Stage stage;
     private final Skin skin;
 
@@ -42,20 +41,23 @@ public class ForgetPasswordMenuView implements Screen {
     private Music music;
     private final ForgetPasswordMenuController controller;
 
-    public ForgetPasswordMenuView() {
+    public ForgetPasswordMenuScreen() {
         this.controller = AppControllers.forgetPasswordMenuController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
         this.menuTitle = new Label("Forget Password", skin);
         this.usernameLabel = new Label("Username :", skin);
-        this.usernameField = new TextField("Enter your Username", skin);
+        this.usernameField = new TextField("", skin);
+        this.usernameField.setMessageText("Enter your username");
         this.usernameErrorLabel = new Label("", skin);
         this.securityLabel = new Label("Security Question :", skin);
-        this.securityField = new TextField("Enter your answer", skin);
+        this.securityField = new TextField("", skin);
+        this.securityField.setMessageText("Enter your answer to selected question");
         this.securityErrorLabel = new Label("", skin);
         this.newPasswordLabel = new Label("New Password :", skin);
-        this.newPasswordField = new TextField("Enter your New Password", skin);
+        this.newPasswordField = new TextField("", skin);
+        this.newPasswordField.setMessageText("Enter your new password");
         this.newPasswordErrorLabel = new Label("", skin);
         this.randomPasswordButton = new TextButton("Random", skin);
         this.changePasswordButton = new TextButton("Change Password", skin);

@@ -2,7 +2,6 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.ProfileMenuController;
-import com.StardewValley.graphicControllers.SignupMenuController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.StardewValley.models.User;
@@ -16,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class ProfileMenuView implements Screen {
+public class ProfileMenuScreen implements Screen {
     private Stage stage;
     private final Skin skin;
 
@@ -56,7 +55,7 @@ public class ProfileMenuView implements Screen {
     private Music music;
     private final ProfileMenuController controller;
 
-    public ProfileMenuView() {
+    public ProfileMenuScreen() {
         User user = App.getApp().getLoggedInUser();
         this.controller = AppControllers.profileMenuController;
         this.skin = GameMenuAssetManager.skin;

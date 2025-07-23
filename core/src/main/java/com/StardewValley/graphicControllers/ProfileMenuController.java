@@ -1,8 +1,8 @@
 package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicViews.MainMenuView;
-import com.StardewValley.graphicViews.ProfileMenuView;
+import com.StardewValley.graphicViews.MainMenuScreen;
+import com.StardewValley.graphicViews.ProfileMenuScreen;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.commands.SignupMenuCommands;
 import com.StardewValley.models.User;
@@ -17,9 +17,9 @@ import java.util.Random;
 import java.util.regex.Matcher;
 
 public class ProfileMenuController {
-    private ProfileMenuView view;
+    private ProfileMenuScreen view;
 
-    public void setView(ProfileMenuView view) {
+    public void setView(ProfileMenuScreen view) {
         this.view = view;
     }
 
@@ -135,7 +135,7 @@ public class ProfileMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getBackButton().isChecked()) {
-                        Main.getMain().setScreen(new MainMenuView());
+                        Main.getMain().setScreen(new MainMenuScreen());
                     }
                 }
             });

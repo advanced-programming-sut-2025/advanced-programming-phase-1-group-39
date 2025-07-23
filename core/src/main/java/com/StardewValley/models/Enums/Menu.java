@@ -1,17 +1,17 @@
 package com.StardewValley.models.Enums;
 
-import com.StardewValley.graphicViews.ForgetPasswordMenuView;
-import com.StardewValley.graphicViews.GameScreen;
-import com.StardewValley.graphicViews.PregameMenuScreen;
-import com.StardewValley.graphicViews.SecurityQuestionMenuView;
+import com.StardewValley.graphicViews.*;
 import com.StardewValley.views.*;
+import com.StardewValley.views.LoginMenuView;
+import com.StardewValley.views.MainMenuView;
+import com.StardewValley.views.ProfileMenuView;
 import com.badlogic.gdx.Screen;
 
 public enum Menu {
-    SIGNUP_MENU("signup menu", new SignupMenuView(), new com.StardewValley.graphicViews.SignupMenuView()),
-    SECURITY_QUESTION_MENu("securityQuestion menu", new SignupMenuView(), new SecurityQuestionMenuView()),
-    LOGIN_MENU("login menu", new LoginMenuView(), new com.StardewValley.graphicViews.LoginMenuView()),
-    FORGET_PASSWORD_MENU("forget password", new LoginMenuView(), new ForgetPasswordMenuView()),
+    SIGNUP_MENU("signup menu", new SignupMenuView(), new SignupMenuScreen()),
+    SECURITY_QUESTION_MENu("securityQuestion menu", new SignupMenuView(), new SecurityQuestionMenuScreen()),
+    LOGIN_MENU("login menu", new LoginMenuView(), new LoginMenuScreen()),
+    FORGET_PASSWORD_MENU("forget password", new LoginMenuView(), new ForgetPasswordMenuScreen()),
     MAIN_MENU("main menu", new MainMenuView(), new GameScreen()),
     PROFILE_MENU("profile menu", new ProfileMenuView(), new GameScreen()),
     GAME_MENU("game menu", new GameMenuView(), new PregameMenuScreen()),

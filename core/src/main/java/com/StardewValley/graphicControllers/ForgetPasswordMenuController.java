@@ -1,10 +1,9 @@
 package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicViews.ForgetPasswordMenuView;
-import com.StardewValley.graphicViews.LoginMenuView;
+import com.StardewValley.graphicViews.ForgetPasswordMenuScreen;
+import com.StardewValley.graphicViews.LoginMenuScreen;
 import com.StardewValley.models.App;
-import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Enums.commands.SignupMenuCommands;
 import com.StardewValley.models.User;
 import com.StardewValley.models.services.HashSHA256;
@@ -18,9 +17,9 @@ import java.util.Random;
 import java.util.regex.Matcher;
 
 public class ForgetPasswordMenuController {
-    private ForgetPasswordMenuView view;
+    private ForgetPasswordMenuScreen view;
 
-    public void setView(ForgetPasswordMenuView view) {
+    public void setView(ForgetPasswordMenuScreen view) {
         this.view = view;
     }
 
@@ -55,7 +54,7 @@ public class ForgetPasswordMenuController {
                             view.getNewPasswordErrorLabel().setText(validatePassword(newPassword).toString());
                         } else {
                             getUserByUsername(username).setPassword(HashSHA256.hashPassword(newPassword));
-                            Main.getMain().setScreen(new LoginMenuView());
+                            Main.getMain().setScreen(new LoginMenuScreen());
                         }
                     }
                 }
@@ -75,7 +74,7 @@ public class ForgetPasswordMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getBackButton().isChecked()) {
-                        Main.getMain().setScreen(new LoginMenuView());
+                        Main.getMain().setScreen(new LoginMenuScreen());
                     }
                 }
             });

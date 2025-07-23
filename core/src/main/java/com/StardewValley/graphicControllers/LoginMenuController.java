@@ -2,21 +2,20 @@ package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
 import com.StardewValley.controllers.ProfileMenuController;
-import com.StardewValley.graphicViews.ForgetPasswordMenuView;
-import com.StardewValley.graphicViews.LoginMenuView;
-import com.StardewValley.graphicViews.MainMenuView;
-import com.StardewValley.graphicViews.SignupMenuView;
+import com.StardewValley.graphicViews.ForgetPasswordMenuScreen;
+import com.StardewValley.graphicViews.LoginMenuScreen;
+import com.StardewValley.graphicViews.MainMenuScreen;
+import com.StardewValley.graphicViews.SignupMenuScreen;
 import com.StardewValley.models.App;
-import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.User;
 import com.StardewValley.models.services.HashSHA256;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class LoginMenuController {
-    private LoginMenuView view;
+    private LoginMenuScreen view;
 
-    public void setView(LoginMenuView view) {
+    public void setView(LoginMenuScreen view) {
         this.view = view;
     }
 
@@ -36,25 +35,26 @@ public class LoginMenuController {
                     String username = view.getUsernameField().getText();
                     String password = view.getPasswordField().getText();
                     if (view.getLoginButton().isChecked()) {
-                        if (username == null || username.equals("Enter your Username")) {
+                        if (username == null) {
                             cleanMessages();
-                            view.getUsernameErrorLabel().setText("Username cannot be empty");
+                            view.getUsernameErrorLabel().setText("Username field cannot be empty");
                             view.getLoginButton().setChecked(false);
                         } else if (!isUsernameExist(username)) {
                             cleanMessages();
-                            view.getUsernameErrorLabel().setText("Introduce local variable");
+                            view.getUsernameErrorLabel().setText("This username does not exist");
                             view.getLoginButton().setChecked(false);
-                        } else if (!HashSHA256.checkPassword(password, App.getApp().getUsers().get(getIndexInUsers(username)).getPassword())) {
+
+                        } else if (!HashSHA256.checkPassword(password, App.getApp().getUserByUsername(username).getPassword())) {
                             cleanMessages();
                             view.getPasswordErroeLabel().setText("The password is incorrect");
                             view.getLoginButton().setChecked(false);
                         } else if (view.getStayLoggedInCheckBox().isChecked()) {
                             App.getApp().setStayLoggedIn(true);
                             App.getApp().setLoggedInUser(getUserByUsername(username));
-                            Main.getMain().setScreen(new MainMenuView());
+                            Main.getMain().setScreen(new MainMenuScreen());
                         } else {
                             App.getApp().setLoggedInUser(getUserByUsername(username));
-                            Main.getMain().setScreen(new MainMenuView());
+                            Main.getMain().setScreen(new MainMenuScreen());
                         }
                     }
                 }
@@ -64,7 +64,7 @@ public class LoginMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getForgotPasswordButton().isChecked()) {
-                        Main.getMain().setScreen(new ForgetPasswordMenuView());
+                        Main.getMain().setScreen(new ForgetPasswordMenuScreen());
                     }
                 }
             });
@@ -73,7 +73,7 @@ public class LoginMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getBackButton().isChecked()) {
-                        Main.getMain().setScreen(new SignupMenuView());
+                        Main.getMain().setScreen(new SignupMenuScreen());
                     }
                 }
             });
@@ -81,7 +81,6 @@ public class LoginMenuController {
     }
 
     // Auxiliary functions :
-
     private boolean isUsernameExist(String username) {
         for (User user : App.getApp().getUsers()) {
             if (user.getUserName().equals(username)) {
@@ -89,10 +88,6 @@ public class LoginMenuController {
             }
         }
         return false;
-    }
-
-    private int getIndexInUsers(String username) {
-        return ProfileMenuController.getIndexInUsers(username);
     }
 
     private User getUserByUsername(String username) {

@@ -2,19 +2,18 @@ package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
 import com.StardewValley.graphicViews.GameScreen;
-import com.StardewValley.graphicViews.LoginMenuView;
-import com.StardewValley.graphicViews.MainMenuView;
-import com.StardewValley.graphicViews.ProfileMenuView;
+import com.StardewValley.graphicViews.LoginMenuScreen;
+import com.StardewValley.graphicViews.MainMenuScreen;
+import com.StardewValley.graphicViews.ProfileMenuScreen;
 import com.StardewValley.models.App;
-import com.StardewValley.views.GameView;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class MainMenuController {
-    private MainMenuView view;
+    private MainMenuScreen view;
 
-    public void setMenuView(MainMenuView mainMenuView) {
-        this.view = mainMenuView;
+    public void setMenuView(MainMenuScreen mainMenuScreen) {
+        this.view = mainMenuScreen;
     }
 
     public void handleMainMenu() {
@@ -33,7 +32,7 @@ public class MainMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getProfileMenuButton().isChecked()) {
-                        Main.getMain().setScreen(new ProfileMenuView());
+                        Main.getMain().setScreen(new ProfileMenuScreen());
                     }
                 }
             });
@@ -44,7 +43,7 @@ public class MainMenuController {
                     if (view.getLogoutButton().isChecked()) {
                         App.getApp().setLoggedInUser(null);
                         App.getApp().setStayLoggedIn(false);
-                        Main.getMain().setScreen(new LoginMenuView());
+                        Main.getMain().setScreen(new LoginMenuScreen());
                     }
                 }
             });

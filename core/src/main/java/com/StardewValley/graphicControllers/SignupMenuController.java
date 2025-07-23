@@ -1,11 +1,10 @@
 package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicViews.LoginMenuView;
-import com.StardewValley.graphicViews.SecurityQuestionMenuView;
-import com.StardewValley.graphicViews.SignupMenuView;
+import com.StardewValley.graphicViews.LoginMenuScreen;
+import com.StardewValley.graphicViews.SecurityQuestionMenuScreen;
+import com.StardewValley.graphicViews.SignupMenuScreen;
 import com.StardewValley.models.App;
-import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Enums.commands.SignupMenuCommands;
 import com.StardewValley.models.User;
 import com.badlogic.gdx.Gdx;
@@ -19,9 +18,9 @@ import java.util.Random;
 import java.util.regex.Matcher;
 
 public class SignupMenuController {
-    private SignupMenuView view;
+    private SignupMenuScreen view;
 
-    public void setView(SignupMenuView view) {
+    public void setView(SignupMenuScreen view) {
         this.view = view;
     }
 
@@ -91,7 +90,7 @@ public class SignupMenuController {
                                 App app = App.getApp();
                                 boolean isMale = view.getGenderField().getSelected().equals("Male");
                                 app.setPendingUser(new User(username, password, nickname, email, isMale));
-                                Main.getMain().setScreen(new SecurityQuestionMenuView());
+                                Main.getMain().setScreen(new SecurityQuestionMenuScreen());
                             }
                     }
                 }
@@ -102,7 +101,7 @@ public class SignupMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getLoginButton().isChecked()) {
-                        Main.getMain().setScreen(new LoginMenuView());
+                        Main.getMain().setScreen(new LoginMenuScreen());
                     }
                 }
             });
@@ -122,7 +121,9 @@ public class SignupMenuController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (view.getRandomPasswordButton().isChecked()) {
-                        view.getPasswordField().setText(generateStrongPassword());
+                        String randomPass = generateStrongPassword();
+                        view.getPasswordField().setText(randomPass);
+                        view.getConfirmPasswordField().setText(randomPass);
                         view.getRandomPasswordButton().setChecked(false);
                     }
                 }

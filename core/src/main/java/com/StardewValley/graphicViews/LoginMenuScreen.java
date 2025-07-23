@@ -2,7 +2,6 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.LoginMenuController;
-import com.StardewValley.graphicControllers.SignupMenuController;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class LoginMenuView implements Screen {
+public class LoginMenuScreen implements Screen {
     private Stage stage;
     private final Skin skin;
 
@@ -40,17 +39,19 @@ public class LoginMenuView implements Screen {
     private Music music;
     private final LoginMenuController controller;
 
-    public LoginMenuView() {
+    public LoginMenuScreen() {
         this.controller = AppControllers.loginMenuController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
         this.menuTitle = new Label("Login :", skin);
         this.usernameLabel = new Label("Username :", skin);
-        this.usernameField = new TextField("Enter your Username", skin);
+        this.usernameField = new TextField("", skin);
+        this.usernameField.setMessageText("Enter your Username");
         this.usernameErrorLabel = new Label("", skin);
         this.passwordLabel = new Label("Password :", skin);
-        this.passwordField = new TextField("Enter your Password", skin);
+        this.passwordField = new TextField("", skin);
+        this.passwordField.setMessageText("Enter your Password");
         this.passwordErroeLabel = new Label("", skin);
         this.stayLoggedInCheckBox = new CheckBox("Stay LoggedIn", skin);
         this.loginButton = new TextButton("Login", skin);

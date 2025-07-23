@@ -128,7 +128,6 @@ public class GameMenuController {
 
     public Result goMainMenu() {
         App.getApp().setCurrentMenu(Menu.MAIN_MENU);
-        Main.getMain().switchScreen(new MainMenuScreen());
         return new Result(true, "you are now in main menu.");
     }
 

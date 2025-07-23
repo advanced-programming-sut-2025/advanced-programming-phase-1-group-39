@@ -3,8 +3,11 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.controllers.GameMenuController;
+import com.StardewValley.graphicControllers.PregameGuiController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.Game;
+import com.StardewValley.models.Result;
 import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
@@ -21,7 +24,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class PregameMenuScreen implements Screen {
-    private GameMenuController controller;
+    private PregameGuiController controller;
 
     private Stage stage;
     private Table table;
@@ -36,7 +39,7 @@ public class PregameMenuScreen implements Screen {
     private Window newGameWindow;
 
     public PregameMenuScreen() {
-        this.controller = AppControllers.gameMenuController;
+        this.controller = AppGuiControllers.pregameGuiController;
     }
 
     @Override
@@ -100,11 +103,11 @@ public class PregameMenuScreen implements Screen {
 
     public void setNewGameWindow() {
         Skin skin = GameAssetManager.skin;
-        newGameWindow = new Window("Starting New Game", skin);
+        newGameWindow = new Window("", skin);
         newGameWindow.setSize(1000, 800);
         newGameWindow.setPosition(
-                Gdx.graphics.getWidth() / 2f - newGameWindow.getWidth() / 2f,
-                Gdx.graphics.getHeight() / 2f - newGameWindow.getHeight() / 2f
+                stage.getWidth() / 2f - newGameWindow.getWidth() / 2f,
+                stage.getHeight() / 2f - newGameWindow.getHeight() / 2f
         );
 
 
@@ -114,13 +117,21 @@ public class PregameMenuScreen implements Screen {
         TextField user4 = new TextField("", skin);
 
         TextButton startButton = new TextButton("Start", skin);
+        TextButton backButton = new TextButton("Back", skin);
+
+        Label errorLabel = new Label("", skin);
+        errorLabel.setColor(Color.RED);
+
         startButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                controller.startNewGame();
+                Result result = controller.checkStartGame(user2.getText(), user3.getText(), user4.getText());
+                if (!result.success())
+                    errorLabel.setText(result.message());
+                else
+                    Main.getMain().switchScreen(new GameScreen());
             }
         });
-        TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
@@ -134,23 +145,26 @@ public class PregameMenuScreen implements Screen {
         newGameWindow.add(user1).width(inputW).colspan(2);
         user1.setText(App.getApp().getLoggedInUser().getUserName());
         user1.setDisabled(true);
-        user1.setColor(Color.RED);
+        user1.setColor(Color.GRAY);
 
         newGameWindow.row().padTop(45);
         newGameWindow.add(user2).width(inputW).colspan(2);
-        user2.setMessageText("username 2");
+        user2.setMessageText("player 2 username");
 
         newGameWindow.row().padTop(45);
         newGameWindow.add(user3).width(inputW).colspan(2);
-        user3.setMessageText("username 3");
+        user3.setMessageText("player 3 username");
 
         newGameWindow.row().padTop(45);
         newGameWindow.add(user4).width(inputW).colspan(2);
-        user4.setMessageText("username4");
+        user4.setMessageText("player 4 username");
 
         newGameWindow.row().padTop(100);
         newGameWindow.add(startButton).width(250);
         newGameWindow.add(backButton).width(250).padLeft(25);
+
+        newGameWindow.row().padTop(20);
+        newGameWindow.add(errorLabel).colspan(2);
     }
 
     @Override
@@ -191,5 +205,17 @@ public class PregameMenuScreen implements Screen {
         SaveAppManager.saveApp();
         stage.dispose();
         background.dispose();
+    }
+
+    public TextButton getBackButton() {
+        return backButton;
+    }
+
+    public TextButton getLoadGameButton() {
+        return loadGameButton;
+    }
+
+    public TextButton getNewGameButton() {
+        return newGameButton;
     }
 }

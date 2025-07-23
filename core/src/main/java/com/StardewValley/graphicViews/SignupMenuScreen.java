@@ -1,7 +1,7 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicControllers.SignupMenuController;
+import com.StardewValley.graphicControllers.SignupGuiController;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
@@ -52,10 +52,10 @@ public class SignupMenuScreen implements Screen {
 
     public Table table = new Table();
     private Music music;
-    private final SignupMenuController controller;
+    private final SignupGuiController controller;
 
     public SignupMenuScreen() {
-        this.controller = AppControllers.signupMenuController;
+        this.controller = AppControllers.signupGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -94,7 +94,7 @@ public class SignupMenuScreen implements Screen {
         this.exitButton = new TextButton("Exit", skin);
         this.randomPasswordButton = new TextButton("Random", skin);
         this.music = GameMenuAssetManager.music1;
-        AppControllers.signupMenuController.setView(this);
+        AppControllers.signupGuiController.setView(this);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
-import com.StardewValley.controllers.ProfileMenuController;
 import com.StardewValley.graphicViews.ForgetPasswordMenuScreen;
 import com.StardewValley.graphicViews.LoginMenuScreen;
 import com.StardewValley.graphicViews.MainMenuScreen;
@@ -12,7 +11,7 @@ import com.StardewValley.models.services.HashSHA256;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class LoginMenuController {
+public class LoginGuiController {
     private LoginMenuScreen view;
 
     public void setView(LoginMenuScreen view) {

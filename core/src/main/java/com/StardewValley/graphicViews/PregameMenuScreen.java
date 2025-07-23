@@ -101,8 +101,7 @@ public class PregameMenuScreen implements Screen {
     public void setNewGameWindow() {
         Skin skin = GameAssetManager.skin;
         newGameWindow = new Window("Starting New Game", skin);
-        newGameWindow.debug();
-        newGameWindow.setSize(1000, 800); // Adjusted size for better fit
+        newGameWindow.setSize(1000, 800);
         newGameWindow.setPosition(
                 Gdx.graphics.getWidth() / 2f - newGameWindow.getWidth() / 2f,
                 Gdx.graphics.getHeight() / 2f - newGameWindow.getHeight() / 2f
@@ -118,7 +117,7 @@ public class PregameMenuScreen implements Screen {
         startButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-//                controller.startNewGame(); TODO : complete
+                controller.startNewGame();
             }
         });
         TextButton backButton = new TextButton("Back", skin);

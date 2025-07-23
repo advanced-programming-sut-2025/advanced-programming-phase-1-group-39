@@ -3,10 +3,12 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.graphicControllers.*;
 
 public class AppControllers {
-    public static SignupMenuController signupMenuController = new SignupMenuController();
-    public static SecurityQuestionController securityQuestionController = new SecurityQuestionController();
-    public static LoginMenuController loginMenuController = new LoginMenuController();
-    public static ForgetPasswordMenuController forgetPasswordMenuController = new ForgetPasswordMenuController();
-    public static MainMenuController mainMenuController = new MainMenuController();
-    public static ProfileMenuController profileMenuController = new ProfileMenuController();
+    public static SignupGuiController signupGuiController = new SignupGuiController();
+    public static SecurityQuestionGuiController securityQuestionGuiController = new SecurityQuestionGuiController();
+    public static LoginGuiController loginGuiController = new LoginGuiController();
+    public static ForgetPasswordGuiController forgetPasswordGuiController = new ForgetPasswordGuiController();
+    public static MainGuiController mainGuiController = new MainGuiController();
+    public static ProfileGuiController profileGuiController = new ProfileGuiController();
+
+    public static PregameGuiController pregameGuiController = new PregameGuiController();
 }

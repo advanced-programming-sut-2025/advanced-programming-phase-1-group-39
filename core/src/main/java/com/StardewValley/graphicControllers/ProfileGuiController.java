@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 
-public class ProfileMenuController {
+public class ProfileGuiController {
     private ProfileMenuScreen view;
 
     public void setView(ProfileMenuScreen view) {

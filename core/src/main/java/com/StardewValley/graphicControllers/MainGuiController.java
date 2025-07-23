@@ -6,7 +6,7 @@ import com.StardewValley.models.App;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class MainMenuController {
+public class MainGuiController {
     private MainMenuScreen view;
 
     public void setMenuView(MainMenuScreen mainMenuScreen) {

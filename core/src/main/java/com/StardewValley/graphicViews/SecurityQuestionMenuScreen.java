@@ -1,7 +1,7 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicControllers.SecurityQuestionController;
+import com.StardewValley.graphicControllers.SecurityQuestionGuiController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.badlogic.gdx.Gdx;
@@ -36,10 +36,10 @@ public class SecurityQuestionMenuScreen implements Screen {
 
     public Table table = new Table();
     private Music music;
-    private final SecurityQuestionController controller;
+    private final SecurityQuestionGuiController controller;
 
     public SecurityQuestionMenuScreen() {
-        this.controller = AppControllers.securityQuestionController;
+        this.controller = AppControllers.securityQuestionGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -56,7 +56,7 @@ public class SecurityQuestionMenuScreen implements Screen {
         this.registerButton = new TextButton("Register", skin);
         this.backButton = new TextButton("Back", skin);
         this.music = App.getApp().getMusic();
-        AppControllers.securityQuestionController.setView(this);
+        AppControllers.securityQuestionGuiController.setView(this);
     }
 
 

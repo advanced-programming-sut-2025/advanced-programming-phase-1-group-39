@@ -1,7 +1,7 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicControllers.MainMenuController;
+import com.StardewValley.graphicControllers.MainGuiController;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
@@ -28,10 +28,10 @@ public class MainMenuScreen implements Screen {
 
     public Table table = new Table();
     private Music music;
-    private final MainMenuController controller;
+    private final MainGuiController controller;
 
     public MainMenuScreen() {
-        this.controller = AppControllers.mainMenuController;
+        this.controller = AppControllers.mainGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture2);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -40,7 +40,7 @@ public class MainMenuScreen implements Screen {
         this.profileMenuButton = new TextButton("Profile", skin);
         this.logoutButton = new TextButton("Logout", skin);
         this.music = GameMenuAssetManager.music1;
-        AppControllers.mainMenuController.setMenuView(this);
+        AppControllers.mainGuiController.setMenuView(this);
     }
 
     @Override

@@ -10,7 +10,7 @@ import com.StardewValley.models.services.HashSHA256;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class SecurityQuestionController {
+public class SecurityQuestionGuiController {
     private SecurityQuestionMenuScreen view;
 
     public void setView(SecurityQuestionMenuScreen view) {

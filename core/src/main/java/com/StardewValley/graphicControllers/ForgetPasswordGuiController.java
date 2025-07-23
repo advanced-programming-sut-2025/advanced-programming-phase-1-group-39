@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 
-public class ForgetPasswordMenuController {
+public class ForgetPasswordGuiController {
     private ForgetPasswordMenuScreen view;
 
     public void setView(ForgetPasswordMenuScreen view) {
@@ -137,7 +137,7 @@ public class ForgetPasswordMenuController {
     }
 
     public static StringBuilder validatePassword(String password) {
-        return SignupMenuController.validatePassword(password);
+        return SignupGuiController.validatePassword(password);
     }
 
     private void cleanMessages() {

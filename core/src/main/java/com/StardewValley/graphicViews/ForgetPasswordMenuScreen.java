@@ -1,7 +1,7 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicControllers.ForgetPasswordMenuController;
+import com.StardewValley.graphicControllers.ForgetPasswordGuiController;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -39,10 +39,10 @@ public class ForgetPasswordMenuScreen implements Screen {
 
     public Table table = new Table();
     private Music music;
-    private final ForgetPasswordMenuController controller;
+    private final ForgetPasswordGuiController controller;
 
     public ForgetPasswordMenuScreen() {
-        this.controller = AppControllers.forgetPasswordMenuController;
+        this.controller = AppControllers.forgetPasswordGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -63,7 +63,7 @@ public class ForgetPasswordMenuScreen implements Screen {
         this.changePasswordButton = new TextButton("Change Password", skin);
         this.backButton = new TextButton("Back", skin);
         this.music = GameMenuAssetManager.music1;
-        AppControllers.forgetPasswordMenuController.setView(this);
+        AppControllers.forgetPasswordGuiController.setView(this);
     }
     @Override
     public void show() {

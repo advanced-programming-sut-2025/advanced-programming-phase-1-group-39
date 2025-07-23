@@ -1,7 +1,7 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicControllers.ProfileMenuController;
+import com.StardewValley.graphicControllers.ProfileGuiController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.StardewValley.models.User;
@@ -53,11 +53,11 @@ public class ProfileMenuScreen implements Screen {
 
     public Table table = new Table();
     private Music music;
-    private final ProfileMenuController controller;
+    private final ProfileGuiController controller;
 
     public ProfileMenuScreen() {
         User user = App.getApp().getLoggedInUser();
-        this.controller = AppControllers.profileMenuController;
+        this.controller = AppControllers.profileGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture2);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -87,7 +87,7 @@ public class ProfileMenuScreen implements Screen {
         this.changeEmailButton = new TextButton("Change Email", skin);
         this.backButton = new TextButton("Back", skin);
         this.music = GameMenuAssetManager.music1;
-        AppControllers.profileMenuController.setView(this);
+        AppControllers.profileGuiController.setView(this);
     }
 
     @Override

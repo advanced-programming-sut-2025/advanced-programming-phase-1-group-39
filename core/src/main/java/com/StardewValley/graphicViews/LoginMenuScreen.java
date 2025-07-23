@@ -1,7 +1,7 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicControllers.LoginMenuController;
+import com.StardewValley.graphicControllers.LoginGuiController;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
@@ -38,10 +38,10 @@ public class LoginMenuScreen implements Screen {
 
     public Table table = new Table();
     private Music music;
-    private final LoginMenuController controller;
+    private final LoginGuiController controller;
 
     public LoginMenuScreen() {
-        this.controller = AppControllers.loginMenuController;
+        this.controller = AppControllers.loginGuiController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
@@ -59,7 +59,7 @@ public class LoginMenuScreen implements Screen {
         this.forgotPasswordButton = new TextButton("Forgot Password", skin);
         this.backButton = new TextButton("Back", skin);
         this.music = GameMenuAssetManager.music1;
-        AppControllers.loginMenuController.setView(this);
+        AppControllers.loginGuiController.setView(this);
     }
 
     @Override

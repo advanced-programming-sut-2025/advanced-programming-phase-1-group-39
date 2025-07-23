@@ -145,7 +145,7 @@ public class Tree{
     // Graphics
     public TextureRegion getFruitTexture() {
         TextureAtlas treesAtlas = GameAssetManager.getTressAtlas();
-        String fruitPath = fruitName.replace(" ", "_");
+        String fruitPath = fruitName.replaceAll(" ", "_");
 
         return new TextureRegion(treesAtlas.findRegion(fruitPath));
     }

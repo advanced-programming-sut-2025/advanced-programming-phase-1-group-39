@@ -26,7 +26,7 @@ public class FarmingProduct extends Crop {
     @Override
     public TextureRegion getTexture() {
         TextureAtlas cropsAtlas = GameAssetManager.getCropsAtlas();
-        String pathName = name.replace(" " , "_");
+        String pathName = name.replaceAll(" " , "_");
 
         TextureRegion product = cropsAtlas.findRegion(pathName);
         if (product == null) {

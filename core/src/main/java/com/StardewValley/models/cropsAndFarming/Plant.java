@@ -131,7 +131,7 @@ public class Plant {
     public TextureRegion getTexture() throws Exception {
         TextureAtlas cropsAtlas = GameAssetManager.getCropsAtlas();
 
-        String name = product.getName().replace(" " , "_");
+        String name = product.getName().replaceAll(" " , "_");
         int stagesNum = stages.size();
 
         Array<TextureRegion> plantStageRegions = new Array<>(cropsAtlas.findRegions( name+ "_Stage"));

@@ -22,7 +22,7 @@ public class Seed extends Item {
 
     public TextureRegion getTexture() {
         TextureAtlas cropsAtlas = GameAssetManager.getCropsAtlas();
-        String pathName = name.replace(" " , "_");
+        String pathName = name.replaceAll(" " , "_");
 
         TextureRegion region = cropsAtlas.findRegion(pathName);
         if (region == null) {

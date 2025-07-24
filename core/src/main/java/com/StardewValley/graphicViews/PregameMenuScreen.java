@@ -4,6 +4,8 @@ import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.PregameGuiController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Result;
+import com.StardewValley.models.User;
+import com.StardewValley.models.map.Map;
 import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
@@ -39,7 +41,11 @@ public class PregameMenuScreen implements Screen {
     private Window newGameWindow;
     private ArrayList<Table> startGamePages = new ArrayList<>();
     private int startGamePageIndex = 0;
+    private int numOfStartGamePages = 5;
     private Table startGameContentTable;
+
+    private TextButton nextButton;
+    private TextButton previousButton;
 
     private TextField user1;
     private TextField user2;
@@ -148,15 +154,24 @@ public class PregameMenuScreen implements Screen {
         return usernamesForm;
     }
 
-    public Table addMapSelectionTable(Skin skin) {
+    public Table addMapSelectionTable(Skin skin, int playerNumber) {
         Table page = new Table();
-        page.add(new Label("Game Settings", skin, "title")).colspan(2).padBottom(40).row();
 
         SelectBox<String> mapSelectBox = new SelectBox<>(skin);
-        mapSelectBox.setItems("Default Farm", "Riverland Farm", "Forest Farm", "Wilderness Farm");
+        mapSelectBox.setItems(Map.getFarmTypeName(0), Map.getFarmTypeName(1));
 
+        mapSelectBox.addListener(new ChangeListener() {
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+
+            }
+        });
+        Label header = new Label("Choosing Map for " + controller.getUserNickName(playerNumber) + "'s Farm", skin);
+        header.setFontScale(2f);
+        header.setColor(Color.YELLOW);
+        page.add(header).center().fillX().colspan(2);
+        page.row().padTop(50);
         page.add(new Label("Map Type:", skin)).right().padRight(10);
-        page.add(mapSelectBox).width(300).left();
+        page.add(mapSelectBox).width(500).left();
 
         return page;
     }
@@ -164,8 +179,7 @@ public class PregameMenuScreen implements Screen {
     public void buildNewGameWindow() {
         Skin skin = GameAssetManager.skin;
         newGameWindow = new Window("", skin);
-//        newGameWindow.debug();
-        newGameWindow.setModal(true);
+        newGameWindow.setModal(true); // to set the background buttons disable
         newGameWindow.setSize(1000, 1000);
         newGameWindow.setPosition(
                 stage.getWidth() / 2f,
@@ -174,48 +188,52 @@ public class PregameMenuScreen implements Screen {
         );
 
         startGamePages.add(addUsernamesFormTable(skin));
-        startGamePages.add(addMapSelectionTable(skin));
+        for (int i = 0; i < 4; i++)
+            startGamePages.add(new Table());
+
 
         startGameContentTable = new Table();
+        nextButton = new TextButton("Next", skin);
+        previousButton = new TextButton("Back", skin);
+
         showPage(0);
-
-
-        TextButton nextButton = new TextButton("Next", skin);
-        TextButton backButton = new TextButton("Back", skin);
-
-
         nextButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                /*if (startGamePageIndex == 0) {
+                if (startGamePageIndex == 0) {
                     // check the form
                     Result result = controller.checkStartGame(user2.getText(), user3.getText(),
                             user4.getText());
                     if (!result.success())
                         errorLabel.setText(result.message());
-                    else
+                    else {
+                        ArrayList<User> users = controller.getGameUsers();
+                        for (int i = 1; i <= 4; i++) {
+                            startGamePages.set(i, addMapSelectionTable(skin, i));
+                        }
                         showPage(1);
-                } else*/ if (startGamePageIndex == startGamePages.size() - 1) {
+                    }
+                } else if (startGamePageIndex == numOfStartGamePages - 1) {
                     Main.getMain().switchScreen(new GameScreen());
                 } else {
                     showPage(1);
                 }
             }
         });
-        backButton.addListener(new ChangeListener() {
+        previousButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 if (startGamePageIndex == 0)
                     newGameWindow.remove();
-                else{
+                else
                     showPage(-1);
-                }
+
             }
         });
 
         newGameWindow.add(startGameContentTable).expand().fill().colspan(2);
         newGameWindow.row().pad(100, 45 , 30 , 45).expandX().fillX();
-        newGameWindow.add(backButton).width(250).left();
+        newGameWindow.add(previousButton).width(250).left();
         newGameWindow.add(nextButton).width(250).right();
 
         newGameWindow.row().padTop(50);
@@ -228,6 +246,15 @@ public class PregameMenuScreen implements Screen {
         startGameContentTable.clear();
 
         startGamePageIndex += offset;
+
+        if (startGamePageIndex == 0) {
+            previousButton.setText("Close");
+        } else if (startGamePageIndex == numOfStartGamePages - 1) {
+            nextButton.setText("Start");
+        } else {
+            previousButton.setText("Back");
+            nextButton.setText("Next");
+        }
 
         startGameContentTable.add(startGamePages.get(startGamePageIndex));
     }

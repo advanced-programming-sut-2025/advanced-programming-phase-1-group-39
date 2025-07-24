@@ -20,11 +20,13 @@ public class PregameGuiController {
         this.screen = screen;
     }
 
+    ArrayList<User> gameUsers = new ArrayList<>();
 
     public Result checkStartGame(String user2, String user3, String user4) {
-        ArrayList<String> usernames = new ArrayList<>(List.of(user2,user3,user4));
-        ArrayList<User> gameUsers = new ArrayList<>();
-        gameUsers.add(App.getApp().getLoggedInUser());
+        User loggedInUser = App.getApp().getLoggedInUser();
+        ArrayList<String> usernames = new ArrayList<>(List.of(loggedInUser.getUserName(), user2,user3,user4));
+        gameUsers.clear();
+        gameUsers.add(loggedInUser);
 
         // Emptiness of fields
         for (String username : usernames) {
@@ -60,5 +62,14 @@ public class PregameGuiController {
     public void goMainMenu() {
         Main.getMain().switchScreen(new MainMenuScreen());
         App.getApp().setCurrentMenu(Menu.MAIN_MENU);
+    }
+
+    public String getUserNickName(int index) {
+        User user = gameUsers.get(index);
+        return user.getNickname();
+    }
+
+    public ArrayList<User> getGameUsers() {
+        return gameUsers;
     }
 }

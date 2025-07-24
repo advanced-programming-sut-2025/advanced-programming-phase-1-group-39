@@ -54,6 +54,28 @@ public class Map {
         return text.toString();
     }
 
+    public static String getFarmTypeName(int farmNum) {
+        try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {
+            Gson gson = new Gson();
+            JsonArray array = gson.fromJson(reader, JsonArray.class);
+            return array.get(farmNum).getAsJsonObject().get("mapType").getAsString() + "\n";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static String getFarmTypeInfo(int farmNum) {
+        try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {
+            Gson gson = new Gson();
+            JsonArray array = gson.fromJson(reader, JsonArray.class);
+            return array.get(farmNum).getAsJsonObject().get("description").getAsString() + "\n";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
 
     public void addRandomFarm(FarmType farmType, int playerNumber, Player player) {
         try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {

@@ -101,4 +101,9 @@ public class User {
     public void addNumberOfGamesPlayed() {
         this.numberOfGamesPlayed++;
     }
+
+    @Override
+    public String toString() {
+        return userName + ", " + password + ", " + nickname + ", " + email;
+    }
 }

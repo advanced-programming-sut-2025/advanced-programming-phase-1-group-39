@@ -1,6 +1,7 @@
 package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
+import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.graphicViews.MainMenuScreen;
 import com.StardewValley.graphicViews.PregameMenuScreen;
 import com.StardewValley.models.App;
@@ -56,7 +57,7 @@ public class PregameGuiController {
     }
 
     public Result loadGame() {
-        return null;
+        return AppControllers.gameMenuController.loadGame();
     }
 
     public void goMainMenu() {

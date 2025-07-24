@@ -2,7 +2,7 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.ForgetPasswordGuiController;
-import com.StardewValley.models.GameMenuAssetManager;
+import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -43,9 +43,9 @@ public class ForgetPasswordMenuScreen implements Screen {
 
     public ForgetPasswordMenuScreen() {
         this.controller = AppGuiControllers.forgetPasswordGuiController;
-        this.skin = GameMenuAssetManager.skin;
-        this.background = new Image(GameMenuAssetManager.MenuTexture);
-        this.logo = new Image(GameMenuAssetManager.logoTexture);
+        this.skin = GameAssetManager.skin;
+        this.background = new Image(GameAssetManager.MenuTexture);
+        this.logo = new Image(GameAssetManager.logoTexture);
         this.menuTitle = new Label("Forget Password", skin);
         this.usernameLabel = new Label("Username :", skin);
         this.usernameField = new TextField("", skin);
@@ -62,7 +62,7 @@ public class ForgetPasswordMenuScreen implements Screen {
         this.randomPasswordButton = new TextButton("Random", skin);
         this.changePasswordButton = new TextButton("Change Password", skin);
         this.backButton = new TextButton("Back", skin);
-        this.music = GameMenuAssetManager.music1;
+        this.music = GameAssetManager.music1;
         AppGuiControllers.forgetPasswordGuiController.setView(this);
     }
     @Override

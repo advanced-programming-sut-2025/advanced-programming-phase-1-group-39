@@ -3,7 +3,7 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.SecurityQuestionGuiController;
 import com.StardewValley.models.App;
-import com.StardewValley.models.GameMenuAssetManager;
+import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -40,9 +40,9 @@ public class SecurityQuestionMenuScreen implements Screen {
 
     public SecurityQuestionMenuScreen() {
         this.controller = AppGuiControllers.securityQuestionGuiController;
-        this.skin = GameMenuAssetManager.skin;
-        this.background = new Image(GameMenuAssetManager.MenuTexture);
-        this.logo = new Image(GameMenuAssetManager.logoTexture);
+        this.skin = GameAssetManager.skin;
+        this.background = new Image(GameAssetManager.MenuTexture);
+        this.logo = new Image(GameAssetManager.logoTexture);
         this.securityQuestionLabel = new Label("Chose your Security Question :", skin);
         this.question1 = new CheckBox("1- What is your dream job?", skin);
         this.question2 = new CheckBox("2- What was the name of your favorite teacher in school?", skin);

@@ -2,7 +2,7 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.MainGuiController;
-import com.StardewValley.models.GameMenuAssetManager;
+import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -32,14 +32,14 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen() {
         this.controller = AppGuiControllers.mainGuiController;
-        this.skin = GameMenuAssetManager.skin;
-        this.background = new Image(GameMenuAssetManager.MenuTexture2);
-        this.logo = new Image(GameMenuAssetManager.logoTexture);
+        this.skin = GameAssetManager.skin;
+        this.background = new Image(GameAssetManager.MenuTexture2);
+        this.logo = new Image(GameAssetManager.logoTexture);
         this.menuTitle = new Label("Main Menu", skin);
         this.gameMenuButton = new TextButton("Game Menu", skin);
         this.profileMenuButton = new TextButton("Profile", skin);
         this.logoutButton = new TextButton("Logout", skin);
-        this.music = GameMenuAssetManager.music1;
+        this.music = GameAssetManager.music1;
         AppGuiControllers.mainGuiController.setMenuView(this);
     }
 

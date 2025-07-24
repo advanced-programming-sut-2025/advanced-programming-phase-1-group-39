@@ -2,6 +2,7 @@ package com.StardewValley.models;
 
 
 import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.audio.Music;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class App {
     public static App getApp() {
         if (app == null) {
             app = new App();
-            music = GameMenuAssetManager.music1;
+            music = GameAssetManager.music1;
         }
         return app;
     }

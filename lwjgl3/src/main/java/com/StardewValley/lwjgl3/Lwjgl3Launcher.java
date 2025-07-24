@@ -1,9 +1,8 @@
 package com.StardewValley.lwjgl3;
 
-import com.badlogic.gdx.Gdx;
+import com.StardewValley.Main;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.StardewValley.Main;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
@@ -31,7 +30,6 @@ public class Lwjgl3Launcher {
 
         // TODO : change to full screen mode
         // TODO : add FitViewPort to all stages
-//        configuration.setWindowedMode(2304, 1440);
 //        configuration.setWindowedMode(1920, 1080);
         configuration.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
         //// You can change these files; they are in lwjgl3/src/main/resources/

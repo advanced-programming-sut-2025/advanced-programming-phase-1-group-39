@@ -3,8 +3,8 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.ProfileGuiController;
 import com.StardewValley.models.App;
-import com.StardewValley.models.GameMenuAssetManager;
 import com.StardewValley.models.User;
+import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -58,9 +58,9 @@ public class ProfileMenuScreen implements Screen {
     public ProfileMenuScreen() {
         User user = App.getApp().getLoggedInUser();
         this.controller = AppGuiControllers.profileGuiController;
-        this.skin = GameMenuAssetManager.skin;
-        this.background = new Image(GameMenuAssetManager.MenuTexture2);
-        this.logo = new Image(GameMenuAssetManager.logoTexture);
+        this.skin = GameAssetManager.skin;
+        this.background = new Image(GameAssetManager.MenuTexture2);
+        this.logo = new Image(GameAssetManager.logoTexture);
         this.menuTitle = new Label("Profile Menu", skin);
         this.username = new Label("Username : " + user.getUserName(), skin);
         this.nickname = new Label("Nickname : " + user.getNickname(), skin);
@@ -86,7 +86,7 @@ public class ProfileMenuScreen implements Screen {
         this.changeEmailErrorLabel = new Label("", skin);
         this.changeEmailButton = new TextButton("Change Email", skin);
         this.backButton = new TextButton("Back", skin);
-        this.music = GameMenuAssetManager.music1;
+        this.music = GameAssetManager.music1;
         AppGuiControllers.profileGuiController.setView(this);
     }
 

@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
@@ -37,11 +38,13 @@ public class PregameMenuScreen implements Screen {
     private TextButton loadGameButton;
     private TextButton backButton;
 
+    private Label errorMenuLabel;
+
     // New Game Window
     private Window newGameWindow;
     private ArrayList<Table> startGamePages = new ArrayList<>();
     private int startGamePageIndex = 0;
-    private int numOfStartGamePages = 5;
+    private final int numOfStartGamePages = 5;
     private Table startGameContentTable;
 
     private TextButton nextButton;
@@ -71,6 +74,15 @@ public class PregameMenuScreen implements Screen {
         newGameButton = new TextButton("New Game", skin);
         loadGameButton = new TextButton("Load Game", skin);
         backButton = new TextButton("Back", skin);
+        errorMenuLabel = new Label("", GameAssetManager.messageBoxStyle);
+
+        user1 = new TextField("", skin);
+        user2 = new TextField("", skin);
+        user3 = new TextField("", skin);
+        user4 = new TextField("", skin);
+
+        errorLabel = new Label("", skin);
+        errorLabel.setColor(Color.RED);
 
         stage.clear();
 
@@ -87,13 +99,9 @@ public class PregameMenuScreen implements Screen {
         table.add(loadGameButton).width(buttonSize).padLeft(buttonSize/10);
         table.add(backButton).width(buttonSize).padLeft(buttonSize/10);
 
-        user1 = new TextField("", skin);
-        user2 = new TextField("", skin);
-        user3 = new TextField("", skin);
-        user4 = new TextField("", skin);
-
-        errorLabel = new Label("", skin);
-        errorLabel.setColor(Color.RED);
+        table.row().padTop(75);
+        table.add(errorMenuLabel).center().colspan(4);
+        errorMenuLabel.setVisible(false);
 
         stage.addActor(table);
         addButtonsListener();
@@ -111,7 +119,14 @@ public class PregameMenuScreen implements Screen {
         loadGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                controller.loadGame();
+                Result res = controller.loadGame();
+                if (res.success()) {
+                    Main.getMain().switchScreen(new GameScreen());
+                    showError("");
+                }
+                else {
+                    showError(res.message());
+                }
             }
         });
 
@@ -122,6 +137,21 @@ public class PregameMenuScreen implements Screen {
                 Main.getMain().switchScreen(new MainMenuScreen());
             }
         });
+    }
+
+    private void showError(String err) {
+        // 1. متن لیبل رو تنظیم کن
+        errorMenuLabel.setText(err);
+
+        errorMenuLabel.clearActions();
+        errorMenuLabel.getColor().a = 1;
+        errorMenuLabel.setVisible(true);
+
+        errorMenuLabel.addAction(Actions.sequence(
+                Actions.delay(3f),
+                Actions.fadeOut(1f),
+                Actions.visible(false)
+        ));
     }
 
 
@@ -179,9 +209,9 @@ public class PregameMenuScreen implements Screen {
         Label farmPlaceLabel = new Label("Farm Place: " + farmPlace, skin);
         farmPlaceLabel.setFontScale(1.5f);
         farmPlaceLabel.setColor(Color.YELLOW);
-        page.add(header).center().fillX().colspan(2);
+        page.add(header).center().colspan(2);
         page.row().padTop(30);
-        page.add(farmPlaceLabel).center().fillX().colspan(2);
+        page.add(farmPlaceLabel).center().colspan(2);
         page.row().padTop(50);
         page.add(new Label("Map Type:", skin)).right().padRight(10);
         page.add(mapSelectBox).width(500).left();

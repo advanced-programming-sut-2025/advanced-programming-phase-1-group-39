@@ -22,9 +22,6 @@ public class Main extends Game {
     @Override
     public void create() {
         AppDataManager.loadApp();
-        for (User user : App.getApp().getUsers()) {
-            System.out.println(user);
-        }
         main = this;
         batch = new SpriteBatch();
 

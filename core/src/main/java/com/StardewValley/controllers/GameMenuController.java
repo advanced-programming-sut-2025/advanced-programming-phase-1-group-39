@@ -1,8 +1,6 @@
 package com.StardewValley.controllers;
 
 
-import com.StardewValley.Main;
-import com.StardewValley.graphicViews.MainMenuScreen;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.map.AnsiColors;
@@ -110,9 +108,9 @@ public class GameMenuController {
         User user = app.getLoggedInUser();
         Game currentGame = user.getCurrentGame();
         if (currentGame == null) {
-            return new Result(false, "You don't have any game. please create a game first.");
+            return new Result(false, "You don't have any game. please create a new game.");
         } else if (haveOtherPlayersAnotherCurrentGame(currentGame.getPlayers(), currentGame.getId())) {
-            return new Result(false, "to start loading a game, none of the players must have another active game.");
+            return new Result(false, "Some of other players of your game are currently in another game!");
         } else {
             app.setCurrentGame(currentGame);
             Game game = app.getCurrentGame();

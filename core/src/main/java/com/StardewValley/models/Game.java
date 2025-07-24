@@ -44,11 +44,22 @@ public class Game {
     private int currentGiftNumber = 101;
 
     // first player should be the mainPlayer of game
-    public Game(int gameId, Player one, Player two, Player three, Player four) {
+    public Game(Player one, Player two, Player three, Player four) {
         this.id = lastGameId++;
         this.players = new ArrayList<>(List.of(one, two, three, four));
         this.mainPlayer = one;
         this.playerInTurn = one;
+        this.gameMap = new Map();
+
+        todayWeather.setStatus(WeatherStatus.SUNNY);
+        tomorrowWeather.setWeatherRandom(Season.SPRING);
+    }
+
+    public Game(ArrayList<Player> players) {
+        this.id = lastGameId++;
+        this.players = players;
+        this.mainPlayer = players.get(0);
+        this.playerInTurn = players.get(0);
         this.gameMap = new Map();
 
         todayWeather.setStatus(WeatherStatus.SUNNY);

@@ -4,12 +4,9 @@ import com.StardewValley.Main;
 import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.graphicViews.MainMenuScreen;
 import com.StardewValley.graphicViews.PregameMenuScreen;
-import com.StardewValley.models.App;
+import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Menu;
-import com.StardewValley.models.Result;
-import com.StardewValley.models.User;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.StardewValley.models.map.FarmType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +20,10 @@ public class PregameGuiController {
 
     ArrayList<User> gameUsers = new ArrayList<>();
 
-    public Result checkStartGame(String user2, String user3, String user4) {
+    public Result checkStartGame(String user2, String user3, String user4, int[] mapIds) {
         User loggedInUser = App.getApp().getLoggedInUser();
         ArrayList<String> usernames = new ArrayList<>(List.of(loggedInUser.getUserName(), user2,user3,user4));
         gameUsers.clear();
-        gameUsers.add(loggedInUser);
 
         // Emptiness of fields
         for (String username : usernames) {
@@ -53,6 +49,24 @@ public class PregameGuiController {
         }
         // TODO : check users being online
         // TODO : check users playing game
+        int gameId = Game.lastGameId;
+        ArrayList<Player> players = new ArrayList<>();
+        for (User user : gameUsers) {
+            players.add(new Player(user.getUserName(), gameId));
+        }
+        Game game = new Game(players);
+        App.getApp().addGame(game);
+        App.getApp().setCurrentGame(game);
+        for (User user : gameUsers) {
+            user.setCurrentGame(game);
+        }
+
+        // starting the game
+        int c = 0;
+        for (Player player : players) {
+            game.addRandomFarmForPlayer(player, FarmType.getFarmTypeById(mapIds[c++]));
+        }
+        game.startGame();
         return new Result(true, "");
     }
 

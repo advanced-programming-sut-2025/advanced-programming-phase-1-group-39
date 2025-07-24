@@ -3,11 +3,10 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.PregameGuiController;
 import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Result;
-import com.StardewValley.models.User;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.services.GameAssetManager;
-import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -55,6 +54,8 @@ public class PregameMenuScreen implements Screen {
     private TextField user3;
     private TextField user4;
     private Label errorLabel;
+
+    private int[] mapIds = new int[4];
 
     public PregameMenuScreen() {
         this.controller = AppGuiControllers.pregameGuiController;
@@ -140,7 +141,6 @@ public class PregameMenuScreen implements Screen {
     }
 
     private void showError(String err) {
-        // 1. متن لیبل رو تنظیم کن
         errorMenuLabel.setText(err);
 
         errorMenuLabel.clearActions();
@@ -192,10 +192,11 @@ public class PregameMenuScreen implements Screen {
 
         mapSelectBox.addListener(new ChangeListener() {
             public void changed(ChangeEvent changeEvent, Actor actor) {
-
+                mapIds[playerNumber - 1] = mapSelectBox.getSelectedIndex();
             }
         });
-        Label header = new Label("Choosing Map for " + controller.getUserNickName(playerNumber) + "'s Farm", skin);
+        mapSelectBox.setSelectedIndex(0);
+        Label header = new Label("Choosing Map for " + controller.getUserNickName(playerNumber - 1) + "'s Farm", skin);
         header.setFontScale(2f);
         header.setColor(Color.YELLOW);
 
@@ -246,17 +247,17 @@ public class PregameMenuScreen implements Screen {
                 if (startGamePageIndex == 0) {
                     // check the form
                     Result result = controller.checkStartGame(user2.getText(), user3.getText(),
-                            user4.getText());
+                            user4.getText(), mapIds);
                     if (!result.success())
                         errorLabel.setText(result.message());
                     else {
-                        ArrayList<User> users = controller.getGameUsers();
                         for (int i = 1; i <= 4; i++) {
                             startGamePages.set(i, addMapSelectionTable(skin, i));
                         }
                         showPage(1);
                     }
                 } else if (startGamePageIndex == numOfStartGamePages - 1) {
+                    App.getApp().setCurrentMenu(Menu.GAME);
                     Main.getMain().switchScreen(new GameScreen());
                 } else {
                     showPage(1);
@@ -337,7 +338,7 @@ public class PregameMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        SaveAppManager.saveApp();
+//        SaveAppManager.saveApp();
         stage.dispose();
         background.dispose();
     }

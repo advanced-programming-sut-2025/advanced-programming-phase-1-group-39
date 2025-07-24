@@ -1,12 +1,8 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
-import com.StardewValley.controllers.AppControllers;
-import com.StardewValley.controllers.GameMenuController;
 import com.StardewValley.graphicControllers.PregameGuiController;
 import com.StardewValley.models.App;
-import com.StardewValley.models.Enums.Menu;
-import com.StardewValley.models.Game;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
@@ -19,9 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import java.util.ArrayList;
 
 public class PregameMenuScreen implements Screen {
     private PregameGuiController controller;
@@ -36,7 +35,17 @@ public class PregameMenuScreen implements Screen {
     private TextButton loadGameButton;
     private TextButton backButton;
 
+    // New Game Window
     private Window newGameWindow;
+    private ArrayList<Table> startGamePages = new ArrayList<>();
+    private int startGamePageIndex = 0;
+    private Table startGameContentTable;
+
+    private TextField user1;
+    private TextField user2;
+    private TextField user3;
+    private TextField user4;
+    private Label errorLabel;
 
     public PregameMenuScreen() {
         this.controller = AppGuiControllers.pregameGuiController;
@@ -72,9 +81,17 @@ public class PregameMenuScreen implements Screen {
         table.add(loadGameButton).width(buttonSize).padLeft(buttonSize/10);
         table.add(backButton).width(buttonSize).padLeft(buttonSize/10);
 
+        user1 = new TextField("", skin);
+        user2 = new TextField("", skin);
+        user3 = new TextField("", skin);
+        user4 = new TextField("", skin);
+
+        errorLabel = new Label("", skin);
+        errorLabel.setColor(Color.RED);
+
         stage.addActor(table);
         addButtonsListener();
-        setNewGameWindow();
+        buildNewGameWindow();
     }
 
     public void addButtonsListener() {
@@ -101,70 +118,118 @@ public class PregameMenuScreen implements Screen {
         });
     }
 
-    public void setNewGameWindow() {
+
+    public Table addUsernamesFormTable(Skin skin) {
+        Table usernamesForm = new Table();
+
+        int inputW = 550;
+        usernamesForm.row();
+        usernamesForm.add(new Label("Player 1:", skin)).right().padRight(20);
+        usernamesForm.add(user1).width(inputW).left();
+        user1.setText(App.getApp().getLoggedInUser().getUserName());
+        user1.setDisabled(true);
+        user1.setColor(Color.GRAY);
+
+        usernamesForm.row().padTop(45);
+        usernamesForm.add(new Label("Player 2:", skin)).right().padRight(20);
+        usernamesForm.add(user2).width(inputW).left();
+        user2.setMessageText("Enter username");
+
+        usernamesForm.row().padTop(45);
+        usernamesForm.add(new Label("Player 3:", skin)).right().padRight(20);
+        usernamesForm.add(user3).width(inputW).left();
+        user3.setMessageText("Enter username");
+
+        usernamesForm.row().padTop(45);
+        usernamesForm.add(new Label("Player 4:", skin)).right().padRight(20);
+        usernamesForm.add(user4).width(inputW).left();
+        user4.setMessageText("Enter username");
+
+        return usernamesForm;
+    }
+
+    public Table addMapSelectionTable(Skin skin) {
+        Table page = new Table();
+        page.add(new Label("Game Settings", skin, "title")).colspan(2).padBottom(40).row();
+
+        SelectBox<String> mapSelectBox = new SelectBox<>(skin);
+        mapSelectBox.setItems("Default Farm", "Riverland Farm", "Forest Farm", "Wilderness Farm");
+
+        page.add(new Label("Map Type:", skin)).right().padRight(10);
+        page.add(mapSelectBox).width(300).left();
+
+        return page;
+    }
+
+    public void buildNewGameWindow() {
         Skin skin = GameAssetManager.skin;
         newGameWindow = new Window("", skin);
-        newGameWindow.setSize(1000, 800);
+//        newGameWindow.debug();
+        newGameWindow.setModal(true);
+        newGameWindow.setSize(1000, 1000);
         newGameWindow.setPosition(
-                stage.getWidth() / 2f - newGameWindow.getWidth() / 2f,
-                stage.getHeight() / 2f - newGameWindow.getHeight() / 2f
+                stage.getWidth() / 2f,
+                stage.getHeight() / 2f,
+                Align.center
         );
 
+        startGamePages.add(addUsernamesFormTable(skin));
+        startGamePages.add(addMapSelectionTable(skin));
 
-        TextField user1 = new TextField("", skin);
-        TextField user2 = new TextField("", skin);
-        TextField user3 = new TextField("", skin);
-        TextField user4 = new TextField("", skin);
+        startGameContentTable = new Table();
+        showPage(0);
 
-        TextButton startButton = new TextButton("Start", skin);
+
+        TextButton nextButton = new TextButton("Next", skin);
         TextButton backButton = new TextButton("Back", skin);
 
-        Label errorLabel = new Label("", skin);
-        errorLabel.setColor(Color.RED);
 
-        startButton.addListener(new ChangeListener() {
+        nextButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                Result result = controller.checkStartGame(user2.getText(), user3.getText(), user4.getText());
-                if (!result.success())
-                    errorLabel.setText(result.message());
-                else
+                /*if (startGamePageIndex == 0) {
+                    // check the form
+                    Result result = controller.checkStartGame(user2.getText(), user3.getText(),
+                            user4.getText());
+                    if (!result.success())
+                        errorLabel.setText(result.message());
+                    else
+                        showPage(1);
+                } else*/ if (startGamePageIndex == startGamePages.size() - 1) {
                     Main.getMain().switchScreen(new GameScreen());
+                } else {
+                    showPage(1);
+                }
             }
         });
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                newGameWindow.remove();
+                if (startGamePageIndex == 0)
+                    newGameWindow.remove();
+                else{
+                    showPage(-1);
+                }
             }
         });
 
+        newGameWindow.add(startGameContentTable).expand().fill().colspan(2);
+        newGameWindow.row().pad(100, 45 , 30 , 45).expandX().fillX();
+        newGameWindow.add(backButton).width(250).left();
+        newGameWindow.add(nextButton).width(250).right();
 
-        int inputW = 550;
-        newGameWindow.row().padTop(45);
-        newGameWindow.add(user1).width(inputW).colspan(2);
-        user1.setText(App.getApp().getLoggedInUser().getUserName());
-        user1.setDisabled(true);
-        user1.setColor(Color.GRAY);
-
-        newGameWindow.row().padTop(45);
-        newGameWindow.add(user2).width(inputW).colspan(2);
-        user2.setMessageText("player 2 username");
-
-        newGameWindow.row().padTop(45);
-        newGameWindow.add(user3).width(inputW).colspan(2);
-        user3.setMessageText("player 3 username");
-
-        newGameWindow.row().padTop(45);
-        newGameWindow.add(user4).width(inputW).colspan(2);
-        user4.setMessageText("player 4 username");
-
-        newGameWindow.row().padTop(100);
-        newGameWindow.add(startButton).width(250);
-        newGameWindow.add(backButton).width(250).padLeft(25);
-
-        newGameWindow.row().padTop(20);
+        newGameWindow.row().padTop(50);
         newGameWindow.add(errorLabel).colspan(2);
+
+    }
+
+    private void showPage(int offset) {
+        errorLabel.setText("");
+        startGameContentTable.clear();
+
+        startGamePageIndex += offset;
+
+        startGameContentTable.add(startGamePages.get(startGamePageIndex));
     }
 
     @Override

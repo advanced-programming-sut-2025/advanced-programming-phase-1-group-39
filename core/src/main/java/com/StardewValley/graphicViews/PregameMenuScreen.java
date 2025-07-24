@@ -168,7 +168,20 @@ public class PregameMenuScreen implements Screen {
         Label header = new Label("Choosing Map for " + controller.getUserNickName(playerNumber) + "'s Farm", skin);
         header.setFontScale(2f);
         header.setColor(Color.YELLOW);
+
+        String farmPlace = switch (playerNumber) {
+            case 1 -> "Top right";
+            case 2 -> "Top left";
+            case 3 -> "Bottom left";
+            default -> "Bottom right";
+        };
+
+        Label farmPlaceLabel = new Label("Farm Place: " + farmPlace, skin);
+        farmPlaceLabel.setFontScale(1.5f);
+        farmPlaceLabel.setColor(Color.YELLOW);
         page.add(header).center().fillX().colspan(2);
+        page.row().padTop(30);
+        page.add(farmPlaceLabel).center().fillX().colspan(2);
         page.row().padTop(50);
         page.add(new Label("Map Type:", skin)).right().padRight(10);
         page.add(mapSelectBox).width(500).left();

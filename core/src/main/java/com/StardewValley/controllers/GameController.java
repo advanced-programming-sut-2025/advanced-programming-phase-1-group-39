@@ -56,7 +56,6 @@ public class GameController {
     }
 
     public Result deleteGame() {
-
         App app = App.getApp();
         Game game = app.getCurrentGame();
         if (!game.getPlayerInTurn().equals(game.getMainPlayer())) {

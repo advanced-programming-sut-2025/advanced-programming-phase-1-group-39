@@ -111,8 +111,7 @@ public class GameMenuController {
         Game currentGame = user.getCurrentGame();
         if (currentGame == null) {
             return new Result(false, "You don't have any game. please create a game first.");
-        } else if (currentGame != null &&
-                haveOtherPlayersAnotherCurrentGame(currentGame.getPlayers(), currentGame.getId())) {
+        } else if (haveOtherPlayersAnotherCurrentGame(currentGame.getPlayers(), currentGame.getId())) {
             return new Result(false, "to start loading a game, none of the players must have another active game.");
         } else {
             app.setCurrentGame(currentGame);

@@ -4,6 +4,7 @@ import com.StardewValley.Main;
 import com.StardewValley.graphicViews.MainMenuScreen;
 import com.StardewValley.graphicViews.ProfileMenuScreen;
 import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Enums.commands.SignupMenuCommands;
 import com.StardewValley.models.User;
 import com.StardewValley.models.services.HashSHA256;

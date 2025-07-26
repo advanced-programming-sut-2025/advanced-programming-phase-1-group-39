@@ -3,6 +3,7 @@ package com.StardewValley.graphicControllers;
 import com.StardewValley.Main;
 import com.StardewValley.graphicViews.*;
 import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 

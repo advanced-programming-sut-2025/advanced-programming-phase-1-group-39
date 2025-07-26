@@ -5,6 +5,7 @@ import com.StardewValley.graphicViews.LoginMenuScreen;
 import com.StardewValley.graphicViews.SecurityQuestionMenuScreen;
 import com.StardewValley.graphicViews.SignupMenuScreen;
 import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Enums.commands.SignupMenuCommands;
 import com.StardewValley.models.User;
 import com.badlogic.gdx.Gdx;

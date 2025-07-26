@@ -6,6 +6,7 @@ import com.StardewValley.graphicViews.LoginMenuScreen;
 import com.StardewValley.graphicViews.MainMenuScreen;
 import com.StardewValley.graphicViews.SignupMenuScreen;
 import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.User;
 import com.StardewValley.models.services.HashSHA256;
 import com.badlogic.gdx.scenes.scene2d.Actor;

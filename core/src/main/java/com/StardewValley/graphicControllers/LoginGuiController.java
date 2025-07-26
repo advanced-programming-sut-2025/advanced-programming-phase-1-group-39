@@ -41,19 +41,17 @@ public class LoginGuiController {
                         } else if (!isUsernameExist(username)) {
                             cleanMessages();
                             view.getUsernameErrorLabel().setText("This username does not exist");
-                            view.getLoginButton().setChecked(false);
 
                         } else if (!HashSHA256.checkPassword(password, App.getApp().getUserByUsername(username).getPassword())) {
                             cleanMessages();
                             view.getPasswordErroeLabel().setText("The password is incorrect");
-                            view.getLoginButton().setChecked(false);
                         } else if (view.getStayLoggedInCheckBox().isChecked()) {
                             App.getApp().setStayLoggedIn(true);
                             App.getApp().setLoggedInUser(getUserByUsername(username));
-                            Main.getMain().setScreen(new MainMenuScreen());
+                            Main.getMain().switchScreen(new MainMenuScreen());
                         } else {
                             App.getApp().setLoggedInUser(getUserByUsername(username));
-                            Main.getMain().setScreen(new MainMenuScreen());
+                            Main.getMain().switchScreen(new MainMenuScreen());
                         }
                     }
                 }
@@ -62,18 +60,16 @@ public class LoginGuiController {
             view.getForgotPasswordButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getForgotPasswordButton().isChecked()) {
-                        Main.getMain().setScreen(new ForgetPasswordMenuScreen());
-                    }
+                    App.getApp().setCurrentMenu(Menu.FORGET_PASSWORD_MENU);
+                    Main.getMain().switchScreen(new ForgetPasswordMenuScreen());
                 }
             });
 
             view.getBackButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getBackButton().isChecked()) {
-                        Main.getMain().setScreen(new SignupMenuScreen());
-                    }
+                    App.getApp().setCurrentMenu(Menu.SIGNUP_MENU);
+                    Main.getMain().switchScreen(new SignupMenuScreen());
                 }
             });
         }

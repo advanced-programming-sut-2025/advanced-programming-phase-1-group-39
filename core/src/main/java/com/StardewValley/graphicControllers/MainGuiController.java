@@ -19,29 +19,27 @@ public class MainGuiController {
             view.getGameMenuButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getGameMenuButton().isChecked()) {
-                        Main.getMain().setScreen(new PregameMenuScreen());
-                    }
+                    App.getApp().setCurrentMenu(Menu.GAME_MENU);
+                    Main.getMain().switchScreen(new PregameMenuScreen());
                 }
             });
 
             view.getProfileMenuButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getProfileMenuButton().isChecked()) {
-                        Main.getMain().setScreen(new ProfileMenuScreen());
-                    }
+                    App.getApp().setCurrentMenu(Menu.PROFILE_MENU);
+                    Main.getMain().switchScreen(new ProfileMenuScreen());
                 }
             });
 
             view.getLogoutButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getLogoutButton().isChecked()) {
-                        App.getApp().setLoggedInUser(null);
-                        App.getApp().setStayLoggedIn(false);
-                        Main.getMain().setScreen(new LoginMenuScreen());
-                    }
+                    App.getApp().setLoggedInUser(null);
+                    App.getApp().setStayLoggedIn(false);
+                    App.getApp().setCurrentMenu(Menu.LOGIN_MENU);
+                    Main.getMain().switchScreen(new LoginMenuScreen());
+
                 }
             });
         }

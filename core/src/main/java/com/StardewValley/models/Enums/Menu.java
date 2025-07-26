@@ -9,7 +9,7 @@ import com.badlogic.gdx.Screen;
 
 public enum Menu {
     SIGNUP_MENU("signup menu", new SignupMenuView()),
-    SECURITY_QUESTION_MENu("securityQuestion menu", new SignupMenuView()),
+    SECURITY_QUESTION_MENU("securityQuestion menu", new SignupMenuView()),
     LOGIN_MENU("login menu", new LoginMenuView()),
     FORGET_PASSWORD_MENU("forget password", new LoginMenuView()),
     MAIN_MENU("main menu", new MainMenuView()),

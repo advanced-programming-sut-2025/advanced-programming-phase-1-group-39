@@ -5,6 +5,7 @@ import com.StardewValley.graphicViews.LoginMenuScreen;
 import com.StardewValley.graphicViews.SecurityQuestionMenuScreen;
 import com.StardewValley.graphicViews.SignupMenuScreen;
 import com.StardewValley.models.App;
+import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.SecurityQuestion;
 import com.StardewValley.models.services.HashSHA256;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -23,60 +24,50 @@ public class SecurityQuestionGuiController {
             view.getQuestion1().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getQuestion1().isChecked()) {
-                        view.getQuestion2().setChecked(false);
-                        view.getQuestion3().setChecked(false);
-                        view.getQuestion4().setChecked(false);
-                        view.getQuestion5().setChecked(false);
-                    }
+                    view.getQuestion2().setChecked(false);
+                    view.getQuestion3().setChecked(false);
+                    view.getQuestion4().setChecked(false);
+                    view.getQuestion5().setChecked(false);
                 }
             });
 
             view.getQuestion2().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getQuestion2().isChecked()) {
-                        view.getQuestion1().setChecked(false);
-                        view.getQuestion3().setChecked(false);
-                        view.getQuestion4().setChecked(false);
-                        view.getQuestion5().setChecked(false);
-                    }
+                    view.getQuestion1().setChecked(false);
+                    view.getQuestion3().setChecked(false);
+                    view.getQuestion4().setChecked(false);
+                    view.getQuestion5().setChecked(false);
                 }
             });
 
             view.getQuestion3().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getQuestion3().isChecked()) {
-                        view.getQuestion1().setChecked(false);
-                        view.getQuestion2().setChecked(false);
-                        view.getQuestion4().setChecked(false);
-                        view.getQuestion5().setChecked(false);
-                    }
+                    view.getQuestion1().setChecked(false);
+                    view.getQuestion2().setChecked(false);
+                    view.getQuestion4().setChecked(false);
+                    view.getQuestion5().setChecked(false);
                 }
             });
 
             view.getQuestion4().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getQuestion4().isChecked()) {
-                        view.getQuestion1().setChecked(false);
-                        view.getQuestion2().setChecked(false);
-                        view.getQuestion3().setChecked(false);
-                        view.getQuestion5().setChecked(false);
-                    }
+                    view.getQuestion1().setChecked(false);
+                    view.getQuestion2().setChecked(false);
+                    view.getQuestion3().setChecked(false);
+                    view.getQuestion5().setChecked(false);
                 }
             });
 
             view.getQuestion5().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getQuestion5().isChecked()) {
-                        view.getQuestion1().setChecked(false);
-                        view.getQuestion2().setChecked(false);
-                        view.getQuestion3().setChecked(false);
-                        view.getQuestion4().setChecked(false);
-                    }
+                    view.getQuestion1().setChecked(false);
+                    view.getQuestion2().setChecked(false);
+                    view.getQuestion3().setChecked(false);
+                    view.getQuestion4().setChecked(false);
                 }
             });
 
@@ -85,13 +76,10 @@ public class SecurityQuestionGuiController {
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     String answer = view.getAnswer().getText();
                     App app = App.getApp();
-                    if (view.getRegisterButton().isChecked()) {
                         if (answer == null) {
                             view.getAnswerErrorLabel().setText("answer field cannot be empty");
-                            view.getRegisterButton().setChecked(false);
                         } else if (setQuestionNumber().equals("0")) {
                             view.getAnswerErrorLabel().setText("Please choose your Question Number");
-                            view.getRegisterButton().setChecked(false);
                         } else {
                             SecurityQuestion question = new SecurityQuestion(setQuestionNumber(), answer);
                             app.getPendingUser().setSecurityQuestion(question);
@@ -99,17 +87,17 @@ public class SecurityQuestionGuiController {
                             app.getPendingUser().setPassword(hashPass);
                             app.addUser(app.getPendingUser());
                             app.setPendingUser(null);
-                            Main.getMain().setScreen(new LoginMenuScreen());
+                            app.setCurrentMenu(Menu.LOGIN_MENU);
+                            Main.getMain().switchScreen(new LoginMenuScreen());
                         }
-
-                    }
                 }
             });
 
             view.getBackButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    Main.getMain().setScreen(new SignupMenuScreen());
+                    App.getApp().setCurrentMenu(Menu.SIGNUP_MENU);
+                    Main.getMain().switchScreen(new SignupMenuScreen());
                 }
             });
         }

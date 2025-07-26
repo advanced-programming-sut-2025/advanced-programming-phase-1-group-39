@@ -65,7 +65,7 @@ public class SecurityQuestionMenuScreen implements Screen {
         music.setLooping(true);
         music.play();
 
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
 
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

@@ -64,7 +64,7 @@ public class LoginMenuScreen implements Screen {
 
     @Override
     public void show() {
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
 
         // موسیقی و بک‌گراند

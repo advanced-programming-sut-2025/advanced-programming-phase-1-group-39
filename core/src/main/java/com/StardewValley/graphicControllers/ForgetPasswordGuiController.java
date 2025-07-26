@@ -33,29 +33,28 @@ public class ForgetPasswordGuiController {
                     String newPassword = view.getNewPasswordField().getText();
                     Matcher matcher;
                     App app = App.getApp();
-                    if (view.getChangePasswordButton().isChecked()) {
-                        if (username == null || username.equals("Enter your Username")) {
-                            cleanMessages();
-                            view.getUsernameErrorLabel().setText("username cannot be empty");
-                        } else if (!isUsernameExist(username)) {
-                            cleanMessages();
-                            view.getUsernameErrorLabel().setText("Username not found");
-                        } else if (!answer.equals(getUserByUsername(username).getSecurityQuestion().getAnswer())) {
-                            cleanMessages();
-                            view.getSecurityErrorLabel().setText("The answer you entered is incorrect");
-                        } else if (newPassword == null || newPassword.equals("Enter your New Password")) {
-                            cleanMessages();
-                            view.getNewPasswordErrorLabel().setText("New password cannot be empty");
-                        } else if ((matcher = SignupMenuCommands.Password.getMatcher(newPassword)) == null) {
-                            cleanMessages();
-                            view.getNewPasswordErrorLabel().setText("invalid password format");
-                        } else if ((matcher = SignupMenuCommands.WeakPassword.getMatcher(newPassword)) == null) {
-                            cleanMessages();
-                            view.getNewPasswordErrorLabel().setText(validatePassword(newPassword).toString());
-                        } else {
-                            getUserByUsername(username).setPassword(HashSHA256.hashPassword(newPassword));
-                            Main.getMain().setScreen(new LoginMenuScreen());
-                        }
+                    if (username == null || username.equals("Enter your Username")) {
+                        cleanMessages();
+                        view.getUsernameErrorLabel().setText("username cannot be empty");
+                    } else if (!isUsernameExist(username)) {
+                        cleanMessages();
+                        view.getUsernameErrorLabel().setText("Username not found");
+                    } else if (!answer.equals(getUserByUsername(username).getSecurityQuestion().getAnswer())) {
+                        cleanMessages();
+                        view.getSecurityErrorLabel().setText("The answer you entered is incorrect");
+                    } else if (newPassword == null || newPassword.equals("Enter your New Password")) {
+                        cleanMessages();
+                        view.getNewPasswordErrorLabel().setText("New password cannot be empty");
+                    } else if ((matcher = SignupMenuCommands.Password.getMatcher(newPassword)) == null) {
+                        cleanMessages();
+                        view.getNewPasswordErrorLabel().setText("invalid password format");
+                    } else if ((matcher = SignupMenuCommands.WeakPassword.getMatcher(newPassword)) == null) {
+                        cleanMessages();
+                        view.getNewPasswordErrorLabel().setText(validatePassword(newPassword).toString());
+                    } else {
+                        getUserByUsername(username).setPassword(HashSHA256.hashPassword(newPassword));
+                        App.getApp().setCurrentMenu(Menu.LOGIN_MENU);
+                        Main.getMain().switchScreen(new LoginMenuScreen());
                     }
                 }
             });
@@ -63,19 +62,15 @@ public class ForgetPasswordGuiController {
             view.getRandomPasswordButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getRandomPasswordButton().isChecked()) {
-                        view.getNewPasswordField().setText(generateStrongPassword());
-                        view.getRandomPasswordButton().setChecked(false);
-                    }
+                    view.getNewPasswordField().setText(generateStrongPassword());
                 }
             });
 
             view.getBackButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getBackButton().isChecked()) {
-                        Main.getMain().setScreen(new LoginMenuScreen());
-                    }
+                    App.getApp().setCurrentMenu(Menu.LOGIN_MENU);
+                    Main.getMain().switchScreen(new LoginMenuScreen());
                 }
             });
         }

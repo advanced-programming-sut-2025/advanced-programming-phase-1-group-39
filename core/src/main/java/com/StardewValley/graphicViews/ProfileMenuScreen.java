@@ -70,19 +70,23 @@ public class ProfileMenuScreen implements Screen {
             this.genderLabel = new Label("Gender : Male", skin);
         } else { this.genderLabel = new Label("Gender : Female", skin); }
         this.changeUsernameLabel = new Label("Change Username :", skin);
-        this.changeUsernameField = new TextField("Enter your new Username", skin);
+        this.changeUsernameField = new TextField("", skin);
+        this.changeUsernameField.setMessageText("Enter your new Username");
         this.changeUsernameErrorLabel = new Label("", skin);
         this.changeUsernameButton = new TextButton("Change Username", skin);
         this.changeNicknameLabel = new Label("Change Nickname :", skin);
-        this.changeNicknameField = new TextField("Enter your new Nickname", skin);
+        this.changeNicknameField = new TextField("", skin);
+        this.changeNicknameField.setMessageText("Enter your new Nickname");
         this.changeNicknameErrorLabel = new Label("", skin);
         this.changeNicknameButton = new TextButton("Change Nickname", skin);
         this.changePasswordLabel = new Label("Change Password :", skin);
-        this.changePasswordField = new TextField("Enter your new Password", skin);
+        this.changePasswordField = new TextField("", skin);
+        this.changePasswordField.setMessageText("Enter your new Password");
         this.changePasswordErrorLabel = new Label("", skin);
         this.changePasswordButton = new TextButton("Change Password", skin);
         this.changeEmailLabel = new Label("Change Email :", skin);
-        this.changeEmailField = new TextField("Enter your new Email", skin);
+        this.changeEmailField = new TextField("", skin);
+        this.changeEmailField.setMessageText("Enter your new Email");
         this.changeEmailErrorLabel = new Label("", skin);
         this.changeEmailButton = new TextButton("Change Email", skin);
         this.backButton = new TextButton("Back", skin);
@@ -92,7 +96,7 @@ public class ProfileMenuScreen implements Screen {
 
     @Override
     public void show() {
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
         music.setLooping(true);
         music.play();

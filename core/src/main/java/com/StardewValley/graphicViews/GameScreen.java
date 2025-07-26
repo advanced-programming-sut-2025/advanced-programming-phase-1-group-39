@@ -13,16 +13,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 
-public class GameView implements Screen {
+public class GameScreen implements Screen {
     private GameController controller;
     private Game game;
     private GameMenuInputAdapter gameMenuInputAdapter;
@@ -38,7 +36,7 @@ public class GameView implements Screen {
     private OrthographicCamera camera;
 
 
-    public GameView() {
+    public GameScreen() {
         this.controller = AppControllers.gameController;
         this.game = App.getApp().getCurrentGame();
         gameMenuInputAdapter = new GameMenuInputAdapter(controller);

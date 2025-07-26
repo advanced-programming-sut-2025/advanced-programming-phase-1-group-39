@@ -1,8 +1,7 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicControllers.ForgetPasswordMenuController;
-import com.StardewValley.graphicControllers.SignupMenuController;
+import com.StardewValley.graphicControllers.LoginMenuController;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,9 +11,10 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class ForgetPasswordMenuView implements Screen {
+public class LoginMenuScreen implements Screen {
     private Stage stage;
     private final Skin skin;
 
@@ -26,51 +26,51 @@ public class ForgetPasswordMenuView implements Screen {
     private TextField usernameField;
     private Label usernameErrorLabel;
 
-    private Label securityLabel;
-    private TextField securityField;
-    private Label securityErrorLabel;
+    private Label passwordLabel;
+    private TextField passwordField;
+    private Label passwordErroeLabel;
 
-    private Label newPasswordLabel;
-    private TextField newPasswordField;
-    private Label newPasswordErrorLabel;
+    private CheckBox stayLoggedInCheckBox;
 
-    private TextButton randomPasswordButton;
-    private TextButton changePasswordButton;
+    private TextButton loginButton;
+    private TextButton forgotPasswordButton;
     private TextButton backButton;
 
     public Table table = new Table();
     private Music music;
-    private final ForgetPasswordMenuController controller;
+    private final LoginMenuController controller;
 
-    public ForgetPasswordMenuView() {
-        this.controller = AppControllers.forgetPasswordMenuController;
+    public LoginMenuScreen() {
+        this.controller = AppControllers.loginMenuController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
         this.logo = new Image(GameMenuAssetManager.logoTexture);
-        this.menuTitle = new Label("Forget Password", skin);
+        this.menuTitle = new Label("Login :", skin);
         this.usernameLabel = new Label("Username :", skin);
-        this.usernameField = new TextField("Enter your Username", skin);
+        this.usernameField = new TextField("", skin);
+        this.usernameField.setMessageText("Enter your Username");
         this.usernameErrorLabel = new Label("", skin);
-        this.securityLabel = new Label("Security Question :", skin);
-        this.securityField = new TextField("Enter your answer", skin);
-        this.securityErrorLabel = new Label("", skin);
-        this.newPasswordLabel = new Label("New Password :", skin);
-        this.newPasswordField = new TextField("Enter your New Password", skin);
-        this.newPasswordErrorLabel = new Label("", skin);
-        this.randomPasswordButton = new TextButton("Random", skin);
-        this.changePasswordButton = new TextButton("Change Password", skin);
+        this.passwordLabel = new Label("Password :", skin);
+        this.passwordField = new TextField("", skin);
+        this.passwordField.setMessageText("Enter your Password");
+        this.passwordErroeLabel = new Label("", skin);
+        this.stayLoggedInCheckBox = new CheckBox("Stay LoggedIn", skin);
+        this.loginButton = new TextButton("Login", skin);
+        this.forgotPasswordButton = new TextButton("Forgot Password", skin);
         this.backButton = new TextButton("Back", skin);
         this.music = GameMenuAssetManager.music1;
-        AppControllers.forgetPasswordMenuController.setView(this);
+        AppControllers.loginMenuController.setView(this);
     }
+
     @Override
     public void show() {
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new FillViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
 
         // موسیقی و بک‌گراند
         music.setLooping(true);
         music.play();
+
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         background.setColor(1, 1, 1, 0.5f);
         stage.addActor(background);
@@ -88,63 +88,56 @@ public class ForgetPasswordMenuView implements Screen {
         table.top().padTop(250);
         stage.addActor(table);
 
-        // ===== عنوان منو =====
+        // عنوان منو
         menuTitle.setColor(Color.valueOf("ffd60a"));
         menuTitle.setFontScale(1.8f);
         table.add(menuTitle).colspan(2).center().padBottom(60);
         table.row();
 
-        // ===== فیلد نام کاربری =====
+        // ===== Username =====
         Table usernameRow = new Table();
         usernameLabel.setColor(Color.valueOf("023047"));
         usernameRow.add(usernameLabel).left().colspan(2);
         usernameRow.row();
-        usernameRow.add(usernameField).width(650);
+        usernameRow.add(usernameField).width(600);
         table.add(usernameRow).colspan(2).center().padBottom(10);
         table.row();
         usernameErrorLabel.setColor(Color.RED);
         table.add(usernameErrorLabel).left().colspan(2).padBottom(20);
         table.row();
 
-        // ===== فیلد پاسخ امنیتی =====
-        Table securityRow = new Table();
-        securityLabel.setColor(Color.valueOf("023047"));
-        securityRow.add(securityLabel).left().colspan(2);
-        securityRow.row();
-        securityRow.add(securityField).width(650);
-        table.add(securityRow).colspan(2).center().padBottom(10);
-        table.row();
-        securityErrorLabel.setColor(Color.RED);
-        table.add(securityErrorLabel).left().colspan(2).padBottom(20);
-        table.row();
-
-        // ===== فیلد رمز عبور جدید =====
+        // ===== Password =====
         Table passwordRow = new Table();
-        newPasswordLabel.setColor(Color.valueOf("023047"));
-        passwordRow.add(newPasswordLabel).left().colspan(2);
+        passwordLabel.setColor(Color.valueOf("023047"));
+        passwordRow.add(passwordLabel).left().colspan(2);
         passwordRow.row();
-        passwordRow.add(newPasswordField).width(650);
+        passwordRow.add(passwordField).width(600);
         table.add(passwordRow).colspan(2).center().padBottom(10);
         table.row();
-        newPasswordErrorLabel.setColor(Color.RED);
-        table.add(newPasswordErrorLabel).left().colspan(2).padBottom(30);
+        passwordErroeLabel.setColor(Color.RED);
+        table.add(passwordErroeLabel).left().colspan(2).padBottom(30);
         table.row();
 
-        // ===== دکمه تغییر رمز =====
-        changePasswordButton.setColor(Color.valueOf("90BE6D"));
-        table.add(changePasswordButton).colspan(2).center().padBottom(30);
+        // ===== Stay Logged In =====
+        table.add(stayLoggedInCheckBox).center().colspan(2).padBottom(30);
         table.row();
 
-        randomPasswordButton.setColor(Color.valueOf("E9D8A6"));
-        randomPasswordButton.setPosition(1500, 600);
-        stage.addActor(randomPasswordButton);
+        // ===== دکمه‌های ورود و فراموشی رمز =====
+        Table buttonsRow = new Table();
+        loginButton.setColor(Color.valueOf("E9D8A6"));
+        forgotPasswordButton.setColor(Color.valueOf("FFB703"));
+        buttonsRow.add(loginButton).width(450).height(110);
+        buttonsRow.row().padTop(20);
+        buttonsRow.add(forgotPasswordButton);
+        table.add(buttonsRow).colspan(2).center().padBottom(40);
+        table.row();
 
-        // ===== دکمه بازگشت =====
+        // ===== Back Button =====
         backButton.setColor(Color.valueOf("E9D8A6"));
         backButton.setPosition(20, 1300);
         stage.addActor(backButton);
 
-        controller.handleForgetPassword();
+        controller.handleLogin();
     }
 
     @Override
@@ -156,6 +149,7 @@ public class ForgetPasswordMenuView implements Screen {
         Main.getBatch().end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
+
     }
 
     @Override
@@ -183,6 +177,9 @@ public class ForgetPasswordMenuView implements Screen {
 
     }
 
+    // Auxiliary functions :
+
+
     public TextField getUsernameField() {
         return usernameField;
     }
@@ -191,28 +188,24 @@ public class ForgetPasswordMenuView implements Screen {
         return usernameErrorLabel;
     }
 
-    public TextField getSecurityField() {
-        return securityField;
+    public TextField getPasswordField() {
+        return passwordField;
     }
 
-    public Label getSecurityErrorLabel() {
-        return securityErrorLabel;
+    public Label getPasswordErroeLabel() {
+        return passwordErroeLabel;
     }
 
-    public TextField getNewPasswordField() {
-        return newPasswordField;
+    public CheckBox getStayLoggedInCheckBox() {
+        return stayLoggedInCheckBox;
     }
 
-    public Label getNewPasswordErrorLabel() {
-        return newPasswordErrorLabel;
+    public TextButton getLoginButton() {
+        return loginButton;
     }
 
-    public TextButton getRandomPasswordButton() {
-        return randomPasswordButton;
-    }
-
-    public TextButton getChangePasswordButton() {
-        return changePasswordButton;
+    public TextButton getForgotPasswordButton() {
+        return forgotPasswordButton;
     }
 
     public TextButton getBackButton() {

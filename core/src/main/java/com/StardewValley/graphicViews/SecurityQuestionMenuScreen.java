@@ -11,10 +11,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import org.w3c.dom.Text;
 
-public class SecurityQuestionMenuView implements Screen {
+public class SecurityQuestionMenuScreen implements Screen {
     private Stage stage;
     private final Skin skin;
 
@@ -39,7 +39,7 @@ public class SecurityQuestionMenuView implements Screen {
     private Music music;
     private final SecurityQuestionController controller;
 
-    public SecurityQuestionMenuView() {
+    public SecurityQuestionMenuScreen() {
         this.controller = AppControllers.securityQuestionController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture);
@@ -51,7 +51,8 @@ public class SecurityQuestionMenuView implements Screen {
         this.question4 = new CheckBox("4- What was your first school's name?", skin);
         this.question5 = new CheckBox("5- What was the model of your very first phone?", skin);
         this.answerLabel = new Label("Answer your Question:", skin);
-        this.answer = new TextField("Enter your Answer", skin);
+        this.answer = new TextField("", skin);
+        this.answer.setMessageText("Enter your Answer");
         this.answerErrorLabel = new Label("", skin);
         this.registerButton = new TextButton("Register", skin);
         this.backButton = new TextButton("Back", skin);
@@ -65,7 +66,7 @@ public class SecurityQuestionMenuView implements Screen {
         music.setLooping(true);
         music.play();
 
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new FillViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
 
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

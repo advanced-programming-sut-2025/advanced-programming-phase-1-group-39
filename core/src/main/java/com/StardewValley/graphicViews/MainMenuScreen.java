@@ -2,7 +2,6 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.MainMenuController;
-import com.StardewValley.graphicControllers.SignupMenuController;
 import com.StardewValley.models.GameMenuAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,9 +11,10 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class MainMenuView implements Screen {
+public class MainMenuScreen implements Screen {
     private Stage stage;
     private final Skin skin;
 
@@ -30,7 +30,7 @@ public class MainMenuView implements Screen {
     private Music music;
     private final MainMenuController controller;
 
-    public MainMenuView() {
+    public MainMenuScreen() {
         this.controller = AppControllers.mainMenuController;
         this.skin = GameMenuAssetManager.skin;
         this.background = new Image(GameMenuAssetManager.MenuTexture2);
@@ -46,7 +46,7 @@ public class MainMenuView implements Screen {
     @Override
     public void show() {
 
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new FillViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
 
         // تنظیم و اضافه‌کردن بک‌گراند

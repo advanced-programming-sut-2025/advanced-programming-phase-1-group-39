@@ -1,9 +1,9 @@
 package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
-import com.StardewValley.graphicViews.LoginMenuView;
-import com.StardewValley.graphicViews.SecurityQuestionMenuView;
-import com.StardewValley.graphicViews.SignupMenuView;
+import com.StardewValley.graphicViews.LoginMenuScreen;
+import com.StardewValley.graphicViews.SecurityQuestionMenuScreen;
+import com.StardewValley.graphicViews.SignupMenuScreen;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Enums.commands.SignupMenuCommands;
@@ -19,9 +19,9 @@ import java.util.Random;
 import java.util.regex.Matcher;
 
 public class SignupMenuController {
-    private SignupMenuView view;
+    private SignupMenuScreen view;
 
-    public void setView(SignupMenuView view) {
+    public void setView(SignupMenuScreen view) {
         this.view = view;
     }
 
@@ -36,95 +36,77 @@ public class SignupMenuController {
                     String confirmPassword = view.getConfirmPasswordField().getText();
                     String nickname = view.getNicknameField().getText();
                     String email = view.getEmailField().getText();
-                    if (view.getSignUpButton().isChecked()) {
-                        Matcher matcher;
-                        // --- username ---
-                        if (username == null || username.equals("Enter your Username")) {
-                            cleanMessage();
-                            view.getUsernameErrorLabel().setText("Username cannot be empty");
-                            view.getSignUpButton().setChecked(false);
-                        }
-                            if (!isUsernameUnique(username)) {
-                                cleanMessage();
-                                String newUsername = getUniqueName(username);
-                                view.getUsernameErrorLabel().setText(("This username is already taken. You can use this : " +
-                                        "((" + newUsername + "))."));
-                                view.getSignUpButton().setChecked(false);
-                            } else if ((matcher = SignupMenuCommands.UserName.getMatcher(username)) == null) {
-                                cleanMessage();
-                                view.getUsernameErrorLabel().setText("The username format is incorrect");
-                                view.getSignUpButton().setChecked(false);
-                            }
-                            // --- password ---
-                            else if (password == null || password.equals("Enter your Password")) {
-                                cleanMessage();
-                                view.getPasswordErrorLabel().setText("the password cannot be empty");
-                                view.getSignUpButton().setChecked(false);
-                            } else if ((matcher = SignupMenuCommands.Password.getMatcher(password)) == null) {
-                                cleanMessage();
-                                view.getPasswordErrorLabel().setText("The password format is incorrect");
-                                view.getSignUpButton().setChecked(false);
-                            } else if ((matcher = SignupMenuCommands.WeakPassword.getMatcher(password)) == null) {
-                                cleanMessage();
-                                StringBuilder output = validatePassword(password);
-                                view.getPasswordErrorLabel().setText(output.toString());
-                                view.getSignUpButton().setChecked(false);
-                            } else if (!password.equals(confirmPassword)) {
-                                cleanMessage();
-                                view.getConfirmPasswordErrorLabel().setText("Password and confirmation do not match");
-                                view.getSignUpButton().setChecked(false);
-                            }
-                            // --- nickname ---
-                            else if (nickname == null || nickname.equals("Enter your Nickname")) {
-                                cleanMessage();
-                                view.getNicknameErrorLabel().setText("The nickname cannot be empty");
-                                view.getSignUpButton().setChecked(false);
-                            }
-                            // --- email ---
-                            else if ((matcher = SignupMenuCommands.Email.getMatcher(email)) == null) {
-                                cleanMessage();
-                                view.getEmailErrorLabel().setText("The email address you entered is invalid");
-                                view.getSignUpButton().setChecked(false);
-                            }
-                            // --- creat an account ---
-                            else {
-                                App app = App.getApp();
-                                boolean isMale = view.getGenderField().getSelected().equals("Male");
-                                app.setPendingUser(new User(username, password, nickname, email, isMale));
-                                Main.getMain().setScreen(new SecurityQuestionMenuView());
-                            }
+                    Matcher matcher;
+                    // --- username ---
+                    if (username == null || username.equals("Enter your Username")) {
+                        cleanMessage();
+                        view.getUsernameErrorLabel().setText("Username cannot be empty");
+                    }
+                    if (!isUsernameUnique(username)) {
+                        cleanMessage();
+                        String newUsername = getUniqueName(username);
+                        view.getUsernameErrorLabel().setText(("This username is already taken. You can use this : " +
+                                "((" + newUsername + "))."));
+                    } else if ((matcher = SignupMenuCommands.UserName.getMatcher(username)) == null) {
+                        cleanMessage();
+                        view.getUsernameErrorLabel().setText("The username format is incorrect");
+                    }
+                    // --- password ---
+                    else if (password == null || password.equals("Enter your Password")) {
+                        cleanMessage();
+                        view.getPasswordErrorLabel().setText("the password cannot be empty");
+                    } else if ((matcher = SignupMenuCommands.Password.getMatcher(password)) == null) {
+                        cleanMessage();
+                        view.getPasswordErrorLabel().setText("The password format is incorrect");
+                    } else if ((matcher = SignupMenuCommands.WeakPassword.getMatcher(password)) == null) {
+                        cleanMessage();
+                        StringBuilder output = validatePassword(password);
+                        view.getPasswordErrorLabel().setText(output.toString());
+                    } else if (!password.equals(confirmPassword)) {
+                        cleanMessage();
+                        view.getConfirmPasswordErrorLabel().setText("Password and confirmation do not match");
+                    }
+                    // --- nickname ---
+                    else if (nickname == null || nickname.equals("Enter your Nickname")) {
+                        cleanMessage();
+                        view.getNicknameErrorLabel().setText("The nickname cannot be empty");
+                    }
+                    // --- email ---
+                    else if ((matcher = SignupMenuCommands.Email.getMatcher(email)) == null) {
+                        cleanMessage();
+                        view.getEmailErrorLabel().setText("The email address you entered is invalid");
+                    }
+                    // --- creat an account ---
+                    else {
+                        App app = App.getApp();
+                        boolean isMale = view.getGenderField().getSelected().equals("Male");
+                        app.setPendingUser(new User(username, password, nickname, email, isMale));
+                        App.getApp().setCurrentMenu(Menu.SECURITY_QUESTION_MENU);
+                        Main.getMain().switchScreen(new SecurityQuestionMenuScreen());
                     }
                 }
             });
 
             view.getLoginButton().addListener(new ChangeListener() {
-
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getLoginButton().isChecked()) {
-                        Main.getMain().setScreen(new LoginMenuView());
-                    }
+                    App.getApp().setCurrentMenu(Menu.LOGIN_MENU);
+                    Main.getMain().switchScreen(new LoginMenuScreen());
                 }
             });
 
             view.getExitButton().addListener(new ChangeListener() {
-
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getExitButton().isChecked()) {
-                        Gdx.app.exit();
-                    }
+                    App.getApp().setCurrentMenu(Menu.ExitMenu);
+                    Gdx.app.exit();
                 }
             });
 
             view.getRandomPasswordButton().addListener(new ChangeListener() {
-
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    if (view.getRandomPasswordButton().isChecked()) {
-                        view.getPasswordField().setText(generateStrongPassword());
-                        view.getRandomPasswordButton().setChecked(false);
-                    }
+                    view.getPasswordField().setText(generateStrongPassword());
                 }
             });
         }

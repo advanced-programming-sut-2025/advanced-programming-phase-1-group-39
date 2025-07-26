@@ -247,7 +247,7 @@ public class PregameMenuScreen implements Screen {
                 if (startGamePageIndex == 0) {
                     // check the form
                     Result result = controller.checkStartGame(user2.getText(), user3.getText(),
-                            user4.getText(), mapIds);
+                            user4.getText());
                     if (!result.success())
                         errorLabel.setText(result.message());
                     else {
@@ -257,8 +257,7 @@ public class PregameMenuScreen implements Screen {
                         showPage(1);
                     }
                 } else if (startGamePageIndex == numOfStartGamePages - 1) {
-                    App.getApp().setCurrentMenu(Menu.GAME);
-                    Main.getMain().switchScreen(new GameScreen());
+                    controller.startGame(mapIds);
                 } else {
                     showPage(1);
                 }

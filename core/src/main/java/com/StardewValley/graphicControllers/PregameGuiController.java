@@ -2,6 +2,7 @@ package com.StardewValley.graphicControllers;
 
 import com.StardewValley.Main;
 import com.StardewValley.controllers.AppControllers;
+import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.graphicViews.MainMenuScreen;
 import com.StardewValley.graphicViews.PregameMenuScreen;
 import com.StardewValley.models.*;
@@ -20,7 +21,7 @@ public class PregameGuiController {
 
     ArrayList<User> gameUsers = new ArrayList<>();
 
-    public Result checkStartGame(String user2, String user3, String user4, int[] mapIds) {
+    public Result checkStartGame(String user2, String user3, String user4) {
         User loggedInUser = App.getApp().getLoggedInUser();
         ArrayList<String> usernames = new ArrayList<>(List.of(loggedInUser.getUserName(), user2,user3,user4));
         gameUsers.clear();
@@ -49,6 +50,10 @@ public class PregameGuiController {
         }
         // TODO : check users being online
         // TODO : check users playing game
+        return new Result(true, "");
+    }
+
+    public void startGame(int[] mapIds) {
         int gameId = Game.lastGameId;
         ArrayList<Player> players = new ArrayList<>();
         for (User user : gameUsers) {
@@ -67,7 +72,8 @@ public class PregameGuiController {
             game.addRandomFarmForPlayer(player, FarmType.getFarmTypeById(mapIds[c++]));
         }
         game.startGame();
-        return new Result(true, "");
+        App.getApp().setCurrentMenu(Menu.GAME);
+        Main.getMain().switchScreen(new GameScreen());
     }
 
     public Result loadGame() {

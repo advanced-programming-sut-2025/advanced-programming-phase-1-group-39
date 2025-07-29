@@ -57,17 +57,16 @@ public class ProfileMenuScreen implements Screen {
     private final ProfileGuiController controller;
 
     public ProfileMenuScreen() {
-        User user = App.getApp().getLoggedInUser();
         this.controller = AppGuiControllers.profileGuiController;
         this.skin = GameAssetManager.skin;
         this.background = new Image(GameAssetManager.MenuTexture2);
         this.logo = new Image(GameAssetManager.logoTexture);
         this.menuTitle = new Label("Profile Menu", skin);
-        this.username = new Label("Username : " + user.getUserName(), skin);
-        this.nickname = new Label("Nickname : " + user.getNickname(), skin);
-        this.maxCoin = new Label("Most Coin Earned : " + user.getHighestMoneyEarnedInASingleGame(), skin);
-        this.numberOfGamesPlayed = new Label("Number of Games Played : " + user.getNumberOfGamesPlayed(), skin);
-        if (user.getIsMale()) {
+        this.username = new Label("Username : " + App.getApp().getLoggedInUser().getUserName(), skin);
+        this.nickname = new Label("Nickname : " + App.getApp().getLoggedInUser().getNickname(), skin);
+        this.maxCoin = new Label("Most Coin Earned : " + App.getApp().getLoggedInUser().getHighestMoneyEarnedInASingleGame(), skin);
+        this.numberOfGamesPlayed = new Label("Number of Games Played : " + App.getApp().getLoggedInUser().getNumberOfGamesPlayed(), skin);
+        if (App.getApp().getLoggedInUser().getIsMale()) {
             this.genderLabel = new Label("Gender : Male", skin);
         } else { this.genderLabel = new Label("Gender : Female", skin); }
         this.changeUsernameLabel = new Label("Change Username :", skin);

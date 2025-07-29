@@ -48,7 +48,8 @@ public class Main extends Game {
 //        currentGame.startGame();
 
         /// /////test//////////////
-        switchScreen(getScreenByMenu(App.getApp().getCurrentMenu()));
+        //switchScreen(getScreenByMenu(App.getApp().getCurrentMenu()));
+        switchScreen(new SignupMenuScreen());
 
         Thread terminalController = new Thread(() -> {
             new AppView().run();
@@ -63,7 +64,7 @@ public class Main extends Game {
 
     @Override
     public void dispose() {
-        SaveAppManager.saveApp();
+        //SaveAppManager.saveApp();
         batch.dispose();
     }
 

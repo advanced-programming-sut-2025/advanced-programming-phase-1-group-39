@@ -135,7 +135,7 @@ public class LoginMenuScreen implements Screen {
 
         // ===== Back Button =====
         backButton.setColor(Color.valueOf("E9D8A6"));
-        backButton.setPosition(20, 1300);
+        backButton.setPosition(20, 950);
         stage.addActor(backButton);
 
         controller.handleLogin();

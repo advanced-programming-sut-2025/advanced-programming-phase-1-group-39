@@ -51,7 +51,8 @@ public class LoginGuiController {
                             App.getApp().setLoggedInUser(getUserByUsername(username));
                             Main.getMain().switchScreen(new MainMenuScreen());
                         } else {
-                            App.getApp().setLoggedInUser(getUserByUsername(username));
+                            App.getApp().setLoggedInUser(App.getApp().getUserByUsername(username));
+                            App.getApp().setCurrentMenu(Menu.MAIN_MENU);
                             Main.getMain().switchScreen(new MainMenuScreen());
                         }
                     }

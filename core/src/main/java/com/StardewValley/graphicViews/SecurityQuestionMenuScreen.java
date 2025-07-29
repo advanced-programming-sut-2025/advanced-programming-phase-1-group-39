@@ -86,7 +86,7 @@ public class SecurityQuestionMenuScreen implements Screen {
         // Title Label
         securityQuestionLabel.setColor(Color.valueOf("ffd60a"));
         securityQuestionLabel.setFontScale(1.5f);
-        table.add(securityQuestionLabel).colspan(2).center().padBottom(100);
+        table.add(securityQuestionLabel).colspan(2).center().padBottom(50);
         table.row();
 
         // ==== Checkboxes ====
@@ -120,7 +120,7 @@ public class SecurityQuestionMenuScreen implements Screen {
         table.add(buttonRow).colspan(2);
         table.row();
 
-        backButton.setPosition(20, 1300);
+        backButton.setPosition(20, 950);
         stage.addActor(backButton);
 
         stage.addActor(table);

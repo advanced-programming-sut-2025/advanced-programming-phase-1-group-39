@@ -21,7 +21,7 @@ public class App {
     private Game currentGame = null;
     private int lastGameId = 101;
 
-    private static Music music;
+    private static Music music = GameAssetManager.music1;
 
     private Menu currentMenu = Menu.SIGNUP_MENU;
 
@@ -32,7 +32,6 @@ public class App {
     public static App getApp() {
         if (app == null) {
             app = new App();
-            music = GameAssetManager.music1;
         }
         return app;
     }

@@ -11,7 +11,9 @@ import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.StardewValley.views.AppView;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -21,7 +23,11 @@ public class Main extends Game {
 
     @Override
     public void create() {
-        AppDataManager.loadApp();
+        try {
+            AppDataManager.loadApp();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         main = this;
         batch = new SpriteBatch();
 
@@ -63,7 +69,7 @@ public class Main extends Game {
 
     @Override
     public void dispose() {
-        SaveAppManager.saveApp();
+        AppDataManager.saveApp();
         batch.dispose();
     }
 

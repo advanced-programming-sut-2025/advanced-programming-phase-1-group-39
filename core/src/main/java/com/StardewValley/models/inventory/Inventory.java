@@ -190,4 +190,8 @@ public class Inventory {
     public ItemStack getInHand() {
         return inHand;
     }
+
+    public ArrayList<ItemStack> getInventoryItems() {
+        return inventoryItems;
+    }
 }

@@ -1,5 +1,8 @@
 package com.StardewValley.models;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+
 public class Constants {
     public static final int WORLD_MAP_WIDTH = 300; // 80 140 80
     public static final int WORLD_MAP_HEIGHT = 150; // 50 50 50
@@ -15,5 +18,4 @@ public class Constants {
     public static final double MAX_ENERGY = 200;
 
     public static final int MAX_SKILL_LEVEL = 4;
-
 }

@@ -2,6 +2,7 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.SignupGuiController;
+import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
@@ -244,7 +245,7 @@ public class SignupMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        SaveAppManager.saveApp();
+        AppDataManager.saveApp();
         stage.dispose();
     }
 

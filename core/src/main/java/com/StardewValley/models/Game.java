@@ -16,6 +16,7 @@ import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.saveClasses.GameData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,9 @@ public class Game {
     private int id;
 
     private ArrayList<Player> players;
-    private String loadedPlayerUsername;
+
     private Player mainPlayer;
     private Player playerInTurn;
-
 
     private transient Map gameMap;
     private ArrayList<Building> buildings = new ArrayList<>();
@@ -64,6 +64,11 @@ public class Game {
 
         todayWeather.setStatus(WeatherStatus.SUNNY);
         tomorrowWeather.setWeatherRandom(Season.SPRING);
+    }
+
+    // for load game
+    public Game(GameData gameData) {
+        // TODO
     }
 
     public void startGame() {
@@ -488,14 +493,6 @@ public class Game {
 
     public void setTomorrowWeather(WeatherStatus status) {
         tomorrowWeather.setStatus(status);
-    }
-
-    public void setLoadedPlayerUsername(String PlayerUsername) {
-        this.loadedPlayerUsername = PlayerUsername;
-    }
-
-    public String getLoadedPlayerUsername() {
-        return loadedPlayerUsername;
     }
 
     public void addBuilding(Building building) {

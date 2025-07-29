@@ -19,7 +19,6 @@ public class App {
     private boolean stayLoggedIn = false;
 
     private Game currentGame = null;
-    private int lastGameId = 101;
 
     private static Music music;
 
@@ -119,7 +118,7 @@ public class App {
     }
 
     public void setLastGameId(int gameId) {
-        this.lastGameId = gameId;
+        Game.lastGameId = gameId;
     }
 
     public void setCurrentGame(Game currentGame) {

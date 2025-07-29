@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Player {
+    private static int playersNum = 101;
+    private int id;
+
     private int gameId;
 
     private Location location = new Location(0,0);
@@ -29,8 +32,9 @@ public class Player {
     private Location endOfFarm;
 
     private String username;
+    private String nickname;
 
-    FoodBuff buff = null;
+    private transient FoodBuff buff = null;
 
     private double energy = Constants.MAX_ENERGY;
     private double turnEnergy = Constants.MAX_ENERGY_PER_TURN;
@@ -43,9 +47,8 @@ public class Player {
     private Inventory inventory;
 
 
-    private ArrayList<CraftingRecipe> craftingRecipes = new ArrayList<>();
-    private ArrayList<ArtisanMachineRecipe> artisanMachineRecipes = new ArrayList<>();
-    private ArrayList<FoodRecipe> foodRecipes = new ArrayList<>();
+    private ArrayList<String> learnedCraftingRecipeNames = new ArrayList<>();
+    private ArrayList<String> learnedFoodRecipeNames = new ArrayList<>();
 
     private HashMap<NPC, Integer> NPCsFriendship = new HashMap<>();
 
@@ -64,7 +67,7 @@ public class Player {
 
     private String spouseName;
 
-    public Player(String username, int gameId) {
+    public Player(String username, String nickname, int gameId) {
         ItemStack hoe = new ItemStack(new Hoe(), 1);
         ItemStack pickaxe = new ItemStack(new Pickaxe(), 1);
         ItemStack axe = new ItemStack(new Axe(), 1);
@@ -77,8 +80,10 @@ public class Player {
         );
 
         this.username = username;
+        this.nickname = nickname;
 
         this.gameId = gameId;
+        id = playersNum++;
     }
 
     public boolean isConscious() {
@@ -307,30 +312,32 @@ public class Player {
 
 
     public void learnCraftingRecipe(CraftingRecipe recipe) {
-        craftingRecipes.add(recipe);
+        learnedCraftingRecipeNames.add(recipe.getName());
     }
     public boolean hasLearnedCraftingRecipe(CraftingRecipe recipe) {
-        return craftingRecipes.contains(recipe);
+        return learnedCraftingRecipeNames.contains(recipe.getName());
     }
     public String showCraftingRecipes() {
         StringBuilder sb = new StringBuilder();
-        for (CraftingRecipe recipe : craftingRecipes) {
-            sb.append(recipe.toString());
+        for (String recipeName : learnedCraftingRecipeNames) {
+            CraftingRecipe recipe = CraftingRecipe.getRecipeByName(recipeName);
+            sb.append(recipe);
         }
         return sb.toString();
     }
 
     public void learnFoodRecipe(FoodRecipe recipe) {
         if (hasLearnedFoodRecipe(recipe)) return;
-        foodRecipes.add(recipe);
+        learnedFoodRecipeNames.add(recipe.name());
     }
     public boolean hasLearnedFoodRecipe(FoodRecipe recipe) {
-        return foodRecipes.contains(recipe);
+        return learnedFoodRecipeNames.contains(recipe.name());
     }
     public String showFoodRecipes() {
         StringBuilder sb = new StringBuilder();
-        for (FoodRecipe recipe : foodRecipes) {
-            sb.append(recipe.toString());
+        for (String recipeName : learnedFoodRecipeNames) {
+            FoodRecipe recipe = FoodRecipe.getRecipeByName(recipeName);
+            sb.append(recipe);
         }
         return sb.toString();
     }
@@ -349,7 +356,7 @@ public class Player {
     }
 
 
-
+    // Animals
     public void addAnimal(Animal animal) {
         animals.put(animal.getName(), animal);
     }
@@ -514,5 +521,9 @@ public class Player {
             case 3 :
                 learnFoodRecipe(FoodRecipe.SEAFOAM_PUDDING);
         }
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "userName": "mir",
+      "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
+      "nickname": "mir",
+      "email": "mir@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "5",
+        "answer": "nokia"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0,
+      "currentGameId": -1,
+      "playersIds": []
+    }
+  ],
+  "loggedInUser": {
+    "userName": "mir",
+    "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
+    "nickname": "mir",
+    "email": "mir@gmail.com",
+    "isMale": true,
+    "securityQuestion": {
+      "question": "5",
+      "answer": "nokia"
+    },
+    "numberOfGamesPlayed": 0,
+    "highestMoneyEarnedInASingleGame": 0,
+    "currentGameId": -1,
+    "playersIds": []
+  }
+}

@@ -37,10 +37,10 @@ public class GameMenuController {
         } else if (hasCurrentGame(username3)) {
             return new Result(false, "username3 already has a current game.");
         } else {
-            Player player1 = new Player(app.getLoggedInUser().getUserName(), Game.lastGameId);
-            Player player2 = new Player(username1, Game.lastGameId);
-            Player player3 = new Player(username2, Game.lastGameId);
-            Player player4 = new Player(username3, Game.lastGameId);
+            Player player1 = new Player(app.getLoggedInUser().getUserName(), app.getLoggedInUser().getNickname(), Game.lastGameId);
+            Player player2 = new Player(username1,username1, Game.lastGameId);
+            Player player3 = new Player(username2,username2, Game.lastGameId);
+            Player player4 = new Player(username3,username3, Game.lastGameId);
             ArrayList<Player> players = new ArrayList<>(List.of(player1, player2, player3, player4));
             ArrayList<User> users = app.getUsers();
             for (Player player : players) {

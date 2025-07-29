@@ -3,9 +3,9 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.PregameGuiController;
 import com.StardewValley.models.App;
-import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.map.Map;
+import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -337,7 +337,7 @@ public class PregameMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-//        SaveAppManager.saveApp();
+        AppDataManager.saveApp();
         stage.dispose();
         background.dispose();
     }

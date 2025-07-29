@@ -4,7 +4,6 @@ package com.StardewValley.models.NPC;
 import com.StardewValley.models.ItemStack;
 
 public class Quest {
-
     int level;
     ItemStack task;
 

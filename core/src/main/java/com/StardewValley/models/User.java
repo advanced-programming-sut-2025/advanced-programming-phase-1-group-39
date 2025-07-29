@@ -15,7 +15,6 @@ public class User {
     private int highestMoneyEarnedInASingleGame;
 
     private Game currentGame = null;
-
     private ArrayList<Player> players = new ArrayList<>();
 
     public User(String userName, String password, String nickname, String email, boolean isMale) {
@@ -46,6 +45,10 @@ public class User {
 
     public void setSecurityQuestion(SecurityQuestion securityQuestion) {
         this.securityQuestion = securityQuestion;
+    }
+
+    public void setNumberOfGamesPlayed(int numberOfGamesPlayed) {
+        this.numberOfGamesPlayed = numberOfGamesPlayed;
     }
 
     public void setHighestMoneyEarnedInASingleGame(int highestMoneyEarnedInASingleGame) {

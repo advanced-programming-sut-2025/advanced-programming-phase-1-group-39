@@ -57,7 +57,7 @@ public class PregameGuiController {
         int gameId = Game.lastGameId;
         ArrayList<Player> players = new ArrayList<>();
         for (User user : gameUsers) {
-            players.add(new Player(user.getUserName(), gameId));
+            players.add(new Player(user.getUserName(), user.getNickname(), gameId));
         }
         Game game = new Game(players);
         App.getApp().addGame(game);

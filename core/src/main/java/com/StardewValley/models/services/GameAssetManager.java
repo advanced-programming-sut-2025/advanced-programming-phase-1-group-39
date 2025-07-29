@@ -22,7 +22,9 @@ public class GameAssetManager {
 
     public static Music music1 = Gdx.audio.newMusic(Gdx.files.internal("musics/01. Stardew Valley Overture.mp3"));
 
-
+    static {
+        initializeAssets();
+    }
 
     public static void initializeAssets() {
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));

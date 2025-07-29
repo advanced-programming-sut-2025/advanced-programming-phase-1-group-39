@@ -48,8 +48,8 @@ public class Main extends Game {
 //        currentGame.startGame();
 
         /// /////test//////////////
-        //switchScreen(getScreenByMenu(App.getApp().getCurrentMenu()));
-        switchScreen(new SignupMenuScreen());
+        switchScreen(getScreenByMenu(App.getApp().getCurrentMenu()));
+        //switchScreen(new SignupMenuScreen());
 
         Thread terminalController = new Thread(() -> {
             new AppView().run();

@@ -47,7 +47,7 @@ public class ForgetPasswordMenuScreen implements Screen {
         this.skin = GameAssetManager.skin;
         this.background = new Image(GameAssetManager.MenuTexture);
         this.logo = new Image(GameAssetManager.logoTexture);
-        this.menuTitle = new Label("Forget Password", skin);
+        this.menuTitle = new Label("Forget Password Menu", skin);
         this.usernameLabel = new Label("Username :", skin);
         this.usernameField = new TextField("", skin);
         this.usernameField.setMessageText("Enter your username");

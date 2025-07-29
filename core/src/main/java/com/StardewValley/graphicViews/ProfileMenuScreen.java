@@ -98,8 +98,8 @@ public class ProfileMenuScreen implements Screen {
     public void show() {
         stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
-        music.setLooping(true);
-        music.play();
+//        music.setLooping(true);
+//        music.play();
 
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         background.setColor(1, 1, 1, 0.5f);
@@ -113,11 +113,11 @@ public class ProfileMenuScreen implements Screen {
         stage.addActor(logo);
 
         table.setFillParent(true);
-        table.top().padTop(225);
+        table.top().padTop(180);
 
-        menuTitle.setFontScale(1.5f);
+        menuTitle.setFontScale(2f);
         menuTitle.setColor(Color.valueOf("ffd60a"));
-        table.add(menuTitle).colspan(2).center().padBottom(50);
+        table.add(menuTitle).colspan(2).center().padBottom(20);
         table.row();
 
         changeUsernameLabel.setColor(Color.valueOf("ffee99"));
@@ -147,11 +147,23 @@ public class ProfileMenuScreen implements Screen {
         numberOfGamesPlayed.setFontScale(1.5f);
         numberOfGamesPlayed.setColor(Color.valueOf("ffaa00"));
 
-        table.add(username).center().colspan(2).padBottom(10).row();
-        table.add(nickname).center().colspan(2).padBottom(10).row();
-        table.add(genderLabel).center().colspan(2).padBottom(10).row();
-        table.add(maxCoin).center().colspan(2).padBottom(10).row();
-        table.add(numberOfGamesPlayed).center().colspan(2).padBottom(50).row();
+        // ========== Row A: Username + Nickname ==========
+        Table infoRow1 = new Table();
+        infoRow1.add(username).center().padRight(100);
+        infoRow1.add(nickname).center();
+        table.add(infoRow1).padRight(100).padBottom(10).row();
+
+        // ========== Row B: Gender + Max Coin ==========
+        Table infoRow2 = new Table();
+        infoRow2.add(genderLabel).center().padRight(100);
+        infoRow2.add(maxCoin).center();
+        table.add(infoRow2).padBottom(10).row();
+
+        // ========== Row C: Number of Games Played ==========
+        Table infoRow3 = new Table();
+        infoRow3.add(numberOfGamesPlayed).left(); // فقط یکیه
+        table.add(infoRow3).padBottom(50).row();
+
 
         // ===================== Row 1: Change Username + Password =====================
         Table row1 = new Table();
@@ -197,7 +209,7 @@ public class ProfileMenuScreen implements Screen {
 
         // ==== Back Button ====
         backButton.setColor(Color.valueOf("E9D8A6"));
-        backButton.setPosition(20, 1300);
+        backButton.setPosition(20, 950);
         stage.addActor(backButton);
 
         stage.addActor(table);

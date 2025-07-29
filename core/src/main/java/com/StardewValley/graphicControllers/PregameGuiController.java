@@ -49,7 +49,6 @@ public class PregameGuiController {
                 return new Result(false, "user " + user.getUserName() + " already have a game");
         }
         // TODO : check users being online
-        // TODO : check users playing game
         return new Result(true, "");
     }
 

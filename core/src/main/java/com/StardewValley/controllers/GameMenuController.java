@@ -1,10 +1,14 @@
 package com.StardewValley.controllers;
 
 
+import com.StardewValley.Main;
+import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.map.AnsiColors;
 import com.StardewValley.models.map.FarmType;
+import com.StardewValley.models.saveClasses.GameData;
+import com.StardewValley.models.services.AppDataManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,19 +108,22 @@ public class GameMenuController {
     public Result loadGame() {
         App app = App.getApp();
         User user = app.getLoggedInUser();
-        Game currentGame = user.getCurrentGame();
-        if (currentGame == null) {
+
+        if (user.getGamesData().isEmpty()) {
             return new Result(false, "You don't have any game. please create a new game.");
-        } else if (haveOtherPlayersAnotherCurrentGame(currentGame.getPlayers(), currentGame.getId())) {
-            return new Result(false, "Some of other players of your game are currently in another game!");
         } else {
-            app.setCurrentGame(currentGame);
-            Game game = app.getCurrentGame();
-            game.setPlayerInTurn(getPlayerFromPlayers(app.getCurrentGame().getPlayers(),
-                    user.getUserName()));
-            app.getCurrentGame().setMainPlayer(game.getPlayerByUsername(user.getUserName()));
-            app.getCurrentGame().startGame();
+            int gameId = user.getGamesData().get(0).gameId;
+            GameData gameData = AppDataManager.loadGame(gameId);
+            if (haveOtherPlayersAnotherCurrentGame(gameData.players, gameId)) {
+                return new Result(false, "Some of other players of your game are currently in another game!");
+            }
+            // TODO : make a game with GameData
+            Game game = null;
+            app.setCurrentGame(game);
+            // TODO : add another method instead of start game for it
+//            app.getCurrentGame().startGame();
             app.setCurrentMenu(Menu.GAME);
+            Main.getMain().switchScreen(new GameScreen());
             return new Result(true, "the game was loaded successfully. you can now continue your game.");
         }
     }
@@ -196,7 +203,7 @@ public class GameMenuController {
     private boolean haveOtherPlayersAnotherCurrentGame(ArrayList<Player> players, int id) {
         App app = App.getApp();
         for (Player player : players) {
-            if (app.getUsers().get(getIndexInUsers(player.getUsername())).getCurrentGame() != null &&
+            if (app.getUserByUsername(player.getUsername()).getCurrentGame() != null &&
             app.getUsers().get(getIndexInUsers(player.getUsername())).getCurrentGame().getId() != id) {
                 return true;
             }

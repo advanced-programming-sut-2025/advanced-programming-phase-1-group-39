@@ -202,4 +202,32 @@ public class Tile {
         if (plant != null) return false;
         return true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Tile t = (Tile) o;
+        if (getLocation().hashCode() != t.getLocation().hashCode()) return false;
+        if (getType() != t.getType()) return false;
+
+        if (getItemOnTile() != null && t.getItemOnTile() != null) {
+            ItemStack item1 = getItemOnTile();
+            ItemStack item2 = t.getItemOnTile();
+
+            if (!item1.getName().equals(item2.getName()) || item1.getAmount() != item2.getAmount()) return false;
+        }
+        if (t.getPlant() != null) return false;
+
+        if (getTree() != null && t.getTree() != null) {
+            Tree tree1 = t.getTree();
+            Tree tree2 = getTree();
+            if (!tree1.getName().equals(tree2.getName())
+                || tree1.getCurrentStage() != tree2.getCurrentStage()
+                || tree1.hasFruit() != tree2.hasFruit()) return false;
+
+        }
+
+        if (t.getFertilizer() != null) return false;
+        if (t.canPlant() || t.isWatered || t.isFertilized) return false;
+        return true;
+    }
 }

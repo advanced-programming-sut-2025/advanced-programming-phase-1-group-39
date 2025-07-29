@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Map {
     private final int width = Constants.WORLD_MAP_WIDTH, height = Constants.WORLD_MAP_HEIGHT;
@@ -24,9 +25,13 @@ public class Map {
 
     private int npcMapStartX = Constants.FARM_WIDTH;
     private int npcMapStartY = Constants.DISABLED_HEIGHT;
+
+    private Random randGenerator;
     public static final int TILE_SIZE = 80;
 
-    public Map() {
+
+    public Map(long seed) {
+        randGenerator = new Random(seed);
         tiles = new Tile[height][width];
 
         for (int j = 0; j < height; j++) {
@@ -35,6 +40,7 @@ public class Map {
             }
         }
     }
+
 
     public String showFarmTypesInfo() {
         StringBuilder text = new StringBuilder();
@@ -246,9 +252,9 @@ public class Map {
                 if (isInBuilding) continue;
 
                 if (tile.canAddItemToTile()) {
-                    if (Math.random() < foragingPossibility) {
+                    if (randGenerator.nextDouble() < foragingPossibility) {
                         if (haveTree) {
-                            double random = Math.random();
+                            double random = randGenerator.nextDouble();
                             if (random < 0.05) {
                                 ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason);
                                 tile.placeItem(new ItemStack(randomCrop, 1));
@@ -260,7 +266,7 @@ public class Map {
                                 tile.placeItem(new ItemStack(randomMaterial, 1));
                             }
                         } else {
-                            if (Math.random() < 0.3) {
+                            if (randGenerator.nextDouble() < 0.3) {
                                 ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason);
                                 tile.placeItem(new ItemStack(randomCrop, 1));
                             } else {
@@ -271,8 +277,8 @@ public class Map {
                     }
                 }
                 if (tile.canAddMineralToQuarry()) {
-                    if (Math.random() < quarryPossibility) {
-                        if (Math.random() > 0.3) {
+                    if (randGenerator.nextDouble() < quarryPossibility) {
+                        if (randGenerator.nextDouble() > 0.3) {
                             tile.placeItem(new ItemStack(ForagingManager.foragingMaterials.get("Stone"), 1));
                         } else {
                             ForagingMineral randomMineral = ForagingManager.getRandomMineral();
@@ -370,7 +376,7 @@ public class Map {
         }
     }
 
-    public void loadMap(ArrayList<Shop> shops) {
+    public void addShopsAndDisabledTilesToMap(ArrayList<Shop> shops) {
         addDisabledTiles();
         addNpcMap(shops);
     }
@@ -640,4 +646,3 @@ public class Map {
         return true;
     }
 }
-

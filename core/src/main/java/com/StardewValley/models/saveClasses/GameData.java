@@ -15,10 +15,11 @@ public class GameData {
     public Weather todayWeather;
     public Weather tomorrowWeather;
 
-//    public MapChanges mapChanges;
-
     public ArrayList<Friendship> friendships;
     public ArrayList<Building> buildings;
+
+    public long mapRandSeed;
+    public MapChanges mapChanges;
 
     public GameData(Game game) {
         gameId = game.getId();
@@ -29,11 +30,13 @@ public class GameData {
         tomorrowWeather = game.getTomorrowWeather();
         friendships = game.getFriendships();
 
+        mapRandSeed = game.getMapRandSeed();
+        mapChanges = new MapChanges();
+        mapChanges.findMapChanges(game.getMap(), game.getBaseMap());
     }
 
     public static void settingOfTransients(GameData gameData) {
         for (Player player : gameData.players) {
-
             for (ItemStack stack : player.getInventory().getInventoryItems()) {
                 if (stack != null && stack.getName() != null) {
                     stack.setItem(ItemManager.getItemByName(stack.getName()));

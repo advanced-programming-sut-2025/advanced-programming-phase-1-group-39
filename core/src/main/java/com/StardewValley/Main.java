@@ -70,6 +70,7 @@ public class Main extends Game {
     @Override
     public void dispose() {
         AppDataManager.saveApp();
+        screen.dispose();
         batch.dispose();
     }
 

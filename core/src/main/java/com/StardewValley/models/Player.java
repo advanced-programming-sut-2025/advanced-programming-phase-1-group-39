@@ -22,9 +22,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Player {
-    private static int playersNum = 101;
-    private int id;
-
     private int gameId;
 
     private Location location = new Location(0,0);
@@ -83,7 +80,6 @@ public class Player {
         this.nickname = nickname;
 
         this.gameId = gameId;
-        id = playersNum++;
     }
 
     public boolean isConscious() {
@@ -521,9 +517,5 @@ public class Player {
             case 3 :
                 learnFoodRecipe(FoodRecipe.SEAFOAM_PUDDING);
         }
-    }
-
-    public int getId() {
-        return id;
     }
 }

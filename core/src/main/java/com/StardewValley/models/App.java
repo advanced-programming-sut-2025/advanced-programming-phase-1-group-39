@@ -117,8 +117,15 @@ public class App {
         this.pendingUser = pendingUser;
     }
 
-    public void setLastGameId(int gameId) {
-        Game.lastGameId = gameId;
+    public void resetLastGameId() {
+        int max = 101;
+        for (User user : users) {
+            for (GameMetadata gameData : user.getGamesData()) {
+                max = Math.max(gameData.gameId + 1, max);
+            }
+        }
+
+        Game.lastGameId = max;
     }
 
     public void setCurrentGame(Game currentGame) {

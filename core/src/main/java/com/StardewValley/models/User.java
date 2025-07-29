@@ -14,6 +14,8 @@ public class User {
     private int numberOfGamesPlayed;
     private int highestMoneyEarnedInASingleGame;
 
+    private ArrayList<GameMetadata> gamesData = new ArrayList<>();
+
     private Game currentGame = null;
     private ArrayList<Player> players = new ArrayList<>();
 
@@ -55,8 +57,18 @@ public class User {
         this.highestMoneyEarnedInASingleGame = highestMoneyEarnedInASingleGame;
     }
 
-    public void setCurrentGame(Game currentGame) { this.currentGame = currentGame; }
+    public void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
+        addGameToGamesData(currentGame);
+    }
 
+    public void addGameToGamesData(Game game) {
+        for (GameMetadata gameMetadata : gamesData) {
+            if (gameMetadata.gameId == game.getId()) gameMetadata.resetDescription(game);
+        }
+
+        this.gamesData.add(new GameMetadata(currentGame));
+    }
 
     public void addPlayer(Player player) { players.add(player); }
 
@@ -95,7 +107,13 @@ public class User {
 
     public Game getCurrentGame() { return currentGame; }
 
-    public ArrayList<Player> getPlayers() { return players; }
+    public ArrayList<GameMetadata> getGamesData() {
+        return gamesData;
+    }
+
+    public void setGamesData(ArrayList<GameMetadata> gamesData) {
+        this.gamesData = gamesData;
+    }
 
     public void ensureInitialized() {
         if (players == null) players = new ArrayList<>();

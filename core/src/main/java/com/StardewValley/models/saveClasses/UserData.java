@@ -1,9 +1,6 @@
 package com.StardewValley.models.saveClasses;
 
-import com.StardewValley.models.Game;
-import com.StardewValley.models.Player;
-import com.StardewValley.models.SecurityQuestion;
-import com.StardewValley.models.User;
+import com.StardewValley.models.*;
 
 
 import java.util.ArrayList;
@@ -19,8 +16,7 @@ public class UserData {
     private int numberOfGamesPlayed;
     private int highestMoneyEarnedInASingleGame;
 
-    private int currentGameId;
-    private ArrayList<Integer> playersIds = new ArrayList<>();
+    private ArrayList<GameMetadata> gamesData;
 
     public UserData(User user) {
         userName = user.getUserName();
@@ -31,16 +27,7 @@ public class UserData {
         securityQuestion = user.getSecurityQuestion();
         numberOfGamesPlayed = user.getNumberOfGamesPlayed();
         highestMoneyEarnedInASingleGame = user.getHighestMoneyEarnedInASingleGame();
-
-        currentGameId = -1;
-        Game game = user.getCurrentGame();
-        if (game != null) {
-            currentGameId = user.getCurrentGame().getId();
-        }
-
-        for (Player player : user.getPlayers()) {
-            playersIds.add(player.getId());
-        }
+        gamesData = user.getGamesData();
     }
 
     public User getUser() {
@@ -48,7 +35,12 @@ public class UserData {
         user.setSecurityQuestion(securityQuestion);
         user.setNumberOfGamesPlayed(numberOfGamesPlayed);
         user.setHighestMoneyEarnedInASingleGame(highestMoneyEarnedInASingleGame);
+        user.setGamesData(gamesData);
 
         return user;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 }

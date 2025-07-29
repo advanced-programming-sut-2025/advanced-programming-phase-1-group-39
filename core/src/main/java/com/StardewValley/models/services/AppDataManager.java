@@ -3,6 +3,13 @@ package com.StardewValley.models.services;
 
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.PlayerInteraction.Friendship;
+import com.StardewValley.models.buildings.Building;
+import com.StardewValley.models.inventory.Inventory;
+import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.saveClasses.GameData;
+import com.StardewValley.models.saveClasses.MapChanges;
 import com.StardewValley.models.saveClasses.UserData;
 import com.StardewValley.models.saveClasses.UsersData;
 import com.badlogic.gdx.Gdx;
@@ -12,16 +19,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AppDataManager {
     private static final String USERS_DATA_PATH = "projectData/users.json";
-    private static final String GAMES_DATA_PATH = "projectData/games/";
+    public static final String GAMES_DATA_PATH = "projectData/games/";
 
     private static UsersData usersData;
     private static final Kryo kryo = new Kryo();
     static {
         kryo.setReferences(true);
-
+        registerKryoClasses();
     }
     private static final Gson gson = new GsonBuilder().setPrettyPrinting()
             // ITEM Abstract class
@@ -113,6 +121,40 @@ public class AppDataManager {
 //            )
             .create();
 
+    private static void registerKryoClasses() {
+        // کلاس‌های اصلی
+        kryo.register(GameData.class);
+        kryo.register(Player.class);
+        kryo.register(Time.class);
+        kryo.register(Weather.class);
+        kryo.register(Friendship.class);
+
+        // کلاس‌های مربوط به نقشه
+        kryo.register(MapChanges.class);
+        kryo.register(Tile.class);
+
+        // کلاس‌های درون Player و Inventory
+        kryo.register(Inventory.class);
+        kryo.register(ItemStack.class);
+        kryo.register(Skill.class);
+        kryo.register(Location.class);
+        // ... هر کلاس دیگری که در Player دارید
+
+        // کلاس‌های ساختمان‌ها (باید تمام زیرکلاس‌های Building را ثبت کنید)
+        kryo.register(Building.class);
+        // مثال: kryo.register(Cabin.class);
+        // مثال: kryo.register(GreenHouse.class);
+        // ...
+
+        // Enum ها (در صورت نیاز)
+        kryo.register(Season.class);
+        // مثال: kryo.register(WeatherType.class);
+
+        // انواع داده استاندارد جاوا
+        kryo.register(ArrayList.class);
+        kryo.register(HashMap.class);
+    }
+
     public static void saveApp() {
         App app = App.getApp();
         // save users (json)
@@ -120,9 +162,6 @@ public class AppDataManager {
             saveUsers(app.getUsers(), app.getLoggedInUser());
         else
             saveUsers(app.getUsers(), null);
-
-        // save current Game in app
-
     }
 
     public static void loadApp() {
@@ -169,9 +208,9 @@ public class AppDataManager {
             usersData.add(new UserData(user));
         }
 
-        UserData loggedInUserData = null;
+        String loggedInUserData = null;
         if (loggedInUser != null) {
-            loggedInUserData = new UserData(loggedInUser);
+            loggedInUserData = loggedInUser.getUserName();
         }
 
         FileHandle file = Gdx.files.local(USERS_DATA_PATH);
@@ -197,24 +236,42 @@ public class AppDataManager {
         }
         app.setUsers(users);
 
-        UserData loggedInUserData = usersData.loggedInUser;
-        if (loggedInUserData != null) {
-            app.setLoggedInUser(loggedInUserData.getUser());
+        String loggedInUserName = usersData.loggedInUserName;
+        if (loggedInUserName != null) {
+            User loggedInUser = app.getUserByUsername(loggedInUserName);
+            app.setLoggedInUser(loggedInUser);
             app.setCurrentMenu(Menu.MAIN_MENU);
             app.setStayLoggedIn(true);
-//           TODO:  app.setLastGameId(); -> num of games
         }
+        app.resetLastGameId();
     }
-
 
     // Players & Games
     public static void saveGame(Game game) {
-        FileHandle file = Gdx.files.local(GAMES_DATA_PATH + "game_" + game.getId() + ".dat");
+        FileHandle file = Gdx.files.local(getGamePath(game.getId()));
         if (!file.exists()) {
             Gdx.app.log("GameManager", "Game Save file not found. Creating a new one.");
         }
+
+        GameData gameData = new GameData(game);
+
+        file.writeString(new GsonBuilder().create().toJson(gameData), false);
     }
 
+    public static GameData loadGame(int gameId) {
+        FileHandle file = Gdx.files.local(getGamePath(gameId));
+        if (!file.exists()) {
+            Gdx.app.log("Error", "Game File not found!");
+            return null;
+        }
+
+        GameData gameData = gson.fromJson(file.readString(), GameData.class);
+        return gameData;
+    }
+
+    public static String getGamePath(int gameId) {
+        return GAMES_DATA_PATH + "game_" + gameId + ".json";
+    }
 }
 
 

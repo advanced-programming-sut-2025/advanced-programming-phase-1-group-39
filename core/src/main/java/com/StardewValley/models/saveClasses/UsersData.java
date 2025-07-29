@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class UsersData {
     public ArrayList<UserData> users;
-    public UserData loggedInUser = null;
+    public String loggedInUserName;
 
-    public UsersData(ArrayList<UserData> users, UserData loggedInUser) {
+    public UsersData(ArrayList<UserData> users, String loggedInUserName) {
         this.users = users;
-        this.loggedInUser = loggedInUser;
+        this.loggedInUserName = loggedInUserName;
     }
 }

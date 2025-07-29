@@ -17,9 +17,11 @@ import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.saveClasses.GameData;
+import com.StardewValley.models.saveClasses.MapChanges;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Game {
     public static int lastGameId = 101;
@@ -31,6 +33,9 @@ public class Game {
     private Player playerInTurn;
 
     private transient Map gameMap;
+    private Map baseMap;
+    private long mapRandSeed;
+
     private ArrayList<Building> buildings = new ArrayList<>();
 
     private ArrayList<NPC> npcs = new ArrayList<>();
@@ -49,7 +54,10 @@ public class Game {
         this.players = new ArrayList<>(List.of(one, two, three, four));
         this.mainPlayer = one;
         this.playerInTurn = one;
-        this.gameMap = new Map();
+
+        mapRandSeed = new Random().nextLong();
+        this.gameMap = new Map(mapRandSeed);
+        baseMap = new Map(mapRandSeed);
 
         todayWeather.setStatus(WeatherStatus.SUNNY);
         tomorrowWeather.setWeatherRandom(Season.SPRING);
@@ -60,7 +68,10 @@ public class Game {
         this.players = players;
         this.mainPlayer = players.get(0);
         this.playerInTurn = players.get(0);
-        this.gameMap = new Map();
+
+        mapRandSeed = new Random().nextLong();
+        this.gameMap = new Map(mapRandSeed);
+        baseMap = new Map(mapRandSeed);
 
         todayWeather.setStatus(WeatherStatus.SUNNY);
         tomorrowWeather.setWeatherRandom(Season.SPRING);
@@ -76,9 +87,10 @@ public class Game {
         makeNPCBuildings();
 
         if (gameMap == null) {
-            setGameMapRandom();
+            setGameMapRandomly(mapRandSeed);
         }
-        gameMap.loadMap(getNpcShops());
+        gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
+        baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
 
         for (Player player : players) {
             resetPlayerLocation(player);
@@ -204,6 +216,7 @@ public class Game {
         player.setFarmBound(Map.getStartOfFarm(number));
         player.addFirstBuildingObjects(this);
         gameMap.addRandomFarm(farmType, number, player);
+        baseMap.addRandomFarm(farmType, number, player);
     }
 
     // time
@@ -680,10 +693,22 @@ public class Game {
     }
 
     //Load
-    public void setGameMapRandom() {
-        this.gameMap = new Map();
+    public void setGameMapRandomly(long seed) {
+        this.gameMap = new Map(seed);
         for (Player player : players) {
             addRandomFarmForPlayer(player, FarmType.getFarmTypeById((int) (Math.random() * 2)));
         }
+    }
+
+    public long getMapRandSeed() {
+        return mapRandSeed;
+    }
+
+    public void setMapRandSeed(long mapRandSeed) {
+        this.mapRandSeed = mapRandSeed;
+    }
+
+    public Map getBaseMap() {
+        return baseMap;
     }
 }

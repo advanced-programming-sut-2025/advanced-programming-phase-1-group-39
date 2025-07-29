@@ -5,6 +5,7 @@ import com.StardewValley.controllers.GameController;
 import com.StardewValley.models.*;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.services.AppDataManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -227,6 +228,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        System.out.println(game.getId());
+        AppDataManager.saveApp();
+        if (game != null) {
+            AppDataManager.saveGame(game);
+            System.out.println("Saved game");
+        }
     }
 }

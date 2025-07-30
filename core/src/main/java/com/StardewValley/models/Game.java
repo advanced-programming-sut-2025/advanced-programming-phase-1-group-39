@@ -17,7 +17,6 @@ import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.saveClasses.GameData;
-import com.StardewValley.models.saveClasses.MapChanges;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class Game {
     private Player playerInTurn;
 
     private transient Map gameMap;
-    private Map baseMap;
+    private transient Map baseMap;
     private long mapRandSeed;
 
     private ArrayList<Building> buildings = new ArrayList<>();
@@ -79,7 +78,32 @@ public class Game {
 
     // for load game
     public Game(GameData gameData) {
-        // TODO
+        this.id = gameData.gameId;
+        this.players = gameData.players;
+        this.mainPlayer = players.get(0);
+        this.playerInTurn = players.get(0);
+
+        mapRandSeed = gameData.mapRandSeed;
+
+        this.gameMap = new Map(mapRandSeed);
+        baseMap = new Map(mapRandSeed);
+
+        for (Player player : players) {
+            addRandomFarmForPlayer(player, player.getFarmType());
+        }
+        initializeNPCs();
+        makeNPCBuildings();
+
+        gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
+        baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
+        this.gameMap = gameData.mapChanges.getMapChanged(this.gameMap);
+
+        todayWeather = gameData.todayWeather;
+        tomorrowWeather = gameData.tomorrowWeather;
+
+        currentGiftNumber = gameData.currentGiftNumber;
+        friendships = gameData.friendships;
+        buildings = gameData.playerBuildings;
     }
 
     public void startGame() {
@@ -179,8 +203,6 @@ public class Game {
         for (NPC npc : npcs) {
             npc.setLocation(new Location(npc.getLocation().x() + Constants.FARM_WIDTH, npc.getLocation().y() + Constants.DISABLED_HEIGHT));
         }
-
-
     }
 
     public NPC getNPC(String NPCName) {
@@ -213,6 +235,7 @@ public class Game {
             return;
         }
 
+        player.setFarmType(farmType);
         player.setFarmBound(Map.getStartOfFarm(number));
         player.addFirstBuildingObjects(this);
         gameMap.addRandomFarm(farmType, number, player);

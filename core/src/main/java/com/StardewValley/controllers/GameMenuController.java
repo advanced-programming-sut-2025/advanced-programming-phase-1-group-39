@@ -112,16 +112,16 @@ public class GameMenuController {
         if (user.getGamesData().isEmpty()) {
             return new Result(false, "You don't have any game. please create a new game.");
         } else {
-            int gameId = user.getGamesData().get(0).gameId;
+            int gameId = user.getGamesData().getLast().gameId;
             GameData gameData = AppDataManager.loadGame(gameId);
+            if (gameData == null) {
+                return new Result(false, "There is no game with id " + gameId + ". Delete game files and try again.");
+            }
             if (haveOtherPlayersAnotherCurrentGame(gameData.players, gameId)) {
                 return new Result(false, "Some of other players of your game are currently in another game!");
             }
-            // TODO : make a game with GameData
-            Game game = null;
+            Game game = new Game(gameData);
             app.setCurrentGame(game);
-            // TODO : add another method instead of start game for it
-//            app.getCurrentGame().startGame();
             app.setCurrentMenu(Menu.GAME);
             Main.getMain().switchScreen(new GameScreen());
             return new Result(true, "the game was loaded successfully. you can now continue your game.");

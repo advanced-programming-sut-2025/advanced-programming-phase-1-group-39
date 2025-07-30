@@ -11,10 +11,6 @@ public class MapChanges {
 
     public MapChanges() {}
 
-    public void addToModifiedTiles(Tile tile) {
-        modifiedTiles.add(tile);
-    }
-
     public void findMapChanges(Map changed, Map base) {
         int height = Constants.WORLD_MAP_HEIGHT;
         int width = Constants.WORLD_MAP_WIDTH;
@@ -28,5 +24,13 @@ public class MapChanges {
                     modifiedTiles.add(changedTiles[j][i]);
             }
         }
+    }
+
+    public Map getMapChanged(Map baseMap) {
+        for (Tile tile : modifiedTiles) {
+            baseMap.replaceTile(tile);
+        }
+
+        return baseMap;
     }
 }

@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 public class Tree{
     private String name;
-    private Seed source;
+    private transient Seed source;
     private ArrayList<Integer> stages = new ArrayList<>();
     private int currentStage;
     private int daysOfCurrentStage;
@@ -35,7 +35,7 @@ public class Tree{
     boolean hasFruit = false;
 
 
-    public Tree(String name, Tile tile, Seed source, ArrayList<Integer> stages, int totalHarvestTime,
+    public Tree(String name, Seed source, ArrayList<Integer> stages, int totalHarvestTime,
                 String fruitName, int fruitHarvestCycle, int fruitBaseSellPrice, boolean isFruitEdible,
                 Integer fruitEnergy, Integer fruitHealth, Season[] seasons) {
         this.name = name;
@@ -54,6 +54,8 @@ public class Tree{
         this.fruitHealth = fruitHealth;
         this.seasons = seasons;
     }
+
+    public Tree() {}
 
     public String getName() {
         return name;

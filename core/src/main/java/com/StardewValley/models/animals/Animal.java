@@ -33,6 +33,9 @@ public class Animal {
         this.products = products;
     }
 
+    public Animal() {
+    }
+
     public AnimalType getType() { return type; }
     public String getName() { return name; }
     public void setName(String name) {

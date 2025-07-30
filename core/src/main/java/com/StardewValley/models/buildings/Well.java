@@ -9,7 +9,7 @@ public class Well extends Building {
     public Well(String name, Location location, int width, int height) {
         super(name, location, width, height);
     }
-
+    public Well() {}
     @Override
     public void updateMap(Map map) {
         Tile[][] tiles = map.getTiles();

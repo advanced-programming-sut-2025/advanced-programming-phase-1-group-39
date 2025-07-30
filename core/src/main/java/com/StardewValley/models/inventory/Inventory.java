@@ -30,6 +30,8 @@ public class Inventory {
         }
     }
 
+    public Inventory() {}
+
     public String getItemAndColor(ItemStack itemStack) {
         if (itemStack == null || itemStack.getItem() == null) {
             return AnsiColors.ANSI_RESET + "Empty Slot" + AnsiColors.ANSI_RESET;

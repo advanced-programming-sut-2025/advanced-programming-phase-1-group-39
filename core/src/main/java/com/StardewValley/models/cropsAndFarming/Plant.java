@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class Plant {
     private Tile tile;
 
-    private Seed seed;
-    private Crop product;
+    private transient Seed seed;
+    private transient Crop product;
     private int productStack;
 
     private ArrayList<Integer> stages;
@@ -53,6 +53,7 @@ public class Plant {
         this.hasCrop = false;
     }
 
+    public Plant() {}
 
     public void updateDaily() {
         FertilizerType type = tile.getFertilizer();

@@ -3,9 +3,8 @@ package com.StardewValley.models.PlayerInteraction;
 import java.util.ArrayList;
 
 public class Friendship {
-
-    private final String user1;
-    private final String user2;
+    private String user1;
+    private String user2;
     private int xp;
 
     private boolean isFirstTalking;
@@ -27,6 +26,8 @@ public class Friendship {
         this.isFirstTalking = true;
         this.hasGiftedEachOther = true;
     }
+
+    public Friendship() {}
 
 
     // Getters & toString...

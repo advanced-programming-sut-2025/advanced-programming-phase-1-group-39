@@ -10,6 +10,8 @@ public class Cabin extends Building {
         super("cabin", startLocation, 6, 6);
     }
 
+    public Cabin() {}
+
     public Refrigerator getRefrigerator() {
         return refrigerator;
     }

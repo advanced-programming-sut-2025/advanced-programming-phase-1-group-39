@@ -645,4 +645,8 @@ public class Map {
         }
         return true;
     }
+
+    public void replaceTile(Tile tile) {
+        tiles[tile.getLocation().y()][tile.getLocation().x()] = tile;
+    }
 }

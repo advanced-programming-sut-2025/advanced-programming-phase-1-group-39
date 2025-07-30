@@ -12,6 +12,8 @@ public class GreenHouse extends Building {
         super("greenhouse", startLocation, 8, 8);
     }
 
+    public GreenHouse() {}
+
     public void build() {
         isBuild = true;
     }

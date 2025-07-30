@@ -11,15 +11,19 @@ public class GameData {
 
     public ArrayList<Player> players;
 
+    public long mapRandSeed;
+    public ArrayList<Building> playerBuildings;
+
+
+    public ArrayList<Friendship> friendships;
+
     public Time time;
     public Weather todayWeather;
     public Weather tomorrowWeather;
 
-    public ArrayList<Friendship> friendships;
-    public ArrayList<Building> buildings;
-
-    public long mapRandSeed;
     public MapChanges mapChanges;
+
+    public int currentGiftNumber;
 
     public GameData(Game game) {
         gameId = game.getId();
@@ -33,10 +37,20 @@ public class GameData {
         mapRandSeed = game.getMapRandSeed();
         mapChanges = new MapChanges();
         mapChanges.findMapChanges(game.getMap(), game.getBaseMap());
+
+        playerBuildings = new ArrayList<>();
+        for (Player player : players) {
+            playerBuildings.addAll(player.getFarmBuildings());
+        }
+
+        currentGiftNumber = game.getCurrentGiftNumber();
     }
 
-    public static void settingOfTransients(GameData gameData) {
-        for (Player player : gameData.players) {
+    // for kryo loader
+    public GameData() {}
+
+    public void settingOfTransients() {
+        for (Player player : this.players) {
             for (ItemStack stack : player.getInventory().getInventoryItems()) {
                 if (stack != null && stack.getName() != null) {
                     stack.setItem(ItemManager.getItemByName(stack.getName()));
@@ -47,6 +61,7 @@ public class GameData {
             if (inHand != null && inHand.getName() != null) {
                 inHand.setItem(ItemManager.getItemByName(inHand.getName()));
             }
+
         }
     }
 }

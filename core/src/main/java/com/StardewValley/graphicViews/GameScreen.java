@@ -1,5 +1,6 @@
 package com.StardewValley.graphicViews;
 
+import com.StardewValley.Main;
 import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.controllers.GameController;
 import com.StardewValley.models.*;
@@ -203,6 +204,12 @@ public class GameScreen implements Screen {
         renderTiles();
         renderPlayer();
         renderClockUI();
+
+        /// test
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            Main.getMain().switchScreen(new MainMenuScreen());
+        }
+
         batch.end();
     }
 
@@ -228,7 +235,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        System.out.println(game.getId());
         AppDataManager.saveApp();
         if (game != null) {
             AppDataManager.saveGame(game);

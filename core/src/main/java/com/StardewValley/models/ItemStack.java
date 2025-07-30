@@ -14,6 +14,9 @@ public class ItemStack {
         this.amount = amount;
     }
 
+    public ItemStack() {
+    }
+
     public void addStack(int amount) {
         this.amount += amount;
     }

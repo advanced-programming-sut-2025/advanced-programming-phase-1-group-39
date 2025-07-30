@@ -13,6 +13,7 @@ import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingRecipe;
 import com.StardewValley.models.inventory.Inventory;
 import com.StardewValley.models.map.AnsiColors;
+import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.tools.*;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class Player {
     private int gameId;
 
+    private FarmType farmType;
     private Location location = new Location(0,0);
     private Location startOfFarm;
     private Location endOfFarm;
@@ -46,10 +48,6 @@ public class Player {
 
     private ArrayList<String> learnedCraftingRecipeNames = new ArrayList<>();
     private ArrayList<String> learnedFoodRecipeNames = new ArrayList<>();
-
-    private HashMap<NPC, Integer> NPCsFriendship = new HashMap<>();
-
-    private ArrayList<Quest> activeQuests = new ArrayList<>();
 
     // animals
     private HashMap<String, Animal> animals = new HashMap<>();
@@ -81,6 +79,8 @@ public class Player {
 
         this.gameId = gameId;
     }
+
+    public Player(){}
 
     public boolean isConscious() {
         return energy > 0;
@@ -517,5 +517,17 @@ public class Player {
             case 3 :
                 learnFoodRecipe(FoodRecipe.SEAFOAM_PUDDING);
         }
+    }
+
+    public ArrayList<Building> getFarmBuildings() {
+        return playerFarmBuildings;
+    }
+
+    public void setFarmType(FarmType farmType) {
+        this.farmType = farmType;
+    }
+
+    public FarmType getFarmType() {
+        return farmType;
     }
 }

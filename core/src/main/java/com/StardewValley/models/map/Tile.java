@@ -13,7 +13,6 @@ public class Tile {
 
     private Plant plant = null;
     private Tree tree = null;
-//    private PlacedObject placedObject = null;
 
     private FertilizerType fertilizer = null;
 
@@ -25,6 +24,8 @@ public class Tile {
         this.x = x;
         this.y = y;
     }
+
+    public Tile() {}
 
     public Location getLocation() {
         return new Location(x, y);

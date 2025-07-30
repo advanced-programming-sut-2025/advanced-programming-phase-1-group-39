@@ -18,6 +18,9 @@ public abstract class Building {
         this.height = height;
     }
 
+    public Building() {
+    }
+
     public String getName() {
         return name;
     }

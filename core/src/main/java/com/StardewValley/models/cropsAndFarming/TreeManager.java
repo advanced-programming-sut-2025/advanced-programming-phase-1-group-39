@@ -33,7 +33,7 @@ public class TreeManager {
             return null;
         }
 
-        Tree tree = new Tree(data.name, tile, data.source, data.stages, data.totalHarvestTime, data.fruitName, data.fruitHarvestCycle,
+        Tree tree = new Tree(data.name, data.source, data.stages, data.totalHarvestTime, data.fruitName, data.fruitHarvestCycle,
                 data.fruitBaseSellPrice, data.isFruitEdible, data.fruitEnergy, data.fruitHealth, data.seasons);
 
         return tree;

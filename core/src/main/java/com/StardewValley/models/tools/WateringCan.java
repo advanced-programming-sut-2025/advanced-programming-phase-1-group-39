@@ -16,6 +16,10 @@ public class WateringCan extends Tool {
         super("watering can", ToolType.BASIC, 5);
         tilesWaterNumRemaining = getMaxWaterSize();
     }
+    public WateringCan(ToolType type) {
+        super("watering can", type, 5);
+        tilesWaterNumRemaining = getMaxWaterSize();
+    }
 
     @Override
     public Result useTool(Tile tile, Player player, Skill skill) {

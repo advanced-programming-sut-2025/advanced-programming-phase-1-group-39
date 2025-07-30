@@ -24,11 +24,11 @@ public class AbigailNPC extends NPC {
     }
 
     {
-        super.dialogues = DialogueLoader.loadJsonToMap("src/main/resources/data/NPC/abigailDialogues.json");
+        super.dialogues = DialogueLoader.loadJsonToMap("projectData/resources/data/NPC/abigailDialogues.json");
         super.tasks = new ArrayList<>(List.of(new ItemStack(ItemManager.getItemByName("Gold Bar"), 1)
                 , new ItemStack(ItemManager.getItemByName("Pumpkin"), 1)
                 , new ItemStack(ItemManager.getItemByName("Wheat"), 50)));
-        super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/abigailMissions.json");
+        super.missions = MissionsLoader.loadMissionsFromJson("projectData/resources/data/Missions/abigailMissions.json");
         super.quests = generateNPCQuests(tasks);
     }
 

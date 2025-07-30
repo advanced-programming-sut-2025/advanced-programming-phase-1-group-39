@@ -20,6 +20,11 @@ public class FishingPole extends Tool {
         this.texture = texture;
     }
 
+    public FishingPole(String name, FishingPoleType poleType) {
+        super(name, ToolType.BASIC, poleType.getUsingEnergy());
+        this.poleType = poleType;
+    }
+
     @Override
     public TextureRegion getTexture() {
         return texture;

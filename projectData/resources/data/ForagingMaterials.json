@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Wood",
+    "sellPrice": 50,
+    "texturePath": "Stardew_Valley_Images-main/Materials/Wood.png"
+  },
+  {
+    "name": "Stone",
+    "sellPrice": 50,
+    "texturePath": "Stardew_Valley_Images-main/Materials/Stone.png"
+  },
+  {
+    "name": "Grass",
+    "sellPrice": 50,
+    "texturePath": "Stardew_Valley_Images-main/Materials/Grass_Starter.png"
+  },
+  {
+    "name": "Fiber",
+    "sellPrice": 50,
+    "texturePath": "Stardew_Valley_Images-main/Materials/Fiber.png"
+  }
+]

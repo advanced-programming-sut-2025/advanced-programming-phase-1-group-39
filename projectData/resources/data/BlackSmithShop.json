@@ -1,0 +1,18 @@
+{
+  "items": [
+    { "name": "Copper", "price": 75, "limit": 1000000, "path": "shops/BlackSmithShop/Copper_Ore.png" },
+    { "name": "Iron", "price": 150, "limit": 1000000, "path": "shops/BlackSmithShop/Iron_Ore.png" },
+    { "name": "Coal", "price": 150, "limit": 1000000, "path": "shops/BlackSmithShop/Coal.png" },
+    { "name": "Gold", "price": 400, "limit": 1000000, "path": "shops/BlackSmithShop/Gold_Ore.png" }
+  ],
+  "toolUpgrades": [
+    "Copper",
+    "Iron",
+    "Gold",
+    "Iridium",
+    "Copper Trash Can",
+    "Steel Trash Can",
+    "Gold Trash Can",
+    "Iridium Trash Can"
+  ]
+}

@@ -1,6 +1,8 @@
 package com.StardewValley.models.saveClasses;
 
 import com.StardewValley.models.Constants;
+import com.StardewValley.models.cropsAndFarming.Plant;
+import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 
@@ -29,6 +31,13 @@ public class MapChanges {
     public Map getMapChanged(Map baseMap) {
         for (Tile tile : modifiedTiles) {
             baseMap.replaceTile(tile);
+            Tree tree;
+            Plant plant;
+            if ((tree = tile.getTree()) != null) {
+                tree.resetSeed();
+            } else if ((plant = tile.getPlant()) != null) {
+                plant.resetSeedAndCrop();
+            }
         }
 
         return baseMap;

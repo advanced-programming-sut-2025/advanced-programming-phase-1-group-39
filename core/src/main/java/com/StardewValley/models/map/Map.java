@@ -9,6 +9,7 @@ import com.StardewValley.models.artisan.ArtisanMachine;
 import com.StardewValley.models.buildings.Building;
 import com.StardewValley.models.buildings.GreenHouse;
 import com.StardewValley.models.cropsAndFarming.*;
+import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -44,7 +45,7 @@ public class Map {
 
     public String showFarmTypesInfo() {
         StringBuilder text = new StringBuilder();
-        try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {
+        try (FileReader reader = new FileReader(Constants.FARM_TYPE_DATA_PATH)) {
             Gson gson = new Gson();
             JsonArray array = gson.fromJson(reader, JsonArray.class);
             text.append("1\n");
@@ -61,7 +62,7 @@ public class Map {
     }
 
     public static String getFarmTypeName(int farmNum) {
-        try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {
+        try (FileReader reader = new FileReader("projectData/resources/data/Map/farmTypes.json")) {
             Gson gson = new Gson();
             JsonArray array = gson.fromJson(reader, JsonArray.class);
             return array.get(farmNum).getAsJsonObject().get("mapType").getAsString() + "\n";
@@ -72,7 +73,7 @@ public class Map {
     }
 
     public static String getFarmTypeInfo(int farmNum) {
-        try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {
+        try (FileReader reader = new FileReader("projectData/resources/data/Map/farmTypes.json")) {
             Gson gson = new Gson();
             JsonArray array = gson.fromJson(reader, JsonArray.class);
             return array.get(farmNum).getAsJsonObject().get("description").getAsString() + "\n";
@@ -84,7 +85,7 @@ public class Map {
 
 
     public void addRandomFarm(FarmType farmType, int playerNumber, Player player) {
-        try (FileReader reader = new FileReader("src/main/resources/data/Map/farmTypes.json")) {
+        try (FileReader reader = new FileReader("projectData/resources/data/Map/farmTypes.json")) {
             Gson gson = new Gson();
             JsonArray array = gson.fromJson(reader, JsonArray.class);
 
@@ -307,7 +308,7 @@ public class Map {
         }
 
 
-        try (FileReader reader = new FileReader("src/main/resources/data/Map/npcMap.json")) {
+        try (FileReader reader = new FileReader("projectData/resources/data/Map/npcMap.json")) {
             Gson gson = new Gson();
 
             JsonObject object = gson.fromJson(reader, JsonObject.class);

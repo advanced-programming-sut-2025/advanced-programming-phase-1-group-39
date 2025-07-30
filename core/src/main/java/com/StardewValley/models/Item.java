@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public abstract class Item {
     protected String name;
-    // TODO : add Texture methods
 
     public Item(String name) {
         this.name = name;

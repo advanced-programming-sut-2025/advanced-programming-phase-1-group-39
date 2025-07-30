@@ -13,6 +13,10 @@ public class Hoe extends Tool {
         super("hoe", ToolType.BASIC, 5);
     }
 
+    public Hoe(ToolType type) {
+        super("hoe", type, 5);
+    }
+
     @Override
     public Result useTool(Tile tile, Player player, Skill skill) {
         if (tile.getType() == TileType.SOIL) {

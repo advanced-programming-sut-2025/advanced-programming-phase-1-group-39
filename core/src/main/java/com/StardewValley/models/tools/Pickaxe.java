@@ -11,6 +11,9 @@ public class Pickaxe extends Tool {
     public Pickaxe() {
         super("pickaxe", ToolType.BASIC, 5);
     }
+    public Pickaxe(ToolType type) {
+        super("pickaxe", type, 5);
+    }
 
     public boolean canGetItemInQuarry(Item item) {
         if (item.getName().equals("stone")) return true;

@@ -22,11 +22,11 @@ public class LeahNPC extends NPC {
     }
 
     {
-        super.dialogues = DialogueLoader.loadJsonToMap("src/main/resources/data/NPC/leahDialogues.json");
+        super.dialogues = DialogueLoader.loadJsonToMap("projectData/resources/data/NPC/leahDialogues.json");
         super.tasks = new ArrayList<>(List.of(new ItemStack(ItemManager.getItemByName("Wood"), 10)
                 , new ItemStack(ItemManager.getItemByName("Salmon"), 1)
                 , new ItemStack(ItemManager.getItemByName("Wood"), 200)));
-        super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/harveyMissions.json");
+        super.missions = MissionsLoader.loadMissionsFromJson("projectData/resources/data/Missions/harveyMissions.json");
         super.quests = generateNPCQuests(tasks);
     }
 

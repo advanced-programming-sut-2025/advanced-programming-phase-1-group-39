@@ -18,4 +18,6 @@ public class Constants {
     public static final double MAX_ENERGY = 200;
 
     public static final int MAX_SKILL_LEVEL = 4;
+
+    public static final String FARM_TYPE_DATA_PATH = "projectData/resources/data/Map/farmTypes.json";
 }

@@ -23,11 +23,11 @@ public class SebastianNPC extends NPC {
     }
 
     {
-        super.dialogues = DialogueLoader.loadJsonToMap("src/main/resources/data/NPC/sebastianDialogues.json");
+        super.dialogues = DialogueLoader.loadJsonToMap("projectData/resources/data/NPC/sebastianDialogues.json");
         super.tasks = new ArrayList<>(List.of(new ItemStack(ItemManager.getItemByName("Iron Bar"), 5)
                 , new ItemStack(ItemManager.getItemByName("Pumpkin Pie"), 1)
                 , new ItemStack(ItemManager.getItemByName("Stone"), 150)));
-        super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/sebastianMissions.json");
+        super.missions = MissionsLoader.loadMissionsFromJson("projectData/resources/data/Missions/sebastianMissions.json");
         super.quests = generateNPCQuests(tasks);
     }
 

@@ -1,0 +1,21 @@
+{
+  "foods": [
+    { "name": "Beer", "price": 400, "limit": 1000000, "path": "shops/StardropSaloon/Beer.png" },
+    { "name": "Salad", "price": 220, "limit": 1000000, "path": "shops/StardropSaloon/Salad.png" },
+    { "name": "Bread", "price": 120, "limit": 1000000, "path": "shops/StardropSaloon/Bread.png" },
+    { "name": "Spaghetti", "price": 240, "limit": 1000000, "path": "shops/StardropSaloon/Spaghetti.png" },
+    { "name": "Pizza", "price": 600, "limit": 1000000, "path": "shops/StardropSaloon/Pizza.png" },
+    { "name": "Coffee", "price": 300, "limit": 1000000, "path": "shops/StardropSaloon/Coffee.png" }
+  ],
+  "recipes": [
+    { "name": "Hashbrowns", "price": 50, "limit": 1, "path": "shops/StardropSaloon/Hashbrowns.png" },
+    { "name": "Omelet", "price": 100, "limit": 1, "path": "shops/StardropSaloon/Omelet.png" },
+    { "name": "Pancakes", "price": 100, "limit": 1, "path": "shops/StardropSaloon/Pancakes.png" },
+    { "name": "Bread", "price": 100, "limit": 1, "path": "shops/StardropSaloon/Bread.png" },
+    { "name": "Tortilla", "price": 100, "limit": 1, "path": "shops/StardropSaloon/Tortilla.png"},
+    { "name": "Pizza", "price": 150, "limit": 1, "path": "shops/StardropSaloon/Pizza.png" },
+    { "name": "Maki Roll", "price": 300, "limit": 1, "path": "shops/StardropSaloon/Maki_Roll.png" },
+    { "name": "Triple Shot Espresso", "price": 5000, "limit": 1, "path": "shops/StardropSaloon/Triple_Shot_Espresso.png" },
+    { "name": "Cookie", "price": 300, "limit": 1, "path": "shops/StardropSaloon/Cookie.png" }
+  ]
+}

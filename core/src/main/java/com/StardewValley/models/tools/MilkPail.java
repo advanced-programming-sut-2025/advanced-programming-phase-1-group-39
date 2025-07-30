@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class MilkPail extends Tool {
     public MilkPail() {
-        super("milk pail", ToolType.BASIC, 4);
+        super("Milk Pail", ToolType.BASIC, 4);
     }
 
     @Override

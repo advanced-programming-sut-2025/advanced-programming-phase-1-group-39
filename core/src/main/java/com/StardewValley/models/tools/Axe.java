@@ -12,6 +12,10 @@ public class Axe extends Tool {
         super("axe", ToolType.BASIC, 5);
     }
 
+    public Axe(ToolType type) {
+        super("axe", type, 5);
+    }
+
     @Override
     public Result useTool(Tile tile, Player player, Skill skill) {
         if (tile.getType() == TileType.SOIL) {

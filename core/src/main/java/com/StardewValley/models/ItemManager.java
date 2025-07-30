@@ -23,14 +23,14 @@ public class ItemManager {
 
 
     public static void loadItems() {
-        CropManager.loadCrops("src/main/resources/data/crops.json");
-        CropManager.loadMixedSeeds("src/main/resources/data/MixSeeds.json");
-        TreeManager.loadTrees("src/main/resources/data/trees.json");
-        ForagingManager.loadCrops("src/main/resources/data/ForagingCrops.json");
-        ForagingManager.loadSeeds("src/main/resources/data/ForagingSeeds.json");
-        ForagingManager.loadTreeSeeds("src/main/resources/data/ForagingTrees.json");
-        ForagingManager.loadMinerals("src/main/resources/data/ForagingMinerals.json");
-        ForagingManager.loadMaterials("src/main/resources/data/ForagingMaterials.json");
+        CropManager.loadCrops("projectData/resources/data/crops.json");
+        CropManager.loadMixedSeeds("projectData/resources/data/MixSeeds.json");
+        TreeManager.loadTrees("projectData/resources/data/trees.json");
+        ForagingManager.loadCrops("projectData/resources/data/ForagingCrops.json");
+        ForagingManager.loadSeeds("projectData/resources/data/ForagingSeeds.json");
+        ForagingManager.loadTreeSeeds("projectData/resources/data/ForagingTrees.json");
+        ForagingManager.loadMinerals("projectData/resources/data/ForagingMinerals.json");
+        ForagingManager.loadMaterials("projectData/resources/data/ForagingMaterials.json");
 
         for (AnimalProduct product : AnimalType.getAllAnimalProducts()) {
             animalProducts.put(product.getName(), product);

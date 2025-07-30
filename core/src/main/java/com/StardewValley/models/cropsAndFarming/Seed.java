@@ -31,4 +31,8 @@ public class Seed extends Item {
         }
         return region;
     }
+
+    public Season[] getSeasons() {
+        return seasons;
+    }
 }

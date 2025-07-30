@@ -1,11 +1,9 @@
 package com.StardewValley.models.cropsAndFarming;
 
 import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.ItemManager;
 import com.StardewValley.models.ItemStack;
-import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.services.GameAssetManager;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
@@ -15,7 +13,10 @@ import java.util.Arrays;
 
 public class Tree{
     private String name;
+
+    private String seedName;
     private transient Seed source;
+
     private ArrayList<Integer> stages = new ArrayList<>();
     private int currentStage;
     private int daysOfCurrentStage;
@@ -40,6 +41,8 @@ public class Tree{
                 Integer fruitEnergy, Integer fruitHealth, Season[] seasons) {
         this.name = name;
         this.source = source;
+        this.seedName = source.getName();
+
         this.stages = stages;
         this.currentStage = 0;
         this.daysOfCurrentStage = stages.get(currentStage);
@@ -176,6 +179,12 @@ public class Tree{
             } else {
                 return new TextureRegion(treesAtlas.findRegion(name + "_Stage_5_not4Season"));
             }
+        }
+    }
+
+    public void resetSeed() {
+        if (source == null) {
+            source = (Seed) ItemManager.getItemByName(seedName);
         }
     }
 }

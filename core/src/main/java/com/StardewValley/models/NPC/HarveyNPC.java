@@ -23,11 +23,11 @@ public class HarveyNPC extends NPC {
     }
 
     {
-        super.dialogues = DialogueLoader.loadJsonToMap("src/main/resources/data/NPC/harveyDialogues.json");
+        super.dialogues = DialogueLoader.loadJsonToMap("projectData/resources/data/NPC/harveyDialogues.json");
         super.tasks = new ArrayList<>(List.of(new ItemStack(ItemManager.getItemByName("Corn"), 12)
                 , new ItemStack(ItemManager.getItemByName("Salmon"), 1)
                 , new ItemStack(ItemManager.getItemByName("Orange Wine"), 1)));
-        super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/harveyMissions.json");
+        super.missions = MissionsLoader.loadMissionsFromJson("projectData/resources/data/Missions/harveyMissions.json");
         super.quests = generateNPCQuests(tasks);
     }
 

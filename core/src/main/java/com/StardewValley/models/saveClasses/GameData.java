@@ -11,7 +11,6 @@ public class GameData {
 
     public ArrayList<Player> players;
 
-    public long mapRandSeed;
     public ArrayList<Building> playerBuildings;
 
 
@@ -21,6 +20,7 @@ public class GameData {
     public Weather todayWeather;
     public Weather tomorrowWeather;
 
+    public long mapRandSeed;
     public MapChanges mapChanges;
 
     public int currentGiftNumber;
@@ -52,16 +52,22 @@ public class GameData {
     public void settingOfTransients() {
         for (Player player : this.players) {
             for (ItemStack stack : player.getInventory().getInventoryItems()) {
+
                 if (stack != null && stack.getName() != null) {
-                    stack.setItem(ItemManager.getItemByName(stack.getName()));
+                    if (stack.getToolData() != null)
+                        stack.setItem(stack.getToolData().getTool());
+                    else
+                        stack.setItem(ItemManager.getItemByName(stack.getName()));
                 }
             }
 
             ItemStack inHand = player.getInventory().getInHand();
             if (inHand != null && inHand.getName() != null) {
-                inHand.setItem(ItemManager.getItemByName(inHand.getName()));
+                if (inHand.getToolData() != null)
+                    inHand.setItem(inHand.getToolData().getTool());
+                else
+                    inHand.setItem(ItemManager.getItemByName(inHand.getName()));
             }
-
         }
     }
 }

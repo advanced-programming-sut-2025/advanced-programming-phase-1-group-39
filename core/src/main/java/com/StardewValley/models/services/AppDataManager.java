@@ -24,10 +24,7 @@ import com.StardewValley.models.inventory.TrashType;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.map.TileType;
-import com.StardewValley.models.saveClasses.GameData;
-import com.StardewValley.models.saveClasses.MapChanges;
-import com.StardewValley.models.saveClasses.UserData;
-import com.StardewValley.models.saveClasses.UsersData;
+import com.StardewValley.models.saveClasses.*;
 import com.StardewValley.models.tools.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -160,6 +157,7 @@ public class AppDataManager {
         // کلاس‌های درون Player و Inventory
         kryo.register(Inventory.class);
         kryo.register(ItemStack.class);
+        kryo.register(ToolData.class);
         kryo.register(Skill.class);
         kryo.register(Location.class);
         kryo.register(Animal.class);

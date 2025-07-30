@@ -21,11 +21,11 @@ public class RobinNPC extends NPC {
     }
 
     {
-        super.dialogues = DialogueLoader.loadJsonToMap("src/main/resources/data/NPC/robinDialogues.json");
+        super.dialogues = DialogueLoader.loadJsonToMap("projectData/resources/data/NPC/robinDialogues.json");
         super.tasks = new ArrayList<>(List.of(new ItemStack(ItemManager.getItemByName("Wood"), 80)
                 , new ItemStack(ItemManager.getItemByName("Iron Bar"), 10)
                 , new ItemStack(ItemManager.getItemByName("Wood"), 10000)));
-        super.missions = MissionsLoader.loadMissionsFromJson("src/main/resources/data/Missions/robinMissions.json");
+        super.missions = MissionsLoader.loadMissionsFromJson("projectData/resources/data/Missions/robinMissions.json");
         super.quests = generateNPCQuests(tasks);
     }
 

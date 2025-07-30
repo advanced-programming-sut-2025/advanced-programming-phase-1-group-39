@@ -1,7 +1,7 @@
 package com.StardewValley.models.cropsAndFarming;
 
+import com.StardewValley.models.ItemManager;
 import com.StardewValley.models.ItemStack;
-import com.StardewValley.models.cropsAndFarming.Crop;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,8 +13,12 @@ import java.util.ArrayList;
 public class Plant {
     private Tile tile;
 
+
+    private String seedName;
     private transient Seed seed;
+    private String cropName;
     private transient Crop product;
+
     private int productStack;
 
     private ArrayList<Integer> stages;
@@ -38,8 +42,12 @@ public class Plant {
                  boolean oneTimeHarvest, int regrowthTime, boolean canBecomeGiant) {
         this.tile = tile;
         this.product = product;
+        this.cropName = product.getName();
+
         this.productStack = 0;
         this.seed = seed;
+        this.seedName = seed.getName();
+
         this.stages = stages;
         this.currentStage = 0;
         this.daysOfCurrentStage = stages.get(currentStage);
@@ -166,5 +174,15 @@ public class Plant {
                 ", hasCrop=" + hasCrop +
                 ", isAlive=" + isAlive +
                 '}';
+    }
+
+
+    public void resetSeedAndCrop() {
+        if (seed == null) {
+            seed = (Seed) ItemManager.getItemByName(seedName);
+        }
+        if (product == null) {
+            product = (Crop) ItemManager.getItemByName(cropName);
+        }
     }
 }

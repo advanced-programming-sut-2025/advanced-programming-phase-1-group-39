@@ -11,7 +11,6 @@ import com.StardewValley.models.PlayerInteraction.Friendship;
 import com.StardewValley.models.Shops.*;
 import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.animals.AnimalProduct;
-import com.StardewValley.models.animals.AnimalProductQuality;
 import com.StardewValley.models.animals.Fish;
 import com.StardewValley.models.artisan.*;
 import com.StardewValley.models.buildings.*;
@@ -59,7 +58,7 @@ public class AppDataManager {
 
                         .registerSubtype(ArtisanGood .class, "ArtisanGood")
 
-                        .registerSubtype(Fish .class, "Fish")
+                        .registerSubtype(Fish.class, "Fish")
                         .registerSubtype(Food .class, "Food")
                         .registerSubtype(ForagingMaterial .class, "ForagingMaterial")
                         .registerSubtype(ForagingMineral.class, "ForagingMineral")
@@ -157,7 +156,11 @@ public class AppDataManager {
         // کلاس‌های درون Player و Inventory
         kryo.register(Inventory.class);
         kryo.register(ItemStack.class);
+
         kryo.register(ToolData.class);
+        kryo.register(ToolType.class);
+        kryo.register(FishingPoleType.class);
+
         kryo.register(Skill.class);
         kryo.register(Location.class);
         kryo.register(Animal.class);
@@ -185,8 +188,6 @@ public class AppDataManager {
         kryo.register(FarmType.class);
         kryo.register(DayOfWeek.class);
         kryo.register(WeatherStatus.class);
-
-
 
         // داده استاندارد جاوا
         kryo.register(ArrayList.class);

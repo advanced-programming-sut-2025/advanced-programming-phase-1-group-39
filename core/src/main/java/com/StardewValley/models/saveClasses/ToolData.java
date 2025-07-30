@@ -17,6 +17,7 @@ public class ToolData {
             poleType = ((FishingPole) tool).getPoleType();
         }
     }
+    public ToolData() {}
 
     public Tool getTool() {
         return Tool.getToolByDetail(toolName, type, poleType);

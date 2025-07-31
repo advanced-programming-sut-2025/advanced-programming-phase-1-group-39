@@ -10,14 +10,11 @@ public class SaveAppManager {
         App app = App.getApp();
         if (app.isStayLoggedIn()) {
             app.setRandomPassword(null);
-            app.setPendingUser(null);
             app.setRegisterSuccessful(false);
             app.setCurrentMenu(Menu.MAIN_MENU);
             AppDataManager.saveApp(app);
         } else {
-            app.setLoggedInUser(null);
             app.setRandomPassword(null);
-            app.setPendingUser(null);
             app.setRegisterSuccessful(false);
             app.setCurrentGame(null);
             app.setCurrentMenu(Menu.SIGNUP_MENU);

@@ -64,7 +64,7 @@ public class Main extends Game {
 
     @Override
     public void dispose() {
-        //SaveAppManager.saveApp();
+        SaveAppManager.saveApp();
         batch.dispose();
     }
 

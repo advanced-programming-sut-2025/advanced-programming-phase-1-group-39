@@ -2,15 +2,19 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.MainGuiController;
+import com.StardewValley.models.App;
 import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -27,6 +31,10 @@ public class MainMenuScreen implements Screen {
     private TextButton profileMenuButton;
     private TextButton logoutButton;
 
+    private TextureRegion nameTexture;
+    private Label nameLabel;
+    private TextureRegion avatarTexture;
+
     public Table table = new Table();
     private Music music;
     private final MainGuiController controller;
@@ -40,6 +48,9 @@ public class MainMenuScreen implements Screen {
         this.gameMenuButton = new TextButton("Game Menu", skin);
         this.profileMenuButton = new TextButton("Profile", skin);
         this.logoutButton = new TextButton("Logout", skin);
+        this.nameTexture = GameAssetManager.nameLabel;
+        this.nameLabel = new Label("Your Name :" + App.getApp().getLoggedInUser().getNickname(), skin);
+        this.avatarTexture = new TextureRegion(new Texture(App.getApp().getLoggedInUser().getAvatar()));
         this.music = GameAssetManager.music1;
         AppGuiControllers.mainGuiController.setMenuView(this);
     }
@@ -52,12 +63,12 @@ public class MainMenuScreen implements Screen {
         music.setLooping(true);
         music.play();
 
-        // تنظیم و اضافه‌کردن بک‌گراند
+        // === بک‌گراند ===
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         background.setColor(1, 1, 1, 0.5f);
         stage.addActor(background);
 
-        // اضافه‌کردن لوگو بالا وسط
+        // === لوگو بالا وسط ===
         logo.setSize(logo.getWidth() * 1.5f, logo.getHeight() * 1.5f);
         logo.setPosition(
                 Gdx.graphics.getWidth() / 2f - logo.getWidth() / 2f,
@@ -65,33 +76,67 @@ public class MainMenuScreen implements Screen {
         );
         stage.addActor(logo);
 
-        // تنظیمات جدول
+        // === آواتار سمت چپ بالا ===
+        Image avatarFrame = new Image(GameAssetManager.avatarFrame);
+        Image avatarImage = new Image(avatarTexture);
+        avatarImage.setSize(150, 150);
+        avatarFrame.setSize(190, 190);
+        avatarImage.setPosition(
+                205,  // فاصله از لبه چپ
+                Gdx.graphics.getHeight() - avatarImage.getHeight() - 157  // از بالا
+        );
+        avatarFrame.setPosition(
+                190,
+                Gdx.graphics.getHeight() - avatarImage.getHeight() - 170
+        );
+        stage.addActor(avatarFrame);
+        stage.addActor(avatarImage);
+
+        // === name texture (قاب پشت نام) سمت چپ زیر آواتار ===
+        Image nameBackground = new Image(nameTexture);
+        nameBackground.setSize(470, 70);
+        nameBackground.setPosition(
+                50,  // فاصله از لبه چپ
+                avatarImage.getY() - nameBackground.getHeight() - 20
+        );
+        stage.addActor(nameBackground);
+
+        // === name label روی قاب ===
+        nameLabel.setFontScale(1.5f);
+        nameLabel.setColor(Color.valueOf("dda15e"));
+        nameLabel.setAlignment(Align.center);
+        nameLabel.setSize(nameBackground.getWidth(), nameBackground.getHeight());  // تا متن وسط قاب بمونه
+        nameLabel.setPosition(nameBackground.getX(), nameBackground.getY());
+        stage.addActor(nameLabel);
+
+
+        // === جدول دکمه‌ها ===
         table.setFillParent(true);
-        table.top().padTop(250);
+        table.top().padTop(250);  // بالا رفت چون آواتار و نام اضافه شد
         stage.addActor(table);
 
-        // عنوان منو
+        // === عنوان منو ===
         menuTitle.setColor(Color.valueOf("ffd60a"));
         menuTitle.setFontScale(2f);
         table.add(menuTitle).colspan(2).center().padBottom(80);
         table.row();
 
-        // دکمه Game Menu
+        // === دکمه‌ها ===
         gameMenuButton.setColor(Color.valueOf("8ecae6"));
         table.add(gameMenuButton).width(400).height(100).padBottom(30);
         table.row();
 
-        // دکمه Profile Menu
         profileMenuButton.setColor(Color.valueOf("ffb703"));
         table.add(profileMenuButton).width(400).height(100).padBottom(30);
         table.row();
 
-        // دکمه Logout
         logoutButton.setColor(Color.valueOf("E9D8A6"));
         table.add(logoutButton).width(400).height(100);
         table.row();
 
+        // === کنترلر ===
         controller.handleMainMenu();
+
     }
 
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -22,7 +23,13 @@ public class GameAssetManager {
 
     public static Music music1 = Gdx.audio.newMusic(Gdx.files.internal("musics/01. Stardew Valley Overture.mp3"));
 
+    public static String avatar1 = "Avatars/Alex.png";
+    public static String avatar2 = "Avatars/Sam.png";
+    public static String avatar3 = "Avatars/Leah.png";
+    public static String avatar4 = "Avatars/Penny.png";
 
+    public static TextureRegion nameLabel = new TextureRegion(new Texture("Label/Marlon.png"));
+    public static TextureRegion avatarFrame = new TextureRegion(new Texture("Label/Gunther.png"));
 
     public static void initializeAssets() {
         skin = new Skin(Gdx.files.internal("skin/pixthulhu-ui.json"));

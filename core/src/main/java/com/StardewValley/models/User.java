@@ -1,6 +1,9 @@
 package com.StardewValley.models;
 
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import java.util.ArrayList;
 
 public class User {
@@ -8,13 +11,14 @@ public class User {
     private String password;
     private String nickname;
     private String email;
-    private boolean isMale;
+    private final boolean isMale;
     private SecurityQuestion securityQuestion;
 
     private int numberOfGamesPlayed;
     private int highestMoneyEarnedInASingleGame;
 
     private Game currentGame = null;
+    private String avatar;
 
     private ArrayList<Player> players = new ArrayList<>();
 
@@ -54,6 +58,7 @@ public class User {
 
     public void setCurrentGame(Game currentGame) { this.currentGame = currentGame; }
 
+    public void setAvatar(String avatar) { this.avatar = avatar; }
 
     public void addPlayer(Player player) { players.add(player); }
 
@@ -93,6 +98,8 @@ public class User {
     public Game getCurrentGame() { return currentGame; }
 
     public ArrayList<Player> getPlayers() { return players; }
+
+    public String getAvatar() { return avatar; }
 
     public void ensureInitialized() {
         if (players == null) players = new ArrayList<>();

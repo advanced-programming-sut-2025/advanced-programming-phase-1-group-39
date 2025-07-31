@@ -8,6 +8,7 @@ import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Enums.commands.SignupMenuCommands;
 import com.StardewValley.models.User;
+import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.HashSHA256;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -82,6 +83,7 @@ public class SignupGuiController {
                         boolean isMale = view.getGenderField().getSelected().equals("Male");
                         String hashPass = HashSHA256.hashPassword(password);
                         App.getApp().setPendingUser(new User(username, hashPass, nickname, email, isMale));
+                        App.getApp().getPendingUser().setAvatar(GameAssetManager.avatar1);
                         App.getApp().setCurrentMenu(Menu.SECURITY_QUESTION_MENU);
                         Main.getMain().switchScreen(new SecurityQuestionMenuScreen());
                     }

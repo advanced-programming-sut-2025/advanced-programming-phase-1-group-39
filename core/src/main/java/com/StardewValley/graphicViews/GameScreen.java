@@ -26,7 +26,7 @@ import java.util.LinkedHashMap;
 public class GameScreen implements Screen {
     private GameController controller;
     private Game game;
-    private GameMenuInputAdapter gameMenuInputAdapter;
+    private GameInputAdapter gameInputAdapter;
     private SpriteBatch batch;
 
     private TextureAtlas playerAtlas;
@@ -54,8 +54,8 @@ public class GameScreen implements Screen {
     public GameScreen() {
         this.controller = AppControllers.gameController;
         this.game = App.getApp().getCurrentGame();
-        gameMenuInputAdapter = new GameMenuInputAdapter(controller);
-        Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        gameInputAdapter = new GameInputAdapter(this ,controller, camera);
+        Gdx.input.setInputProcessor(gameInputAdapter);
         batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
     }
@@ -87,7 +87,6 @@ public class GameScreen implements Screen {
         if (cached != null)
             return cached;
 
-        // اولویت: Tree > Plant > Item (فقط یکی رو نشون بده، یا می‌تونی لایه‌ای بزنی)
         TextureRegion texture = null;
 
         if (tile.getTree() != null) {
@@ -158,53 +157,55 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void handleCameraMovement(float delta) {
-        float cameraSpeed = 1500f;
-        currentDirection = Direction.NONE;
+    public boolean tryMovePlayer(int dx, int dy) {
+        Game game = App.getApp().getCurrentGame();
+        Player player = game.getPlayerInTurn();
+        Location current = player.getLocation();
+        Location target = new Location(current.x() + dx, current.y() - dy);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            camera.position.y += cameraSpeed * delta;
-            currentDirection = Direction.UP;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            camera.position.y -= cameraSpeed * delta;
-            currentDirection = Direction.DOWN;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            camera.position.x -= cameraSpeed * delta;
-            currentDirection = Direction.LEFT;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            camera.position.x += cameraSpeed * delta;
-            currentDirection = Direction.RIGHT;
+        if (!game.getMap().canWalkTo(current, target, player, game.getPlayers()).success()) {
+            return false;
         }
 
+        player.setLocationAbsolut(target.x(), target.y());
+        camera.position.set(
+                target.x() * Map.TILE_SIZE + Map.TILE_SIZE / 2f,
+                target.y() * Map.TILE_SIZE + Map.TILE_SIZE / 2f,
+                0
+        );
         camera.update();
+        return true;
     }
+
 
 
     private void renderPlayer() {
         int tileSize = Map.TILE_SIZE;
 
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        Location location = player.getLocation();
+
+        float drawX = location.x() * tileSize;
+        float drawY = location.y() * tileSize;
+
         int animIndex = switch (currentDirection) {
-            case UP -> 3;
-            case RIGHT -> 2;
-            case DOWN -> 1;
+            case UP -> 1;
+            case DOWN -> 3;
             case LEFT -> 4;
+            case RIGHT -> 2;
             default -> 0;
         };
 
         Animation<TextureRegion> currentAnimation = playerAnimations.get(animIndex);
+        if (currentAnimation == null) return;
         float elapsedTime = stateTime;
 
         TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true);
         if (currentFrame == null) return;
 
-        float drawX = camera.position.x - tileSize / 2f;
-        float drawY = camera.position.y - tileSize;
-
         batch.draw(currentFrame, drawX, drawY, tileSize, tileSize * 2);
     }
+
 
     private void renderClockUI() {
         float uiWidth = clock.getWidth();
@@ -237,7 +238,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        handleCameraMovement(v);
+        gameInputAdapter.update(v);
 
         batch.setProjectionMatrix(camera.combined);
         stateTime += v;

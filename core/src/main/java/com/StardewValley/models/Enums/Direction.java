@@ -8,7 +8,8 @@ public enum Direction {
     UPRIGHT(1, -1),
     UPLEFT(-1, -1),
     DOWNRIGHT(1, 1),
-    DOWNLEFT(-1, 1);
+    DOWNLEFT(-1, 1),
+    NONE(0, 0);
 
     public final int dx;
     public final int dy;

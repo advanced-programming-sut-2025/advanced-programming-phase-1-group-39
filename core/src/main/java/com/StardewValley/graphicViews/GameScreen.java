@@ -1,12 +1,11 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
-import com.StardewValley.controllers.AppControllers;
-import com.StardewValley.controllers.GameController;
 import com.StardewValley.models.*;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.services.AppDataManager;
+import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -14,7 +13,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,11 +31,14 @@ import java.util.LinkedHashMap;
 
 
 public class GameScreen implements Screen {
-    private GameController controller;
+    private GameGuiController controller;
     private Game game;
     private GameMenuInputAdapter gameMenuInputAdapter;
     private SpriteBatch batch;
 
+    private Stage uiStage;
+    private Window exitWindow = null;
+//  player
     private TextureAtlas playerAtlas;
     private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
 
@@ -49,12 +61,14 @@ public class GameScreen implements Screen {
 
 
     public GameScreen() {
-        this.controller = AppControllers.gameController;
+        this.controller = AppGuiControllers.gameGuiController;
         this.game = App.getApp().getCurrentGame();
-        gameMenuInputAdapter = new GameMenuInputAdapter(controller);
+        gameMenuInputAdapter = new GameMenuInputAdapter(controller, this);
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
         batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
+
+        uiStage = new Stage(new FitViewport(1920, 1080));
     }
 
     public void loadTextures() {
@@ -104,6 +118,7 @@ public class GameScreen implements Screen {
                 TextureRegion texture = tileCache.get(l);
 
                 if (texture == null) {
+                    // TODO : correct loading tiles
                     Tile tile = tiles[Constants.FARM_HEIGHT - y + 1][x];
                     texture = tile.getType().getTextureRegion();
                     tileCache.put(l, texture);
@@ -117,7 +132,7 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void handleCameraMovement(float delta) {
+    public void handlePlayerMovement(float delta) {
         float cameraSpeed = 1500f;
         currentDirection = Direction.NONE;
 
@@ -162,6 +177,8 @@ public class GameScreen implements Screen {
         float drawX = camera.position.x - tileSize / 2f;
         float drawY = camera.position.y - tileSize;
 
+        System.out.println("Player location: x: " + drawX + ", y: " + drawY);
+
         batch.draw(currentFrame, drawX, drawY, tileSize, tileSize * 2);
     }
 
@@ -180,7 +197,53 @@ public class GameScreen implements Screen {
         font.draw(batch, String.valueOf(400), drawX + 200, drawY + 40);
     }
 
+    public void showExitMenu() {
+        if (exitWindow != null) {
+            hideExitMenu();
+            return;
+        }
 
+        Skin skin = GameAssetManager.skin;
+        exitWindow = new Window("", skin);
+        exitWindow.setModal(true);
+        exitWindow.setSize(800, 500);
+        exitWindow.setPosition(
+                uiStage.getWidth() / 2f,
+                uiStage.getHeight() / 2f,
+                Align.center
+        );
+
+        TextButton exitGameButton = new TextButton("Exit & Save Game", skin);
+        exitGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Main.getMain().setScreen(new MainMenuScreen());
+            }
+        });
+        TextButton backButton = new TextButton("Back", skin);
+        backButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideExitMenu();
+            }
+        });
+        controller.handleButtonDisable(game, exitGameButton);
+
+        int buttonsSize = 500;
+        exitWindow.row();
+        exitWindow.add(exitGameButton).width(buttonsSize);
+        exitWindow.row().padTop(15);
+        exitWindow.add(backButton).width(buttonsSize);
+
+        uiStage.addActor(exitWindow);
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    public void hideExitMenu() {
+        exitWindow.remove();
+        exitWindow = null;
+        Gdx.input.setInputProcessor(gameMenuInputAdapter);
+    }
 
     @Override
     public void show() {
@@ -196,7 +259,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        handleCameraMovement(v);
+        handlePlayerMovement(v);
 
         batch.setProjectionMatrix(camera.combined);
         stateTime += v;
@@ -204,18 +267,15 @@ public class GameScreen implements Screen {
         renderTiles();
         renderPlayer();
         renderClockUI();
-
-        /// test
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            Main.getMain().switchScreen(new MainMenuScreen());
-        }
-
         batch.end();
+
+        uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        uiStage.draw();
     }
 
     @Override
-    public void resize(int i, int i1) {
-
+    public void resize(int w, int h) {
+        uiStage.getViewport().update(w,h);
     }
 
     @Override

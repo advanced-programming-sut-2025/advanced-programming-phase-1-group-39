@@ -1,12 +1,25 @@
 package com.StardewValley.graphicViews;
 
-import com.StardewValley.controllers.GameController;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
 public class GameMenuInputAdapter extends InputAdapter {
-    private GameController controller;
+    private GameGuiController controller;
+    private GameScreen screen;
 
-    public GameMenuInputAdapter(GameController controller) {
+    public GameMenuInputAdapter(GameGuiController controller, GameScreen screen) {
         this.controller = controller;
+        this.screen = screen;
+    }
+
+
+
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.ESCAPE) {
+            screen.showExitMenu();
+        } else if (keycode == Input.Keys.ENTER) {
+            controller.changeTurn();
+        }
+        return true;
     }
 }

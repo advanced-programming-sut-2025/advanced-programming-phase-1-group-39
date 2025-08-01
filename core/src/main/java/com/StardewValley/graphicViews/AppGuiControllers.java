@@ -11,4 +11,5 @@ public class AppGuiControllers {
     public static ProfileGuiController profileGuiController = new ProfileGuiController();
 
     public static PregameGuiController pregameGuiController = new PregameGuiController();
+    public static GameGuiController gameGuiController = new GameGuiController();
 }

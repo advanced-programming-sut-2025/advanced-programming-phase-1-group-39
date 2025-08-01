@@ -19,11 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,23 +101,24 @@ public class GameScreen implements Screen {
         float cameraLeft = camX - viewportWidth / 2;
         float cameraBottom = camY - viewportHeight / 2;
 
-        Player currentPlayer = App.getApp().getCurrentGame().getPlayerInTurn();
-
-        int startX = Math.max(currentPlayer.getStartOfFarm().x(), (int) (cameraLeft / tileSize));
-        int startY = Math.max(currentPlayer.getStartOfFarm().y(), (int) (cameraBottom / tileSize));
-        int endX = Math.min(currentPlayer.getEndOfFarm().x(), startX + (int) (viewportWidth / tileSize) + 2);
-        int endY = Math.min(currentPlayer.getEndOfFarm().y(), startY + (int) (viewportHeight / tileSize) + 2);
+        int startX = Math.max(0, (int) (cameraLeft / tileSize));
+        int startY = Math.max(0, (int) (cameraBottom / tileSize));
+        int endX = Math.min(Constants.WORLD_MAP_WIDTH, startX + (int) (viewportWidth / tileSize) + 2);
+        int endY = Math.min(Constants.WORLD_MAP_HEIGHT, startY + (int) (viewportHeight / tileSize) + 2);
 
         Tile[][] tiles = game.getMap().getTiles();
 
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
+                int rowIndex = Constants.WORLD_MAP_HEIGHT - 1 - y;
+
+                if (rowIndex < 0 || rowIndex >= Constants.WORLD_MAP_HEIGHT) continue;
+                Tile tile = tiles[rowIndex][x];
+
                 Location l = new Location(x, y);
                 TextureRegion texture = tileCache.get(l);
 
                 if (texture == null) {
-                    // TODO : correct loading tiles
-                    Tile tile = tiles[Constants.FARM_HEIGHT - y + 1][x];
                     texture = tile.getType().getTextureRegion();
                     tileCache.put(l, texture);
                 }
@@ -133,33 +132,34 @@ public class GameScreen implements Screen {
     }
 
     public void handlePlayerMovement(float delta) {
-        float cameraSpeed = 1500f;
+        float speed = game.getGameSetting().getPlayerSpeed();
+
+        Player player = game.getPlayerInTurn();
+        Location newLocation = new Location(player.getX(), player.getY());
         currentDirection = Direction.NONE;
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            camera.position.y += cameraSpeed * delta;
+            newLocation.addVector(0, +speed * delta);
             currentDirection = Direction.UP;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            camera.position.y -= cameraSpeed * delta;
+            newLocation.addVector(0, -speed * delta);
             currentDirection = Direction.DOWN;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            camera.position.x -= cameraSpeed * delta;
+            newLocation.addVector(-speed * delta, 0);
             currentDirection = Direction.LEFT;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            camera.position.x += cameraSpeed * delta;
+            newLocation.addVector(speed * delta, 0);
             currentDirection = Direction.RIGHT;
         }
-
-        camera.update();
+        // TODO : check movable
+        player.setLocationAbsolut(newLocation.x(), newLocation.y());
     }
 
 
     private void renderPlayer() {
-        int tileSize = Map.TILE_SIZE;
-
         int animIndex = switch (currentDirection) {
             case UP -> 3;
             case RIGHT -> 2;
@@ -174,25 +174,33 @@ public class GameScreen implements Screen {
         TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true);
         if (currentFrame == null) return;
 
-        float drawX = camera.position.x - tileSize / 2f;
-        float drawY = camera.position.y - tileSize;
+        Player currentPlayer = game.getPlayerInTurn();
 
-        System.out.println("Player location: x: " + drawX + ", y: " + drawY);
+        float drawX = currentPlayer.getX() - (Map.TILE_SIZE / 2f);
+        float drawY = currentPlayer.getY();
 
-        batch.draw(currentFrame, drawX, drawY, tileSize, tileSize * 2);
+        batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE, Map.TILE_SIZE * 2);
+    }
+
+    private void renderCamera() {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        camera.position.set(player.getX(), player.getY(), 0);
+        camera.update();
     }
 
     private void renderClockUI() {
-        float uiWidth = clock.getWidth();
-        float uiHeight = clock.getHeight();
+        float clockWidth = clock.getWidth();
+        float clockHeight = clock.getHeight();
 
-        float drawX = camera.position.x + (camera.viewportWidth / 2) - uiWidth - 20;
-        float drawY = camera.position.y + (camera.viewportHeight / 2) - uiHeight - 20;
+        float drawX = camera.position.x + (camera.viewportWidth / 2) - clockWidth - 20;
+        float drawY = camera.position.y + (camera.viewportHeight / 2) - clockHeight - 20;
 
 
         batch.draw(clock, drawX, drawY);
         Time time = App.getApp().getCurrentGame().getTime();
-        font.draw(batch, time.getDayOfWeek() + ". " + time.getDay(), drawX + 100, drawY + 210);
+
+        String date = (time.getDayOfWeek().toString().substring(0,3)) + ". " + time.getDay();
+        font.draw(batch, date, drawX + 150, drawY + 210);
         font.draw(batch, time.getHourText(), drawX + 150, drawY + 120);
         font.draw(batch, String.valueOf(400), drawX + 200, drawY + 40);
     }
@@ -247,10 +255,12 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        App.getApp().getMusic().pause();
+
         font = new BitmapFont();
         font.getData().setScale(2f);
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.position.set(game.getPlayerInTurn().getLocation().x() * Map.TILE_SIZE, game.getPlayerInTurn().getLocation().y() * Map.TILE_SIZE, 0);
+
         loadTextures();
     }
 
@@ -260,12 +270,14 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         handlePlayerMovement(v);
-
+        renderCamera();
+        // everything render based on camera
         batch.setProjectionMatrix(camera.combined);
         stateTime += v;
         batch.begin();
         renderTiles();
         renderPlayer();
+        // TODO : (Better) move clock render to uiStage
         renderClockUI();
         batch.end();
 
@@ -275,7 +287,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int w, int h) {
-        uiStage.getViewport().update(w,h);
+        uiStage.getViewport().update(w,h, true);
+
+        camera.viewportWidth = w;
+        camera.viewportHeight = h;
+        camera.update();
+
+        Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
 
     @Override
@@ -298,7 +316,6 @@ public class GameScreen implements Screen {
         AppDataManager.saveApp();
         if (game != null) {
             AppDataManager.saveGame(game);
-            System.out.println("Saved game");
         }
     }
 }

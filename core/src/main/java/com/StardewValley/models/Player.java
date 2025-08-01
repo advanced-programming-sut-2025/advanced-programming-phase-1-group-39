@@ -2,11 +2,8 @@ package com.StardewValley.models;
 
 
 import com.StardewValley.models.Enums.Season;
-import com.StardewValley.models.NPC.NPC;
 import com.StardewValley.models.NPC.PlayerNPCInteraction;
-import com.StardewValley.models.NPC.Quest;
 import com.StardewValley.models.animals.*;
-import com.StardewValley.models.artisan.ArtisanMachineRecipe;
 import com.StardewValley.models.buildings.*;
 import com.StardewValley.models.cooking.FoodBuff;
 import com.StardewValley.models.cooking.FoodRecipe;
@@ -14,6 +11,7 @@ import com.StardewValley.models.crafting.CraftingRecipe;
 import com.StardewValley.models.inventory.Inventory;
 import com.StardewValley.models.map.AnsiColors;
 import com.StardewValley.models.map.FarmType;
+import com.StardewValley.models.map.Map;
 import com.StardewValley.models.tools.*;
 
 import java.util.ArrayList;
@@ -26,9 +24,13 @@ public class Player {
     private int gameId;
 
     private FarmType farmType;
-    private Location location = new Location(0,0);
+
+    // Based on Tiles
     private Location startOfFarm;
     private Location endOfFarm;
+
+    // graphic - based on pixels
+    private float x, y;
 
     private String username;
     private String nickname;
@@ -61,6 +63,7 @@ public class Player {
     private ArrayList<PlayerNPCInteraction> friendships = initialPlayersFriendship();
 
     private String spouseName;
+
 
     public Player(String username, String nickname, int gameId) {
         ItemStack hoe = new ItemStack(new Hoe(), 1);
@@ -96,18 +99,6 @@ public class Player {
 
     public Inventory getInventory() {
         return inventory;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocationAbsolut(int x, int y) {
-        this.location = new Location(x, y);
-    }
-
-    public void setLocationRelative(int x, int y) {
-        this.location = new Location(x + startOfFarm.x(), y + startOfFarm.y());
     }
 
     public void setFarmBound(Location startOfFarm) {
@@ -388,8 +379,8 @@ public class Player {
     }
 
     public boolean isNearLocation(Location location) {
-        int dx = this.location.x() - location.x();
-        int dy = this.location.y() - location.y();
+        int dx = this.getLocation().x() - location.x();
+        int dy = this.getLocation().y() - location.y();
 
         return dx <= 1 && dy <= 1 && dx >= -1 && dy >= -1;
     }
@@ -430,6 +421,10 @@ public class Player {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 
     // marriage
@@ -529,5 +524,39 @@ public class Player {
 
     public FarmType getFarmType() {
         return farmType;
+    }
+
+    // Graphic
+    // For Map
+    public Location getMapLocation() {
+        return new Location(getX(), getY());
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setLocationAbsolut(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    // For tiles array
+    public Location getLocation() {
+        return new Location((int)(x / Map.TILE_SIZE), (int)((Constants.WORLD_MAP_HEIGHT - y - 1)/ Map.TILE_SIZE));
+    }
+
+    public void setLocationInTilesAbsolut(float x, float y) {
+        this.x = (x) * Map.TILE_SIZE;
+        this.y = (Constants.WORLD_MAP_HEIGHT - y - 1) * Map.TILE_SIZE;
+    }
+
+    public void setLocationInTilesRelative(int x, int y) {
+        this.x = (startOfFarm.x() + x) * Map.TILE_SIZE;
+        this.y = (Constants.WORLD_MAP_HEIGHT - (startOfFarm.y() + y) - 1) * Map.TILE_SIZE;
     }
 }

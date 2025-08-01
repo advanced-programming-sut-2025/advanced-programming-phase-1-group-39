@@ -220,7 +220,7 @@ public class GameController {
             }
         }
 
-        player.setLocationAbsolut(end.x(), end.y());
+        player.setLocationInTilesAbsolut(end.x(), end.y());
         player.changeEnergy(-energyNeeded);
 
         StringBuilder text = new StringBuilder();
@@ -231,7 +231,7 @@ public class GameController {
     public Result setLocation(Matcher matcher) {
         int x = Integer.parseInt(matcher.group(1));
         int y = Integer.parseInt(matcher.group(2));
-        App.getApp().getCurrentGame().getPlayerInTurn().setLocationAbsolut(x, y);
+        App.getApp().getCurrentGame().getPlayerInTurn().setLocationInTilesAbsolut(x, y);
         return new Result(true, "Your location successfully changed to " + x + "," + y);
     }
 

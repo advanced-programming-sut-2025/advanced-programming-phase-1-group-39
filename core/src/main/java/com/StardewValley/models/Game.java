@@ -26,6 +26,8 @@ public class Game {
     public static int lastGameId = 101;
     private int id;
 
+    private GameSetting gameSetting = new GameSetting();
+
     private ArrayList<Player> players;
 
     private Player mainPlayer;
@@ -91,9 +93,14 @@ public class Game {
         for (Player player : players) {
             addRandomFarmForPlayer(player, player.getFarmType());
         }
+
+
         initializeNPCs();
         makeNPCBuildings();
 
+        for (Player player : players) {
+            player.setLocationInTilesRelative(74, 8);
+        }
         gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
         baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
         this.gameMap = gameData.mapChanges.getMapChanged(this.gameMap);
@@ -453,7 +460,7 @@ public class Game {
 
     // player
     public void resetPlayerLocation(Player player) {
-        player.setLocationRelative(74, 8);
+        player.setLocationInTilesRelative(74, 8);
     }
 
     public ArrayList<Player> getPlayers() {
@@ -727,11 +734,11 @@ public class Game {
         return mapRandSeed;
     }
 
-    public void setMapRandSeed(long mapRandSeed) {
-        this.mapRandSeed = mapRandSeed;
-    }
-
     public Map getBaseMap() {
         return baseMap;
+    }
+
+    public GameSetting getGameSetting() {
+        return gameSetting;
     }
 }

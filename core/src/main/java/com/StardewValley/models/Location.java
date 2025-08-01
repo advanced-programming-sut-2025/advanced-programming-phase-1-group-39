@@ -2,7 +2,30 @@ package com.StardewValley.models;
 
 import java.util.Objects;
 
-public record Location(int x, int y) {
+public class Location {
+    float x;
+    float y;
+
+    public Location(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Location() {}
+
+    public int x() {
+        return (int) x;
+    }
+
+    public int y() {
+        return (int) y;
+    }
+
+    public void addVector(float x, float y) {
+        this.x += x;
+        this.y += y;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

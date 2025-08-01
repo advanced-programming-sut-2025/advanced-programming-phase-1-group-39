@@ -13,7 +13,7 @@ public class GameMenuInputAdapter extends InputAdapter {
     }
 
 
-
+    @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
             screen.showExitMenu();
@@ -22,4 +22,6 @@ public class GameMenuInputAdapter extends InputAdapter {
         }
         return true;
     }
+
+
 }

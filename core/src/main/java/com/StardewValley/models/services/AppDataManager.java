@@ -291,14 +291,14 @@ public class AppDataManager {
     public static void saveGame(Game game) {
         FileHandle file = Gdx.files.local(getGamePath(game.getId()));
         if (!file.exists()) {
-            Gdx.app.log("GameManager", "Game Save file not found. Creating a new one.");
+            Gdx.app.log("GameManager", "Creating a new file for saving game"+game.getId()+".");
         }
 
         GameData gameData = new GameData(game);
 
         try (Output output = new Output(file.write(false))) {
             kryo.writeObject(output, gameData);
-            Gdx.app.log("GameManager", "Game " + game.getId() + " saved successfully with Kryo.");
+            Gdx.app.log("GameManager", "Game " + game.getId() + " saved successfully.");
         } catch(Exception e) {
             Gdx.app.error("GameManager", "Error saving game " + game.getId(), e);
         }

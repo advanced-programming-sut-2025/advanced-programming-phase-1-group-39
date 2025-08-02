@@ -547,8 +547,9 @@ public class Player {
 
     // For tiles array
     public Location getLocation() {
-        return new Location((int)(x / Map.TILE_SIZE), (int)((Constants.WORLD_MAP_HEIGHT - y - 1)/ Map.TILE_SIZE));
+        return new Location((int)(x / Map.TILE_SIZE), (int)((Constants.WORLD_MAP_HEIGHT * Map.TILE_SIZE - y)/ Map.TILE_SIZE));
     }
+
 
     public void setLocationInTilesAbsolut(float x, float y) {
         this.x = (x) * Map.TILE_SIZE;

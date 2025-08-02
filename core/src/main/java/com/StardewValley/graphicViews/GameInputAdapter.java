@@ -1,5 +1,7 @@
 package com.StardewValley.graphicViews;
 
+import com.StardewValley.models.App;
+import com.StardewValley.models.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
@@ -19,6 +21,9 @@ public class GameInputAdapter extends InputAdapter {
             screen.showExitMenu();
         } else if (keycode == Input.Keys.ENTER) {
             controller.changeTurn();
+        } else if (keycode == Input.Keys.N) {
+            Game game = App.getApp().getCurrentGame();
+            game.getMap().growWateredPlantsAndTrees();
         }
         return true;
     }

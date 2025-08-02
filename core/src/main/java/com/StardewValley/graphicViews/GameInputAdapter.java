@@ -3,11 +3,11 @@ package com.StardewValley.graphicViews;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
-public class GameMenuInputAdapter extends InputAdapter {
+public class GameInputAdapter extends InputAdapter {
     private GameGuiController controller;
     private GameScreen screen;
 
-    public GameMenuInputAdapter(GameGuiController controller, GameScreen screen) {
+    public GameInputAdapter(GameGuiController controller, GameScreen screen) {
         this.controller = controller;
         this.screen = screen;
     }

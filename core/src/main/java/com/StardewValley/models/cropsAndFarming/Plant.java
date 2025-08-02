@@ -137,7 +137,7 @@ public class Plant {
 
     // Graphics
     // TODO : check
-    public TextureRegion getTexture() throws Exception {
+    public TextureRegion getTexture() {
         TextureAtlas cropsAtlas = GameAssetManager.getCropsAtlas();
 
         String name = product.getName().replaceAll(" " , "_");
@@ -150,8 +150,7 @@ public class Plant {
 
         if (hasCrop) return plantStageRegions.get(stagesNum);
         else if (oneTimeHarvest) return plantStageRegions.get(stagesNum + 1);
-
-        throw new Exception("No plants found for stage: " + stagesNum);
+        else return null;
     }
 
     @Override

@@ -31,12 +31,12 @@ import java.util.LinkedHashMap;
 public class GameScreen implements Screen {
     private GameGuiController controller;
     private Game game;
-    private GameMenuInputAdapter gameMenuInputAdapter;
+    private GameInputAdapter gameMenuInputAdapter;
     private SpriteBatch batch;
 
     private Stage uiStage;
     private Window exitWindow = null;
-//  player
+    //  player
     private TextureAtlas playerAtlas;
     private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public class GameScreen implements Screen {
     private Texture clock;
     private BitmapFont font;
 
-    private final int MAX_CACHE_SIZE = 3000;
+    private final int MAX_CACHE_SIZE = 5000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
         @Override
         protected boolean removeEldestEntry(HashMap.Entry<Location, TextureRegion> eldest) {
@@ -61,7 +61,7 @@ public class GameScreen implements Screen {
     public GameScreen() {
         this.controller = AppGuiControllers.gameGuiController;
         this.game = App.getApp().getCurrentGame();
-        gameMenuInputAdapter = new GameMenuInputAdapter(controller, this);
+        gameMenuInputAdapter = new GameInputAdapter(controller, this);
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
         batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
@@ -89,6 +89,30 @@ public class GameScreen implements Screen {
             playerAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
         }
     }
+
+    private TextureRegion getTileObjectTexture(Tile tile) {
+        Location loc = tile.getLocation();
+        TextureRegion cached = tileCache.get(loc);
+        if (cached != null)
+            return cached;
+
+        TextureRegion texture = null;
+
+        if (tile.getTree() != null) {
+            texture = tile.getTree().getTexture();
+        } else if (tile.getPlant() != null) {
+            texture = tile.getPlant().getTexture();
+        } else if (tile.getItemOnTile() != null) {
+            texture = tile.getItemOnTile().getItem().getTexture();
+        }
+
+        if (texture != null)
+            tileCache.put(loc, texture);
+
+        return texture;
+    }
+
+
 
     public void renderTiles() {
         float camX = camera.position.x;
@@ -127,6 +151,33 @@ public class GameScreen implements Screen {
                 float drawY = y * tileSize;
 
                 batch.draw(texture, drawX, drawY, tileSize, tileSize);
+            }
+        }
+
+        for (int x = startX; x < endX; x++) {
+            for (int y = startY; y < endY; y++) {
+                int rowIndex = Constants.WORLD_MAP_HEIGHT - 1 - y;
+
+                if (rowIndex < 0 || rowIndex >= Constants.WORLD_MAP_HEIGHT) continue;
+                Tile tile = tiles[rowIndex][x];
+
+                float drawX = x * tileSize;
+                float drawY = y * tileSize;
+
+                TextureRegion objectTex = getTileObjectTexture(tile);
+                if (objectTex != null) {
+                    float objWidth = objectTex.getRegionWidth();
+                    float objHeight = objectTex.getRegionHeight();
+
+                    float scale = Math.min(tileSize / objWidth, (tileSize * 2) / objHeight);
+                    float drawWidth = objWidth * scale;
+                    float drawHeight = objHeight * scale;
+
+                    float offsetX = (tileSize - drawWidth) / 2f;
+                    float offsetY = 0f;
+
+                    batch.draw(objectTex, drawX + offsetX, drawY + offsetY, drawWidth, drawHeight);
+                }
             }
         }
     }

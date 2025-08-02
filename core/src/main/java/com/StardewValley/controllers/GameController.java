@@ -140,7 +140,7 @@ public class GameController {
     }
     public String forecastWeather() {
         Game game = App.getApp().getCurrentGame();
-        return "Let's forecast the weather...\n" + "Weather of Tommorow: " +
+        return "Let's forecast the weather...\n" + "Weather of Tomorrow: " +
                 AnsiColors.ANSI_CYAN_BOLD +  game.getTomorrowWeather() + AnsiColors.ANSI_RESET;
     }
     public Result cheatWeather(Matcher matcher) {

@@ -12,8 +12,6 @@ import java.util.ArrayList;
 
 public class Plant {
     private Tile tile;
-
-
     private String seedName;
     private transient Seed seed;
     private String cropName;
@@ -144,12 +142,13 @@ public class Plant {
         int stagesNum = stages.size();
 
         Array<TextureRegion> plantStageRegions = new Array<>(cropsAtlas.findRegions( name+ "_Stage"));
-        if (currentStage < stagesNum) {
+
+        if (hasCrop) return plantStageRegions.get(stagesNum);
+        else if (oneTimeHarvest && currentStage == stagesNum - 1) return plantStageRegions.get(stagesNum + 1);
+        else if (currentStage < stagesNum) {
             return plantStageRegions.get(currentStage);
         }
 
-        if (hasCrop) return plantStageRegions.get(stagesNum);
-        else if (oneTimeHarvest) return plantStageRegions.get(stagesNum + 1);
         else return null;
     }
 

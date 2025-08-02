@@ -129,8 +129,6 @@ public class Game {
 
         initializeFriendships();
 
-        ///  test
-        // TODO : check for plant growing
     }
 
     public int getId() {

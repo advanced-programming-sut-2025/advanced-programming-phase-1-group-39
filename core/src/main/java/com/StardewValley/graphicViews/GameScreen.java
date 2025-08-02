@@ -102,9 +102,9 @@ public class GameScreen implements Screen {
             texture = tile.getTree().getTexture();
         } else if (tile.getPlant() != null) {
             texture = tile.getPlant().getTexture();
-        } else if (tile.getItemOnTile() != null) {
+        }/* else if (tile.getItemOnTile() != null) {
             texture = tile.getItemOnTile().getItem().getTexture();
-        }
+        }*/
 
         if (texture != null)
             tileCache.put(loc, texture);
@@ -143,15 +143,27 @@ public class GameScreen implements Screen {
                 TextureRegion texture = tileCache.get(l);
 
                 if (texture == null) {
-                    texture = tile.getType().getTextureRegion();
+                    texture = tile.getTexture();
                     tileCache.put(l, texture);
                 }
 
                 float drawX = x * tileSize;
                 float drawY = y * tileSize;
 
+                if (tile.isPlowed() && tile.isWatered()) {
+                    batch.setColor(0.35f, 0.25f, 0.2f, 1f);
+                } else if (tile.isPlowed()) {
+                    batch.setColor(0.4f, 0.25f, 0.1f, 1f);
+                } else if (tile.isWatered()) {
+                    batch.setColor(0.75f, 0.75f, 0.75f, 1f);
+                } else {
+                    batch.setColor(1f, 1f, 1f, 1f);
+                }
+
+
                 batch.draw(texture, drawX, drawY, tileSize, tileSize);
             }
+            batch.setColor(1, 1, 1, 1);
         }
 
         for (int x = startX; x < endX; x++) {

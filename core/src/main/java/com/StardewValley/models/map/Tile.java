@@ -5,6 +5,7 @@ import com.StardewValley.models.ItemStack;
 import com.StardewValley.models.Location;
 import com.StardewValley.models.artisan.ArtisanMachine;
 import com.StardewValley.models.cropsAndFarming.*;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Tile {
     int x, y;
@@ -202,6 +203,10 @@ public class Tile {
         if (tree != null) return false;
         if (plant != null) return false;
         return true;
+    }
+
+    public TextureRegion getTexture() {
+        return type.getTextureRegion();
     }
 
     @Override

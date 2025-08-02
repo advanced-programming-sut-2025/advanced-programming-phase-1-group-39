@@ -48,13 +48,20 @@ public class GameScreen implements Screen {
     private Texture clock;
     private BitmapFont font;
 
-    private final int MAX_CACHE_SIZE = 5000;
+    private final int MAX_CACHE_SIZE = 3000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
         @Override
         protected boolean removeEldestEntry(HashMap.Entry<Location, TextureRegion> eldest) {
             return size() > MAX_CACHE_SIZE;
         }
     };
+    private final HashMap<Location, TextureRegion> tileObjectCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(HashMap.Entry<Location, TextureRegion> eldest) {
+            return size() > MAX_CACHE_SIZE;
+        }
+    };
+
     private OrthographicCamera camera;
 
 
@@ -71,7 +78,7 @@ public class GameScreen implements Screen {
 
     public void loadTextures() {
         playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
-        clock = new Texture(Gdx.files.internal("Clock.png"));
+        clock = new Texture(Gdx.files.internal("clock/Clock.png"));
 
         for (int i = 14; i > 9; i--) {
             Array<TextureRegion> walkFrames = new Array<>();
@@ -92,7 +99,7 @@ public class GameScreen implements Screen {
 
     private TextureRegion getTileObjectTexture(Tile tile) {
         Location loc = tile.getLocation();
-        TextureRegion cached = tileCache.get(loc);
+        TextureRegion cached = tileObjectCache.get(loc);
         if (cached != null)
             return cached;
 
@@ -102,17 +109,15 @@ public class GameScreen implements Screen {
             texture = tile.getTree().getTexture();
         } else if (tile.getPlant() != null) {
             texture = tile.getPlant().getTexture();
-        }/* else if (tile.getItemOnTile() != null) {
+        } else if (tile.getItemOnTile() != null) {
             texture = tile.getItemOnTile().getItem().getTexture();
-        }*/
+        }
 
         if (texture != null)
-            tileCache.put(loc, texture);
+            tileObjectCache.put(loc, texture);
 
         return texture;
     }
-
-
 
     public void renderTiles() {
         float camX = camera.position.x;
@@ -261,11 +266,15 @@ public class GameScreen implements Screen {
 
         batch.draw(clock, drawX, drawY);
         Time time = App.getApp().getCurrentGame().getTime();
+        TextureRegion season = new TextureRegion(new Texture(Gdx.files.internal("clock/" + time.getSeason().name() + ".png")));
+        TextureRegion weather = new TextureRegion(new Texture(Gdx.files.internal("clock/" + App.getApp().getCurrentGame().getTodayWeather().getStatus().name() + ".png")));
+        batch.draw(season, drawX + 210, drawY + 137, (float) season.getRegionWidth() /2, (float) season.getRegionHeight() /2);
+        batch.draw(weather, drawX + 115, drawY + 137, (float) weather.getRegionWidth() /2, (float) weather.getRegionHeight() /2);
 
         String date = (time.getDayOfWeek().toString().substring(0,3)) + ". " + time.getDay();
         font.draw(batch, date, drawX + 150, drawY + 210);
         font.draw(batch, time.getHourText(), drawX + 150, drawY + 120);
-        font.draw(batch, String.valueOf(400), drawX + 200, drawY + 40);
+        font.draw(batch, String.valueOf(App.getApp().getCurrentGame().getPlayerInTurn().getMoney()), drawX + 200, drawY + 40);
     }
 
     public void showExitMenu() {

@@ -9,7 +9,7 @@ import com.badlogic.gdx.InputAdapter;
 
 public class GameInputAdapter extends InputAdapter {
 
-    private final float moveCooldown = 0.15f;
+    private final float moveCooldown = 0.1f;
     private float moveTimer = 0f;
     private final GameScreen screen;
     private final GameController controller;

@@ -54,7 +54,7 @@ public class GameScreen implements Screen {
     public GameScreen() {
         this.controller = AppControllers.gameController;
         this.game = App.getApp().getCurrentGame();
-        gameInputAdapter = new GameInputAdapter(this ,controller, camera);
+        gameInputAdapter = new GameInputAdapter(this ,controller);
         Gdx.input.setInputProcessor(gameInputAdapter);
         batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
@@ -150,9 +150,19 @@ public class GameScreen implements Screen {
                 float drawY = y * tileSize;
 
                 TextureRegion objectTex = getTileObjectTexture(tile);
-                if (objectTex != null)
-                    batch.draw(objectTex, drawX, drawY, tileSize, tileSize);
+                if (objectTex != null) {
+                    float objWidth = objectTex.getRegionWidth();
+                    float objHeight = objectTex.getRegionHeight();
 
+                    float scale = Math.min(tileSize / objWidth, (tileSize * 2) / objHeight);
+                    float drawWidth = objWidth * scale;
+                    float drawHeight = objHeight * scale;
+
+                    float offsetX = (tileSize - drawWidth) / 2f;
+                    float offsetY = 0f;
+
+                    batch.draw(objectTex, drawX + offsetX, drawY + offsetY, drawWidth, drawHeight);
+                }
             }
         }
     }

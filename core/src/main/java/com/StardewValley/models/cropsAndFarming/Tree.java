@@ -20,6 +20,7 @@ public class Tree{
 
     private ArrayList<Integer> stages = new ArrayList<>();
     private int currentStage;
+    private int lastStage;
     private int daysOfCurrentStage;
     private int totalHarvestTime;
     private String fruitName;
@@ -46,6 +47,7 @@ public class Tree{
 
         this.stages = stages;
         this.currentStage = 0;
+        this.lastStage = 0;
         this.daysOfCurrentStage = stages.get(currentStage);
         this.totalHarvestTime = totalHarvestTime;
         this.fruitName = fruitName;
@@ -78,6 +80,7 @@ public class Tree{
         if (hasFruit) {
             fruitStack = 0;
             hasFruit = false;
+            currentStage = stages.size() - 1;
             return new ItemStack(fruit, fruitStack);
         }
         return null;
@@ -102,6 +105,7 @@ public class Tree{
                 fruitIntervalDays = 0;
                 hasFruit = true;
                 fruitStack++;
+                currentStage = stages.size();
             }
         }
     }
@@ -143,6 +147,12 @@ public class Tree{
     public int getCurrentStage() {
         return currentStage;
     }
+    public boolean stageChanged() {
+        return currentStage != lastStage;
+    }
+    public void syncLastStage() {
+        lastStage = currentStage;
+    }
 
     public boolean hasFruit() {
         return hasFruit;
@@ -167,7 +177,6 @@ public class Tree{
         if (currentStage < stagesNum) {
             return new TextureRegion(treeStageRegions.get(currentStage));
         } else {
-            // چهار فصل
             if (hasFruit) {
                 TextureRegion hasFruitTexture = treesAtlas.findRegion(name + "_Stage_5_Fruit");
                 if (hasFruitTexture != null) {

@@ -2,6 +2,8 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
+import com.StardewValley.models.cropsAndFarming.Plant;
+import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.services.AppDataManager;
@@ -99,11 +101,29 @@ public class GameScreen implements Screen {
 
     private TextureRegion getTileObjectTexture(Tile tile) {
         Location loc = tile.getLocation();
-        TextureRegion cached = tileObjectCache.get(loc);
-        if (cached != null)
-            return cached;
 
         TextureRegion texture = null;
+
+        Plant plant = tile.getPlant();
+        Tree tree = tile.getTree();
+
+        if (plant != null && plant.stageChanged()) {
+            tileObjectCache.remove(loc);
+            texture = plant.getTexture();
+            tileObjectCache.put(loc, texture);
+            plant.syncLastStage();
+        } else if (tree != null && tree.stageChanged()) {
+            tileObjectCache.remove(loc);
+            texture = tree.getTexture();
+            tileObjectCache.put(loc, texture);
+            tree.syncLastStage();
+        }
+
+        TextureRegion cached = tileObjectCache.get(loc);
+
+        if (cached != null) {
+            return cached;
+        }
 
         if (tile.getTree() != null) {
             texture = tile.getTree().getTexture();

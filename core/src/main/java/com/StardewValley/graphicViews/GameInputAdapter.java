@@ -17,7 +17,7 @@ public class GameInputAdapter extends InputAdapter {
         this.screen = screen;
     }
 
-    public Direction handlePlayerMovement(float delta, Game game) {
+    public void handlePlayerMovement(float delta, Game game) {
         float speed = game.getGameSetting().getPlayerSpeed();
 
         Player player = game.getPlayerInTurn();
@@ -42,8 +42,7 @@ public class GameInputAdapter extends InputAdapter {
         }
         // TODO : check movable
         player.setLocationAbsolut(newLocation.x(), newLocation.y());
-
-        return currentDirection;
+        player.setDirection(currentDirection);
     }
 
 

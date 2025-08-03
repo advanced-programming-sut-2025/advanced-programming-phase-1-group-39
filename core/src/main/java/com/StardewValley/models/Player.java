@@ -1,6 +1,7 @@
 package com.StardewValley.models;
 
 
+import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.Enums.Season;
 import com.StardewValley.models.NPC.PlayerNPCInteraction;
 import com.StardewValley.models.animals.*;
@@ -31,6 +32,7 @@ public class Player {
 
     // graphic - based on pixels
     private float x, y;
+    private transient Direction direction = Direction.NONE;
 
     private String username;
     private String nickname;
@@ -83,7 +85,8 @@ public class Player {
         this.gameId = gameId;
     }
 
-    public Player(){}
+    public Player() {
+    }
 
     public boolean isConscious() {
         return energy > 0;
@@ -126,7 +129,7 @@ public class Player {
     }
 
     public double getEnergy() {
-        return Math.floor(energy*100)/100;
+        return Math.floor(energy * 100) / 100;
     }
 
     public String getColoredEnergy() {
@@ -175,6 +178,7 @@ public class Player {
     public void setCheatedEnergy() {
         energyCheated = true;
     }
+
     public void resetCheatedEnergy() {
         energyCheated = false;
     }
@@ -182,6 +186,7 @@ public class Player {
     public void setEnergyUnlimited() {
         energyUnlimited = true;
     }
+
     public void resetEnergyUnlimited() {
         energyUnlimited = false;
     }
@@ -247,6 +252,7 @@ public class Player {
         money += nightRevenue;
         nightRevenue = 0;
     }
+
     public void addToRevenue(int amount) {
         nightRevenue += amount;
     }
@@ -255,6 +261,7 @@ public class Player {
         money += amount;
         if (money < 0) money = 0;
     }
+
     public boolean hasEnoughMoney(int amount) {
         if (spouseName != null) {
             return App.getApp().getCurrentGame().hasEnoughMoney(this, amount);
@@ -274,7 +281,7 @@ public class Player {
         inventory.pickItem("Wood", 500);
         changeMoney(1000);
         for (Building building : playerFarmBuildings) {
-            if (building.getName().equals("greenhouse")) ((GreenHouse)building).build();
+            if (building.getName().equals("greenhouse")) ((GreenHouse) building).build();
         }
     }
 
@@ -290,6 +297,7 @@ public class Player {
     public void addToBuildings(Building building) {
         playerFarmBuildings.add(building);
     }
+
     public Building getBuildingByName(String name) {
         for (Building building : playerFarmBuildings) {
             if (building.getName().equalsIgnoreCase(name)) return building;
@@ -301,9 +309,11 @@ public class Player {
     public void learnCraftingRecipe(CraftingRecipe recipe) {
         learnedCraftingRecipeNames.add(recipe.getName());
     }
+
     public boolean hasLearnedCraftingRecipe(CraftingRecipe recipe) {
         return learnedCraftingRecipeNames.contains(recipe.getName());
     }
+
     public String showCraftingRecipes() {
         StringBuilder sb = new StringBuilder();
         for (String recipeName : learnedCraftingRecipeNames) {
@@ -317,9 +327,11 @@ public class Player {
         if (hasLearnedFoodRecipe(recipe)) return;
         learnedFoodRecipeNames.add(recipe.name());
     }
+
     public boolean hasLearnedFoodRecipe(FoodRecipe recipe) {
         return learnedFoodRecipeNames.contains(recipe.name());
     }
+
     public String showFoodRecipes() {
         StringBuilder sb = new StringBuilder();
         for (String recipeName : learnedFoodRecipeNames) {
@@ -349,7 +361,7 @@ public class Player {
     }
 
     public int sellAnimal(Animal animal) {
-        int money = (int) (animal.getPrice() * (((double) animal.getFriendship() /1000) + 0.3));
+        int money = (int) (animal.getPrice() * (((double) animal.getFriendship() / 1000) + 0.3));
         changeMoney(money);
         animals.remove(animal.getName());
 
@@ -368,9 +380,11 @@ public class Player {
     public ArrayList<Animal> getAnimals() {
         return new ArrayList<>(animals.values());
     }
+
     public Animal getAnimal(String name) {
         return animals.get(name);
     }
+
     public Animal getAnimalByLocation(Location location) {
         for (Animal animal : animals.values()) {
             if (animal.getLocation().equals(location)) return animal;
@@ -449,13 +463,13 @@ public class Player {
     public void learnNewRecipes() {
         // Foraging level
         switch (skills.getForagingLevel()) {
-            case 0 :
+            case 0:
                 learnRecipes(
                         List.of(FoodRecipe.FRIED_EGG, FoodRecipe.BAKED_FISH, FoodRecipe.SALAD),
                         null
                 );
                 break;
-            case 1 :
+            case 1:
                 learnCraftingRecipe(CraftingRecipe.CHARCOAL_KILN);
                 break;
             case 2:
@@ -469,21 +483,21 @@ public class Player {
         }
         // Mining level
         switch (skills.getMiningLevel()) {
-            case 1 :
+            case 1:
                 learnFoodRecipe(FoodRecipe.MINERS_TREAT);
                 learnCraftingRecipe(CraftingRecipe.CHERRY_BOMB);
                 break;
-            case 2 :
+            case 2:
                 learnCraftingRecipe(CraftingRecipe.BOMB);
                 break;
-            case 3 :
+            case 3:
                 learnCraftingRecipe(CraftingRecipe.MEGA_BOMB);
                 break;
         }
 
         // Farming level
         switch (skills.getFarmingLevel()) {
-            case 1 :
+            case 1:
                 learnRecipes(
                         List.of(FoodRecipe.FARMERS_LUNCH), List.of(
                                 CraftingRecipe.SPRINKLER, CraftingRecipe.BEE_HOUSE
@@ -492,13 +506,13 @@ public class Player {
                 break;
             case 2:
                 learnRecipes(
-                        null, List.of (CraftingRecipe.QUALITY_SPRINKLER, CraftingRecipe.DELUXE_SCARECROW,
+                        null, List.of(CraftingRecipe.QUALITY_SPRINKLER, CraftingRecipe.DELUXE_SCARECROW,
                                 CraftingRecipe.CHEESE_PRESS, CraftingRecipe.PRESERVES_JAR)
                 );
                 break;
-            case 3 :
+            case 3:
                 learnRecipes(
-                        null, List.of (CraftingRecipe.IRIDIUM_SPRINKLER, CraftingRecipe.KEG ,
+                        null, List.of(CraftingRecipe.IRIDIUM_SPRINKLER, CraftingRecipe.KEG,
                                 CraftingRecipe.LOOM, CraftingRecipe.OIL_MAKER)
                 );
                 break;
@@ -506,10 +520,10 @@ public class Player {
 
         // Fishing
         switch (skills.getFishingLevel()) {
-            case 2 :
+            case 2:
                 learnFoodRecipe(FoodRecipe.DISH_O_THE_SEA);
                 break;
-            case 3 :
+            case 3:
                 learnFoodRecipe(FoodRecipe.SEAFOAM_PUDDING);
         }
     }
@@ -556,5 +570,13 @@ public class Player {
     public void setLocationInTilesRelative(int x, int y) {
         this.x = (startOfFarm.x() + x) * Map.TILE_SIZE;
         this.y = (Constants.WORLD_MAP_HEIGHT - (startOfFarm.y() + y) - 1) * Map.TILE_SIZE;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

@@ -43,7 +43,6 @@ public class GameScreen implements Screen {
     private TextureAtlas playerAtlas;
     private HashMap<Player, ArrayList<Animation<TextureRegion>>> playersAnimations = new LinkedHashMap<>();
 
-    private Direction currentDirection = Direction.NONE;
     private float stateTime = 0f;
 
     private Texture clock;
@@ -241,8 +240,8 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void renderPlayer(Player player) {
-        int animIndex = switch (currentDirection) {
+    private void renderPlayer(Player currentPlayer) {
+        int animIndex = switch (currentPlayer.getDirection()) {
             case UP -> 3;
             case RIGHT -> 2;
             case DOWN -> 1;
@@ -250,13 +249,11 @@ public class GameScreen implements Screen {
             default -> 0;
         };
 
-        Animation<TextureRegion> currentAnimation = playersAnimations.get(player).get(animIndex);
+        Animation<TextureRegion> currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
         float elapsedTime = stateTime;
 
         TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true);
         if (currentFrame == null) return;
-
-        Player currentPlayer = game.getPlayerInTurn();
 
         float drawX = currentPlayer.getX() - (Map.TILE_SIZE / 2f);
         float drawY = currentPlayer.getY();
@@ -363,7 +360,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        currentDirection = gameMenuInputAdapter.handlePlayerMovement(v, game);
+        gameMenuInputAdapter.handlePlayerMovement(v, game);
         renderCamera();
         // everything render based on camera
         batch.setProjectionMatrix(camera.combined);

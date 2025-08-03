@@ -35,7 +35,7 @@ public class Scythe extends Tool {
                 else
                     return new Result(false, "Nothing to harvest.");
             }
-            if (tile.getItemOnTile().getItem().getName().equals("Grass")) {
+            if (tile.getItemOnTile() != null && tile.getItemOnTile().getItem().getName().equals("Grass")) {
                 ItemStack item = tile.getItemOnTile();
                 if (!player.getInventory().hasSpace(item))
                     return new Result(false, "You don't have enough space to get objects!");

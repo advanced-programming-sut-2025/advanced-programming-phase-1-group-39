@@ -23,6 +23,7 @@ public class Plant {
 
     private ArrayList<Integer> stages;
     private int currentStage;
+    private int lastStage;
     private int daysOfCurrentStage;
 
     private int daysWithoutWater;
@@ -50,6 +51,7 @@ public class Plant {
 
         this.stages = stages;
         this.currentStage = 0;
+        this.lastStage = 0;
         this.daysOfCurrentStage = stages.get(currentStage);
         this.daysWithoutWater = 0;
         this.isWateredToday = false;
@@ -67,7 +69,7 @@ public class Plant {
         FertilizerType type = tile.getFertilizer();
 
         boolean needsWater = (type != FertilizerType.QUALITY);
-        boolean isWateredEnough = !needsWater || isWateredToday;
+        boolean isWateredEnough = true; //!needsWater || isWateredToday; // TODO : change
 
         if (!isWateredEnough) {
             daysWithoutWater++;
@@ -93,10 +95,12 @@ public class Plant {
                 cropIntervalDays = 0;
                 hasCrop = true;
                 productStack++;
+                currentStage = stages.size();
             }
         } else {
             hasCrop = true;
             productStack = 1;
+            currentStage = stages.size();
         }
 
 //        if (needsWater) {
@@ -110,6 +114,12 @@ public class Plant {
     public void die() {
         isAlive = false;
     }
+    public boolean stageChanged() {
+        return currentStage != lastStage;
+    }
+    public void syncLastStage() {
+        lastStage = currentStage;
+    }
 
     public void setIsWateredToday() {
         isWateredToday = true;
@@ -121,10 +131,12 @@ public class Plant {
         if (oneTimeHarvest) {
             productStack = 0;
             hasCrop = false;
+            currentStage = stages.size() - 1;
             tile.removePlant();
             return new ItemStack(product, 1);
         } else {
             hasCrop = false;
+            currentStage = stages.size() - 1;
             ItemStack stack = new ItemStack(product, productStack);
             productStack = 0;
             return stack;
@@ -148,13 +160,14 @@ public class Plant {
             return new TextureRegion(GameAssetManager.deadPlantTexture);
         }
         if (hasCrop) return plantStageRegions.get(stagesNum);
-        else if (oneTimeHarvest && currentStage == stagesNum - 1) return plantStageRegions.get(stagesNum + 1);
+        else if (oneTimeHarvest && currentStage == stagesNum) return plantStageRegions.get(stagesNum);
         else if (currentStage < stagesNum) {
             return plantStageRegions.get(currentStage);
         }
 
         else return null;
     }
+
 
     @Override
     public String toString() {

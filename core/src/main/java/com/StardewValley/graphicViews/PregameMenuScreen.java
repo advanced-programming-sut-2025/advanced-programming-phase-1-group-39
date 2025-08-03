@@ -339,18 +339,5 @@ public class PregameMenuScreen implements Screen {
     public void dispose() {
         AppDataManager.saveApp();
         stage.dispose();
-        background.dispose();
-    }
-
-    public TextButton getBackButton() {
-        return backButton;
-    }
-
-    public TextButton getLoadGameButton() {
-        return loadGameButton;
-    }
-
-    public TextButton getNewGameButton() {
-        return newGameButton;
     }
 }

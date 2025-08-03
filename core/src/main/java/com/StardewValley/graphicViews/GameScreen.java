@@ -3,6 +3,8 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Direction;
+import com.StardewValley.models.cropsAndFarming.Plant;
+import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.services.AppDataManager;
@@ -54,6 +56,14 @@ public class GameScreen implements Screen {
             return size() > MAX_CACHE_SIZE;
         }
     };
+
+    private final HashMap<Location, TextureRegion> tileObjectCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(HashMap.Entry<Location, TextureRegion> eldest) {
+            return size() > MAX_CACHE_SIZE;
+        }
+    };
+
     private OrthographicCamera camera;
 
     private Label errorLabel;
@@ -103,28 +113,47 @@ public class GameScreen implements Screen {
 
     private TextureRegion getTileObjectTexture(Tile tile) {
         Location loc = tile.getLocation();
-        TextureRegion cached = tileCache.get(loc);
-        if (cached != null)
-            return cached;
 
         TextureRegion texture = null;
+
+        Plant plant = tile.getPlant();
+        Tree tree = tile.getTree();
+
+        if (plant == null && tree == null && tile.getItemOnTile() == null) {
+            tileObjectCache.remove(loc);
+        }
+
+        if (plant != null && plant.stageChanged()) {
+            tileObjectCache.remove(loc);
+            texture = plant.getTexture();
+            tileObjectCache.put(loc, texture);
+            plant.syncLastStage();
+        } else if (tree != null && tree.stageChanged()) {
+            tileObjectCache.remove(loc);
+            texture = tree.getTexture();
+            tileObjectCache.put(loc, texture);
+            tree.syncLastStage();
+        }
+
+        TextureRegion cached = tileObjectCache.get(loc);
+
+        if (cached != null) {
+            return cached;
+        }
 
         if (tile.getTree() != null) {
             texture = tile.getTree().getTexture();
         } else if (tile.getPlant() != null) {
             texture = tile.getPlant().getTexture();
         } else if (tile.getItemOnTile() != null) {
-            Item item = tile.getItemOnTile().getItem();
-            texture = item.getTexture();
+            texture = tile.getItemOnTile().getItem().getTexture();
         }
 
         if (texture != null)
-            tileCache.put(loc, texture);
+            tileObjectCache.put(loc, texture);
 
         return texture;
     }
-
-
 
     public void renderTiles() {
         float camX = camera.position.x;
@@ -155,15 +184,27 @@ public class GameScreen implements Screen {
                 TextureRegion texture = tileCache.get(l);
 
                 if (texture == null) {
-                    texture = tile.getType().getTextureRegion();
+                    texture = tile.getTexture();
                     tileCache.put(l, texture);
                 }
 
                 float drawX = x * tileSize;
                 float drawY = y * tileSize;
 
+                if (tile.isPlowed() && tile.isWatered()) {
+                    batch.setColor(0.35f, 0.25f, 0.2f, 1f);
+                } else if (tile.isPlowed()) {
+                    batch.setColor(0.4f, 0.25f, 0.1f, 1f);
+                } else if (tile.isWatered()) {
+                    batch.setColor(0.75f, 0.75f, 0.75f, 1f);
+                } else {
+                    batch.setColor(1f, 1f, 1f, 1f);
+                }
+
+
                 batch.draw(texture, drawX, drawY, tileSize, tileSize);
             }
+            batch.setColor(1, 1, 1, 1);
         }
 
         for (int x = startX; x < endX; x++) {
@@ -329,8 +370,8 @@ public class GameScreen implements Screen {
         stateTime += v;
         batch.begin();
         renderTiles();
-//        renderPlayers();
-        renderPlayer(game.getPlayerInTurn());
+        renderPlayers();
+//        renderPlayer(game.getPlayerInTurn());
         // TODO : (Better) move clock render to uiStage
         renderClockUI();
         batch.end();

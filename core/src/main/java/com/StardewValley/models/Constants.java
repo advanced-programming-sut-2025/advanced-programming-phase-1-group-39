@@ -19,5 +19,8 @@ public class Constants {
 
     public static final int MAX_SKILL_LEVEL = 4;
 
+    public static final float PLAYER_SPRITE_TILE_W = 1f;
+    public static final float PLAYER_SPRITE_TILE_H = 2f;
+
     public static final String FARM_TYPE_DATA_PATH = "projectData/resources/data/Map/farmTypes.json";
 }

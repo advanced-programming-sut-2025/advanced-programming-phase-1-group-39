@@ -82,7 +82,6 @@ public class GameScreen implements Screen {
         errorLabel = new Label("", GameAssetManager.messageBoxStyle);
         errorLabel.setVisible(false);
         rootTable.add(errorLabel).bottom().padBottom(50).expandY();
-        rootTable.debug();
     }
 
     public void showError(String message) {
@@ -289,10 +288,10 @@ public class GameScreen implements Screen {
         TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true);
         if (currentFrame == null) return;
 
-        float drawX = currentPlayer.getX() - (Map.TILE_SIZE / 2f);
+        float drawX = currentPlayer.getX() - (Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_H);
         float drawY = currentPlayer.getY();
 
-        batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE, Map.TILE_SIZE * 2);
+        batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W, Map.TILE_SIZE * 2);
 
         batch.setColor(Color.WHITE);
     }
@@ -389,29 +388,33 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         loadTextures();
-        showError("Why are you doing this? ???");
+        showError("Why are you doing this?");
     }
 
     @Override
     public void render(float v) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        try {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        gameMenuInputAdapter.handlePlayerMovement(v, game);
-        renderCamera();
-        // everything render based on camera
-        batch.setProjectionMatrix(camera.combined);
-        stateTime += v;
-        batch.begin();
-        renderTiles();
-        renderPlayers();
+            gameMenuInputAdapter.handlePlayerMovement(v, game);
+            renderCamera();
+            // everything render based on camera
+            batch.setProjectionMatrix(camera.combined);
+            stateTime += v;
+            batch.begin();
+            renderTiles();
+            renderPlayers();
 
-        // TODO : (Better) move clock render to uiStage
-        renderClockUI();
-        batch.end();
+            // TODO : (Better) move clock render to uiStage
+            renderClockUI();
+            batch.end();
 
-        uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        uiStage.draw();
+            uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+            uiStage.draw();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

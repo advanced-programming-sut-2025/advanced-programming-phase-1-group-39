@@ -39,7 +39,7 @@ public class GameScreen implements Screen {
     private Window exitWindow = null;
     //  player
     private TextureAtlas playerAtlas;
-    private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
+    private HashMap<Player, ArrayList<Animation<TextureRegion>>> playersAnimations = new LinkedHashMap<>();
 
     private Direction currentDirection = Direction.NONE;
     private float stateTime = 0f;
@@ -75,6 +75,13 @@ public class GameScreen implements Screen {
         playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
         clock = new Texture(Gdx.files.internal("Clock.png"));
         clock.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        for (Player player : game.getPlayers()) {
+            loadPlayerAnimations(player);
+        }
+    }
+
+    private void loadPlayerAnimations(Player player) {
+        ArrayList<Animation<TextureRegion>> animations = new ArrayList<>();
         for (int i = 14; i > 9; i--) {
             Array<TextureRegion> walkFrames = new Array<>();
             if (i == 14) {
@@ -88,8 +95,10 @@ public class GameScreen implements Screen {
                     walkFrames.add(playerAtlas.findRegion(region));
                 }
             }
-            playerAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+            animations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
         }
+
+        playersAnimations.put(player, animations);
     }
 
     private TextureRegion getTileObjectTexture(Tile tile) {
@@ -185,8 +194,13 @@ public class GameScreen implements Screen {
         }
     }
 
+    public void renderPlayers() {
+        for (Player player : game.getPlayers()) {
+            renderPlayer(player);
+        }
+    }
 
-    private void renderPlayer() {
+    private void renderPlayer(Player player) {
         int animIndex = switch (currentDirection) {
             case UP -> 3;
             case RIGHT -> 2;
@@ -195,7 +209,7 @@ public class GameScreen implements Screen {
             default -> 0;
         };
 
-        Animation<TextureRegion> currentAnimation = playerAnimations.get(animIndex);
+        Animation<TextureRegion> currentAnimation = playersAnimations.get(player).get(animIndex);
         float elapsedTime = stateTime;
 
         TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true);
@@ -256,7 +270,6 @@ public class GameScreen implements Screen {
             }
         });
         TextButton nextTurnButton = new TextButton("Go Next Turn", skin);
-        System.out.println(nextTurnButton.getColor());
         nextTurnButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -316,7 +329,8 @@ public class GameScreen implements Screen {
         stateTime += v;
         batch.begin();
         renderTiles();
-        renderPlayer();
+//        renderPlayers();
+        renderPlayer(game.getPlayerInTurn());
         // TODO : (Better) move clock render to uiStage
         renderClockUI();
         batch.end();

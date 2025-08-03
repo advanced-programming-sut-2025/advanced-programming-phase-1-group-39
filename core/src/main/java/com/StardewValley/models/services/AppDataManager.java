@@ -268,7 +268,6 @@ public class AppDataManager {
         }
 
         GameData gameData = new GameData(game);
-        Gdx.app.log("GameData", "GameData saved and time " + gameData.time.getHourText() + gameData.time.getDayDetail());
 
         try (Output output = new Output(file.write(false))) {
             kryo.writeObject(output, gameData);

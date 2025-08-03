@@ -7,9 +7,12 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class GameAssetManager {
     public static Skin skin;
@@ -33,6 +36,9 @@ public class GameAssetManager {
 
     public static Texture blackBox;
 
+    public static Texture energyBox = new Texture(Gdx.files.internal("energy_bar.png"));
+    public static ProgressBar.ProgressBarStyle energyBarStyle;
+
     static {
         initializeAssets();
     }
@@ -43,11 +49,8 @@ public class GameAssetManager {
 
         setMessageBoxStyle();
 
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.BLACK);
-        pixmap.fill();
-        blackBox = new Texture(pixmap);
-        pixmap.dispose();
+        loadBlackBg();
+        loadEnergyBarStyle();
     }
 
     public static TextureAtlas getCropsAtlas() {
@@ -86,6 +89,7 @@ public class GameAssetManager {
         return pregameBackground;
     }
 
+
     public static void setMessageBoxStyle() {
         Texture messageBoxTexture = new Texture(Gdx.files.internal("box.9.png"));
         NinePatch ninePatch = new NinePatch(messageBoxTexture, 1, 1, 1, 1);
@@ -103,5 +107,35 @@ public class GameAssetManager {
 
         messageBoxStyle.background.setMinWidth(450);
         messageBoxStyle.background.setMinHeight(100);
+    }
+
+    public static void loadBlackBg() {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.BLACK);
+        pixmap.fill();
+        blackBox = new Texture(pixmap);
+        pixmap.dispose();
+    }
+
+    public static void loadEnergyBarStyle() {
+        int w = 30, h = 60;
+
+        Pixmap bgPixmap = new Pixmap(w, h, Pixmap.Format.RGBA8888);
+        bgPixmap.setColor(0,0,0,0);
+        bgPixmap.fill();
+
+        Pixmap fillPixmap = new Pixmap(w, h, Pixmap.Format.RGBA8888);
+        fillPixmap.setColor(Color.GREEN);
+        fillPixmap.fill();
+
+        Pixmap knobPixmap = new Pixmap(0, 0, Pixmap.Format.RGBA8888);
+
+        energyBarStyle = new ProgressBar.ProgressBarStyle();
+        energyBarStyle.background = new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap)));
+        energyBarStyle.knob = new TextureRegionDrawable(new TextureRegion(new Texture(knobPixmap)));
+        energyBarStyle.knobBefore = new TextureRegionDrawable(new Texture(fillPixmap));
+
+        bgPixmap.dispose();
+        fillPixmap.dispose();
     }
 }

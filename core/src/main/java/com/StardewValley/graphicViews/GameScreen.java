@@ -53,8 +53,12 @@ public class GameScreen implements Screen {
 
     private float stateTime = 0f;
 
+    // UI
     private Texture clock;
     private BitmapFont font;
+
+    private ProgressBar energyBar;
+    private Image energyBox;
 
     private final int MAX_CACHE_SIZE = 5000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
@@ -94,6 +98,19 @@ public class GameScreen implements Screen {
         errorLabel.setVisible(false);
         errorLabel.setAlignment(Align.center);
         rootTable.add(errorLabel).bottom().padBottom(50).expandY();
+
+        energyBar = new ProgressBar(0, (float) Constants.MAX_ENERGY, 1, true, GameAssetManager.energyBarStyle);
+        energyBar.setAnimateDuration(0.1f);
+        energyBox = new Image(GameAssetManager.energyBox);
+        Stack energyStack = new Stack();
+        energyStack.add(energyBox);
+
+        Table barTable = new Table();
+        barTable.add(energyBar).expand().fill().pad(65,12,15,7);
+        energyStack.add(barTable);
+
+        energyStack.setScale(2f);
+        rootTable.add(energyStack).expandX().bottom().right().pad(20f);
     }
 
     public void showError(String message) {
@@ -521,6 +538,7 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         loadTextures();
+        energyBar.setValue((float) game.getPlayerInTurn().getEnergy());
     }
 
     @Override
@@ -530,7 +548,9 @@ public class GameScreen implements Screen {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             gameMenuInputAdapter.handlePlayerMovement(v, game);
+            energyBar.setValue((float) game.getPlayerInTurn().getEnergy());
             renderCamera();
+
             // everything render based on camera
             batch.setProjectionMatrix(camera.combined);
             stateTime += v;

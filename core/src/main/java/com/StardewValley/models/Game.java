@@ -35,7 +35,9 @@ public class Game {
 
     private transient Map gameMap;
     private transient Map baseMap;
+
     private long mapRandSeed;
+    private transient Random randomGenerator;
 
     private ArrayList<Building> buildings = new ArrayList<>();
 
@@ -57,8 +59,9 @@ public class Game {
         this.playerInTurn = one;
 
         mapRandSeed = new Random().nextLong();
-        this.gameMap = new Map(mapRandSeed);
-        baseMap = new Map(mapRandSeed);
+        randomGenerator = new Random(mapRandSeed);
+        this.gameMap = new Map(randomGenerator);
+        baseMap = new Map(randomGenerator);
 
         todayWeather.setStatus(WeatherStatus.SUNNY);
         tomorrowWeather.setWeatherRandom(Season.SPRING);
@@ -71,8 +74,9 @@ public class Game {
         this.playerInTurn = players.get(0);
 
         mapRandSeed = new Random().nextLong();
-        this.gameMap = new Map(mapRandSeed);
-        baseMap = new Map(mapRandSeed);
+        randomGenerator = new Random(mapRandSeed);
+        this.gameMap = new Map(randomGenerator);
+        baseMap = new Map(randomGenerator);
 
         todayWeather.setStatus(WeatherStatus.SUNNY);
         tomorrowWeather.setWeatherRandom(Season.SPRING);
@@ -86,9 +90,9 @@ public class Game {
         this.playerInTurn = players.get(0);
 
         mapRandSeed = gameData.mapRandSeed;
-
-        this.gameMap = new Map(mapRandSeed);
-        baseMap = new Map(mapRandSeed);
+        randomGenerator = new Random(mapRandSeed);
+        this.gameMap = new Map(randomGenerator);
+        baseMap = new Map(randomGenerator);
 
         for (Player player : players) {
             addRandomFarmForPlayer(player, player.getFarmType());
@@ -105,6 +109,7 @@ public class Game {
         baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
         this.gameMap = gameData.mapChanges.getMapChanged(this.gameMap);
 
+        time = gameData.time;
         todayWeather = gameData.todayWeather;
         tomorrowWeather = gameData.tomorrowWeather;
 
@@ -117,9 +122,6 @@ public class Game {
         initializeNPCs();
         makeNPCBuildings();
 
-        if (gameMap == null) {
-            setGameMapRandomly(mapRandSeed);
-        }
         gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
         baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
 
@@ -296,7 +298,7 @@ public class Game {
         gameMap.growWateredPlantsAndTrees();
 
         // random foragings + materials and minerals and stone
-        fillFarmsWithRandoms();
+        fillFarmsWithRandomsForNextDay();
 
         // change time
         time.goToNextDay();
@@ -371,8 +373,8 @@ public class Game {
             tiles = getPlantTiles(player);
             int maxNumOfAttacks = tiles.size()/16;
             for (int i = 0; i < maxNumOfAttacks; i++) {
-                if (Math.random() > 0.25) continue;
-                int randIndex = (int)(Math.random() * 16) + 16 * i;
+                if (randomGenerator.nextDouble() > 0.25) continue;
+                int randIndex = (int)(randomGenerator.nextDouble() * 16) + 16 * i;
 
                 Tile tile = tiles.get(randIndex);
                 if (tile.getTree() != null) {
@@ -403,12 +405,11 @@ public class Game {
         return plantTiles;
     }
 
-    private void fillFarmsWithRandoms() {
+    private void fillFarmsWithRandomsForNextDay() {
         for (Player player : players) {
-            boolean haveTrees = Math.random() > 0.8;
             gameMap.fillFarmWithRandoms(player.getStartOfFarm().x(), player.getStartOfFarm().y(),
-                    0.01, 0.05, time.getSeason(), haveTrees,
-                    buildings);
+                    0.01, 0.05, time.getSeason(),
+                    buildings, false);
         }
     }
 
@@ -575,12 +576,12 @@ public class Game {
         }
     }
 
-    public static int randomZeroOrOne() {
-        return (int) (Math.random() * 2);
+    public int randomZeroOrOne() {
+        return (int) (randomGenerator.nextDouble() * 2);
     }
 
-    public static int randomZeroToThree() {
-        return (int) (Math.random() * 4);
+    public int randomZeroToThree() {
+        return (int) (randomGenerator.nextDouble() * 4);
     }
 
     private void sendGiftToPlayers() {
@@ -726,12 +727,12 @@ public class Game {
     }
 
     //Load
-    public void setGameMapRandomly(long seed) {
-        this.gameMap = new Map(seed);
-        for (Player player : players) {
-            addRandomFarmForPlayer(player, FarmType.getFarmTypeById((int) (Math.random() * 2)));
-        }
-    }
+//    public void setGameMapRandomly(long seed) {
+//        this.gameMap = new Map(randomGenerator);
+//        for (Player player : players) {
+//            addRandomFarmForPlayer(player, FarmType.getFarmTypeById((int) (Math.random() * 2)));
+//        }
+//    }
 
     public long getMapRandSeed() {
         return mapRandSeed;

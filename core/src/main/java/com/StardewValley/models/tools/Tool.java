@@ -53,12 +53,12 @@ public abstract class Tool extends Item {
     public static Tool getToolByDetail(String name, ToolType type, FishingPoleType poleType) {
         if (poleType == null) {
             return switch (name) {
-                case "axe" -> new Axe(type);
-                case "hoe" -> new Hoe(type);
-                case "Milk Pail" -> new MilkPail();
-                case "shear" -> new Shear();
-                case "pickaxe" -> new Pickaxe(type);
-                case "scythe" -> new Scythe();
+                case "Axe" -> new Axe(type);
+                case "Hoe" -> new Hoe(type);
+                case "Milk_Pail" -> new MilkPail();
+                case "Shear" -> new Shear();
+                case "Pickaxe" -> new Pickaxe(type);
+                case "Scythe" -> new Scythe();
                 default -> new WateringCan(type);
             };
         } else {

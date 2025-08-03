@@ -29,19 +29,19 @@ public class NPCGameController {
         Player currentPlayer = game.getPlayerInTurn();
         if (!NPCNames.contains(npcName)) {
             return new Result(false, "NPC " + npcName + "is not among the npcs!");
-        } else if (npcName.equals("sebastian") && !isNpcNearPlayer(currentPlayer.getLocation(),
+        } else if (npcName.equals("sebastian") && !isNpcNearPlayer(currentPlayer.getTileLocation(),
                 game.getNPC("sebastian").getLocation())) {
             return new Result(false, "to interact with sebastian, you must be next to him.");
-        } else if (npcName.equals("abigail") && !isNpcNearPlayer(currentPlayer.getLocation(),
+        } else if (npcName.equals("abigail") && !isNpcNearPlayer(currentPlayer.getTileLocation(),
                 game.getNPC("abigail").getLocation())) {
             return new Result(false, "to interact with abigail, you must be next to her.");
-        } else if (npcName.equals("harvey") && !isNpcNearPlayer(currentPlayer.getLocation(),
+        } else if (npcName.equals("harvey") && !isNpcNearPlayer(currentPlayer.getTileLocation(),
                 game.getNPC("harvey").getLocation())) {
             return new Result(false, "to interact with harvey, you must be next to him.");
-        } else if (npcName.equals("leah") && !isNpcNearPlayer(currentPlayer.getLocation(),
+        } else if (npcName.equals("leah") && !isNpcNearPlayer(currentPlayer.getTileLocation(),
                 game.getNPC("leah").getLocation())) {
             return new Result(false, "to interact with leah, you must be next to her.");
-        } else if (npcName.equals("robin") && !isNpcNearPlayer(currentPlayer.getLocation(),
+        } else if (npcName.equals("robin") && !isNpcNearPlayer(currentPlayer.getTileLocation(),
                 game.getNPC("robin").getLocation())) {
             return new Result(false, "to interact with robin, you must be next to him.");
         } else if (npcName.equals("sebastian")) {
@@ -95,19 +95,19 @@ public class NPCGameController {
         Player currentPlayer = game.getPlayerInTurn();
         if (!NPCNames.contains(npcName)) {
             return new Result(false, "NPC " + npcName + " is not among the npcs!");
-        } else if (npcName.equals("sebastian") && !isNpcNearPlayer(currentPlayer.getLocation(),
+        } else if (npcName.equals("sebastian") && !isNpcNearPlayer(currentPlayer.getTileLocation(),
                 game.getNPC("sebastian").getLocation())) {
             return new Result(false, "to interact with sebastian, you must be next to him.");
-        } else if (npcName.equals("abigail") && !isNpcNearPlayer(currentPlayer.getLocation(),
+        } else if (npcName.equals("abigail") && !isNpcNearPlayer(currentPlayer.getTileLocation(),
                 game.getNPC("abigail").getLocation())) {
             return new Result(false, "to interact with abigail, you must be next to her.");
-        } else if (npcName.equals("harvey") && !isNpcNearPlayer(currentPlayer.getLocation(),
+        } else if (npcName.equals("harvey") && !isNpcNearPlayer(currentPlayer.getTileLocation(),
                 game.getNPC("harvey").getLocation())) {
             return new Result(false, "to interact with harvey, you must be next to him.");
-        } else if (npcName.equals("leah") && !isNpcNearPlayer(currentPlayer.getLocation(),
+        } else if (npcName.equals("leah") && !isNpcNearPlayer(currentPlayer.getTileLocation(),
                 game.getNPC("leah").getLocation())) {
             return new Result(false, "to interact with leah, you must be next to her.");
-        } else if (npcName.equals("robin") && !isNpcNearPlayer(currentPlayer.getLocation(),
+        } else if (npcName.equals("robin") && !isNpcNearPlayer(currentPlayer.getTileLocation(),
                 game.getNPC("robin").getLocation())) {
             return new Result(false, "to interact with robin, you must be next to him.");
         } else {
@@ -155,16 +155,16 @@ public class NPCGameController {
         Game game = app.getCurrentGame();
         String index = matcher.group("index");
         Player currentPlayer = game.getPlayerInTurn();
-        if (!isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation()) &&
-            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("abigail").getLocation()) &&
-            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("harvey").getLocation()) &&
-            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("leah").getLocation()) &&
-            !isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("robin").getLocation())) {
+        if (!isNpcNearPlayer(currentPlayer.getTileLocation(), game.getNPC("sebastian").getLocation()) &&
+            !isNpcNearPlayer(currentPlayer.getTileLocation(), game.getNPC("abigail").getLocation()) &&
+            !isNpcNearPlayer(currentPlayer.getTileLocation(), game.getNPC("harvey").getLocation()) &&
+            !isNpcNearPlayer(currentPlayer.getTileLocation(), game.getNPC("leah").getLocation()) &&
+            !isNpcNearPlayer(currentPlayer.getTileLocation(), game.getNPC("robin").getLocation())) {
 
             return new Result(false, "To complete this quest, you need to be near the target NPC.");
         } else if (Integer.parseInt(index) > 3 || Integer.parseInt(index) < 0) {
             return new Result(false, "Please enter a quest number between 1 and 3.");
-        } else if (isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("sebastian").getLocation())) {
+        } else if (isNpcNearPlayer(currentPlayer.getTileLocation(), game.getNPC("sebastian").getLocation())) {
             if (getMission(Integer.parseInt(index), "sebastian") == null) {
                 return new Result(false, "This quest has already been completed.");
             } else {
@@ -176,7 +176,7 @@ public class NPCGameController {
                     return new Result(true, "Well done, adventurer! The quest is complete and your prize awaits.");
                 }
             }
-        } else if (isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("abigail").getLocation())) {
+        } else if (isNpcNearPlayer(currentPlayer.getTileLocation(), game.getNPC("abigail").getLocation())) {
             if (getMission(Integer.parseInt(index), "abigail") == null) {
                 return new Result(false, "This quest has already been completed.");
             } else {
@@ -188,7 +188,7 @@ public class NPCGameController {
                     return new Result(true, "Well done, adventurer! The quest is complete and your prize awaits.");
                 }
             }
-        } else if (isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("harvey").getLocation())) {
+        } else if (isNpcNearPlayer(currentPlayer.getTileLocation(), game.getNPC("harvey").getLocation())) {
             if (getMission(Integer.parseInt(index), "harvey") == null) {
                 return new Result(false, "This quest has already been completed.");
             } else {
@@ -200,7 +200,7 @@ public class NPCGameController {
                     return new Result(true, "Well done, adventurer! The quest is complete and your prize awaits.");
                 }
             }
-        } else if (isNpcNearPlayer(currentPlayer.getLocation(), game.getNPC("leah").getLocation())) {
+        } else if (isNpcNearPlayer(currentPlayer.getTileLocation(), game.getNPC("leah").getLocation())) {
             if (getMission(Integer.parseInt(index), "leah") == null) {
                 return new Result(false, "This quest has already been completed.");
             } else {

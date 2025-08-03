@@ -379,8 +379,8 @@ public class Player {
     }
 
     public boolean isNearLocation(Location location) {
-        int dx = this.getLocation().x() - location.x();
-        int dy = this.getLocation().y() - location.y();
+        int dx = this.getTileLocation().x() - location.x();
+        int dy = this.getTileLocation().y() - location.y();
 
         return dx <= 1 && dy <= 1 && dx >= -1 && dy >= -1;
     }
@@ -527,11 +527,7 @@ public class Player {
     }
 
     // Graphic
-    // For Map
-    public Location getMapLocation() {
-        return new Location(getX(), getY());
-    }
-
+    // For Map - pixel
     public float getX() {
         return x;
     }
@@ -546,8 +542,10 @@ public class Player {
     }
 
     // For tiles array
-    public Location getLocation() {
-        return new Location((int)(x / Map.TILE_SIZE), (int)((Constants.WORLD_MAP_HEIGHT - y - 1)/ Map.TILE_SIZE));
+    public Location getTileLocation() {
+        int tileX = (int) (this.x / Map.TILE_SIZE);
+        int tileY = Constants.WORLD_MAP_HEIGHT - 1 - (int) (this.y / Map.TILE_SIZE);
+        return new Location(tileX, tileY);
     }
 
     public void setLocationInTilesAbsolut(float x, float y) {

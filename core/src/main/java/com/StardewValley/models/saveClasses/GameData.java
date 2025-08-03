@@ -3,6 +3,8 @@ package com.StardewValley.models.saveClasses;
 import com.StardewValley.models.*;
 import com.StardewValley.models.PlayerInteraction.Friendship;
 import com.StardewValley.models.buildings.Building;
+import com.StardewValley.models.map.Tile;
+import com.badlogic.gdx.Gdx;
 
 import java.util.ArrayList;
 
@@ -30,6 +32,7 @@ public class GameData {
 
         players = game.getPlayers();
         time = game.getTime();
+        Gdx.app.log("GameData", "GameData initialized and time " + time.getDayDetail());
         todayWeather = game.getTodayWeather();
         tomorrowWeather = game.getTomorrowWeather();
         friendships = game.getFriendships();
@@ -52,12 +55,14 @@ public class GameData {
     public void settingOfTransients() {
         for (Player player : this.players) {
             for (ItemStack stack : player.getInventory().getInventoryItems()) {
-
+                Item item = ItemManager.getItemByName(stack.getName());
                 if (stack != null && stack.getName() != null) {
                     if (stack.getToolData() != null)
                         stack.setItem(stack.getToolData().getTool());
                     else
-                        stack.setItem(ItemManager.getItemByName(stack.getName()));
+                        stack.setItem(item);
+                if (stack.getItem() == null)
+                    System.out.println("Item with name " + stack.getName() + " not found");
                 }
             }
 

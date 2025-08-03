@@ -4,7 +4,9 @@ import com.StardewValley.Main;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Game;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class GameGuiController {
 
@@ -12,7 +14,15 @@ public class GameGuiController {
         if (!game.getPlayerInTurn().equals(game.getMainPlayer())) {
             button.setDisabled(true);
             button.setColor(Color.GRAY);
-            button.setVisible(false);
+            button.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+
+                }
+            });
+        } else {
+            button.setDisabled(false);
+            button.setColor(Color.WHITE);
         }
     }
 

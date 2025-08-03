@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -57,6 +58,7 @@ public class GameScreen implements Screen {
     };
     private OrthographicCamera camera;
 
+    private Label errorLabel;
 
     public GameScreen() {
         this.controller = AppGuiControllers.gameGuiController;
@@ -67,6 +69,8 @@ public class GameScreen implements Screen {
         this.camera = new OrthographicCamera();
 
         uiStage = new Stage(new FitViewport(1920, 1080));
+
+        errorLabel = new Label("", GameAssetManager.messageBoxStyle);
     }
 
     public void loadTextures() {
@@ -103,7 +107,8 @@ public class GameScreen implements Screen {
         } else if (tile.getPlant() != null) {
             texture = tile.getPlant().getTexture();
         } else if (tile.getItemOnTile() != null) {
-            texture = tile.getItemOnTile().getItem().getTexture();
+            Item item = tile.getItemOnTile().getItem();
+            texture = item.getTexture();
         }
 
         if (texture != null)
@@ -276,7 +281,16 @@ public class GameScreen implements Screen {
         exitGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Main.getMain().setScreen(new MainMenuScreen());
+                Main.getMain().switchScreen(new MainMenuScreen());
+            }
+        });
+        TextButton nextTurnButton = new TextButton("Go Next Turn", skin);
+        System.out.println(nextTurnButton.getColor());
+        nextTurnButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                controller.changeTurn();
+                controller.handleButtonDisable(game, exitGameButton);
             }
         });
         TextButton backButton = new TextButton("Back", skin);
@@ -289,6 +303,8 @@ public class GameScreen implements Screen {
         controller.handleButtonDisable(game, exitGameButton);
 
         int buttonsSize = 500;
+        exitWindow.row();
+        exitWindow.add(nextTurnButton).width(buttonsSize);
         exitWindow.row();
         exitWindow.add(exitGameButton).width(buttonsSize);
         exitWindow.row().padTop(15);

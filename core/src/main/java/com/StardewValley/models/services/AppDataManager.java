@@ -207,39 +207,12 @@ public class AppDataManager {
 
     public static void loadApp() {
         ItemManager.loadItems();
-
         App app = App.getApp();
 
         loadUsersFromFile();
         loadAppDetails(app);
 
         // loading user game -> after he clicked on load game
-        // TODO : map?!
-
-
-// old
-//        File file = new File(APP_FILE_PATH);
-//        if (!file.exists() || file.length() == 0) {
-//            App app = App.getApp();
-//        } else {
-//            try (FileReader reader = new FileReader(file)) {
-//                App loadedApp = gson.fromJson(reader, App.class);
-//                App.setInstance(loadedApp);
-//                for (User user : App.getApp().getUsers()) {
-//                    user.ensureInitialized();
-//                }
-//
-//                //Game game = App.getApp().getCurrentGame();
-//                //game.setGameMapRandom();
-//                //game.startGame();
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            // added
-//            GameAssetManager.initializeAssets();
-//        }
     }
 
     // Users GSON
@@ -295,6 +268,7 @@ public class AppDataManager {
         }
 
         GameData gameData = new GameData(game);
+        Gdx.app.log("GameData", "GameData saved and time " + gameData.time.getHourText() + gameData.time.getDayDetail());
 
         try (Output output = new Output(file.write(false))) {
             kryo.writeObject(output, gameData);

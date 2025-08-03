@@ -7,6 +7,8 @@ import com.StardewValley.models.cropsAndFarming.ForagingManager;
 import com.StardewValley.models.cropsAndFarming.ForagingMineral;
 import com.StardewValley.models.map.Tile;
 
+import java.util.Random;
+
 public class Pickaxe extends Tool {
     public Pickaxe() {
         super("pickaxe", ToolType.BASIC, 5);
@@ -48,7 +50,7 @@ public class Pickaxe extends Tool {
                     skill.addToMiningXP(10);
                     player.getInventory().addItem(item.getItem(), item.getAmount());
                     if (skill.getMiningLevel() >= 2) {
-                        ForagingMineral rewardItem = ForagingManager.getRandomMineral();
+                        ForagingMineral rewardItem = ForagingManager.getRandomMineral(new Random());
                         player.getInventory().addItem(rewardItem, (int) Math.random() * 3);
                     }
                     tile.removeItemOnTile();

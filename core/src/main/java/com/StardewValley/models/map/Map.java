@@ -9,7 +9,6 @@ import com.StardewValley.models.artisan.ArtisanMachine;
 import com.StardewValley.models.buildings.Building;
 import com.StardewValley.models.buildings.GreenHouse;
 import com.StardewValley.models.cropsAndFarming.*;
-import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -31,8 +30,8 @@ public class Map {
     public static final int TILE_SIZE = 80;
 
 
-    public Map(long seed) {
-        randGenerator = new Random(seed);
+    public Map(Random randomGenerator) {
+        randGenerator = randomGenerator;
         tiles = new Tile[height][width];
 
         for (int j = 0; j < height; j++) {
@@ -126,7 +125,7 @@ public class Map {
             ArrayList<Building> buildings = new ArrayList<>(List.of(cabin, greenhouse, shippingBin));
 
             // random fill map
-            fillFarmWithRandoms(startX, startY, 0.25, 0.3, Season.SPRING, true, buildings);
+            fillFarmWithRandoms(startX, startY, 0.25, 0.3, Season.SPRING, buildings, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -241,8 +240,15 @@ public class Map {
 
     public void fillFarmWithRandoms(int startX, int startY,
                                     double foragingPossibility, double quarryPossibility,
-                                    Season nowSeason, boolean haveTree,
-                                    ArrayList<Building> buildings) {
+                                    Season nowSeason,
+                                    ArrayList<Building> buildings,
+                                    boolean shouldHaveTree) {
+        boolean haveTree;
+        if (shouldHaveTree) {
+            haveTree = true;
+        } else {
+            haveTree = randGenerator.nextDouble() > 0.8;
+        }
         for (int i = startX; i < startX + Constants.FARM_WIDTH; i++) {
             for (int j = startY; j < startY + Constants.FARM_HEIGHT; j++) {
                 Tile tile = tiles[j][i];
@@ -257,21 +263,23 @@ public class Map {
                         if (haveTree) {
                             double random = randGenerator.nextDouble();
                             if (random < 0.05) {
-                                ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason);
+                                ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason, randGenerator);
                                 tile.placeItem(new ItemStack(randomCrop, 1));
                             } else if (random < 0.2) {
-                                Tree randomTree = ForagingManager.getRandomTree(nowSeason, tile);
+                                Tree randomTree = ForagingManager.getRandomTree(nowSeason, tile, randGenerator);
                                 tile.plantTree(randomTree);
                             } else if (random < 0.5) {
-                                ForagingMaterial randomMaterial = ForagingManager.getRandomMaterial();
+                                ForagingMaterial randomMaterial = ForagingManager.getRandomMaterial(randGenerator);
                                 tile.placeItem(new ItemStack(randomMaterial, 1));
                             }
                         } else {
                             if (randGenerator.nextDouble() < 0.3) {
-                                ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason);
+                                ForagingCrop randomCrop = ForagingManager.getRandomCrop(nowSeason, randGenerator);
                                 tile.placeItem(new ItemStack(randomCrop, 1));
                             } else {
-                                ForagingMaterial randomMaterial = ForagingManager.getRandomMaterial();
+                                ForagingMaterial randomMaterial = ForagingManager.getRandomMaterial(randGenerator);
+                                if (randomMaterial.getName().equals("Grass"))
+                                    System.out.println("Grass Placed in " + tile.getLocation());
                                 tile.placeItem(new ItemStack(randomMaterial, 1));
                             }
                         }
@@ -282,7 +290,7 @@ public class Map {
                         if (randGenerator.nextDouble() > 0.3) {
                             tile.placeItem(new ItemStack(ForagingManager.foragingMaterials.get("Stone"), 1));
                         } else {
-                            ForagingMineral randomMineral = ForagingManager.getRandomMineral();
+                            ForagingMineral randomMineral = ForagingManager.getRandomMineral(randGenerator);
                             tile.placeItem(new ItemStack(randomMineral, 1));
                         }
                     }
@@ -440,7 +448,7 @@ public class Map {
                 }
                 if (shopNameSet) continue;
                 for (Player player : players) {
-                    if (j == player.getLocation().x() && i == player.getLocation().y()) {
+                    if (j == player.getTileLocation().x() && i == player.getTileLocation().y()) {
                         text.append(tile.getTileColor() + playerColors[players.indexOf(player)] + " @ " + AnsiColors.ANSI_RESET);
                         doesSetPlayer = true;
                         break;
@@ -554,8 +562,8 @@ public class Map {
     }
 
     public boolean isNearWater(Player player) {
-        int startX = player.getLocation().x() - 1;
-        int startY = player.getLocation().y() - 1;
+        int startX = player.getTileLocation().x() - 1;
+        int startY = player.getTileLocation().y() - 1;
 
         for (int i = startX; i < startX + 3; i++) {
             for (int j = startY; j < startY + 3; j++) {
@@ -601,8 +609,8 @@ public class Map {
     }
 
     public ArtisanMachine getNearArtisanMachine(Player player, String name) {
-        int startX = player.getLocation().x() - 1;
-        int startY = player.getLocation().y() - 1;
+        int startX = player.getTileLocation().x() - 1;
+        int startY = player.getTileLocation().y() - 1;
 
         for (int i = startX; i < startX + 3; i++) {
             for (int j = startY; j < startY + 3; j++) {
@@ -624,10 +632,10 @@ public class Map {
     }
 
     public boolean isInBuilding(Building building, Player player) {
-        return (player.getLocation().x() >= building.getLocation().x() &&
-                player.getLocation().x() <= building.getLocation().x() + building.getWidth() &&
-                player.getLocation().y() >= building.getLocation().y() &&
-                player.getLocation().y() <= building.getLocation().y() + building.getHeight());
+        return (player.getTileLocation().x() >= building.getLocation().x() &&
+                player.getTileLocation().x() <= building.getLocation().x() + building.getWidth() &&
+                player.getTileLocation().y() >= building.getLocation().y() &&
+                player.getTileLocation().y() <= building.getLocation().y() + building.getHeight());
     }
     public boolean isInBuilding(Building building, Tile tile) {
         return (tile.getLocation().x() >= building.getLocation().x() &&

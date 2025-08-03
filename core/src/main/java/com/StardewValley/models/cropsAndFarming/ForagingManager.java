@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class ForagingManager {
     public static HashMap<String, ForagingCrop> foragingCrops = new HashMap<>();
@@ -171,7 +172,7 @@ public class ForagingManager {
     }
 
 
-    public static ForagingCrop getRandomCrop(Season season) {
+    public static ForagingCrop getRandomCrop(Season season, Random randGenerator) {
         if (foragingCrops.isEmpty()) return null;
 
         ArrayList<ForagingCrop> filtered = new ArrayList<>();
@@ -186,11 +187,11 @@ public class ForagingManager {
 
         if (filtered.isEmpty()) return null;
 
-        int randomIndex = (int) (Math.random() * filtered.size());
+        int randomIndex = (int) (randGenerator.nextDouble() * filtered.size());
         return filtered.get(randomIndex).clone();
     }
 
-    public static ForagingSeed getRandomSeed(Season season) {
+    public static ForagingSeed getRandomSeed(Season season, Random randGenerator) {
         if (foragingSeeds.isEmpty()) return null;
 
         ArrayList<ForagingSeed> filtered = new ArrayList<>();
@@ -205,11 +206,11 @@ public class ForagingManager {
 
         if (filtered.isEmpty()) return null;
 
-        int randomIndex = (int) (Math.random() * filtered.size());
+        int randomIndex = (int) (randGenerator.nextDouble() * filtered.size());
         return filtered.get(randomIndex).clone();
     }
 
-    public static Tree getRandomTree(Season season, Tile tile) {
+    public static Tree getRandomTree(Season season, Tile tile, Random randGenerator) {
         if (foragingTreeSeeds.isEmpty()) return null;
 
         ArrayList<ForagingSeed> filtered = new ArrayList<>();
@@ -224,25 +225,25 @@ public class ForagingManager {
 
         if (filtered.isEmpty()) return null;
 
-        int randomIndex = (int) (Math.random() * filtered.size());
+        int randomIndex = (int) (randGenerator.nextDouble() * filtered.size());
         Tree tree = TreeManager.getTreeBySeedName(filtered.get(randomIndex).clone().getName(), tile);
         tree.setStageToLast();
         return tree;
     }
 
-    public static ForagingMineral getRandomMineral() {
+    public static ForagingMineral getRandomMineral(Random randGenerator) {
         if (foragingMinerals.isEmpty()) return null;
 
         ArrayList<ForagingMineral> values = new ArrayList<>(foragingMinerals.values());
-        int randomIndex = (int) (Math.random() * values.size());
+        int randomIndex = (int) (randGenerator.nextDouble() * values.size());
         return values.get(randomIndex).clone();
     }
 
-    public static ForagingMaterial getRandomMaterial() {
+    public static ForagingMaterial getRandomMaterial(Random randGenerator) {
         if (foragingMaterials.isEmpty()) return null;
 
         ArrayList<ForagingMaterial> values = new ArrayList<>(foragingMaterials.values());
-        int randomIndex = (int) (Math.random() * values.size());
+        int randomIndex = (int) (randGenerator.nextDouble() * values.size());
         return values.get(randomIndex).clone();
     }
 

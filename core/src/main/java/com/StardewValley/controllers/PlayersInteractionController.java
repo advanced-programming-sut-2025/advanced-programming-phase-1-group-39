@@ -32,7 +32,7 @@ public class PlayersInteractionController {
 
         if (!isPlayerExists(playerName)) {
             return new Result(false, "Player " + playerName + " doesn't exist");
-        } else if (!isPlayersNear(currentPlayer.getLocation(), game.getPlayerByUsername(playerName).getLocation())) {
+        } else if (!isPlayersNear(currentPlayer.getTileLocation(), game.getPlayerByUsername(playerName).getTileLocation())) {
             return new Result(false, "Get closer to the player  " + playerName + " if you want to start a conversation.");
         } else {
             Friendship friendship = game.getFriendship(currentPlayer, player2);
@@ -69,7 +69,7 @@ public class PlayersInteractionController {
 
         if (!isPlayerExists(otherPlayer)) {
             return new Result(false, "Player " + otherPlayer + " doesn't exist");
-        } else if (!isPlayersNear(currentPlayer.getLocation(), game.getPlayerByUsername(otherPlayer).getLocation())) {
+        } else if (!isPlayersNear(currentPlayer.getTileLocation(), game.getPlayerByUsername(otherPlayer).getTileLocation())) {
             return new Result(false, "to hug " + otherPlayer + " , you need to be standing right next to them.");
         } else if (game.getFriendship(game.getPlayerByUsername(otherPlayer), currentPlayer).getFriendshipLevel() < 2) {
             return new Result(false, "you need to reach friendship level 2 with " + otherPlayer + " before you can give them a hug!");
@@ -96,7 +96,7 @@ public class PlayersInteractionController {
 
         if (!isPlayerExists(otherPlayer)) {
             return new Result(false, "Player " + otherPlayer + " doesn't exist");
-        } else if (!isPlayersNear(currentPlayer.getLocation(), game.getPlayerByUsername(otherPlayer).getLocation())) {
+        } else if (!isPlayersNear(currentPlayer.getTileLocation(), game.getPlayerByUsername(otherPlayer).getTileLocation())) {
             return new Result(false, "to give a gift to " + otherPlayer + " , you need to be near them.");
         } else if (game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getFriendshipLevel() < 1) {
             return new Result(false, "you need to reach friendship level 1 with " + otherPlayer + " before you can give them gifts.");
@@ -199,7 +199,7 @@ public class PlayersInteractionController {
 
         if (!isPlayerExists(otherPlayer)) {
             return new Result(false, "Player " + otherPlayer + " doesn't exist");
-        } else if (!isPlayersNear(currentPlayer.getLocation(), game.getPlayerByUsername(otherPlayer).getLocation())) {
+        } else if (!isPlayersNear(currentPlayer.getTileLocation(), game.getPlayerByUsername(otherPlayer).getTileLocation())) {
             return new Result(false, "To give a flower to player " + otherPlayer + " you need to be standing right next to them.");
         } else if (game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getFriendshipLevel() != 2 ||
                 game.getFriendship(currentPlayer, game.getPlayerByUsername(otherPlayer)).getXp() != 599) {

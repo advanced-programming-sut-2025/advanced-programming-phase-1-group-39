@@ -7,6 +7,7 @@ import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.map.AnsiColors;
 import com.StardewValley.models.map.FarmType;
+import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.saveClasses.GameData;
 import com.StardewValley.models.services.AppDataManager;
 
@@ -121,10 +122,25 @@ public class GameMenuController {
                 return new Result(false, "Some of other players of your game are currently in another game!");
             }
             Game game = new Game(gameData);
+            ///  test
+            checkForTiles(game);
+
             app.setCurrentGame(game);
             app.setCurrentMenu(Menu.GAME);
             Main.getMain().switchScreen(new GameScreen());
             return new Result(true, "the game was loaded successfully. you can now continue your game.");
+        }
+    }
+
+    /// test
+    public void checkForTiles(Game game) {
+        Tile[][] tiles = game.getMap().getTiles();
+        for (Tile[] row : tiles) {
+            for (Tile tile : row) {
+                if (tile.getItemOnTile() != null && tile.getItemOnTile().getItem() == null) {
+                    System.out.println("Tile " + tile.getLocation() + " item " + tile.getItemOnTile().getName() + " not found !!");
+                }
+            }
         }
     }
 

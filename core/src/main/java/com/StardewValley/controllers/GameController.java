@@ -177,7 +177,7 @@ public class GameController {
 
         Game game = App.getApp().getCurrentGame();
         Player player = game.getPlayerInTurn();
-        Location start = player.getLocation();
+        Location start = player.getTileLocation();
         Result result;
         if (!(result = game.getMap().canWalkTo(start, end, player, game.getPlayers())).success()) {
             return result;
@@ -346,8 +346,8 @@ public class GameController {
 
         Game game = App.getApp().getCurrentGame();
         Player player = game.getPlayerInTurn();
-        Tile tile = game.getMap().getTile(player.getLocation().x() + direction.dx,
-                player.getLocation().y() + direction.dy);
+        Tile tile = game.getMap().getTile(player.getTileLocation().x() + direction.dx,
+                player.getTileLocation().y() + direction.dy);
         if (tile == null) return new Result(false, "Use on which tile?!");
 
         ItemStack itemStack = player.getInventory().getInHand();
@@ -395,8 +395,8 @@ public class GameController {
         if (direction == null) {
             return new Result(false, "Wrong direction");
         }
-        Tile tile = App.getApp().getCurrentGame().getMap().getTile(player.getLocation().x() + direction.dx,
-                player.getLocation().y() + direction.dy);
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(player.getTileLocation().x() + direction.dx,
+                player.getTileLocation().y() + direction.dy);
         if (tile  == null) {
             return new Result(false, "tile doesn't exist");
         }
@@ -448,8 +448,8 @@ public class GameController {
         if (direction == null) {
             return new Result(false, "Wrong direction");
         }
-        Tile tile = App.getApp().getCurrentGame().getMap().getTile(player.getLocation().x() + direction.dx,
-                player.getLocation().y() + direction.dy);
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(player.getTileLocation().x() + direction.dx,
+                player.getTileLocation().y() + direction.dy);
         if (tile  == null) {
             return new Result(false, "tile doesn't exist");
         }
@@ -508,7 +508,7 @@ public class GameController {
         if (direction == null) {
             return new Result(false, "This direction is unavailable");
         }
-        Location playerLocation = player.getLocation();
+        Location playerLocation = player.getTileLocation();
         Tile tile = App.getApp().getCurrentGame().getMap().getTile(playerLocation.x() + direction.dx,
                 playerLocation.y() + direction.dy);
         if (tile  == null) {
@@ -945,7 +945,7 @@ public class GameController {
         if (player2 == null)
             return new Result(false, "username not found");
 
-        if (!player.isNearLocation(player2.getLocation()))
+        if (!player.isNearLocation(player2.getTileLocation()))
             return new Result(false, "You need to be near second player to ask marriage!");
 
         Friendship friendship = game.getFriendship(player, player2);

@@ -12,20 +12,7 @@
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": [
-        {
-          "gameId": 101,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 102,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 103,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        }
-      ]
+      "gamesData": []
     },
     {
       "userName": "mir2",
@@ -39,20 +26,7 @@
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": [
-        {
-          "gameId": 101,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 102,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 103,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        }
-      ]
+      "gamesData": []
     },
     {
       "userName": "mir3",
@@ -66,20 +40,7 @@
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": [
-        {
-          "gameId": 101,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 102,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 103,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        }
-      ]
+      "gamesData": []
     },
     {
       "userName": "mir4",
@@ -93,20 +54,7 @@
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": [
-        {
-          "gameId": 101,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 102,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 103,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        }
-      ]
+      "gamesData": []
     },
     {
       "userName": "mir5",

@@ -66,8 +66,4 @@ public class Axe extends Tool {
         return (int)((baseUsingEnergy - type.getEnergyReduce() - getSkillEnergyReduce(skill))
                 * getWeatherMultiplier(weather));
     }
-
-    public static void main(String[] args) {
-        System.out.println(new WateringCan().getName());
-    }
 }

@@ -11,12 +11,15 @@
 
 ***
 ### Game Control Keys
+
 **moving**
 * `UP` or `W` : move up
 * `DOWN` or `S` : move down
 * `LEFT` or `A` : move left
 * `RIGHT` or `D` : move right
 <br></br>
+
+**Game Menus**
 * `Enter` : changing the turn
 * `Esc` : Escape Menu
-* 
+* `\` or `/` : Opening terminal (for cheat code!)

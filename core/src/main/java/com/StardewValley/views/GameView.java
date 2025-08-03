@@ -17,7 +17,6 @@ public class GameView implements View {
 
     @Override
     public void checkCommand(String command) {
-
         Matcher matcher;
         Result result;
 

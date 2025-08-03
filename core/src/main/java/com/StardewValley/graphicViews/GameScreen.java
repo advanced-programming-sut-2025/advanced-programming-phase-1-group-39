@@ -16,6 +16,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -37,6 +39,14 @@ public class GameScreen implements Screen {
 
     private Stage uiStage;
     private Window exitWindow = null;
+
+    // Terminal
+    private Window terminalWindow = null;
+    private Table historyTable;
+    private ScrollPane scrollPane;
+    private TextField commandInput;
+    private String lastCommand;
+
     //  player
     private TextureAtlas playerAtlas;
     private HashMap<Player, ArrayList<Animation<TextureRegion>>> playersAnimations = new LinkedHashMap<>();
@@ -319,7 +329,13 @@ public class GameScreen implements Screen {
         font.draw(batch, String.valueOf(400), drawX + 200, drawY + 40);
     }
 
-    public void showExitMenu() {
+
+    public void closeAllUiMenus() {
+        if (exitWindow != null) hideExitMenu();
+        if (terminalWindow != null && terminalWindow.isVisible()) hideExitMenu();
+    }
+    // exit Menu
+    public void toggleExitMenu() {
         if (exitWindow != null) {
             hideExitMenu();
             return;
@@ -378,6 +394,98 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
 
+    // Terminal Window
+    public void hideTerminalBox() {
+        if (terminalWindow.isVisible()) {
+            terminalWindow.setVisible(false);
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
+
+    public void toggleTerminalBox() {
+        if (terminalWindow != null && terminalWindow.isVisible()) {
+            hideTerminalBox();
+        }
+
+        closeAllUiMenus();
+
+        Skin skin = GameAssetManager.skin;
+        if (terminalWindow == null) {
+            terminalWindow = new Window("", skin);
+            terminalWindow.setModal(true);
+            terminalWindow.setMovable(true);
+            terminalWindow.setResizable(true);
+
+            terminalWindow.setSize(1200, 600);
+            terminalWindow.setPosition(
+                    uiStage.getWidth() / 2f,
+                    uiStage.getHeight() / 2f,
+                    Align.center
+            );
+
+            historyTable = new Table(skin);
+            historyTable.align(Align.topLeft);
+
+            scrollPane = new ScrollPane(historyTable, skin);
+            scrollPane.setFadeScrollBars(false);
+
+            commandInput = new TextField("", skin);
+            setCommandInputListener();
+
+            terminalWindow.add(scrollPane).expand().fill().row();
+            terminalWindow.add(commandInput).expandX().fillX().padTop(10);
+
+            uiStage.addActor(terminalWindow);
+        }
+        terminalWindow.setVisible(true);
+        commandInput.setText("");
+        Gdx.input.setInputProcessor(uiStage);
+        uiStage.setKeyboardFocus(commandInput);
+    }
+
+    private void setCommandInputListener() {
+        commandInput.setTextFieldListener(new TextField.TextFieldListener() {
+            @Override
+            public void keyTyped(TextField textField, char c) {
+                if (c == '\n' || c == '\r') {
+                    String command = textField.getText().trim();
+                    if (command.isEmpty()) return;
+
+                    addTextToHistory("> " + command, Color.YELLOW);
+                    lastCommand = command;
+                    String resultMessage = controller.processCommand(command);
+                    addTextToHistory(resultMessage, Color.WHITE);
+
+                    textField.setText("");
+                }
+            }
+        });
+
+        commandInput.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == com.badlogic.gdx.Input.Keys.UP) {
+                    commandInput.setText(lastCommand != null ? lastCommand : "");
+                    return true;
+                } else if (keycode == com.badlogic.gdx.Input.Keys.SLASH
+                        || keycode == com.badlogic.gdx.Input.Keys.BACKSLASH) {
+                    hideTerminalBox();
+                }
+                return false;
+            }
+        });
+    }
+
+    private void addTextToHistory(String text, Color color) {
+        if (historyTable == null) return;
+        Label newText = new Label(text, GameAssetManager.skin);
+        newText.setColor(color);
+        newText.setWrap(true);
+        historyTable.add(newText).expandX().fillX().left().padLeft(10).padBottom(10).row();
+        scrollPane.layout();
+        scrollPane.setScrollPercentY(1);
+    }
+
 
     @Override
     public void show() {
@@ -388,7 +496,6 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         loadTextures();
-        showError("Why are you doing this?");
     }
 
     @Override

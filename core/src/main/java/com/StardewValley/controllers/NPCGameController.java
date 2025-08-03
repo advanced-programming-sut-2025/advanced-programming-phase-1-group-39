@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 public class NPCGameController {
-
-
     ArrayList<String> NPCNames = new ArrayList<>(List.of("sebastian", "abigail", "leah", "robin", "harvey"));
 
 

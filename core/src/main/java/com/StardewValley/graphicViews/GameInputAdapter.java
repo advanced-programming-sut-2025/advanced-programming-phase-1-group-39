@@ -3,7 +3,6 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.map.Map;
-import com.StardewValley.models.map.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -91,9 +90,11 @@ public class GameInputAdapter extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE) {
-            screen.showExitMenu();
+            screen.toggleExitMenu();
         } else if (keycode == Input.Keys.ENTER) {
             controller.changeTurn();
+        } else if (keycode == Input.Keys.BACKSLASH || keycode == Input.Keys.SLASH) {
+            screen.toggleTerminalBox();
         }
         return true;
     }

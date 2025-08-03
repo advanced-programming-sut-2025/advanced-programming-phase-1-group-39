@@ -30,10 +30,6 @@ public enum Menu {
         menuView.checkCommand(input);
     }
 
-    public View getMenuView() {
-        return menuView;
-    }
-
     public String getName() {
         return name;
     }

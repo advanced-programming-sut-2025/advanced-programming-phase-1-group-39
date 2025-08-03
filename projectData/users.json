@@ -48,22 +48,6 @@
         {
           "gameId": 109,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 110,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 111,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 112,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 113,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
       ]
     },
@@ -114,22 +98,6 @@
         },
         {
           "gameId": 109,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 110,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 111,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 112,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 113,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
       ]
@@ -182,22 +150,6 @@
         {
           "gameId": 109,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 110,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 111,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 112,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 113,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
       ]
     },
@@ -247,19 +199,7 @@
           "description": "Year 1  SPRING, Day 1  SATURDAY"
         },
         {
-          "gameId": 110,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 111,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 112,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 113,
+          "gameId": 109,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
       ]
@@ -276,12 +216,7 @@
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": [
-        {
-          "gameId": 109,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        }
-      ]
+      "gamesData": []
     },
     {
       "userName": "mir6",

@@ -24,6 +24,8 @@ public class GameInputAdapter extends InputAdapter {
         } else if (keycode == Input.Keys.N) {
             Game game = App.getApp().getCurrentGame();
             game.getMap().growWateredPlantsAndTrees();
+        } else if (keycode == Input.Keys.C) {
+            screen.changeCookingMenu();
         }
         return true;
     }

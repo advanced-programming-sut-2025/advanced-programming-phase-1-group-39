@@ -2,6 +2,7 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
+import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.cropsAndFarming.Plant;
 import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.map.Map;
@@ -12,19 +13,23 @@ import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,6 +77,10 @@ public class GameScreen implements Screen {
     };
 
     private OrthographicCamera camera;
+
+    private Table cookingMenuTable;
+    private boolean cookingMenuOpen = false;
+
 
 
     public GameScreen() {
@@ -316,6 +325,60 @@ public class GameScreen implements Screen {
         font.draw(batch, String.valueOf(App.getApp().getCurrentGame().getPlayerInTurn().getMoney()), drawX + 200, drawY + 40);
     }
 
+    public void changeCookingMenu() {
+        cookingMenuOpen = !cookingMenuOpen;
+        cookingMenuTable.setVisible(cookingMenuOpen);
+        if (cookingMenuOpen) {
+            Gdx.input.setInputProcessor(uiStage);
+        } else {
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
+    public void prepareFoodMenu(Skin skin) {
+        cookingMenuTable = new Table(skin);
+        cookingMenuTable.setFillParent(true);
+        cookingMenuTable.setVisible(false);
+        cookingMenuTable.setBackground(skin.getDrawable("window")); // Use window background from atlas
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        Label titleLabel = new Label("Cooking Menu", labelStyle);
+        cookingMenuTable.add(titleLabel).pad(10).colspan(3).center();
+        cookingMenuTable.row();
+
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        for (FoodRecipe recipe : FoodRecipe.values()) {
+            Image image = new Image(recipe.data.getTexture());
+            Label nameLabel = new Label(recipe.name(), labelStyle);
+            TextButton cookButton = new TextButton("Cook", skin);
+
+            //cookButton.setDisabled(player.hasLearnedFoodRecipe(recipe));
+
+            cookingMenuTable.add(image).size(32, 32).pad(5);
+            cookingMenuTable.add(nameLabel).left().pad(5);
+            cookingMenuTable.add(cookButton).pad(5);
+            cookingMenuTable.row();
+
+            cookButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    controller.cook(recipe);
+                }
+            });
+        }
+        TextButton backButton = new TextButton("Back", skin);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                changeCookingMenu();
+            }
+        });
+        cookingMenuTable.add(backButton).pad(5);
+
+        uiStage.addActor(cookingMenuTable);
+
+    }
+
+
     public void showExitMenu() {
         if (exitWindow != null) {
             hideExitMenu();
@@ -372,8 +435,15 @@ public class GameScreen implements Screen {
         font.getData().setScale(2f);
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        Skin skin = new Skin(Gdx.files.internal("skin2/uiskin.json"));
+
+        uiStage = new Stage(new ScreenViewport());
+
+        prepareFoodMenu(skin);
+
         loadTextures();
     }
+
 
     @Override
     public void render(float v) {

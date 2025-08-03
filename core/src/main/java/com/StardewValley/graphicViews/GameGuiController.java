@@ -2,11 +2,9 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.controllers.*;
 import com.StardewValley.models.*;
-import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Enums.commands.GameCommands;
 import com.StardewValley.models.Enums.commands.InteractionsCommand;
 import com.StardewValley.models.Enums.commands.NPCGameCommand;
-import com.StardewValley.views.AppView;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
@@ -14,6 +12,11 @@ import java.util.regex.Matcher;
 
 
 public class GameGuiController {
+    GameScreen screen;
+
+    public void setScreen(GameScreen screen) {
+        this.screen = screen;
+    }
 
     public void handleButtonDisable(Game game, TextButton button) {
         if (!game.getPlayerInTurn().equals(game.getMainPlayer())) {
@@ -28,6 +31,7 @@ public class GameGuiController {
     public void changeTurn() {
         Game game = App.getApp().getCurrentGame();
         game.nextTurn();
+        screen.showError("Next turn : " + game.getPlayerInTurn().getNickname());
     }
 
     public String processCommand(String command) {

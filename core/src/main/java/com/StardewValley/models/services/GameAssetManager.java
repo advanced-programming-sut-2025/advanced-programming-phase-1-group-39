@@ -3,6 +3,7 @@ package com.StardewValley.models.services;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -30,6 +31,8 @@ public class GameAssetManager {
     public static TextureAtlas foragingsAtlas = getForagingsAtlas();
     public static TextureAtlas treesAtlas = getTressAtlas();
 
+    public static Texture blackBox;
+
     static {
         initializeAssets();
     }
@@ -39,6 +42,12 @@ public class GameAssetManager {
         titleImage = new Texture(Gdx.files.internal("title-logo.png"));
 
         setMessageBoxStyle();
+
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.BLACK);
+        pixmap.fill();
+        blackBox = new Texture(pixmap);
+        pixmap.dispose();
     }
 
     public static TextureAtlas getCropsAtlas() {

@@ -77,6 +77,7 @@ public class GameScreen implements Screen {
 
     public GameScreen() {
         this.controller = AppGuiControllers.gameGuiController;
+        controller.setScreen(this);
         this.game = App.getApp().getCurrentGame();
         gameMenuInputAdapter = new GameInputAdapter(controller, this);
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
@@ -91,6 +92,7 @@ public class GameScreen implements Screen {
 
         errorLabel = new Label("", GameAssetManager.messageBoxStyle);
         errorLabel.setVisible(false);
+        errorLabel.setAlignment(Align.center);
         rootTable.add(errorLabel).bottom().padBottom(50).expandY();
     }
 
@@ -362,7 +364,7 @@ public class GameScreen implements Screen {
         nextTurnButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                controller.changeTurn();
+                blackBackgroundAnimation(() -> controller.changeTurn());
                 controller.handleButtonDisable(game, exitGameButton);
             }
         });
@@ -486,6 +488,29 @@ public class GameScreen implements Screen {
         scrollPane.setScrollPercentY(1);
     }
 
+    // Other Game Animations
+    public void blackBackgroundAnimation(Runnable onCompleteRunnable) {
+        Image blackScreen = new Image(GameAssetManager.blackBox);
+        blackScreen.setSize(uiStage.getWidth(), uiStage.getHeight());
+        blackScreen.setPosition(0, 0);
+
+        blackScreen.setOrigin(Align.center);
+        blackScreen.setScaleY(0f);
+
+        blackScreen.addAction(Actions.sequence(
+                Actions.scaleTo(1, 1, 0.3f),
+
+                Actions.delay(0.2f),
+
+                Actions.run(onCompleteRunnable),
+
+                Actions.scaleTo(1, 0, 0.3f),
+
+                Actions.removeActor()
+        ));
+
+        uiStage.addActor(blackScreen);
+    }
 
     @Override
     public void show() {

@@ -6,6 +6,7 @@ import com.StardewValley.models.cropsAndFarming.Plant;
 import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.map.TileType;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
@@ -54,6 +55,12 @@ public class GameScreen implements Screen {
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
         @Override
         protected boolean removeEldestEntry(HashMap.Entry<Location, TextureRegion> eldest) {
+            return size() > MAX_CACHE_SIZE;
+        }
+    };
+    private final HashMap<Location, TileType> tileTypeCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(HashMap.Entry<Location, TileType> eldest) {
             return size() > MAX_CACHE_SIZE;
         }
     };
@@ -161,6 +168,7 @@ public class GameScreen implements Screen {
 
         Tile[][] tiles = game.getMap().getTiles();
 
+        //Tiles
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
                 int rowIndex = Constants.WORLD_MAP_HEIGHT - 1 - y;
@@ -170,8 +178,14 @@ public class GameScreen implements Screen {
 
                 Location l = new Location(x, y);
                 TextureRegion texture = tileCache.get(l);
+                TileType type = tileTypeCache.get(l);
 
-                if (texture == null) {
+                if (type == null) {
+                    type = tile.getType();
+                    tileTypeCache.put(l, type);
+                }
+
+                if (texture == null || type != tile.getType()) {
                     texture = tile.getTexture();
                     tileCache.put(l, texture);
                 }
@@ -195,6 +209,7 @@ public class GameScreen implements Screen {
             batch.setColor(1, 1, 1, 1);
         }
 
+        //Obj on tiles
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
                 int rowIndex = Constants.WORLD_MAP_HEIGHT - 1 - y;

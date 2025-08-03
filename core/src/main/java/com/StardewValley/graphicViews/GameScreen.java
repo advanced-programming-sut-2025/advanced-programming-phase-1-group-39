@@ -11,6 +11,7 @@ import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -84,8 +85,16 @@ public class GameScreen implements Screen {
         playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
         clock = new Texture(Gdx.files.internal("Clock.png"));
         clock.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        Color[] playerColors = new Color[4];
+        playerColors[0] = Color.CYAN;
+        playerColors[1] = Color.RED;
+        playerColors[2] = Color.ORANGE;
+        playerColors[3] = Color.WHITE;
+        int i = 0;
         for (Player player : game.getPlayers()) {
             loadPlayerAnimations(player);
+            player.setColor(playerColors[i++]);
         }
     }
 
@@ -249,6 +258,8 @@ public class GameScreen implements Screen {
             default -> 0;
         };
 
+        batch.setColor(currentPlayer.getColor());
+
         Animation<TextureRegion> currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
         float elapsedTime = stateTime;
 
@@ -259,6 +270,8 @@ public class GameScreen implements Screen {
         float drawY = currentPlayer.getY();
 
         batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE, Map.TILE_SIZE * 2);
+
+        batch.setColor(Color.WHITE);
     }
 
     private void renderCamera() {

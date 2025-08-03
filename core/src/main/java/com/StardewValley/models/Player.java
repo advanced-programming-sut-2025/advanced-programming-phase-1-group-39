@@ -14,6 +14,7 @@ import com.StardewValley.models.map.AnsiColors;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.tools.*;
+import com.badlogic.gdx.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +33,6 @@ public class Player {
 
     // graphic - based on pixels
     private float x, y;
-    private transient Direction direction = Direction.NONE;
 
     private String username;
     private String nickname;
@@ -65,6 +65,10 @@ public class Player {
     private ArrayList<PlayerNPCInteraction> friendships = initialPlayersFriendship();
 
     private String spouseName;
+
+    // Graphic
+    private transient Direction direction = Direction.NONE;
+    private transient Color color;
 
 
     public Player(String username, String nickname, int gameId) {
@@ -578,5 +582,13 @@ public class Player {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
     }
 }

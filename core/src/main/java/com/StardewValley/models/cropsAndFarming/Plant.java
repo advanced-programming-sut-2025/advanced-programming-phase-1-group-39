@@ -4,6 +4,8 @@ import com.StardewValley.models.ItemManager;
 import com.StardewValley.models.ItemStack;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.services.GameAssetManager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
@@ -142,7 +144,9 @@ public class Plant {
         int stagesNum = stages.size();
 
         Array<TextureRegion> plantStageRegions = new Array<>(cropsAtlas.findRegions( name+ "_Stage"));
-
+        if (!isAlive) {
+            return new TextureRegion(new Texture(Gdx.files.internal("crops/dead_plant.png")));
+        }
         if (hasCrop) return plantStageRegions.get(stagesNum);
         else if (oneTimeHarvest && currentStage == stagesNum - 1) return plantStageRegions.get(stagesNum + 1);
         else if (currentStage < stagesNum) {

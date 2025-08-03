@@ -288,10 +288,10 @@ public class GameScreen implements Screen {
         TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true);
         if (currentFrame == null) return;
 
-        float drawX = currentPlayer.getX() - (Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_H);
+        float drawX = currentPlayer.getX() - (Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W) / 2f;
         float drawY = currentPlayer.getY();
 
-        batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W, Map.TILE_SIZE * 2);
+        batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_H);
 
         batch.setColor(Color.WHITE);
     }

@@ -17,13 +17,15 @@ public class GameAssetManager {
     public static Texture logoTexture = new Texture("Stardew_Valley_Images-main/sprites/Logo No Background.png");
     public static Texture MenuTexture = new Texture("Stardew_Valley_Images-main/sprites/Panorama.png");
     public static Texture MenuTexture2 = new Texture("Stardew_Valley_Images-main/sprites/pixel-art-river-landscape-illustration (1).jpg");
+    public static Texture pregameBackground = new Texture(Gdx.files.internal("menu_background.jfif"));
 
     public static Label.LabelStyle messageBoxStyle;
 
     public static Music music1 = Gdx.audio.newMusic(Gdx.files.internal("musics/01. Stardew Valley Overture.mp3"));
 
     // Plants
-    public static Texture deadPlantTexture = new Texture(Gdx.files.internal("crops/dead_plant.png"));
+    public static Texture deadPlantTexture = getDeadPlantTexture();
+
     public static TextureAtlas cropsAtlas = getCropsAtlas();
     public static TextureAtlas foragingsAtlas = getForagingsAtlas();
     public static TextureAtlas treesAtlas = getTressAtlas();
@@ -40,15 +42,39 @@ public class GameAssetManager {
     }
 
     public static TextureAtlas getCropsAtlas() {
-        return new TextureAtlas(Gdx.files.internal("crops/crops.atlas"));
+        TextureAtlas crops =  new TextureAtlas(Gdx.files.internal("crops/crops.atlas"));
+        for (Texture texture : crops.getTextures()) {
+            texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        }
+        return crops;
+    }
+
+    private static Texture getDeadPlantTexture() {
+        Texture texture = new Texture(Gdx.files.internal("crops/dead_plant.png"));
+        texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+        return texture;
     }
 
     public static TextureAtlas getForagingsAtlas() {
-        return new TextureAtlas(Gdx.files.internal("foragings/foragings.atlas"));
+        TextureAtlas foragings = new TextureAtlas(Gdx.files.internal("foragings/foragings.atlas"));
+        for (Texture texture : foragings.getTextures()) {
+            texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        }
+        return foragings;
     }
 
     public static TextureAtlas getTressAtlas() {
-        return new TextureAtlas(Gdx.files.internal("trees/trees.atlas"));
+        TextureAtlas trees = new TextureAtlas(Gdx.files.internal("trees/trees.atlas"));
+        for (Texture texture : trees.getTextures()) {
+            texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        }
+        return trees;
+    }
+
+    public static Texture getPregameBackground() {
+        pregameBackground.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        return pregameBackground;
     }
 
     public static void setMessageBoxStyle() {

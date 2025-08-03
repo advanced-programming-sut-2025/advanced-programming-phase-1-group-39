@@ -37,7 +37,9 @@ public abstract class Tool extends Item {
     public abstract int getUsingEnergy(Skill skill, Weather weather);
 
     public TextureRegion getTexture() {
-        return new TextureRegion(new Texture(Gdx.files.internal("tools/" + type.getPrefixForTexture() + getName() + ".png")));
+        Texture toolTexture = new Texture(Gdx.files.internal("tools/" + type.getPrefixForTexture() + getName() + ".png"));
+        toolTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        return new TextureRegion(toolTexture);
     }
 
     public String getName() {

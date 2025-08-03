@@ -11,6 +11,7 @@ public class CraftingItem extends Item {
     public CraftingItem(String name, int sellPrice, Texture texture) {
         super(name);
         this.sellPrice = sellPrice;
+        texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         this.texture = new TextureRegion(texture);
     }
 

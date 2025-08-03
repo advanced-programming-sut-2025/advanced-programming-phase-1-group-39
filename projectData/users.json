@@ -12,7 +12,12 @@
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": []
+      "gamesData": [
+        {
+          "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        }
+      ]
     },
     {
       "userName": "mir2",
@@ -26,7 +31,12 @@
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": []
+      "gamesData": [
+        {
+          "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        }
+      ]
     },
     {
       "userName": "mir3",
@@ -40,7 +50,12 @@
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": []
+      "gamesData": [
+        {
+          "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        }
+      ]
     },
     {
       "userName": "mir4",
@@ -54,7 +69,12 @@
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": []
+      "gamesData": [
+        {
+          "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        }
+      ]
     },
     {
       "userName": "mir5",

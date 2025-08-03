@@ -74,7 +74,7 @@ public class GameScreen implements Screen {
     public void loadTextures() {
         playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
         clock = new Texture(Gdx.files.internal("Clock.png"));
-
+        clock.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         for (int i = 14; i > 9; i--) {
             Array<TextureRegion> walkFrames = new Array<>();
             if (i == 14) {

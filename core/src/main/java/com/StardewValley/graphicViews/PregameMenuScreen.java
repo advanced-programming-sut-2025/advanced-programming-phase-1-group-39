@@ -64,7 +64,7 @@ public class PregameMenuScreen implements Screen {
     @Override
     public void show() {
         // 1. Initialize all
-        background = new Texture(Gdx.files.internal("menu_background.jfif"));
+        background = GameAssetManager.getPregameBackground();
 
         stage = new Stage(new FitViewport(1920, 1080));
         table = new Table();

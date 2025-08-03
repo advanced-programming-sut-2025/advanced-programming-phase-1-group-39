@@ -2,7 +2,6 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
-import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.cropsAndFarming.Plant;
 import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.map.Map;
@@ -18,10 +17,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
@@ -78,7 +75,33 @@ public class GameScreen implements Screen {
 
         uiStage = new Stage(new FitViewport(1920, 1080));
 
+        Table rootTable = new Table();
+        rootTable.setFillParent(true);
+        uiStage.addActor(rootTable);
+
         errorLabel = new Label("", GameAssetManager.messageBoxStyle);
+        errorLabel.setVisible(false);
+        rootTable.add(errorLabel).bottom().padBottom(50).expandY();
+        rootTable.debug();
+    }
+
+    public void showError(String message) {
+        if(message == null || message.isEmpty()) {
+            errorLabel.setVisible(false);
+            return;
+        }
+
+        errorLabel.setText(message);
+
+        errorLabel.clearActions();
+        errorLabel.getColor().a = 1;
+        errorLabel.setVisible(true);
+
+        errorLabel.addAction(Actions.sequence(
+                Actions.delay(3f),
+                Actions.fadeOut(1f),
+                Actions.visible(false)
+        ));
     }
 
     public void loadTextures() {
@@ -341,9 +364,9 @@ public class GameScreen implements Screen {
         int buttonsSize = 500;
         exitWindow.row();
         exitWindow.add(nextTurnButton).width(buttonsSize);
-        exitWindow.row();
-        exitWindow.add(exitGameButton).width(buttonsSize);
         exitWindow.row().padTop(15);
+        exitWindow.add(exitGameButton).width(buttonsSize);
+        exitWindow.row().padTop(25);
         exitWindow.add(backButton).width(buttonsSize);
 
         uiStage.addActor(exitWindow);
@@ -366,6 +389,7 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         loadTextures();
+        showError("Why are you doing this? ???");
     }
 
     @Override
@@ -381,7 +405,7 @@ public class GameScreen implements Screen {
         batch.begin();
         renderTiles();
         renderPlayers();
-//        renderPlayer(game.getPlayerInTurn());
+
         // TODO : (Better) move clock render to uiStage
         renderClockUI();
         batch.end();

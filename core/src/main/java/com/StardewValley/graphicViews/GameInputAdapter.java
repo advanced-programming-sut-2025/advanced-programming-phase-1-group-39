@@ -4,6 +4,9 @@ import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.Game;
 import com.StardewValley.models.Location;
 import com.StardewValley.models.Player;
+import com.StardewValley.models.Result;
+import com.StardewValley.models.map.Map;
+import com.StardewValley.models.map.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -40,9 +43,19 @@ public class GameInputAdapter extends InputAdapter {
             newLocation.addVector(speed * delta, 0);
             currentDirection = Direction.RIGHT;
         }
-        // TODO : check movable
-        player.setLocationAbsolut(newLocation.x(), newLocation.y());
-        player.setDirection(currentDirection);
+        // check can move to
+        Location tileLoc = Map.pixelToTileConverter(newLocation);
+        Tile tile = game.getMap().getTile(tileLoc.x(), tileLoc.y());
+
+        Result result;
+        if (!(result = game.getMap().canWalkTo(tileLoc, player, game.getPlayers())).success()) {
+            screen.showError(result.message());
+            return;
+        }
+        if (tile != null && tile.canWalkOnTile()) {
+            player.setLocationAbsolut(newLocation.x(), newLocation.y());
+            player.setDirection(currentDirection);
+        }
     }
 
 

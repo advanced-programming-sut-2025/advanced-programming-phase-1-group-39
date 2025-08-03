@@ -179,7 +179,7 @@ public class GameController {
         Player player = game.getPlayerInTurn();
         Location start = player.getTileLocation();
         Result result;
-        if (!(result = game.getMap().canWalkTo(start, end, player, game.getPlayers())).success()) {
+        if (!(result = game.getMap().canWalkTo(end, player, game.getPlayers())).success()) {
             return result;
         }
 

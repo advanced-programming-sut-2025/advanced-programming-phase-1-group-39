@@ -264,7 +264,7 @@ public class AppDataManager {
     public static void saveGame(Game game) {
         FileHandle file = Gdx.files.local(getGamePath(game.getId()));
         if (!file.exists()) {
-            Gdx.app.log("GameManager", "Creating a new file for saving game"+game.getId()+".");
+            Gdx.app.log("GameManager", "Creating a new file for saving game "+game.getId()+".");
         }
 
         GameData gameData = new GameData(game);

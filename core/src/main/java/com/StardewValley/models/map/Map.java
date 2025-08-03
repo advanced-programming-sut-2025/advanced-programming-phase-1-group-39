@@ -531,7 +531,7 @@ public class Map {
     }
 
     // walking
-    public Result canWalkTo(Location start, Location end, Player player, ArrayList<Player> gamePlayers) {
+    public Result canWalkTo(Location end, Player player, ArrayList<Player> gamePlayers) {
         if (!player.isInPlayerFarm(end) && !isInNPCMap(end) && !isInSpouseFarm(end, player, gamePlayers))
             return new Result(false, "You aren't allowed to go to this location!");
         else return new Result(true, "");
@@ -657,5 +657,11 @@ public class Map {
 
     public void replaceTile(Tile tile) {
         tiles[tile.getLocation().y()][tile.getLocation().x()] = tile;
+    }
+
+    public static Location pixelToTileConverter(Location pixelLocation) {
+        float pX = pixelLocation.x();
+        float pY = pixelLocation.y();
+        return new Location((int)(pX / TILE_SIZE), Constants.WORLD_MAP_HEIGHT - 1 - (int) (pY / Map.TILE_SIZE));
     }
 }

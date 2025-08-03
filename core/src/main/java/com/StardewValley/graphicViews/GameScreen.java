@@ -107,6 +107,10 @@ public class GameScreen implements Screen {
         Plant plant = tile.getPlant();
         Tree tree = tile.getTree();
 
+        if (plant == null && tree == null && tile.getItemOnTile() == null) {
+            tileObjectCache.remove(loc);
+        }
+
         if (plant != null && plant.stageChanged()) {
             tileObjectCache.remove(loc);
             texture = plant.getTexture();

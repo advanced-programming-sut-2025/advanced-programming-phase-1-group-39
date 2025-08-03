@@ -47,6 +47,8 @@ public class GameView implements View {
             System.out.println(controller.printMap(matcher));
         } else if (GameCommands.HELP_READING_MAP.getMatcher(command) != null) {
             System.out.println(controller.helpReadingMap());
+        } else if (GameCommands.LOCATION.getMatcher(command) != null) {
+            System.out.println(controller.getLocation());
         } else if ((matcher = GameCommands.WALK.getMatcher(command)) != null) {
             int x = Integer.parseInt(matcher.group("x"));
             int y = Integer.parseInt(matcher.group("y"));

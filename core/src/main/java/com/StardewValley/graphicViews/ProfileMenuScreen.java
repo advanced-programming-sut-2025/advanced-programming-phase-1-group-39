@@ -31,6 +31,7 @@ public class ProfileMenuScreen implements Screen {
     private Label maxCoin;
     private Label numberOfGamesPlayed;
     private Label genderLabel;
+    private Label emailLabel;
 
     private Label changeUsernameLabel;
     private TextField changeUsernameField;
@@ -75,6 +76,7 @@ public class ProfileMenuScreen implements Screen {
         if (App.getApp().getLoggedInUser().getIsMale()) {
             this.genderLabel = new Label("Gender : Male", skin);
         } else { this.genderLabel = new Label("Gender : Female", skin); }
+        this.emailLabel = new Label("Email : " + App.getApp().getLoggedInUser().getEmail(), skin);
         this.changeUsernameLabel = new Label("Change Username :", skin);
         this.changeUsernameField = new TextField("", skin);
         this.changeUsernameField.setMessageText("Enter your new Username");
@@ -127,7 +129,7 @@ public class ProfileMenuScreen implements Screen {
 
         menuTitle.setFontScale(2f);
         menuTitle.setColor(Color.valueOf("ffd60a"));
-        table.add(menuTitle).colspan(2).center().padBottom(20);
+        table.add(menuTitle).colspan(2).center().padBottom(10);
         table.row();
 
         changeUsernameLabel.setColor(Color.valueOf("ffee99"));
@@ -157,6 +159,8 @@ public class ProfileMenuScreen implements Screen {
         maxCoin.setColor(Color.valueOf("ffa200"));
         numberOfGamesPlayed.setFontScale(1.5f);
         numberOfGamesPlayed.setColor(Color.valueOf("ffaa00"));
+        emailLabel.setFontScale(1.5f);
+        emailLabel.setColor(Color.valueOf("ffb700"));
 
         Table infoRow1 = new Table();
         infoRow1.add(username).left().padRight(100);  // ستون اول
@@ -170,9 +174,11 @@ public class ProfileMenuScreen implements Screen {
         infoRow3.add(numberOfGamesPlayed).left().colspan(2); // این یکی تنها می‌مونه
 
         // اضافه کردن به جدول اصلی
-        table.add(infoRow1).padBottom(20).row();
-        table.add(infoRow2).padBottom(20).padLeft(60).row();
-        table.add(infoRow3).padBottom(50).row();
+        table.add(infoRow1).padBottom(15).row();
+        table.add(infoRow2).padBottom(15).padLeft(60).row();
+        table.add(infoRow3).padBottom(15).row();
+
+        table.add(emailLabel).padBottom(15).row();
 
 
         // ===================== Row 1: Change Username + Password =====================

@@ -30,6 +30,7 @@ public class MainMenuScreen implements Screen {
     private TextButton gameMenuButton;
     private TextButton profileMenuButton;
     private TextButton logoutButton;
+    private TextButton exitButton;
 
     private TextureRegion nameTexture;
     private Label nameLabel;
@@ -48,6 +49,7 @@ public class MainMenuScreen implements Screen {
         this.gameMenuButton = new TextButton("Game Menu", skin);
         this.profileMenuButton = new TextButton("Profile", skin);
         this.logoutButton = new TextButton("Logout", skin);
+        this.exitButton = new TextButton("Exit", skin);
         this.nameTexture = GameAssetManager.nameLabel;
         this.nameLabel = new Label("Your Name :" + App.getApp().getLoggedInUser().getNickname(), skin);
         this.avatarTexture = new TextureRegion(new Texture(App.getApp().getLoggedInUser().getAvatar()));
@@ -122,17 +124,20 @@ public class MainMenuScreen implements Screen {
         table.row();
 
         // === دکمه‌ها ===
-        gameMenuButton.setColor(Color.valueOf("8ecae6"));
+        gameMenuButton.setColor(Color.valueOf("E9D8A6"));
         table.add(gameMenuButton).width(400).height(100).padBottom(30);
         table.row();
 
-        profileMenuButton.setColor(Color.valueOf("ffb703"));
+        profileMenuButton.setColor(Color.valueOf("E9D8A6"));
         table.add(profileMenuButton).width(400).height(100).padBottom(30);
         table.row();
 
         logoutButton.setColor(Color.valueOf("E9D8A6"));
-        table.add(logoutButton).width(400).height(100);
+        table.add(logoutButton).width(400).height(100).padBottom(30);
         table.row();
+
+        exitButton.setColor(Color.valueOf("E9D8A6"));
+        table.add(exitButton).width(400).height(100);
 
         // === کنترلر ===
         controller.handleMainMenu();
@@ -190,4 +195,6 @@ public class MainMenuScreen implements Screen {
     public TextButton getLogoutButton() {
         return logoutButton;
     }
+
+    public TextButton getExitButton() { return  exitButton; }
 }

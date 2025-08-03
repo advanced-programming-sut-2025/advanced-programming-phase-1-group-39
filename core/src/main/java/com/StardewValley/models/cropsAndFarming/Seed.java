@@ -21,12 +21,12 @@ public class Seed extends Item {
     }
 
     public TextureRegion getTexture() {
-        TextureAtlas cropsAtlas = GameAssetManager.getCropsAtlas();
+        TextureAtlas cropsAtlas = GameAssetManager.cropsAtlas;
         String pathName = name.replaceAll(" " , "_");
 
         TextureRegion region = cropsAtlas.findRegion(pathName);
         if (region == null) {
-            TextureAtlas treesAtlas = GameAssetManager.getTressAtlas();
+            TextureAtlas treesAtlas = GameAssetManager.treesAtlas;
             region = treesAtlas.findRegion(pathName);
         }
         return region;

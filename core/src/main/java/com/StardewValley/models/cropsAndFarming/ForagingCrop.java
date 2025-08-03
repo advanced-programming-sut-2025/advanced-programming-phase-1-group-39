@@ -49,7 +49,7 @@ public class ForagingCrop extends Crop {
 
     @Override
     public TextureRegion getTexture() {
-        TextureAtlas foragingsAtlas = GameAssetManager.getForagingsAtlas();
+        TextureAtlas foragingsAtlas = GameAssetManager.foragingsAtlas;
         return foragingsAtlas.findRegion(getName().replaceAll(" ", "_"));
     }
 

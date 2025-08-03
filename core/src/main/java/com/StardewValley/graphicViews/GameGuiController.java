@@ -14,12 +14,6 @@ public class GameGuiController {
         if (!game.getPlayerInTurn().equals(game.getMainPlayer())) {
             button.setDisabled(true);
             button.setColor(Color.GRAY);
-            button.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-
-                }
-            });
         } else {
             button.setDisabled(false);
             button.setColor(Color.WHITE);

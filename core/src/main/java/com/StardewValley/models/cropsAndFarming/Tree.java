@@ -150,7 +150,7 @@ public class Tree{
 
     // Graphics
     public TextureRegion getFruitTexture() {
-        TextureAtlas treesAtlas = GameAssetManager.getTressAtlas();
+        TextureAtlas treesAtlas = GameAssetManager.treesAtlas;
         String fruitPath = fruitName.replaceAll(" ", "_");
 
         return new TextureRegion(treesAtlas.findRegion(fruitPath));
@@ -158,7 +158,7 @@ public class Tree{
 
     public TextureRegion getTexture() {
         Season season = App.getApp().getCurrentGame().getTime().getSeason();
-        TextureAtlas treesAtlas = GameAssetManager.getTressAtlas();
+        TextureAtlas treesAtlas = GameAssetManager.treesAtlas;
 
         String name = this.name.split(" ")[0];
         int stagesNum = stages.size();

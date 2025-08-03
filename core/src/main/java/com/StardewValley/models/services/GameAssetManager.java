@@ -22,6 +22,12 @@ public class GameAssetManager {
 
     public static Music music1 = Gdx.audio.newMusic(Gdx.files.internal("musics/01. Stardew Valley Overture.mp3"));
 
+    // Plants
+    public static Texture deadPlantTexture = new Texture(Gdx.files.internal("crops/dead_plant.png"));
+    public static TextureAtlas cropsAtlas = getCropsAtlas();
+    public static TextureAtlas foragingsAtlas = getForagingsAtlas();
+    public static TextureAtlas treesAtlas = getTressAtlas();
+
     static {
         initializeAssets();
     }

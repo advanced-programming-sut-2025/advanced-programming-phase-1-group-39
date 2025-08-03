@@ -32,7 +32,6 @@ public class GameData {
 
         players = game.getPlayers();
         time = game.getTime();
-        Gdx.app.log("GameData", "GameData initialized and time " + time.getDayDetail());
         todayWeather = game.getTodayWeather();
         tomorrowWeather = game.getTomorrowWeather();
         friendships = game.getFriendships();

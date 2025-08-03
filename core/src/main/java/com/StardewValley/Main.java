@@ -33,6 +33,7 @@ public class Main extends Game {
         Thread terminalController = new Thread(() -> {
             new AppView().run();
         });
+        terminalController.setDaemon(true);
         terminalController.start();
     }
 

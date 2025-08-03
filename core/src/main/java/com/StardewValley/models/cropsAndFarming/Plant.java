@@ -138,14 +138,14 @@ public class Plant {
     // Graphics
     // TODO : check
     public TextureRegion getTexture() {
-        TextureAtlas cropsAtlas = GameAssetManager.getCropsAtlas();
+        TextureAtlas cropsAtlas = GameAssetManager.cropsAtlas;
 
         String name = product.getName().replaceAll(" " , "_");
         int stagesNum = stages.size();
 
         Array<TextureRegion> plantStageRegions = new Array<>(cropsAtlas.findRegions( name+ "_Stage"));
         if (!isAlive) {
-            return new TextureRegion(new Texture(Gdx.files.internal("crops/dead_plant.png")));
+            return new TextureRegion(GameAssetManager.deadPlantTexture);
         }
         if (hasCrop) return plantStageRegions.get(stagesNum);
         else if (oneTimeHarvest && currentStage == stagesNum - 1) return plantStageRegions.get(stagesNum + 1);

@@ -2,12 +2,12 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
+import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -40,8 +40,6 @@ public class GameScreen implements Screen {
     //  player
     private TextureAtlas playerAtlas;
     private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
-
-    private enum Direction { UP, DOWN, LEFT, RIGHT, NONE }
 
     private Direction currentDirection = Direction.NONE;
     private float stateTime = 0f;
@@ -187,33 +185,6 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void handlePlayerMovement(float delta) {
-        float speed = game.getGameSetting().getPlayerSpeed();
-
-        Player player = game.getPlayerInTurn();
-        Location newLocation = new Location(player.getX(), player.getY());
-        currentDirection = Direction.NONE;
-
-        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            newLocation.addVector(0, +speed * delta);
-            currentDirection = Direction.UP;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            newLocation.addVector(0, -speed * delta);
-            currentDirection = Direction.DOWN;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            newLocation.addVector(-speed * delta, 0);
-            currentDirection = Direction.LEFT;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            newLocation.addVector(speed * delta, 0);
-            currentDirection = Direction.RIGHT;
-        }
-        // TODO : check movable
-        player.setLocationAbsolut(newLocation.x(), newLocation.y());
-    }
-
 
     private void renderPlayer() {
         int animIndex = switch (currentDirection) {
@@ -300,6 +271,7 @@ public class GameScreen implements Screen {
                 hideExitMenu();
             }
         });
+
         controller.handleButtonDisable(game, exitGameButton);
 
         int buttonsSize = 500;
@@ -320,6 +292,7 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
 
+
     @Override
     public void show() {
         App.getApp().getMusic().pause();
@@ -336,7 +309,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        handlePlayerMovement(v);
+        currentDirection = gameMenuInputAdapter.handlePlayerMovement(v, game);
         renderCamera();
         // everything render based on camera
         batch.setProjectionMatrix(camera.combined);

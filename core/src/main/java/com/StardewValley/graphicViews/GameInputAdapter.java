@@ -1,5 +1,10 @@
 package com.StardewValley.graphicViews;
 
+import com.StardewValley.models.Enums.Direction;
+import com.StardewValley.models.Game;
+import com.StardewValley.models.Location;
+import com.StardewValley.models.Player;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 
@@ -10,6 +15,35 @@ public class GameInputAdapter extends InputAdapter {
     public GameInputAdapter(GameGuiController controller, GameScreen screen) {
         this.controller = controller;
         this.screen = screen;
+    }
+
+    public Direction handlePlayerMovement(float delta, Game game) {
+        float speed = game.getGameSetting().getPlayerSpeed();
+
+        Player player = game.getPlayerInTurn();
+        Location newLocation = new Location(player.getX(), player.getY());
+        Direction currentDirection = Direction.NONE;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            newLocation.addVector(0, +speed * delta);
+            currentDirection = Direction.UP;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            newLocation.addVector(0, -speed * delta);
+            currentDirection = Direction.DOWN;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            newLocation.addVector(-speed * delta, 0);
+            currentDirection = Direction.LEFT;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            newLocation.addVector(speed * delta, 0);
+            currentDirection = Direction.RIGHT;
+        }
+        // TODO : check movable
+        player.setLocationAbsolut(newLocation.x(), newLocation.y());
+
+        return currentDirection;
     }
 
 

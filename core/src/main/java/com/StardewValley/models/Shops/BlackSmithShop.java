@@ -260,7 +260,7 @@ public class BlackSmithShop extends Shop {
         Table content = new Table();
         content.setFillParent(true);
         content.padTop(20);
-        content.add(onlyAvailable).left().pad(5).row();
+        content.add(onlyAvailable).right().pad(20).row();
         content.add(scrollPane).expand().fill().row();
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {

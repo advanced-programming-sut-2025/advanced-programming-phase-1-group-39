@@ -402,7 +402,7 @@ public class MarniesRanch extends Shop {
 
         Table content = new Table();
         content.setFillParent(true);
-        content.add(onlyAvailable).left().padBottom(10).row();
+        content.add(onlyAvailable).right().padBottom(10).row();
         content.add(scrollPane).expand().fill().row();
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {

@@ -79,6 +79,7 @@ public class GameScreen implements Screen {
     };
 
     private OrthographicCamera camera;
+    private Label errorLabel;
 
     private Table cookingMenuTable;
     private boolean cookingMenuOpen = false;
@@ -95,6 +96,8 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
         batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
+
+        errorLabel = new Label("", GameAssetManager.messageBoxStyle);
 
         uiStage = new Stage(new FitViewport(1920, 1080));
     }

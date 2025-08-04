@@ -52,6 +52,14 @@ public class GameScreen implements Screen {
     private TextureAtlas playerAtlas;
     private HashMap<Player, ArrayList<Animation<TextureRegion>>> playersAnimations = new LinkedHashMap<>();
 
+    // // player states
+    public enum PlayerState {
+        WalkingOrIdle,
+        UsingTool,
+        Unconscious
+    } ;
+
+
     private float stateTime = 0f;
 
     // UI
@@ -206,6 +214,7 @@ public class GameScreen implements Screen {
         }
 
         playersAnimations.put(player, animations);
+        player.setCurrentState(PlayerState.WalkingOrIdle);
     }
 
     private TextureRegion getTileObjectTexture(Tile tile) {
@@ -332,6 +341,14 @@ public class GameScreen implements Screen {
         }
     }
 
+    public void updatePlayers(float delta) {
+        for (Player player : game.getPlayers()) {
+            player.updateAnimationStateTime(delta);
+
+            // check for tools
+        }
+    }
+
     public void renderPlayers() {
         for (Player player : game.getPlayers()) {
             renderPlayer(player);
@@ -339,20 +356,31 @@ public class GameScreen implements Screen {
     }
 
     private void renderPlayer(Player currentPlayer) {
-        int animIndex = switch (currentPlayer.getDirection()) {
-            case UP -> 3;
-            case RIGHT -> 2;
-            case DOWN -> 1;
-            case LEFT -> 4;
-            default -> 0;
-        };
+        Animation<TextureRegion> currentAnimation;
+
+        switch (currentPlayer.getCurrentState()) {
+            case WalkingOrIdle:
+                int animIndex = switch (currentPlayer.getDirection()) {
+                    case UP -> 3;
+                    case RIGHT -> 2;
+                    case DOWN -> 1;
+                    case LEFT -> 4;
+                    default -> 0;
+                };
+                currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
+                break;
+            case Unconscious:
+                currentAnimation = playersAnimations.get(currentPlayer).get(0); // TODO : change to unco
+                break;
+            default:
+                currentAnimation = playersAnimations.get(currentPlayer).get(0);
+                break;
+        }
 
         batch.setColor(currentPlayer.getColor());
 
-        Animation<TextureRegion> currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
-        float elapsedTime = stateTime;
+        TextureRegion currentFrame = currentAnimation.getKeyFrame(currentPlayer.getAnimationStateTime(), true);
 
-        TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true);
         if (currentFrame == null) return;
 
         float drawX = currentPlayer.getX() - (Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W) / 2f;
@@ -403,17 +431,19 @@ public class GameScreen implements Screen {
         this.energyAmount.setText(energyAmount);
 
         if (player.getTurnEnergy() < 10) {
-            showError("Your turn energy : " + (int) player.getTurnEnergy() + "!!!");
+            showError("Your turn energy : " + (int) player.getTurnEnergy() + " !");
         }
 
-        if (player.getTurnEnergy() <= 0) {
+        if (player.getTurnEnergy() <= 0 && player.getCurrentState() != PlayerState.Unconscious) {
+            // در صورت غیر فعال بودن، چند بار nextTurn میشه
+            player.setCurrentState(PlayerState.Unconscious);
+
             showError("You are not conscious now... going to sleep");
-            delayForThenDo(1f, () -> blackBackgroundAnimation(() -> {
-                    controller.changeTurn();
-                }, 0.3f)
+
+            delayForAndDo(1f, () -> blackBackgroundAnimation(() -> {
+                        controller.changeTurn();
+                    }, 0.3f)
             );
-
-
         }
     }
 
@@ -647,7 +677,7 @@ public class GameScreen implements Screen {
         uiStage.addActor(blackScreen);
     }
 
-    public void delayForThenDo(float duration, Runnable runnable) {
+    public void delayForAndDo(float duration, Runnable runnable) {
         uiStage.addAction(Actions.sequence(
                 Actions.delay(duration),
                 Actions.run(runnable)
@@ -715,6 +745,8 @@ public class GameScreen implements Screen {
         try {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            updatePlayers(v);
 
             gameMenuInputAdapter.handlePlayerMovement(v, game);
 

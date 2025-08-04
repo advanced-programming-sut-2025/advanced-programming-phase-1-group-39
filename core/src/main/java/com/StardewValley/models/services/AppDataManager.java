@@ -296,9 +296,6 @@ public class AppDataManager {
             Gdx.app.error("GameManager", "Error loading game " + gameId, e);
             return null;
         }
-        /// Test
-//        GameData gameData = gson.fromJson(file.readString(), GameData.class);
-//        return gameData;
     }
 
     public static String getGamePath(int gameId) {

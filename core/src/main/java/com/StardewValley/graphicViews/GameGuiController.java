@@ -29,9 +29,20 @@ public class GameGuiController {
     }
 
     public void changeTurn() {
-        Game game = App.getApp().getCurrentGame();
-        game.nextTurn();
-        screen.showError("Next turn : " + game.getPlayerInTurn().getNickname());
+        Game game = screen.getGame();
+        boolean shouldGoNextDay = !game.nextTurn();
+        if (shouldGoNextDay) {
+            screen.showError("All players are not conscious! Going to next day ...");
+            goToNextDay();
+        } else {
+            screen.showError("Next turn : " + game.getPlayerInTurn().getNickname());
+        }
+    }
+
+    public void goToNextDay() {
+        Game game = screen.getGame();
+        game.goToNextDay();
+        screen.showError("Next Day !");
     }
 
     public String processCommand(String command) {

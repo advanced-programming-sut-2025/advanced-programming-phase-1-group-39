@@ -278,8 +278,6 @@ public class Map {
                                 tile.placeItem(new ItemStack(randomCrop, 1));
                             } else {
                                 ForagingMaterial randomMaterial = ForagingManager.getRandomMaterial(randGenerator);
-                                if (randomMaterial.getName().equals("Grass"))
-                                    System.out.println("Grass Placed in " + tile.getLocation());
                                 tile.placeItem(new ItemStack(randomMaterial, 1));
                             }
                         }

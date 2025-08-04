@@ -1,6 +1,7 @@
 package com.StardewValley.models;
 
 
+import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.Enums.Season;
 import com.StardewValley.models.NPC.PlayerNPCInteraction;
@@ -69,6 +70,9 @@ public class Player {
     // Graphic
     private transient Direction direction = Direction.NONE;
     private transient Color color;
+
+    private transient GameScreen.PlayerState currentState = GameScreen.PlayerState.WalkingOrIdle;
+    private transient float animationStateTime = 0f;
 
 
     // Inventory
@@ -167,7 +171,7 @@ public class Player {
 
         if (amount < 0) {
             turnEnergy += amount;
-            if (turnEnergy < 0) {
+            if (turnEnergy <= 0) {
                 turnEnergy = 0;
                 energy = 0;
             }
@@ -179,10 +183,6 @@ public class Player {
         if (energyCheated) return;
         this.energy = Math.min(energy, Constants.MAX_ENERGY);
         this.energy = Math.max(0, this.energy);
-    }
-
-    public void setTurnEnergy(double turnEnergy) {
-        this.turnEnergy = turnEnergy;
     }
 
     public void setCheatedEnergy() {
@@ -616,5 +616,27 @@ public class Player {
 
     public void setSelectedSlot(int selectedSlot) {
         this.selectedSlot = selectedSlot;
+    }
+
+    // state of player
+    public GameScreen.PlayerState getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(GameScreen.PlayerState state) {
+        this.currentState = state;
+    }
+
+
+    public float getAnimationStateTime() {
+        return animationStateTime;
+    }
+
+    public void updateAnimationStateTime(float delta) {
+        this.animationStateTime += delta;
+    }
+
+    public void resetAnimationStateTime() {
+        this.animationStateTime = 0f;
     }
 }

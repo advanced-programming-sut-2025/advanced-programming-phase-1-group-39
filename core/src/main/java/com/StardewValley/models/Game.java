@@ -2,6 +2,7 @@ package com.StardewValley.models;
 
 
 import com.StardewValley.controllers.AppControllers;
+import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.models.Enums.Season;
 import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.NPC.*;
@@ -290,7 +291,7 @@ public class Game {
         playersGoHome();
         // reset players energy
         resetPlayersEnergies();
-
+        playerInTurn = players.getFirst();
         // adding money
         addPlayersRevenueToMoney();
 
@@ -418,13 +419,14 @@ public class Game {
             if (!player.isConscious()) player.setEnergy(0.75 * Constants.MAX_ENERGY);
             else if (player.haveBadDay()) {
                 player.setEnergy(0.5 * Constants.MAX_ENERGY);
-                player.resetHourlyEnergyLimit();
 
                 player.changeBadDays(-1);
             } else player.setEnergy(Constants.MAX_ENERGY);
 
+            player.resetHourlyEnergyLimit();
             player.resetEnergyUnlimited();
             player.resetCheatedEnergy();
+            player.setCurrentState(GameScreen.PlayerState.WalkingOrIdle);
         }
     }
 
@@ -524,7 +526,6 @@ public class Game {
 
         playerInTurn = players.get(newIndex);
         if (!playerInTurn.isConscious()) return nextTurn();
-
 
         return true;
     }

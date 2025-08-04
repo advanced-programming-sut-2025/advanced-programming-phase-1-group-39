@@ -3,6 +3,8 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.cooking.FoodRecipe;
+import com.StardewValley.models.crafting.CraftingRecipe;
+import com.StardewValley.models.crafting.CraftingWidget;
 import com.StardewValley.models.cropsAndFarming.Plant;
 import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.map.Map;
@@ -80,6 +82,9 @@ public class GameScreen implements Screen {
 
     private Table cookingMenuTable;
     private boolean cookingMenuOpen = false;
+    private Table craftingMenu;
+    private ArrayList<CraftingWidget> craftingWidgets = new ArrayList<>();
+    private boolean craftingMenuOpen = false;
 
 
 
@@ -351,7 +356,7 @@ public class GameScreen implements Screen {
             Label nameLabel = new Label(recipe.name(), labelStyle);
             TextButton cookButton = new TextButton("Cook", skin);
 
-            //cookButton.setDisabled(player.hasLearnedFoodRecipe(recipe));
+            cookButton.setDisabled(player.hasLearnedFoodRecipe(recipe));
 
             cookingMenuTable.add(image).size(32, 32).pad(5);
             cookingMenuTable.add(nameLabel).left().pad(5);
@@ -378,6 +383,54 @@ public class GameScreen implements Screen {
 
     }
 
+    public void changeCraftingMenu() {
+        craftingMenuOpen = !craftingMenuOpen;
+        craftingMenu.setVisible(craftingMenuOpen);
+        if (craftingMenuOpen) {
+            Gdx.input.setInputProcessor(uiStage);
+            for (CraftingWidget widget : craftingWidgets) {
+                widget.update(App.getApp().getCurrentGame().getPlayerInTurn());
+            }
+        } else {
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
+    public void prepareCraftingMenu(Skin skin) {
+        craftingMenu = new Table();
+        craftingMenu.setVisible(false);
+        craftingMenu.setBackground(skin.getDrawable("window"));
+
+
+        ScrollPane scrollPane = new ScrollPane(craftingMenu, skin);
+        scrollPane.setSize(700, 700);
+        scrollPane.setPosition((uiStage.getWidth() - craftingMenu.getWidth())/2,
+                (uiStage.getHeight() - craftingMenu.getHeight())/2, Align.center);
+
+        int perRow = 3;
+        for (CraftingRecipe recipe : CraftingRecipe.values()) {
+            CraftingWidget craftingWidget = new CraftingWidget(recipe, App.getApp().getCurrentGame().getPlayerInTurn(), skin, controller);
+            craftingWidgets.add(craftingWidget);
+            craftingMenu.add(craftingWidget).pad(10);
+            if (perRow == 0) {
+                craftingMenu.row();
+                perRow = 3;
+            } else {
+                perRow--;
+            }
+        }
+
+        TextButton backButton = new TextButton("Back", skin);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                changeCraftingMenu();
+            }
+        });
+        craftingMenu.add(backButton).pad(5);
+
+        uiStage.addActor(scrollPane);
+
+    }
 
     public void showExitMenu() {
         if (exitWindow != null) {
@@ -440,6 +493,7 @@ public class GameScreen implements Screen {
         uiStage = new Stage(new ScreenViewport());
 
         prepareFoodMenu(skin);
+        prepareCraftingMenu(skin);
 
         loadTextures();
     }

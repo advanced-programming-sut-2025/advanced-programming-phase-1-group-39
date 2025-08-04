@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
+
+import java.util.ArrayList;
 
 public class GameAssetManager {
     public static Skin skin;
@@ -51,6 +55,10 @@ public class GameAssetManager {
     public static ProgressBar.ProgressBarStyle orangeBarStyle;
     public static ProgressBar.ProgressBarStyle redBarStyle;
 
+    // effects
+    public static Animation<TextureRegion> rainingAnimation ;
+    public static Animation<TextureRegion> snowAnimation ;
+
     static {
         initializeAssets();
     }
@@ -63,6 +71,22 @@ public class GameAssetManager {
 
         loadBlackBg();
         loadBarStyles();
+
+        loadEffects();
+    }
+
+    private static void loadEffects() {
+        Array<TextureRegion> rainImages = new Array<>();
+        for (int i = 1; i <= 4; i++) {
+            rainImages.add(new TextureRegion(new Texture(Gdx.files.internal("weather effects/rain/rain_drops-0"+i+".png"))));
+        }
+        rainingAnimation = new Animation<>(0.15f, rainImages, Animation.PlayMode.LOOP);
+
+        Array<TextureRegion> snowImages = new Array<>();
+        for (int i = 1; i <= 4; i++) {
+            snowImages.add(new TextureRegion(new Texture(Gdx.files.internal("weather effects/snow/snow_drops-0"+i+".png"))));
+        }
+        snowAnimation = new Animation<>(0.4f, snowImages, Animation.PlayMode.LOOP);
     }
 
     private static void loadBarStyles() {

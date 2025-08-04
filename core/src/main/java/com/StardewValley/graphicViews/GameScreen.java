@@ -2,6 +2,7 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
+import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.cropsAndFarming.Plant;
 import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.inventory.Inventory;
@@ -16,13 +17,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
@@ -88,6 +87,14 @@ public class GameScreen implements Screen {
 
     private Label errorLabel;
 
+    // effects
+    private Stage effectsStage;
+    private Animation<TextureRegion> rainAnimation;
+    private Animation<TextureRegion> snowAnimation;
+
+    private Image weatherEffectImage;
+    private float animationTime = 0f;
+
     public GameScreen() {
         this.controller = AppGuiControllers.gameGuiController;
         controller.setScreen(this);
@@ -98,7 +105,7 @@ public class GameScreen implements Screen {
         this.camera = new OrthographicCamera();
 
         uiStage = new Stage(new FitViewport(1920, 1080));
-
+        effectsStage = new Stage(new FitViewport(1920, 1080));
         // all tables are adding to this stack
         Stack rootStack = new Stack();
         rootStack.setFillParent(true);
@@ -624,6 +631,30 @@ public class GameScreen implements Screen {
         uiStage.addActor(blackScreen);
     }
 
+
+    public void loadTodayWeatherAnimation(float delta) {
+        WeatherStatus weather = game.getTodayWeather().getStatus();
+        Animation<TextureRegion> currentAnimation = null;
+
+        if (weather == WeatherStatus.RAIN || weather == WeatherStatus.STORM) {
+            currentAnimation = rainAnimation;
+        } else if (weather == WeatherStatus.SNOW) {
+            currentAnimation = snowAnimation;
+        }
+
+        if (currentAnimation != null) {
+            weatherEffectImage.setVisible(true);
+            animationTime += delta;
+
+            ((TextureRegionDrawable)weatherEffectImage.getDrawable()).setRegion(currentAnimation.getKeyFrame(animationTime, true));
+        } else {
+            weatherEffectImage.setVisible(false);
+        }
+
+        effectsStage.act(delta);
+        effectsStage.draw();
+    }
+
     public Game getGame() {
         return game;
     }
@@ -641,6 +672,17 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         loadTextures();
         energyBar.setValue((float) game.getPlayerInTurn().getEnergy());
+
+        // effects
+        rainAnimation = GameAssetManager.rainingAnimation;
+        snowAnimation = GameAssetManager.snowAnimation;
+
+        weatherEffectImage = new Image(rainAnimation.getKeyFrame(0, true));
+        weatherEffectImage.setSize(uiStage.getWidth(), uiStage.getHeight());
+        weatherEffectImage.setTouchable(Touchable.disabled);
+        weatherEffectImage.setVisible(false);
+
+        effectsStage.addActor(weatherEffectImage);
 
         showError("Welcome " + game.getPlayerInTurn().getNickname() + " !");
     }
@@ -665,11 +707,17 @@ public class GameScreen implements Screen {
 
             // TODO : (Better) move clock render to uiStage
             renderClockUI();
-            renderInventory();
+            //TODO : correct
+//            renderInventory();
             batch.end();
 
+            // Weather animation
+            loadTodayWeatherAnimation(v);
+
+            // UI
             uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
             uiStage.draw();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -678,6 +726,8 @@ public class GameScreen implements Screen {
     @Override
     public void resize(int w, int h) {
         uiStage.getViewport().update(w,h, true);
+
+        effectsStage.getViewport().update(w, h, true);
 
         camera.viewportWidth = w;
         camera.viewportHeight = h;

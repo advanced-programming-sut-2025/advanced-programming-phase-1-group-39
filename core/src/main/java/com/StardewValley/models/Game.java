@@ -343,10 +343,13 @@ public class Game {
 
     private void playersGoHome() {
         for (Player player : players) {
+            playerInTurn = player;
             Location homeLoc = player.getHomeLocation();
             Result res = AppControllers.gameController.walkToCheck(homeLoc.x(), homeLoc.y());
             if (res.success())
                 AppControllers.gameController.walkTo();
+            else if (gameMap.isInBuilding(player.getBuildingByName("cabin"), player))
+                return;
             else
                 player.setEnergy(0);
         }

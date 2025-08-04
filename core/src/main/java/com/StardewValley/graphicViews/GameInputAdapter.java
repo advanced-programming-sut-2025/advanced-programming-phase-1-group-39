@@ -21,7 +21,9 @@ public class GameInputAdapter extends InputAdapter {
         float speed = game.getGameSetting().getPlayerSpeed();
 
         Player player = game.getPlayerInTurn();
-        float initialX = player.getX(), initialY = player.getY();
+        if (player.getCurrentState().equals(GameScreen.PlayerState.Unconscious)) return;
+        float   initialX = player.getX(),
+                initialY = player.getY();
 
 
         Direction currentDirection = Direction.NONE;

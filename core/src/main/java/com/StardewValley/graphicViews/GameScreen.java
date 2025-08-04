@@ -65,7 +65,9 @@ public class GameScreen implements Screen {
         WalkingOrIdle,
         UsingTool,
         Unconscious
-    } ;
+    }
+
+    private boolean wentNextDay = false;
 
 
     private float stateTime = 0f;
@@ -374,21 +376,13 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void updatePlayers(float delta) {
+    public void renderPlayers(float data) {
         for (Player player : game.getPlayers()) {
-            player.updateAnimationStateTime(delta);
-
-            // check for tools
+            renderPlayer(player, data);
         }
     }
 
-    public void renderPlayers() {
-        for (Player player : game.getPlayers()) {
-            renderPlayer(player);
-        }
-    }
-
-    private void renderPlayer(Player currentPlayer) {
+    private void renderPlayer(Player currentPlayer , float delta) {
         Animation<TextureRegion> currentAnimation;
 
         switch (currentPlayer.getCurrentState()) {
@@ -418,6 +412,8 @@ public class GameScreen implements Screen {
 
         float drawX = currentPlayer.getX() - (Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W) / 2f;
         float drawY = currentPlayer.getY();
+
+        currentPlayer.updateAnimationStateTime(delta);
 
         batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_H);
 
@@ -595,7 +591,7 @@ public class GameScreen implements Screen {
         this.energyAmount.setText(energyAmount);
 
         if (player.getTurnEnergy() < 10) {
-            showError("Your turn energy : " + (int) player.getTurnEnergy() + " !");
+            showError("Your turn energy : " + (int) Math.ceil(player.getTurnEnergy() + 1) + " !");
         }
 
         if (player.getTurnEnergy() <= 0 && player.getCurrentState() != PlayerState.Unconscious) {
@@ -871,6 +867,18 @@ public class GameScreen implements Screen {
         effectsStage.draw();
     }
 
+    public void checkGoingNextDay() {
+        if (game.shouldGoToNextDay() && !wentNextDay) {
+            wentNextDay = true;
+
+            showError("Time to sleep 10 PM. Going next day");
+            delayForAndDo(1.0f, () -> blackBackgroundAnimation(()-> {
+                game.goToNextDay();
+                wentNextDay = false;
+            }, 1.0f));
+        }
+
+    }
 
     public Game getGame() {
         return game;
@@ -919,7 +927,7 @@ public class GameScreen implements Screen {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-            updatePlayers(v);
+            checkGoingNextDay();
 
             gameMenuInputAdapter.handlePlayerMovement(v, game);
 
@@ -931,12 +939,13 @@ public class GameScreen implements Screen {
             stateTime += v;
             batch.begin();
             renderTiles();
-            renderPlayers();
+            renderPlayers(v);
 
             // TODO : (Better) move clock render to uiStage
             renderClockUI();
             //TODO : correct
 //            renderInventory();
+
             batch.end();
 
             // Weather animation

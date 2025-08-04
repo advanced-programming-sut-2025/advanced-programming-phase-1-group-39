@@ -37,7 +37,7 @@ public class GameGuiController {
         boolean shouldGoNextDay = !game.nextTurn();
         if (shouldGoNextDay) {
             screen.showError("All players are not conscious! Going to next day ...");
-            goToNextDay();
+            screen.delayForAndDo(1.0f, () -> screen.blackBackgroundAnimation(game::goToNextDay, 1.0f));
         } else {
             screen.showError("Next turn : " + game.getPlayerInTurn().getNickname());
         }

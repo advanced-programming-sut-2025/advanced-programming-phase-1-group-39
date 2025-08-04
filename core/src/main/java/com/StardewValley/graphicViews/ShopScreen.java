@@ -41,7 +41,7 @@ public class ShopScreen implements Screen {
         stage.draw();
     }
 
-    // بقیه override ها
+
     @Override public void resize(int width, int height) { stage.getViewport().update(width, height, true); }
     @Override public void pause() {}
     @Override public void resume() {}

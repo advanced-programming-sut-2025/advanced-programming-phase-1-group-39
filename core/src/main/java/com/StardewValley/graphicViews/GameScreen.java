@@ -2,6 +2,7 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
+import com.StardewValley.models.Shops.Shop;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingRecipe;
 import com.StardewValley.models.crafting.CraftingWidget;
@@ -39,12 +40,13 @@ import java.util.LinkedHashMap;
 
 
 public class GameScreen implements Screen {
+    private static GameScreen screen;
     private GameGuiController controller;
     private Game game;
     private GameInputAdapter gameMenuInputAdapter;
     private SpriteBatch batch;
 
-    private Stage uiStage;
+    private static Stage uiStage;
     private Window exitWindow = null;
     //  player
     private TextureAtlas playerAtlas;
@@ -90,6 +92,7 @@ public class GameScreen implements Screen {
 
 
     public GameScreen() {
+        this.screen = this;
         this.controller = AppGuiControllers.gameGuiController;
         this.game = App.getApp().getCurrentGame();
         gameMenuInputAdapter = new GameInputAdapter(controller, this);
@@ -446,6 +449,17 @@ public class GameScreen implements Screen {
 
     }
 
+    public void showShopMenu() {
+        Player player = game.getPlayerInTurn();
+        Shop shop = game.getShopPlayerIsIn(player);
+        if (shop == null) {
+            System.out.println("You aren't in a shop");
+        } else {
+            Main.getMain().setScreen(new ShopScreen(shop));
+        }
+
+    }
+
     public void showExitMenu() {
         if (exitWindow != null) {
             hideExitMenu();
@@ -566,5 +580,13 @@ public class GameScreen implements Screen {
         if (game != null) {
             AppDataManager.saveGame(game);
         }
+    }
+
+    public static GameScreen getScreen() {
+        return screen;
+    }
+
+    public static Stage getStage() {
+        return uiStage;
     }
 }

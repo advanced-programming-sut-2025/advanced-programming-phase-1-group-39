@@ -193,6 +193,12 @@ public class Game {
 
         return shops;
     }
+    public Shop getShopByName(String name) {
+        for (Building building : buildings) {
+            if (building.getName().equals(name)) return (Shop) building;
+        }
+        return null;
+    }
 
     private void initializeNPCs() {
         npcs.add(new SebastianNPC());

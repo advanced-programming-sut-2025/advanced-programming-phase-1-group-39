@@ -28,6 +28,8 @@ public class GameInputAdapter extends InputAdapter {
             screen.changeCookingMenu();
         } else if (keycode == Input.Keys.B) {
             screen.changeCraftingMenu();
+        } else if (keycode == Input.Keys.P) {
+            screen.showShopMenu();
         }
         return true;
     }

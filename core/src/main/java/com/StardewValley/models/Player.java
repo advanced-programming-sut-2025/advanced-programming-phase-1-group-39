@@ -33,6 +33,7 @@ public class Player {
 
     // graphic - based on pixels
     private float x, y;
+    private boolean isMoving;
 
     private String username;
     private String nickname;
@@ -617,4 +618,10 @@ public class Player {
     public void setSelectedSlot(int selectedSlot) {
         this.selectedSlot = selectedSlot;
     }
+
+    // graphic :
+
+    public boolean isMoving() { return isMoving; }
+
+    public void setMoving(boolean moving) { this.isMoving = moving; }
 }

@@ -46,6 +46,7 @@ public class GameInputAdapter extends InputAdapter {
         // check can move to
         movement.nor().scl(speed * delta);
         if (movement.isZero()) {
+            player.setMoving(false);
             player.setDirection(Direction.NONE);
             return;
         }
@@ -69,6 +70,7 @@ public class GameInputAdapter extends InputAdapter {
         if (map.isPositionPassable(player.getX(), newY)) {
             player.setLocationAbsolut(player.getX(), newY);
         }
+        player.setMoving(true);
         player.setDirection(currentDirection);
         // change energy
         if (player.getX() != initialX || player.getY() != initialY) {

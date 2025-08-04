@@ -170,7 +170,7 @@ public class GameScreen implements Screen {
     }
 
     public void loadTextures() {
-        playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
+        playerAtlas = new TextureAtlas(Gdx.files.internal("characters/woman/woman.atlas"));
         clock = new Texture(Gdx.files.internal("Clock.png"));
         clock.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
@@ -191,21 +191,42 @@ public class GameScreen implements Screen {
 
     private void loadPlayerAnimations(Player player) {
         ArrayList<Animation<TextureRegion>> animations = new ArrayList<>();
-        for (int i = 14; i > 9; i--) {
-            Array<TextureRegion> walkFrames = new Array<>();
-            if (i == 14) {
-                for (int j = 0; j < 4; j++) {
-                    String region = "player_" + 13 + "_" + 0;
-                    walkFrames.add(playerAtlas.findRegion(region));
-                }
-            } else {
-                for (int j = 0; j < 4; j++) {
-                    String region = "player_" + i + "_" + j;
-                    walkFrames.add(playerAtlas.findRegion(region));
-                }
-            }
-            animations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+
+        // DOWN
+        Array<TextureRegion> walkDown = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_ down", i);
+            if (r == null) System.out.println("[Null region] woman-move_ down, " + i);
+            walkDown.add(r);
         }
+        animations.add(new Animation<>(0.15f, walkDown, Animation.PlayMode.LOOP));
+
+        // RIGHT
+        Array<TextureRegion> walkRight = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_ right", i);
+            if (r == null) System.out.println("[Null region] woman-move_ right, " + i);
+            walkRight.add(r);
+        }
+        animations.add(new Animation<>(0.15f, walkRight, Animation.PlayMode.LOOP));
+
+        // UP
+        Array<TextureRegion> walkUp = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_ up", i);
+            if (r == null) System.out.println("[Null region] woman-move_ up, " + i);
+            walkUp.add(r);
+        }
+        animations.add(new Animation<>(0.15f, walkUp, Animation.PlayMode.LOOP));
+
+        // LEFT
+        Array<TextureRegion> walkLeft = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_left", i); // بدون فاصله
+            if (r == null) System.out.println("[Null region] woman-move_left, " + i);
+            walkLeft.add(r);
+        }
+        animations.add(new Animation<>(0.15f, walkLeft, Animation.PlayMode.LOOP));
 
         playersAnimations.put(player, animations);
     }
@@ -342,24 +363,30 @@ public class GameScreen implements Screen {
 
     private void renderPlayer(Player currentPlayer) {
         int animIndex = switch (currentPlayer.getDirection()) {
-            case UP -> 3;
-            case RIGHT -> 2;
-            case DOWN -> 1;
-            case LEFT -> 4;
+            case DOWN -> 0;
+            case RIGHT -> 1;
+            case UP -> 2;
+            case LEFT -> 3;
             default -> 0;
         };
 
         batch.setColor(currentPlayer.getColor());
 
         Animation<TextureRegion> currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
-        float elapsedTime = stateTime;
 
-        TextureRegion currentFrame = currentAnimation.getKeyFrame(elapsedTime, true);
+        TextureRegion currentFrame;
+        if (currentPlayer.isMoving()) { // باید این فیلد/متد باشه!
+            currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+        } else {
+            currentFrame = currentAnimation.getKeyFrame(0f);
+        }
+
         if (currentFrame == null) return;
 
         float drawX = currentPlayer.getX() - (Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W) / 2f;
         float drawY = currentPlayer.getY();
 
+        // سایز رو تو مرحله بعدی درست می‌کنیم ↓
         batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_H);
 
         batch.setColor(Color.WHITE);

@@ -1,0 +1,78 @@
+woman.png
+size: 871, 245
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+pma: false
+woman-axe_down
+  bounds: 100, 1, 53, 133
+  index: 0
+woman-axe_left
+  bounds: 127, 136, 117, 108
+  index: 0
+woman-axe_right
+  bounds: 468, 126, 117, 109
+  index: 0
+woman-axe_up
+  bounds: 824, 105, 46, 101
+  index: 0
+woman-move_ down
+  bounds: 246, 129, 53, 115
+  index: 0
+woman-move_ down
+  bounds: 416, 126, 50, 111
+  index: 1
+woman-move_ down
+  bounds: 757, 111, 50, 108
+  index: 2
+woman-move_ right
+  bounds: 358, 126, 56, 111
+  index: 0
+woman-move_ right
+  bounds: 639, 122, 57, 108
+  index: 1
+woman-move_ right
+  bounds: 64, 139, 61, 104
+  index: 2
+woman-move_ up
+  bounds: 718, 1, 52, 108
+  index: 0
+woman-move_ up
+  bounds: 824, 1, 46, 102
+  index: 1
+woman-move_ up
+  bounds: 772, 1, 50, 104
+  index: 2
+woman-move_left
+  bounds: 301, 126, 55, 112
+  index: 0
+woman-move_left
+  bounds: 698, 122, 57, 108
+  index: 1
+woman-move_left
+  bounds: 1, 139, 61, 105
+  index: 2
+woman-scythe_down
+  bounds: 1, 1, 97, 136
+  index: 0
+woman-scythe_left
+  bounds: 496, 1, 110, 120
+  index: 0
+woman-scythe_right
+  bounds: 608, 1, 108, 119
+  index: 0
+woman-scythe_up
+  bounds: 155, 1, 78, 131
+  index: 0
+woman-water_down
+  bounds: 587, 123, 50, 120
+  index: 0
+woman-water_left
+  bounds: 282, 1, 105, 123
+  index: 0
+woman-water_right
+  bounds: 389, 1, 105, 123
+  index: 0
+woman-water_up
+  bounds: 235, 1, 45, 126
+  index: 0

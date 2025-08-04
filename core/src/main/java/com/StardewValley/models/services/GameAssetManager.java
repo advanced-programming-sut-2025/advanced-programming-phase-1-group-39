@@ -37,7 +37,10 @@ public class GameAssetManager {
     public static Texture blackBox;
 
     public static Texture energyBox = new Texture(Gdx.files.internal("energy_bar.png"));
-    public static ProgressBar.ProgressBarStyle energyBarStyle;
+    public static ProgressBar.ProgressBarStyle greenBarStyle;
+    public static ProgressBar.ProgressBarStyle yellowBarStyle;
+    public static ProgressBar.ProgressBarStyle orangeBarStyle;
+    public static ProgressBar.ProgressBarStyle redBarStyle;
 
     static {
         initializeAssets();
@@ -50,7 +53,14 @@ public class GameAssetManager {
         setMessageBoxStyle();
 
         loadBlackBg();
-        loadEnergyBarStyle();
+        loadBarStyles();
+    }
+
+    private static void loadBarStyles() {
+        greenBarStyle = createEnergyBarStyle(Color.GREEN);
+        yellowBarStyle = createEnergyBarStyle(Color.YELLOW);
+        orangeBarStyle = createEnergyBarStyle(Color.ORANGE);
+        redBarStyle = createEnergyBarStyle(Color.RED);
     }
 
     public static TextureAtlas getCropsAtlas() {
@@ -117,25 +127,28 @@ public class GameAssetManager {
         pixmap.dispose();
     }
 
-    public static void loadEnergyBarStyle() {
-        int w = 30, h = 60;
+    public static ProgressBar.ProgressBarStyle createEnergyBarStyle(Color color) {
+        int w = 40, h = 60;
+        ProgressBar.ProgressBarStyle barStyle;
 
         Pixmap bgPixmap = new Pixmap(w, h, Pixmap.Format.RGBA8888);
         bgPixmap.setColor(0,0,0,0);
         bgPixmap.fill();
 
         Pixmap fillPixmap = new Pixmap(w, h, Pixmap.Format.RGBA8888);
-        fillPixmap.setColor(Color.GREEN);
+        fillPixmap.setColor(color);
         fillPixmap.fill();
 
         Pixmap knobPixmap = new Pixmap(0, 0, Pixmap.Format.RGBA8888);
 
-        energyBarStyle = new ProgressBar.ProgressBarStyle();
-        energyBarStyle.background = new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap)));
-        energyBarStyle.knob = new TextureRegionDrawable(new TextureRegion(new Texture(knobPixmap)));
-        energyBarStyle.knobBefore = new TextureRegionDrawable(new Texture(fillPixmap));
+        barStyle = new ProgressBar.ProgressBarStyle();
+        barStyle.background = new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap)));
+        barStyle.knob = new TextureRegionDrawable(new TextureRegion(new Texture(knobPixmap)));
+        barStyle.knobBefore = new TextureRegionDrawable(new Texture(fillPixmap));
 
         bgPixmap.dispose();
         fillPixmap.dispose();
+
+        return barStyle;
     }
 }

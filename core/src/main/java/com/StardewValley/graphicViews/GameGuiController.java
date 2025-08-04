@@ -38,119 +38,120 @@ public class GameGuiController {
         Matcher matcher;
         Result result = null;
 
+        String message = "";
         GameController gameController = AppControllers.gameController;
         NPCGameController npcController = new NPCGameController();
         PlayersInteractionController interactionsController = AppControllers.playersInteractionController;
         if ((GameCommands.SHOW_CURRENT_MENU.getMatcher(command)) != null) {
-            return (gameController.showCurrentMenu());
+            message = (gameController.showCurrentMenu());
         } else if ((GameCommands.EXIT_GAME.getMatcher(command)) != null) {
-            return (gameController.exitGame());
+            message = (gameController.exitGame());
         } else if ((GameCommands.EXIT_APP.getMatcher(command)) != null) {
             gameController.exitApp();
         } else if ((GameCommands.NEXT_TURN.getMatcher(command)) != null) {
-            return (gameController.goNextTurn().message());
+            message = (gameController.goNextTurn().message());
         } else if ((GameCommands.TIME.getMatcher(command)) != null) {
-            return (gameController.showTime());
+            message = (gameController.showTime());
         } else if ((GameCommands.DATE.getMatcher(command)) != null) {
-            return (gameController.showDate());
+            message = (gameController.showDate());
         } else if ((GameCommands.DATE_AND_TIME.getMatcher(command)) != null) {
-            return (gameController.showDateTime());
+            message = (gameController.showDateTime());
         } else if ((GameCommands.DAY_OF_WEEK.getMatcher(command)) != null) {
-            return (gameController.showDayOfWeek());
+            message = (gameController.showDayOfWeek());
         } else if ((matcher = GameCommands.CHEAT_ADVANCE_TIME.getMatcher(command)) != null) {
-            return (gameController.cheatAdvanceTime(matcher).message());
+            message = (gameController.cheatAdvanceTime(matcher).message());
         } else if ((matcher = GameCommands.CHEAT_ADVANCE_DATE.getMatcher(command)) != null) {
-            return (gameController.cheatAdvanceDate(matcher).message());
+            message = (gameController.cheatAdvanceDate(matcher).message());
         } else if ((GameCommands.SHOW_SEASON.getMatcher(command)) != null) {
-            return (gameController.showSeason());
+            message = (gameController.showSeason());
         } else if ((matcher = GameCommands.PRINT_MAP.getMatcher(command)) != null) {
-            return (gameController.printMap(matcher).message());
+            message = (gameController.printMap(matcher).message());
         } else if (GameCommands.HELP_READING_MAP.getMatcher(command) != null) {
-            return (gameController.helpReadingMap().message());
+            message = (gameController.helpReadingMap().message());
 //        } else if ((matcher = GameCommands.WALK.getMatcher(command)) != null) {
 //            int x = Integer.parseInt(matcher.group("x"));
 //            int y = Integer.parseInt(matcher.group("y"));
 //
 //            result = gameController.walkToCheck(x, y);
-//            return (result.message());
+//            message = (result.message());
 //            if (result.success()) {
-//                return ("do you want to go? (y / n)");
+//                message = ("do you want to go? (y / n)");
 //                String str = Input.getNextLine();
 //                while (str.isEmpty()) {
 //                    str = Input.getNextLine();
 //                }
 //                char character = str.charAt(0);
 //                if (character == 'y' || character == 'Y') {
-//                    return (gameController.walkTo().message());
+//                    message = (gameController.walkTo().message());
 //                }
 //            }
         } else if ((matcher = GameCommands.SET_LOCATION.getMatcher(command)) != null) {
-            return (gameController.setLocation(matcher).message());
+            message = (gameController.setLocation(matcher).message());
         } else if ((GameCommands.SHOW_ENERGY.getMatcher(command)) != null) {
-            return (gameController.showEnergy());
+            message = (gameController.showEnergy());
         } else if ((matcher = GameCommands.CHEAT_SET_ENERGY.getMatcher(command)) != null) {
-            return (gameController.cheatSetEnergy(matcher));
+            message = (gameController.cheatSetEnergy(matcher));
         } else if ((GameCommands.CHEAT_ENERGY_UNLIMITED.getMatcher(command)) != null) {
-            return (gameController.cheatEnergyUnlimited());
+            message = (gameController.cheatEnergyUnlimited());
         } else if ((GameCommands.WEATHER.getMatcher(command)) != null) {
-            return (gameController.showWeather());
+            message = (gameController.showWeather());
         } else if ((GameCommands.WEATHER_FORECAST.getMatcher(command)) != null) {
-            return (gameController.forecastWeather());
+            message = (gameController.forecastWeather());
         } else if ((matcher = GameCommands.CHEAT_WEATHER_SET.getMatcher(command)) != null) {
-            return (gameController.cheatWeather(matcher).message());
+            message = (gameController.cheatWeather(matcher).message());
         } else if ((matcher = GameCommands.CHEAT_THOR.getMatcher(command)) != null) {
-            return (gameController.cheatThor(matcher));
+            message = (gameController.cheatThor(matcher));
         } else if ((GameCommands.BUILD_GREENHOUSE.getMatcher(command)) != null) {
             result = gameController.buildGreenHouseRequest();
             if (result.success()) {
-                return (gameController.buildGreenHouse());
+                message = (gameController.buildGreenHouse());
             } else {
-                return result.message();
+                message = result.message();
             }
         } else if ((GameCommands.INVENTORY_SHOW.getMatcher(command)) != null) {
-            return (gameController.showInventory());
+            message = (gameController.showInventory());
         } else if ((matcher = GameCommands.INVENTORY_TRASH.getMatcher(command)) != null) {
-            return (gameController.throwToInventoryTrash(matcher).message());
+            message = (gameController.throwToInventoryTrash(matcher).message());
         } else if ((matcher = GameCommands.TOOLS_EQUIP.getMatcher(command)) != null) {
-            return (gameController.equipTool(matcher).message());
+            message = (gameController.equipTool(matcher).message());
         } else if ((GameCommands.TOOL_SHOW_CURRENT.getMatcher(command)) != null) {
-            return (gameController.showCurrentTool().message());
+            message = (gameController.showCurrentTool().message());
         } else if ((GameCommands.TOOL_SHOW_AVAILABLE.getMatcher(command)) != null) {
-            return (gameController.showAvailableTools());
+            message = (gameController.showAvailableTools());
         } else if ((matcher = GameCommands.TOOL_USE.getMatcher(command)) != null) {
-            return (gameController.useTool(matcher).message());
+            message = (gameController.useTool(matcher).message());
         } else if ((matcher = GameCommands.TOOLS_UPGRADE.getMatcher(command)) != null) {
-            return (gameController.upgradeTool(matcher).message());
+            message = (gameController.upgradeTool(matcher).message());
         } else if ((GameCommands.HOWMUCH_WATER.getMatcher(command)) != null) {
-            return (gameController.howMuchWater());
+            message = (gameController.howMuchWater());
         } else if ((matcher = GameCommands.GO_FISHING.getMatcher(command)) != null) {
-            return (gameController.fishing(matcher).message());
+            message = (gameController.fishing(matcher).message());
         } else if ((matcher = GameCommands.SELL_PRODUCTS.getMatcher(command)) != null) {
-            return (gameController.sellProduct(matcher).message());
+            message = (gameController.sellProduct(matcher).message());
         }
         // friendship
         else if ((matcher = GameCommands.ASK_MARRIAGE.getMatcher(command)) != null) {
-            return (gameController.askMarriage(matcher).message());
+            message = (gameController.askMarriage(matcher).message());
         } else if ((matcher = GameCommands.RESPOND_MARRIAGE.getMatcher(command)) != null) {
-            return (gameController.respondToMarriage(matcher).message());
+            message = (gameController.respondToMarriage(matcher).message());
         }
 
         // NPC
         else if ((matcher = NPCGameCommand.MeetNPC.getMatcher(command)) != null) {
             result = npcController.meetNPC(matcher);
-            return (result.message());
+            message = (result.message());
         } else if ((matcher = NPCGameCommand.GiveGiftToNPC.getMatcher(command)) != null) {
             result = npcController.giveGift(matcher);
-            return (result.message());
+            message = (result.message());
         } else if ((matcher = NPCGameCommand.ShowFriendShipList.getMatcher(command)) != null) {
             result = npcController.showFriendship();
-            return (result.message());
+            message = (result.message());
         } else if ((matcher = NPCGameCommand.ShowQuestsList.getMatcher(command)) != null) {
             result = npcController.showQuestsList();
-            return (result.message());
+            message = (result.message());
         } else if ((matcher = NPCGameCommand.QuestsFinish.getMatcher(command)) != null) {
             result = npcController.finishQuests(matcher);
-            return (result.message());
+            message = (result.message());
         } else if ((matcher = GameCommands.SHOW_CRAFT_INFO.getMatcher(command)) != null) {
             result = (gameController.showCraftInfo(matcher));
         } else if ((matcher = GameCommands.SHOW_TREE_INFO.getMatcher(command)) != null) {
@@ -255,16 +256,16 @@ public class GameGuiController {
 //                     ("next player enter yes or no :");
 //                    String input = Input.getNextLine();
 //                    if (input.equalsIgnoreCase("yes")) {
-//                        return ("next player enter yes or no :");
+//                        message = ("next player enter yes or no :");
 //                        input = Input.getNextLine();
 //                        count++;
 //                        accepted++;
 //                    } else if (input.equalsIgnoreCase("no")) {
-//                        return ("next player enter yes or no :");
+//                        message = ("next player enter yes or no :");
 //                        input = Input.getNextLine();
 //                        count++;
 //                    } else {
-//                        return ("enter yes or no please :");
+//                        message = ("enter yes or no please :");
 //                        input = Input.getNextLine();
 //                    }
 //                }
@@ -278,17 +279,26 @@ public class GameGuiController {
 //                    app.removeGame(app.getCurrentGame());
 //                    app.setCurrentGame(null);
 //                    app.setCurrentMenu(Menu.MAIN_MENU);
-//                    return ("The game has been successfully deleted. You're now back at the main menu!");
+//                    message = ("The game has been successfully deleted. You're now back at the main menu!");
 //                } else {
-//                    return ("The game cannot be deleted because not all players agreed to the removal.");
+//                    message = ("The game cannot be deleted because not all players agreed to the removal.");
 //                }
 //            }
         } else if ((GameCommands.SHOW_MONEY.getMatcher(command)) != null) {
-            return (gameController.showMoney());
+            message = (gameController.showMoney());
         } else {
-            return ("invalid command.");
+            message = ("invalid command.");
         }
-        if (result != null) return result.message();
-        else return ("invalid command.");
+
+        if (result != null) message = result.message();
+
+        return stripAnsiCodes(message);
+    }
+
+    public static String stripAnsiCodes(String text) {
+        if (text == null) {
+            return null;
+        }
+        return text.replaceAll("\\u001B\\[[;\\d]*m", "");
     }
 }

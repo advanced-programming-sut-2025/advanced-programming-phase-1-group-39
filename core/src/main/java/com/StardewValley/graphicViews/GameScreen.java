@@ -24,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class GameScreen implements Screen {
 
     private ProgressBar energyBar;
     private Image energyBox;
+    private Label energyAmount;
 
     private final int MAX_CACHE_SIZE = 5000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
@@ -110,16 +112,26 @@ public class GameScreen implements Screen {
         hudTable.setFillParent(true);
         rootStack.add(hudTable);
 
-        energyBar = new ProgressBar(0, (float) Constants.MAX_ENERGY, 1, true, GameAssetManager.energyBarStyle);
+        energyBar = new ProgressBar(0, (float) Constants.MAX_ENERGY, 1, true, GameAssetManager.greenBarStyle);
         energyBar.setAnimateDuration(0.1f);
         energyBox = new Image(GameAssetManager.energyBox);
+        energyBox.setScaling(Scaling.fit); // to not scale and fill without proper scale
         Stack energyStack = new Stack();
         energyStack.add(energyBox);
 
+        energyAmount = new Label("200 / 200", GameAssetManager.skin);
+        energyAmount.setAlignment(Align.center);
+
         Table barTable = new Table();
-        barTable.add(energyBar).expand().fill().pad(65,12,15,7);
+        barTable.add(energyAmount).top().padTop(-10f).row();
+        barTable.add(energyBar).expand().fill().pad(80,8,20,0);
+//        barTable.add(energyBar).expand().fill().pad(10);
         energyStack.add(barTable);
-        hudTable.add(energyStack).expand().bottom().right().pad(20f);
+
+
+        hudTable.add(energyStack)
+                .width(1.5f * energyBox.getWidth()).height(1.5f * energyBox.getHeight())
+                .expand().bottom().right().pad(20f);
     }
 
     public void showError(String message) {
@@ -357,7 +369,20 @@ public class GameScreen implements Screen {
         font.draw(batch, String.valueOf(400), drawX + 200, drawY + 40);
     }
 
+    private void updateEnergyBar() {
+        float playerEnergy = (float) game.getPlayerInTurn().getEnergy();
+        energyBar.setValue(playerEnergy);
 
+        if (playerEnergy > 170) energyBar.setStyle(GameAssetManager.greenBarStyle);
+        else if (playerEnergy > 120) energyBar.setStyle(GameAssetManager.yellowBarStyle);
+        else if (playerEnergy > 50) energyBar.setStyle(GameAssetManager.orangeBarStyle);
+        else energyBar.setStyle(GameAssetManager.redBarStyle);
+
+        energyAmount.setText((int) playerEnergy + " / 200");
+    }
+
+
+    // WINDOWS
     public void closeAllUiMenus() {
         if (exitWindow != null) hideExitMenu();
         if (terminalWindow != null && terminalWindow.isVisible()) hideExitMenu();
@@ -549,7 +574,6 @@ public class GameScreen implements Screen {
         loadTextures();
         energyBar.setValue((float) game.getPlayerInTurn().getEnergy());
 
-        ///  test
         showError("Welcome " + game.getPlayerInTurn().getNickname() + " !");
     }
 
@@ -560,7 +584,8 @@ public class GameScreen implements Screen {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             gameMenuInputAdapter.handlePlayerMovement(v, game);
-            energyBar.setValue((float) game.getPlayerInTurn().getEnergy());
+
+            updateEnergyBar();
             renderCamera();
 
             // everything render based on camera

@@ -64,26 +64,31 @@ public class GameInputAdapter extends InputAdapter {
         }
 
         if (movement.x > 0) {
-            if (map.isPositionPassable(newX + boundingWidth / 2, player.getY())) {
-                player.setLocationAbsolut(newX, player.getY());
+            if (!map.isPositionPassable(newX + boundingWidth / 2, player.getY())) {
+                return;
             }
         } else if (movement.x < 0) {
-            if (map.isPositionPassable(newX - boundingWidth / 2, player.getY())) {
-                player.setLocationAbsolut(newX, player.getY());
+            if (!map.isPositionPassable(newX - boundingWidth / 2, player.getY())) {
+                return;
             }
         }
 
         if (movement.y > 0) {
-            if (map.isPositionPassable(player.getX(), newY + boundingHeight / 2)) {
-                player.setLocationAbsolut(player.getX(), newY);
+            if (!map.isPositionPassable(player.getX(), newY + boundingHeight / 2)) {
+                return;
             }
         } else if (movement.y < 0) {
-            if (map.isPositionPassable(player.getX(), newY - boundingHeight / 2)) {
-                player.setLocationAbsolut(player.getX(), newY);
+            if (!map.isPositionPassable(player.getX(), newY - boundingHeight / 2)) {
+                return;
             }
         }
 
+        player.setLocationAbsolut(newX, newY);
         player.setDirection(currentDirection);
+
+        // change energy
+        player.changeEnergy(-Constants.MAX_ENERGY * 0.0005 * ((speed * delta) / Map.TILE_SIZE));
+        System.out.println("speed * delta = " + speed * delta);
     }
 
 

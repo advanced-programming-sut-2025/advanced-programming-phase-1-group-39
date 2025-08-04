@@ -162,7 +162,7 @@ public class FishingShop extends Shop {
 
     @Override
     public void showShopMenu(Stage stage, Skin skin) {
-        Window window = new Window("BlackSmith Shop", skin);
+        Window window = new Window("Fishing Shop", skin);
         window.setSize(1280, 720);
         window.setPosition(stage.getWidth()/2, stage.getHeight()/2, Align.center);
         window.setMovable(true);

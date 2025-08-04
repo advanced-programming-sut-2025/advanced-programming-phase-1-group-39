@@ -344,12 +344,17 @@ public class GameScreen implements Screen {
         cookingMenuTable.setFillParent(true);
         cookingMenuTable.setVisible(false);
         cookingMenuTable.setBackground(skin.getDrawable("window")); // Use window background from atlas
+        ScrollPane scrollPane = new ScrollPane(cookingMenuTable, skin);
+        scrollPane.setSize(1080, 900);
+        scrollPane.setPosition((uiStage.getWidth() - cookingMenuTable.getWidth())/2,
+                (uiStage.getHeight() - cookingMenuTable.getHeight())/2, Align.center);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         Label titleLabel = new Label("Cooking Menu", labelStyle);
         cookingMenuTable.add(titleLabel).pad(10).colspan(3).center();
         cookingMenuTable.row();
 
+        int perRow = 2;
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         for (FoodRecipe recipe : FoodRecipe.values()) {
             Image image = new Image(recipe.data.getTexture());
@@ -361,7 +366,6 @@ public class GameScreen implements Screen {
             cookingMenuTable.add(image).size(32, 32).pad(5);
             cookingMenuTable.add(nameLabel).left().pad(5);
             cookingMenuTable.add(cookButton).pad(5);
-            cookingMenuTable.row();
 
             cookButton.addListener(new ClickListener() {
                 @Override
@@ -369,6 +373,13 @@ public class GameScreen implements Screen {
                     controller.cook(recipe);
                 }
             });
+
+            if (perRow == 0) {
+                cookingMenuTable.row();
+                perRow = 3;
+            } else {
+                perRow--;
+            }
         }
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -379,7 +390,7 @@ public class GameScreen implements Screen {
         });
         cookingMenuTable.add(backButton).pad(5);
 
-        uiStage.addActor(cookingMenuTable);
+        uiStage.addActor(scrollPane);
 
     }
 

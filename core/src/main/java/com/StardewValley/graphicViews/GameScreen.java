@@ -135,7 +135,7 @@ public class GameScreen implements Screen {
 
         Table barTable = new Table();
         barTable.add(energyAmount).top().padTop(-10f).row();
-        barTable.add(energyBar).expand().fill().pad(80,8,20,0);
+        barTable.add(energyBar).expand().fill().pad(80, 8, 20, 0);
 //        barTable.add(energyBar).expand().fill().pad(10);
         energyStack.add(barTable);
 
@@ -151,7 +151,7 @@ public class GameScreen implements Screen {
     }
 
     public void showError(String message) {
-        if(message == null || message.isEmpty()) {
+        if (message == null || message.isEmpty()) {
             errorLabel.setVisible(false);
             return;
         }
@@ -372,23 +372,37 @@ public class GameScreen implements Screen {
 
         batch.setColor(currentPlayer.getColor());
 
-        Animation<TextureRegion> currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
+        String equippedTool = getEquippedToolKey(currentPlayer);
 
-        TextureRegion currentFrame;
-        if (currentPlayer.isMoving()) { // باید این فیلد/متد باشه!
-            currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+        TextureRegion currentFrame = null;
+        if (equippedTool == null) {
+            // عادی
+            Animation<TextureRegion> currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
+            if (currentPlayer.isMoving()) {
+                currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+            } else {
+                currentFrame = currentAnimation.getKeyFrame(0f);
+            }
         } else {
-            currentFrame = currentAnimation.getKeyFrame(0f);
+            // ابزار equip شده (مثلا داس)
+            String[] toolRegions = {
+                    "woman-" + equippedTool + "_down",
+                    "woman-" + equippedTool + "_right",
+                    "woman-" + equippedTool + "_up",
+                    "woman-" + equippedTool + "_left"
+            };
+            currentFrame = playerAtlas.findRegion(toolRegions[animIndex]);
+            if (currentFrame == null) {
+                System.out.println("[NULL tool region] " + toolRegions[animIndex]);
+            }
         }
 
         if (currentFrame == null) return;
 
         float drawX = currentPlayer.getX() - (Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W) / 2f;
         float drawY = currentPlayer.getY();
-
-        // سایز رو تو مرحله بعدی درست می‌کنیم ↓
-        batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_H);
-
+        float scale = 0.8f;
+        batch.draw(currentFrame, drawX, drawY, currentFrame.getRegionWidth() * scale, currentFrame.getRegionHeight() * scale);
         batch.setColor(Color.WHITE);
     }
 
@@ -409,7 +423,7 @@ public class GameScreen implements Screen {
         batch.draw(clock, drawX, drawY);
         Time time = App.getApp().getCurrentGame().getTime();
 
-        String date = (time.getDayOfWeek().toString().substring(0,3)) + ". " + time.getDay();
+        String date = (time.getDayOfWeek().toString().substring(0, 3)) + ". " + time.getDay();
         font.draw(batch, date, drawX + 150, drawY + 210);
         font.draw(batch, time.getHourText(), drawX + 150, drawY + 120);
         font.draw(batch, String.valueOf(400), drawX + 200, drawY + 40);
@@ -439,7 +453,7 @@ public class GameScreen implements Screen {
         Inventory inventory = player.getInventory();
         int numSlots = player.getMaxInventorySize();
 
-        for(int i = 0; i < numSlots; i++) {
+        for (int i = 0; i < numSlots; i++) {
             Stack slotStack = new Stack();
 
             // اسلات زمینه (پس‌زمینه)
@@ -447,7 +461,7 @@ public class GameScreen implements Screen {
             slotStack.add(slotBg);
 
             // اگر آیتم داشت، عکس آیتم و تعدادش
-            if(i < inventory.getInventoryItems().size() && inventory.getInventoryItems().get(i) != null) {
+            if (i < inventory.getInventoryItems().size() && inventory.getInventoryItems().get(i) != null) {
                 TextureRegionDrawable itemDrawable = new TextureRegionDrawable(inventory.getInventoryItems().get(i).getItem().getTexture());
                 Image itemImg = new Image(itemDrawable);
                 slotStack.add(itemImg);
@@ -458,7 +472,7 @@ public class GameScreen implements Screen {
                 slotStack.add(countLabel);
             }
 
-            if(i == player.getSelectedSlot()) {
+            if (i == player.getSelectedSlot()) {
                 Image highlight = new Image(new Texture("inventory/Mail3.jpg"));
                 slotStack.add(highlight);
 
@@ -481,6 +495,7 @@ public class GameScreen implements Screen {
         if (exitWindow != null) hideExitMenu();
         if (terminalWindow != null && terminalWindow.isVisible()) hideExitMenu();
     }
+
     // exit Menu
     public void toggleExitMenu() {
         if (exitWindow != null) {
@@ -657,6 +672,23 @@ public class GameScreen implements Screen {
         uiStage.addActor(blackScreen);
     }
 
+    // inventory :
+    private String getEquippedToolKey(Player player) {
+        Inventory inventory = player.getInventory();
+        int selectedSlot = player.getSelectedSlot();
+        ArrayList<ItemStack> items = inventory.getInventoryItems();
+        if (selectedSlot >= 0 && selectedSlot < items.size()) {
+            Item selectedItem = items.get(selectedSlot).getItem();
+            if (selectedItem != null) {
+                String name = selectedItem.getName().toLowerCase();
+                if (name.contains("scythe")) return "scythe";
+                if (name.equals("axe")) return "axe";
+                if (name.contains("water")) return "water";
+            }
+        }
+        return null;
+    }
+
     public Game getGame() {
         return game;
     }
@@ -718,7 +750,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int w, int h) {
-        uiStage.getViewport().update(w,h, true);
+        uiStage.getViewport().update(w, h, true);
 
         camera.viewportWidth = w;
         camera.viewportHeight = h;

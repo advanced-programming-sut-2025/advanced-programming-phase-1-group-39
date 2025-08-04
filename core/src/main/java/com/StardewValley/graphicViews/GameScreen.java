@@ -370,7 +370,8 @@ public class GameScreen implements Screen {
     }
 
     private void updateEnergyBar() {
-        float playerEnergy = (float) game.getPlayerInTurn().getEnergy();
+        Player player = game.getPlayerInTurn();
+        float playerEnergy = (float) player.getEnergy();
         energyBar.setValue(playerEnergy);
 
         if (playerEnergy > 170) energyBar.setStyle(GameAssetManager.greenBarStyle);
@@ -378,7 +379,11 @@ public class GameScreen implements Screen {
         else if (playerEnergy > 50) energyBar.setStyle(GameAssetManager.orangeBarStyle);
         else energyBar.setStyle(GameAssetManager.redBarStyle);
 
-        energyAmount.setText((int) playerEnergy + " / 200");
+        String energyAmount;
+        if (player.isEnergyUnlimited()) energyAmount = "infinite";
+        else energyAmount = (int) playerEnergy + " / 200";
+
+        this.energyAmount.setText(energyAmount);
     }
 
 

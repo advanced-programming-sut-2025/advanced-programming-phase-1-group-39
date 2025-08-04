@@ -21,6 +21,8 @@ public class GameInputAdapter extends InputAdapter {
         float speed = game.getGameSetting().getPlayerSpeed();
 
         Player player = game.getPlayerInTurn();
+        float initialX = player.getX(), initialY = player.getY();
+
 
         Direction currentDirection = Direction.NONE;
 
@@ -48,9 +50,6 @@ public class GameInputAdapter extends InputAdapter {
             return;
         }
 
-        float boundingWidth = Constants.PLAYER_SPRITE_TILE_W / 2f;
-        float boundingHeight = Constants.PLAYER_SPRITE_TILE_H / 2f;
-
         Map map = game.getMap();
 
         float newX = player.getX() + movement.x;
@@ -58,37 +57,23 @@ public class GameInputAdapter extends InputAdapter {
 
         // check farm borders
         Result result;
-        if (!(result = game.getMap().canWalkTo(Map.pixelToTileConverter(new Location(newX, newY)), player, game.getPlayers())).success()) {
+        if (!(result = game.getMap().canWalkTo(Map.pixelToTileConverter(new Location(newX, newY)), player, game.getPlayers()))
+                .success()) {
             screen.showError(result.message());
             return;
         }
 
-        if (movement.x > 0) {
-            if (!map.isPositionPassable(newX + boundingWidth / 2, player.getY())) {
-                return;
-            }
-        } else if (movement.x < 0) {
-            if (!map.isPositionPassable(newX - boundingWidth / 2, player.getY())) {
-                return;
-            }
+        if (map.isPositionPassable(newX, player.getY())) {
+            player.setLocationAbsolut(newX, player.getY());
         }
-
-        if (movement.y > 0) {
-            if (!map.isPositionPassable(player.getX(), newY + boundingHeight / 2)) {
-                return;
-            }
-        } else if (movement.y < 0) {
-            if (!map.isPositionPassable(player.getX(), newY - boundingHeight / 2)) {
-                return;
-            }
+        if (map.isPositionPassable(player.getX(), newY)) {
+            player.setLocationAbsolut(player.getX(), newY);
         }
-
-        player.setLocationAbsolut(newX, newY);
         player.setDirection(currentDirection);
-
         // change energy
-        player.changeEnergy(-Constants.MAX_ENERGY * 0.0005 * ((speed * delta) / Map.TILE_SIZE));
-        System.out.println("speed * delta = " + speed * delta);
+        if (player.getX() != initialX || player.getY() != initialY) {
+            player.changeEnergy(-Constants.MAX_ENERGY * 0.0005 * ((speed * delta) / Map.TILE_SIZE));
+        }
     }
 
 

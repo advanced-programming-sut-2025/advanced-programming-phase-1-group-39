@@ -195,6 +195,10 @@ public class Player {
         energyUnlimited = false;
     }
 
+    public boolean isEnergyUnlimited() {
+        return energyUnlimited;
+    }
+
     public boolean hasEnoughEnergy(double amount) {
         if (energyUnlimited) return true;
         return energy >= amount;

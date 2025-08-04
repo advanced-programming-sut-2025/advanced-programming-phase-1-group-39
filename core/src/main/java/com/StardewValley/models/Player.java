@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class Player {
     private int gameId;
 
-    private Location location = new Location(0,0);
+    private Location location = new Location(0, 0);
     private Location startOfFarm;
     private Location endOfFarm;
 
@@ -42,6 +42,21 @@ public class Player {
     private Skill skills = new Skill();
     private Inventory inventory;
 
+    // inventory :
+    private final Integer maxInventorySize = 10;
+    private int selectedSlot = -1;
+
+    public Integer getMaxInventorySize() {
+        return maxInventorySize;
+    }
+
+    public int getSelectedSlot() {
+        return selectedSlot;
+    }
+
+    public void setSelectedSlot(int selectedSlot) {
+        this.selectedSlot = selectedSlot;
+    }
 
     private ArrayList<CraftingRecipe> craftingRecipes = new ArrayList<>();
     private ArrayList<ArtisanMachineRecipe> artisanMachineRecipes = new ArrayList<>();
@@ -70,7 +85,7 @@ public class Player {
         ItemStack axe = new ItemStack(new Axe(), 1);
         ItemStack scythe = new ItemStack(new Scythe(), 1);
         ItemStack wateringCan = new ItemStack(new WateringCan(), 1);
-//        ItemStack trainingRod = new ItemStack(new FishingPole("Training Rod", FishingPoleType.TRAINING_ROD), 1);
+        // ItemStack trainingRod = new ItemStack(new FishingPole("Training Rod", FishingPoleType.TRAINING_ROD), 1);
 
         this.inventory = new Inventory(
                 List.of(hoe, pickaxe, axe, scythe, wateringCan)
@@ -134,7 +149,7 @@ public class Player {
     }
 
     public double getEnergy() {
-        return Math.floor(energy*100)/100;
+        return Math.floor(energy * 100) / 100;
     }
 
     public String getColoredEnergy() {
@@ -183,6 +198,7 @@ public class Player {
     public void setCheatedEnergy() {
         energyCheated = true;
     }
+
     public void resetCheatedEnergy() {
         energyCheated = false;
     }
@@ -190,6 +206,7 @@ public class Player {
     public void setEnergyUnlimited() {
         energyUnlimited = true;
     }
+
     public void resetEnergyUnlimited() {
         energyUnlimited = false;
     }
@@ -255,6 +272,7 @@ public class Player {
         money += nightRevenue;
         nightRevenue = 0;
     }
+
     public void addToRevenue(int amount) {
         nightRevenue += amount;
     }
@@ -263,6 +281,7 @@ public class Player {
         money += amount;
         if (money < 0) money = 0;
     }
+
     public boolean hasEnoughMoney(int amount) {
         if (spouseName != null) {
             return App.getApp().getCurrentGame().hasEnoughMoney(this, amount);
@@ -282,7 +301,7 @@ public class Player {
         inventory.pickItem("Wood", 500);
         changeMoney(1000);
         for (Building building : playerFarmBuildings) {
-            if (building.getName().equals("greenhouse")) ((GreenHouse)building).build();
+            if (building.getName().equals("greenhouse")) ((GreenHouse) building).build();
         }
     }
 
@@ -298,6 +317,7 @@ public class Player {
     public void addToBuildings(Building building) {
         playerFarmBuildings.add(building);
     }
+
     public Building getBuildingByName(String name) {
         for (Building building : playerFarmBuildings) {
             if (building.getName().equalsIgnoreCase(name)) return building;
@@ -309,9 +329,11 @@ public class Player {
     public void learnCraftingRecipe(CraftingRecipe recipe) {
         craftingRecipes.add(recipe);
     }
+
     public boolean hasLearnedCraftingRecipe(CraftingRecipe recipe) {
         return craftingRecipes.contains(recipe);
     }
+
     public String showCraftingRecipes() {
         StringBuilder sb = new StringBuilder();
         for (CraftingRecipe recipe : craftingRecipes) {
@@ -324,9 +346,11 @@ public class Player {
         if (hasLearnedFoodRecipe(recipe)) return;
         foodRecipes.add(recipe);
     }
+
     public boolean hasLearnedFoodRecipe(FoodRecipe recipe) {
         return foodRecipes.contains(recipe);
     }
+
     public String showFoodRecipes() {
         StringBuilder sb = new StringBuilder();
         for (FoodRecipe recipe : foodRecipes) {
@@ -349,13 +373,12 @@ public class Player {
     }
 
 
-
     public void addAnimal(Animal animal) {
         animals.put(animal.getName(), animal);
     }
 
     public int sellAnimal(Animal animal) {
-        int money = (int) (animal.getPrice() * (((double) animal.getFriendship() /1000) + 0.3));
+        int money = (int) (animal.getPrice() * (((double) animal.getFriendship() / 1000) + 0.3));
         changeMoney(money);
         animals.remove(animal.getName());
 
@@ -374,9 +397,11 @@ public class Player {
     public ArrayList<Animal> getAnimals() {
         return new ArrayList<>(animals.values());
     }
+
     public Animal getAnimal(String name) {
         return animals.get(name);
     }
+
     public Animal getAnimalByLocation(Location location) {
         for (Animal animal : animals.values()) {
             if (animal.getLocation().equals(location)) return animal;
@@ -451,13 +476,13 @@ public class Player {
     public void learnNewRecipes() {
         // Foraging level
         switch (skills.getForagingLevel()) {
-            case 0 :
+            case 0:
                 learnRecipes(
                         List.of(FoodRecipe.FRIED_EGG, FoodRecipe.BAKED_FISH, FoodRecipe.SALAD),
                         null
                 );
                 break;
-            case 1 :
+            case 1:
                 learnCraftingRecipe(CraftingRecipe.CHARCOAL_KILN);
                 break;
             case 2:
@@ -471,21 +496,21 @@ public class Player {
         }
         // Mining level
         switch (skills.getMiningLevel()) {
-            case 1 :
+            case 1:
                 learnFoodRecipe(FoodRecipe.MINERS_TREAT);
                 learnCraftingRecipe(CraftingRecipe.CHERRY_BOMB);
                 break;
-            case 2 :
+            case 2:
                 learnCraftingRecipe(CraftingRecipe.BOMB);
                 break;
-            case 3 :
+            case 3:
                 learnCraftingRecipe(CraftingRecipe.MEGA_BOMB);
                 break;
         }
 
         // Farming level
         switch (skills.getFarmingLevel()) {
-            case 1 :
+            case 1:
                 learnRecipes(
                         List.of(FoodRecipe.FARMERS_LUNCH), List.of(
                                 CraftingRecipe.SPRINKLER, CraftingRecipe.BEE_HOUSE
@@ -494,13 +519,13 @@ public class Player {
                 break;
             case 2:
                 learnRecipes(
-                        null, List.of (CraftingRecipe.QUALITY_SPRINKLER, CraftingRecipe.DELUXE_SCARECROW,
+                        null, List.of(CraftingRecipe.QUALITY_SPRINKLER, CraftingRecipe.DELUXE_SCARECROW,
                                 CraftingRecipe.CHEESE_PRESS, CraftingRecipe.PRESERVES_JAR)
                 );
                 break;
-            case 3 :
+            case 3:
                 learnRecipes(
-                        null, List.of (CraftingRecipe.IRIDIUM_SPRINKLER, CraftingRecipe.KEG ,
+                        null, List.of(CraftingRecipe.IRIDIUM_SPRINKLER, CraftingRecipe.KEG,
                                 CraftingRecipe.LOOM, CraftingRecipe.OIL_MAKER)
                 );
                 break;
@@ -508,10 +533,10 @@ public class Player {
 
         // Fishing
         switch (skills.getFishingLevel()) {
-            case 2 :
+            case 2:
                 learnFoodRecipe(FoodRecipe.DISH_O_THE_SEA);
                 break;
-            case 3 :
+            case 3:
                 learnFoodRecipe(FoodRecipe.SEAFOAM_PUDDING);
         }
     }

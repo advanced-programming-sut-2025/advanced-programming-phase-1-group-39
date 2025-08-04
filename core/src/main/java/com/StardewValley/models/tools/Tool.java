@@ -18,9 +18,11 @@ public abstract class Tool extends Item {
     }
 
     public abstract Result useTool(Tile tile, Player player, Skill skill);
+
     public ToolType getType() {
         return type;
     }
+
     public void upgradeType() {
         this.type = ToolType.getNext(type);
     }
@@ -37,7 +39,7 @@ public abstract class Tool extends Item {
     public abstract int getUsingEnergy(Skill skill, Weather weather);
 
     public TextureRegion getTexture() {
-        return new TextureRegion(new Texture(Gdx.files.internal("tools/" + type.getPrefixForTexture() + getName() + ".png")));
+        return new TextureRegion(new Texture(Gdx.files.internal("tools/" + getName() + "/" + type.getPrefixForTexture() + getName() + ".png")));
     }
 
     public String getName() {

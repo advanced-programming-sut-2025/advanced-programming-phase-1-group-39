@@ -1,8 +1,10 @@
 package com.StardewValley.graphicViews;
 
+import com.StardewValley.Main;
 import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.controllers.GameController;
 import com.StardewValley.models.*;
+import com.StardewValley.models.inventory.Inventory;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.badlogic.gdx.Gdx;
@@ -28,13 +30,18 @@ public class GameScreen implements Screen {
     private TextureAtlas playerAtlas;
     private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
 
-    private enum Direction { UP, DOWN, LEFT, RIGHT, NONE }
+    private enum Direction {UP, DOWN, LEFT, RIGHT, NONE}
 
     private Direction currentDirection = Direction.NONE;
     private float stateTime = 0f;
 
     private Texture clock;
     private BitmapFont font;
+    private BitmapFont smallFont;
+
+    private GlyphLayout layout = new GlyphLayout();
+    private TextureRegion inventorySlot;
+    private TextureRegion inventoryHighlightSlot;
 
     private final int MAX_CACHE_SIZE = 3000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
@@ -49,7 +56,7 @@ public class GameScreen implements Screen {
     public GameScreen() {
         this.controller = AppControllers.gameController;
         this.game = App.getApp().getCurrentGame();
-        gameMenuInputAdapter = new GameMenuInputAdapter(controller);
+        gameMenuInputAdapter = new GameMenuInputAdapter(controller, game);
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
         batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
@@ -74,6 +81,10 @@ public class GameScreen implements Screen {
             }
             playerAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
         }
+
+        inventorySlot = new TextureRegion(new Texture("inventory/Mail.2jpg.jpg"));
+        inventoryHighlightSlot = new TextureRegion(new Texture("inventory/Mail3.jpg"));
+
     }
 
     public void renderTiles() {
@@ -178,12 +189,59 @@ public class GameScreen implements Screen {
         font.draw(batch, String.valueOf(400), drawX + 200, drawY + 40);
     }
 
+    private void renderInventory() {
+        Player player = game.getPlayerInTurn();
+        Inventory inventory = player.getInventory();
+        int selectedSlot = player.getSelectedSlot(); // Assuming you have this method
+
+        int screenWidth = Gdx.graphics.getWidth();
+        int slotSize = Map.TILE_SIZE / 2;
+        int numSlots = player.getMaxInventorySize();
+        int startX = (screenWidth - numSlots * slotSize) / 2 ;
+        int y = Map.TILE_SIZE / 2;
+
+        for (int i = 0; i < numSlots; i++) {
+            int x = startX + i * slotSize;
+
+            batch.draw(inventorySlot, x, y, slotSize, slotSize);
+
+            String slotNum = String.valueOf(i + 1);
+            smallFont.draw(batch, slotNum, x + 2, y + slotSize - 2);
+        }
+
+        // Highlight selected slot
+        if (selectedSlot >= 0 && selectedSlot < numSlots) {
+            int highlightX = startX + selectedSlot * slotSize;
+            batch.draw(inventoryHighlightSlot, highlightX, y, slotSize, slotSize);
+        }
+
+        for (int i = 0; i < numSlots; i++) {
+            if (i < inventory.getInventoryItems().size()) {
+                if (inventory.getInventoryItems().get(i) != null) {
+                    int quantity = inventory.getInventoryItems().get(i).getAmount();
+
+                    TextureRegion itemTex = inventory.getInventoryItems().get(i).getItem().getTexture();
+                    if (itemTex != null) {
+                        int x = startX + i * slotSize;
+                        batch.draw(itemTex, x, y, slotSize, slotSize);
+
+                        // Draw item quantity at bottom-right corner
+                        String count = String.valueOf(quantity);
+                        layout.setText(smallFont, count);
+                        smallFont.draw(batch, count, x + slotSize - layout.width - 2, y + layout.height + 2);
+                    }
+                }
+            }
+        }
+    }
 
 
     @Override
     public void show() {
         font = new BitmapFont();
         font.getData().setScale(2f);
+        smallFont = new BitmapFont();
+        smallFont.getData().setScale(1f);
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(game.getPlayerInTurn().getLocation().x() * Map.TILE_SIZE, game.getPlayerInTurn().getLocation().y() * Map.TILE_SIZE, 0);
         loadTextures();
@@ -202,6 +260,7 @@ public class GameScreen implements Screen {
         renderTiles();
         renderPlayer();
         renderClockUI();
+        renderInventory();
         batch.end();
     }
 

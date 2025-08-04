@@ -82,7 +82,7 @@ public class GameInputAdapter extends InputAdapter {
         if (keycode == Input.Keys.ESCAPE) {
             screen.toggleExitMenu();
         } else if (keycode == Input.Keys.ENTER) {
-            screen.blackBackgroundAnimation(() -> controller.changeTurn());
+            screen.blackBackgroundAnimation(() -> controller.changeTurn(), 0.2f);
         } else if (keycode == Input.Keys.BACKSLASH || keycode == Input.Keys.SLASH) {
             screen.toggleTerminalBox();
         } else if (keycode == Input.Buttons.LEFT) {

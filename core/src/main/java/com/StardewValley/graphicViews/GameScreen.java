@@ -401,6 +401,20 @@ public class GameScreen implements Screen {
         else energyAmount = (int) playerEnergy + " / 200";
 
         this.energyAmount.setText(energyAmount);
+
+        if (player.getTurnEnergy() < 10) {
+            showError("Your turn energy : " + (int) player.getTurnEnergy() + "!!!");
+        }
+
+        if (player.getTurnEnergy() <= 0) {
+            showError("You are not conscious now... going to sleep");
+            delayForThenDo(1f, () -> blackBackgroundAnimation(() -> {
+                    controller.changeTurn();
+                }, 0.3f)
+            );
+
+
+        }
     }
 
     private void renderInventory() {
@@ -483,7 +497,7 @@ public class GameScreen implements Screen {
         nextTurnButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                blackBackgroundAnimation(() -> controller.changeTurn());
+                blackBackgroundAnimation(() -> controller.changeTurn(), 0.2f);
                 controller.handleButtonDisable(game, exitGameButton);
             }
         });
@@ -608,7 +622,7 @@ public class GameScreen implements Screen {
     }
 
     // Other Game Animations
-    public void blackBackgroundAnimation(Runnable onCompleteRunnable) {
+    public void blackBackgroundAnimation(Runnable onCompleteRunnable, float duration) {
         Image blackScreen = new Image(GameAssetManager.blackBox);
         blackScreen.setSize(uiStage.getWidth(), uiStage.getHeight());
         blackScreen.setPosition(0, 0);
@@ -617,13 +631,15 @@ public class GameScreen implements Screen {
         blackScreen.setScaleY(0f);
 
         blackScreen.addAction(Actions.sequence(
-                Actions.scaleTo(1, 1, 0.3f),
+                Actions.delay(0.1f),
+
+                Actions.scaleTo(1, 1, duration),
 
                 Actions.delay(0.2f),
 
                 Actions.run(onCompleteRunnable),
 
-                Actions.scaleTo(1, 0, 0.3f),
+                Actions.scaleTo(1, 0, duration),
 
                 Actions.removeActor()
         ));
@@ -631,6 +647,12 @@ public class GameScreen implements Screen {
         uiStage.addActor(blackScreen);
     }
 
+    public void delayForThenDo(float duration, Runnable runnable) {
+        uiStage.addAction(Actions.sequence(
+                Actions.delay(duration),
+                Actions.run(runnable)
+        ));
+    }
 
     public void loadTodayWeatherAnimation(float delta) {
         WeatherStatus weather = game.getTodayWeather().getStatus();
@@ -654,6 +676,7 @@ public class GameScreen implements Screen {
         effectsStage.act(delta);
         effectsStage.draw();
     }
+
 
     public Game getGame() {
         return game;

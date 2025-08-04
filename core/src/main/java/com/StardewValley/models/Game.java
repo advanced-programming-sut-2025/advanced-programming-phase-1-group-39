@@ -475,8 +475,8 @@ public class Game {
     public int getMoneyOfPlayer(Player player) {
         if (!players.contains(player)) return 0;
 
-        if (player.getSpouseName() != null) {
-            Player spouse = getPlayerByUsername(player.getSpouseName());
+        if (player.getSpouseUsername() != null) {
+            Player spouse = getPlayerByUsername(player.getSpouseUsername());
             return player.getMoney() + spouse.getMoney();
         }
         return player.getMoney();
@@ -484,8 +484,8 @@ public class Game {
     public boolean hasEnoughMoney(Player player, int amount) {
         if (!players.contains(player)) return false;
 
-        if (player.getSpouseName() != null) {
-            Player spouse = getPlayerByUsername(player.getSpouseName());
+        if (player.getSpouseUsername() != null) {
+            Player spouse = getPlayerByUsername(player.getSpouseUsername());
             return (player.getMoney() + spouse.getMoney()) >= amount;
         }
         return player.getMoney() >= amount;
@@ -605,7 +605,6 @@ public class Game {
     }
 
     // interactions
-
     private void initializeFriendships() {
         friendships = new ArrayList<>();
         friendships.add(new Friendship(players.get(0).getUsername(), players.get(1).getUsername()));

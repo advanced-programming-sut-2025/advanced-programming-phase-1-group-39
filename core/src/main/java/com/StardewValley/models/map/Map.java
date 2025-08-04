@@ -532,9 +532,18 @@ public class Map {
 
     // walking
     public Result canWalkTo(Location end, Player player, ArrayList<Player> gamePlayers) {
-        if (!player.isInPlayerFarm(end) && !isInNPCMap(end) && !isInSpouseFarm(end, player, gamePlayers))
-            return new Result(false, "You aren't allowed to go to this location!");
-        else return new Result(true, "");
+        for (Player gamePlayer : gamePlayers) {
+            if (player == gamePlayer) continue;
+            String spouseName = player.getSpouseUsername();
+            if (spouseName != null && spouseName.equals(gamePlayer.getUsername())) continue;
+
+            if (gamePlayer.isInPlayerFarm(end)) {
+                boolean isMale = App.getApp().getUserByUsername(gamePlayer.getUsername()).getIsMale();
+                String pronoun = isMale ? "him" : "her";
+                return new Result(false, "You aren't allowed to go to " + gamePlayer.getNickname() + " farm!\nYou are not friend with " + pronoun);
+            }
+        }
+        return new Result(true, "");
     }
 
     public ArrayList<MapMinPathFinder.Node> findWalkingPath(Location start, Location end, Player player) {
@@ -546,7 +555,7 @@ public class Map {
     public boolean isInSpouseFarm(Location location, Player player, ArrayList<Player> gamePlayers) {
         Player spouse = null;
         for (Player p : gamePlayers) {
-            if (p.getUsername().equals(player.getSpouseName())) spouse = p;
+            if (p.getUsername().equals(player.getSpouseUsername())) spouse = p;
         }
         if (spouse != null)
             return spouse.isInPlayerFarm(location);

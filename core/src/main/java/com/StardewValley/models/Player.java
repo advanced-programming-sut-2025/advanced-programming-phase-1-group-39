@@ -446,9 +446,12 @@ public class Player {
     }
 
     // marriage
-
-    public String getSpouseName() {
+    public String getSpouseUsername() {
         return spouseName;
+    }
+
+    public void setSpouseName(String spouseName) {
+        this.spouseName = spouseName;
     }
 
     public AnimalBuilding getAnimalBuilding(LivingPlace type) {

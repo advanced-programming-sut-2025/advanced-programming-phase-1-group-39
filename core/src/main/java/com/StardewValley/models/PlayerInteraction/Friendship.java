@@ -1,5 +1,7 @@
 package com.StardewValley.models.PlayerInteraction;
 
+import com.StardewValley.models.Player;
+
 import java.util.ArrayList;
 
 public class Friendship {

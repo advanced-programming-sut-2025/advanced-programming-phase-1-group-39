@@ -924,16 +924,6 @@ public class GameController {
         return new Result(true, "You successfully sold your product " + productName + "!\nPrice: " + price);
     }
 
-    public Result showFriendShip() {return null;}
-    public Result talk(Matcher matcher) {return null;}
-    public Result showTalkHistory(Matcher matcher) {return null;}
-    public Result byGiftForNPC(Matcher matcher) {return null;}
-    public Result ShowReceiveGiftList() {return null;}
-    public Result rateToGift(Matcher matcher) {return null;}
-    public Result showGiftHistory(Matcher matcher) {return null;}
-    public Result hug(Matcher matcher) {return null;}
-    public Result buyFlower(Matcher matcher) {return null;}
-
     public Result askMarriage(Matcher matcher) {
         String username = matcher.group("username");
         String ring = matcher.group("ring");
@@ -988,6 +978,9 @@ public class GameController {
         friendship.notAskMarriage();
         if (answer.equals("accept")) {
             friendship.marriage();
+            player.setSpouseName(user2.getUserName());
+            player2.setSpouseName(user1.getUserName());
+
             ItemStack ring = player2.getInventory().pickItem("Wedding Ring", 1);
             player.getInventory().addItem(ring.getItem(), ring.getAmount());
             return new Result(true, "Congralluation!\n"

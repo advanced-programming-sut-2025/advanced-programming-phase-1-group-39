@@ -90,14 +90,25 @@ public class GameScreen implements Screen {
 
         uiStage = new Stage(new FitViewport(1920, 1080));
 
-        Table rootTable = new Table();
-        rootTable.setFillParent(true);
-        uiStage.addActor(rootTable);
+        // all tables are adding to this stack
+        Stack rootStack = new Stack();
+        rootStack.setFillParent(true);
+        uiStage.addActor(rootStack);
+
+        // for error message
+        Table messageTable = new Table();
+        messageTable.setFillParent(true);
+        rootStack.add(messageTable);
 
         errorLabel = new Label("", GameAssetManager.messageBoxStyle);
         errorLabel.setVisible(false);
         errorLabel.setAlignment(Align.center);
-        rootTable.add(errorLabel).bottom().padBottom(50).expandY();
+        messageTable.add(errorLabel).bottom().padBottom(50).expandY(); // expandY is needed to effect by the bottom()
+
+        // for hud table
+        Table hudTable = new Table();
+        hudTable.setFillParent(true);
+        rootStack.add(hudTable);
 
         energyBar = new ProgressBar(0, (float) Constants.MAX_ENERGY, 1, true, GameAssetManager.energyBarStyle);
         energyBar.setAnimateDuration(0.1f);
@@ -108,9 +119,7 @@ public class GameScreen implements Screen {
         Table barTable = new Table();
         barTable.add(energyBar).expand().fill().pad(65,12,15,7);
         energyStack.add(barTable);
-
-        energyStack.setScale(2f);
-        rootTable.add(energyStack).expandX().bottom().right().pad(20f);
+        hudTable.add(energyStack).expand().bottom().right().pad(20f);
     }
 
     public void showError(String message) {
@@ -539,6 +548,9 @@ public class GameScreen implements Screen {
 
         loadTextures();
         energyBar.setValue((float) game.getPlayerInTurn().getEnergy());
+
+        ///  test
+        showError("Welcome " + game.getPlayerInTurn().getNickname() + " !");
     }
 
     @Override

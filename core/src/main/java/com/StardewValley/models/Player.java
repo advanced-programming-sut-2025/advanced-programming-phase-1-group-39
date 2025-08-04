@@ -71,6 +71,11 @@ public class Player {
     private transient Color color;
 
 
+    // Inventory
+    private final Integer maxInventorySize = 10;
+    private int selectedSlot = -1;
+
+
     public Player(String username, String nickname, int gameId) {
         ItemStack hoe = new ItemStack(new Hoe(), 1);
         ItemStack pickaxe = new ItemStack(new Pickaxe(), 1);
@@ -91,6 +96,7 @@ public class Player {
 
     public Player() {
     }
+
 
     public boolean isConscious() {
         return energy > 0;
@@ -597,5 +603,18 @@ public class Player {
 
     public Color getColor() {
         return color;
+    }
+
+    // Inventory
+    public Integer getMaxInventorySize() {
+        return maxInventorySize;
+    }
+
+    public int getSelectedSlot() {
+        return selectedSlot;
+    }
+
+    public void setSelectedSlot(int selectedSlot) {
+        this.selectedSlot = selectedSlot;
     }
 }

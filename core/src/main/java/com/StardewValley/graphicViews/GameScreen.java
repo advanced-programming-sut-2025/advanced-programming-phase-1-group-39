@@ -4,6 +4,7 @@ import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.cropsAndFarming.Plant;
 import com.StardewValley.models.cropsAndFarming.Tree;
+import com.StardewValley.models.inventory.Inventory;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.services.AppDataManager;
@@ -57,6 +58,12 @@ public class GameScreen implements Screen {
     // UI
     private Texture clock;
     private BitmapFont font;
+    private BitmapFont smallFont;
+
+    private GlyphLayout layout = new GlyphLayout();
+    private TextureRegion inventorySlot;
+    private TextureRegion inventoryHighlightSlot;
+
 
     private ProgressBar energyBar;
     private Image energyBox;
@@ -168,6 +175,9 @@ public class GameScreen implements Screen {
             loadPlayerAnimations(player);
             player.setColor(playerColors[i++]);
         }
+
+        inventorySlot = new TextureRegion(new Texture("inventory/Mail.2jpg.jpg"));
+        inventoryHighlightSlot = new TextureRegion(new Texture("inventory/Mail3.jpg"));
     }
 
     private void loadPlayerAnimations(Player player) {
@@ -386,6 +396,52 @@ public class GameScreen implements Screen {
         this.energyAmount.setText(energyAmount);
     }
 
+    private void renderInventory() {
+        Player player = game.getPlayerInTurn();
+        Inventory inventory = player.getInventory();
+        int selectedSlot = player.getSelectedSlot(); // Assuming you have this method
+
+        int screenWidth = Gdx.graphics.getWidth();
+        int slotSize = Map.TILE_SIZE / 2;
+        int numSlots = player.getMaxInventorySize();
+        int startX = (screenWidth - numSlots * slotSize) / 2 ;
+        int y = Map.TILE_SIZE / 2;
+
+        for (int i = 0; i < numSlots; i++) {
+            int x = startX + i * slotSize;
+
+            batch.draw(inventorySlot, x, y, slotSize, slotSize);
+
+            String slotNum = String.valueOf(i + 1);
+            smallFont.draw(batch, slotNum, x + 2, y + slotSize - 2);
+        }
+
+        // Highlight selected slot
+        if (selectedSlot >= 0 && selectedSlot < numSlots) {
+            int highlightX = startX + selectedSlot * slotSize;
+            batch.draw(inventoryHighlightSlot, highlightX, y, slotSize, slotSize);
+        }
+
+        for (int i = 0; i < numSlots; i++) {
+            if (i < inventory.getInventoryItems().size()) {
+                if (inventory.getInventoryItems().get(i) != null) {
+                    int quantity = inventory.getInventoryItems().get(i).getAmount();
+
+                    TextureRegion itemTex = inventory.getInventoryItems().get(i).getItem().getTexture();
+                    if (itemTex != null) {
+                        int x = startX + i * slotSize;
+                        batch.draw(itemTex, x, y, slotSize, slotSize);
+
+                        // Draw item quantity at bottom-right corner
+                        String count = String.valueOf(quantity);
+                        layout.setText(smallFont, count);
+                        smallFont.draw(batch, count, x + slotSize - layout.width - 2, y + layout.height + 2);
+                    }
+                }
+            }
+        }
+    }
+
 
     // WINDOWS
     public void closeAllUiMenus() {
@@ -568,14 +624,21 @@ public class GameScreen implements Screen {
         uiStage.addActor(blackScreen);
     }
 
+    public Game getGame() {
+        return game;
+    }
+
     @Override
     public void show() {
         App.getApp().getMusic().pause();
 
         font = new BitmapFont();
         font.getData().setScale(2f);
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        
+        smallFont = new BitmapFont();
+        smallFont.getData().setScale(1f);
 
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         loadTextures();
         energyBar.setValue((float) game.getPlayerInTurn().getEnergy());
 
@@ -602,6 +665,7 @@ public class GameScreen implements Screen {
 
             // TODO : (Better) move clock render to uiStage
             renderClockUI();
+            renderInventory();
             batch.end();
 
             uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));

@@ -85,9 +85,20 @@ public class GameInputAdapter extends InputAdapter {
             screen.blackBackgroundAnimation(() -> controller.changeTurn());
         } else if (keycode == Input.Keys.BACKSLASH || keycode == Input.Keys.SLASH) {
             screen.toggleTerminalBox();
+        } else if (keycode == Input.Buttons.LEFT) {
+
         }
         return true;
     }
 
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        Game game = screen.getGame();
 
+        int current = game.getPlayerInTurn().getSelectedSlot();
+        int size = game.getPlayerInTurn().getMaxInventorySize();
+        int next = (current + (amountY > 0 ? 1 : -1) + size) % size;
+        game.getPlayerInTurn().setSelectedSlot(next);
+        return true;
+    }
 }

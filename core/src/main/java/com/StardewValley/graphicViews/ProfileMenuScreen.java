@@ -9,6 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -29,6 +31,7 @@ public class ProfileMenuScreen implements Screen {
     private Label maxCoin;
     private Label numberOfGamesPlayed;
     private Label genderLabel;
+    private Label emailLabel;
 
     private Label changeUsernameLabel;
     private TextField changeUsernameField;
@@ -39,6 +42,10 @@ public class ProfileMenuScreen implements Screen {
     private TextField changeNicknameField;
     private Label changeNicknameErrorLabel;
     private TextButton changeNicknameButton;
+
+    private Label changeAvatarLabel;
+    private SelectBox<String> changeAvatarsBox;
+    private Image avatarTexture;
 
     private Label changePasswordLabel;
     private TextField changePasswordField;
@@ -57,19 +64,19 @@ public class ProfileMenuScreen implements Screen {
     private final ProfileGuiController controller;
 
     public ProfileMenuScreen() {
-        User user = App.getApp().getLoggedInUser();
         this.controller = AppGuiControllers.profileGuiController;
         this.skin = GameAssetManager.skin;
         this.background = new Image(GameAssetManager.MenuTexture2);
         this.logo = new Image(GameAssetManager.logoTexture);
         this.menuTitle = new Label("Profile Menu", skin);
-        this.username = new Label("Username : " + user.getUserName(), skin);
-        this.nickname = new Label("Nickname : " + user.getNickname(), skin);
-        this.maxCoin = new Label("Most Coin Earned : " + user.getHighestMoneyEarnedInASingleGame(), skin);
-        this.numberOfGamesPlayed = new Label("Number of Games Played : " + user.getNumberOfGamesPlayed(), skin);
-        if (user.getIsMale()) {
+        this.username = new Label("Username : " + App.getApp().getLoggedInUser().getUserName(), skin);
+        this.nickname = new Label("Nickname : " + App.getApp().getLoggedInUser().getNickname(), skin);
+        this.maxCoin = new Label("Most Coin Earned : " + App.getApp().getLoggedInUser().getHighestMoneyEarnedInASingleGame(), skin);
+        this.numberOfGamesPlayed = new Label("Number of Games Played : " + App.getApp().getLoggedInUser().getNumberOfGamesPlayed(), skin);
+        if (App.getApp().getLoggedInUser().getIsMale()) {
             this.genderLabel = new Label("Gender : Male", skin);
         } else { this.genderLabel = new Label("Gender : Female", skin); }
+        this.emailLabel = new Label("Email : " + App.getApp().getLoggedInUser().getEmail(), skin);
         this.changeUsernameLabel = new Label("Change Username :", skin);
         this.changeUsernameField = new TextField("", skin);
         this.changeUsernameField.setMessageText("Enter your new Username");
@@ -90,6 +97,10 @@ public class ProfileMenuScreen implements Screen {
         this.changeEmailField.setMessageText("Enter your new Email");
         this.changeEmailErrorLabel = new Label("", skin);
         this.changeEmailButton = new TextButton("Change Email", skin);
+        this.changeAvatarLabel = new Label("Change Avatar :", skin);
+        this.changeAvatarsBox = new SelectBox<>(skin);
+        this.changeAvatarsBox.setItems(new String[]{"Alex", "Sam", "Leah", "Penny"});
+
         this.backButton = new TextButton("Back", skin);
         this.music = GameAssetManager.music1;
         AppGuiControllers.profileGuiController.setView(this);
@@ -114,17 +125,18 @@ public class ProfileMenuScreen implements Screen {
         stage.addActor(logo);
 
         table.setFillParent(true);
-        table.top().padTop(225);
+        table.top().padTop(180);
 
-        menuTitle.setFontScale(1.5f);
+        menuTitle.setFontScale(2f);
         menuTitle.setColor(Color.valueOf("ffd60a"));
-        table.add(menuTitle).colspan(2).center().padBottom(50);
+        table.add(menuTitle).colspan(2).center().padBottom(10);
         table.row();
 
         changeUsernameLabel.setColor(Color.valueOf("ffee99"));
         changePasswordLabel.setColor(Color.valueOf("ffee99"));
         changeNicknameLabel.setColor(Color.valueOf("ffee99"));
         changeEmailLabel.setColor(Color.valueOf("ffee99"));
+        changeAvatarLabel.setColor(Color.valueOf("ffee99"));
 
         changeUsernameErrorLabel.setColor(Color.valueOf("d00000"));
         changeNicknameErrorLabel.setColor(Color.valueOf("d00000"));
@@ -147,12 +159,27 @@ public class ProfileMenuScreen implements Screen {
         maxCoin.setColor(Color.valueOf("ffa200"));
         numberOfGamesPlayed.setFontScale(1.5f);
         numberOfGamesPlayed.setColor(Color.valueOf("ffaa00"));
+        emailLabel.setFontScale(1.5f);
+        emailLabel.setColor(Color.valueOf("ffb700"));
 
-        table.add(username).center().colspan(2).padBottom(10).row();
-        table.add(nickname).center().colspan(2).padBottom(10).row();
-        table.add(genderLabel).center().colspan(2).padBottom(10).row();
-        table.add(maxCoin).center().colspan(2).padBottom(10).row();
-        table.add(numberOfGamesPlayed).center().colspan(2).padBottom(50).row();
+        Table infoRow1 = new Table();
+        infoRow1.add(username).left().padRight(100);  // ستون اول
+        infoRow1.add(nickname).left();               // ستون دوم
+
+        Table infoRow2 = new Table();
+        infoRow2.add(genderLabel).left().padRight(100);
+        infoRow2.add(maxCoin).left();
+
+        Table infoRow3 = new Table();
+        infoRow3.add(numberOfGamesPlayed).left().colspan(2); // این یکی تنها می‌مونه
+
+        // اضافه کردن به جدول اصلی
+        table.add(infoRow1).padBottom(15).row();
+        table.add(infoRow2).padBottom(15).padLeft(60).row();
+        table.add(infoRow3).padBottom(15).row();
+
+        table.add(emailLabel).padBottom(15).row();
+
 
         // ===================== Row 1: Change Username + Password =====================
         Table row1 = new Table();
@@ -196,9 +223,25 @@ public class ProfileMenuScreen implements Screen {
         row2.add(emailCol);
         table.add(row2).padBottom(30).row();
 
+        // === change Avatar ===
+        Image avatarFrame = new Image(GameAssetManager.avatarFrame);
+        avatarFrame.setSize(150, 150);
+        avatarTexture = new Image(new Texture(App.getApp().getLoggedInUser().getAvatar()));
+        avatarTexture.setPosition(130, 130);
+
+        changeAvatarLabel.setPosition(1530, 900);
+        changeAvatarsBox.setPosition(1480, 820);
+        avatarFrame.setPosition(1560, 650);
+        avatarTexture.setPosition(1570, 660);
+        changeAvatarsBox.setWidth(300);
+
+        stage.addActor(avatarFrame);
+        stage.addActor(avatarTexture);
+        stage.addActor(changeAvatarsBox);
+        stage.addActor(changeAvatarLabel);
         // ==== Back Button ====
         backButton.setColor(Color.valueOf("E9D8A6"));
-        backButton.setPosition(20, 1300);
+        backButton.setPosition(20, 950);
         stage.addActor(backButton);
 
         stage.addActor(table);
@@ -323,4 +366,8 @@ public class ProfileMenuScreen implements Screen {
     public TextButton getBackButton() {
         return backButton;
     }
+
+    public Image getAvatarTexture() { return avatarTexture; }
+
+    public SelectBox<String> getChangeAvatarsBox() { return changeAvatarsBox; }
 }

@@ -47,7 +47,7 @@ public class LoginMenuScreen implements Screen {
         this.skin = GameAssetManager.skin;
         this.background = new Image(GameAssetManager.MenuTexture);
         this.logo = new Image(GameAssetManager.logoTexture);
-        this.menuTitle = new Label("Login :", skin);
+        this.menuTitle = new Label("Login Menu", skin);
         this.usernameLabel = new Label("Username :", skin);
         this.usernameField = new TextField("", skin);
         this.usernameField.setMessageText("Enter your Username");
@@ -136,7 +136,7 @@ public class LoginMenuScreen implements Screen {
 
         // ===== Back Button =====
         backButton.setColor(Color.valueOf("E9D8A6"));
-        backButton.setPosition(20, 1300);
+        backButton.setPosition(20, 950);
         stage.addActor(backButton);
 
         controller.handleLogin();

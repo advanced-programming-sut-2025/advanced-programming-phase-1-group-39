@@ -4,6 +4,8 @@ import com.StardewValley.Main;
 import com.StardewValley.graphicViews.*;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.services.SaveAppManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
@@ -41,6 +43,15 @@ public class MainGuiController {
                     App.getApp().setCurrentMenu(Menu.LOGIN_MENU);
                     Main.getMain().switchScreen(new LoginMenuScreen());
 
+                }
+            });
+
+            view.getExitButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    App.getApp().setCurrentMenu(Menu.ExitMenu);
+                    SaveAppManager.saveApp();
+                    Gdx.app.exit();
                 }
             });
         }

@@ -47,7 +47,7 @@ public class ForgetPasswordMenuScreen implements Screen {
         this.skin = GameAssetManager.skin;
         this.background = new Image(GameAssetManager.MenuTexture);
         this.logo = new Image(GameAssetManager.logoTexture);
-        this.menuTitle = new Label("Forget Password", skin);
+        this.menuTitle = new Label("Forget Password Menu", skin);
         this.usernameLabel = new Label("Username :", skin);
         this.usernameField = new TextField("", skin);
         this.usernameField.setMessageText("Enter your username");
@@ -139,12 +139,12 @@ public class ForgetPasswordMenuScreen implements Screen {
         table.row();
 
         randomPasswordButton.setColor(Color.valueOf("E9D8A6"));
-        randomPasswordButton.setPosition(1500, 600);
+        randomPasswordButton.setPosition(1330, 235);
         stage.addActor(randomPasswordButton);
 
         // ===== دکمه بازگشت =====
         backButton.setColor(Color.valueOf("E9D8A6"));
-        backButton.setPosition(20, 1300);
+        backButton.setPosition(20, 950);
         stage.addActor(backButton);
 
         controller.handleForgetPassword();

@@ -8,6 +8,8 @@ import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Enums.commands.SignupMenuCommands;
 import com.StardewValley.models.User;
+import com.StardewValley.models.services.GameAssetManager;
+import com.StardewValley.models.services.HashSHA256;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -42,7 +44,7 @@ public class SignupGuiController {
                         cleanMessage();
                         view.getUsernameErrorLabel().setText("Username cannot be empty");
                     }
-                    if (!isUsernameUnique(username)) {
+                    else if (!isUsernameUnique(username)) {
                         cleanMessage();
                         String newUsername = getUniqueName(username);
                         view.getUsernameErrorLabel().setText(("This username is already taken. You can use this : " +
@@ -78,9 +80,10 @@ public class SignupGuiController {
                     }
                     // --- creat an account ---
                     else {
-                        App app = App.getApp();
                         boolean isMale = view.getGenderField().getSelected().equals("Male");
-                        app.setPendingUser(new User(username, password, nickname, email, isMale));
+                        String hashPass = HashSHA256.hashPassword(password);
+                        App.getApp().setPendingUser(new User(username, hashPass, nickname, email, isMale));
+                        App.getApp().getPendingUser().setAvatar(GameAssetManager.avatar1);
                         App.getApp().setCurrentMenu(Menu.SECURITY_QUESTION_MENU);
                         Main.getMain().switchScreen(new SecurityQuestionMenuScreen());
                     }

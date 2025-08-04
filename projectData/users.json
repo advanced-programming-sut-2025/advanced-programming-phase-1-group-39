@@ -3,12 +3,12 @@
     {
       "userName": "mir",
       "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
-      "nickname": "mir",
+      "nickname": "mir one",
       "email": "mir@gmail.com",
       "isMale": true,
       "securityQuestion": {
-        "question": "5",
-        "answer": "nokia"
+        "question": "1",
+        "answer": "mir"
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
@@ -28,28 +28,9 @@
         {
           "gameId": 104,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 105,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 106,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 107,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 108,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 109,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
-      ]
+      ],
+      "avatar": "Avatars/Alex.png"
     },
     {
       "userName": "mir2",
@@ -58,8 +39,8 @@
       "email": "mir@gmail.com",
       "isMale": true,
       "securityQuestion": {
-        "question": "5",
-        "answer": "nokia"
+        "question": "1",
+        "answer": "mir"
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
@@ -79,28 +60,9 @@
         {
           "gameId": 104,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 105,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 106,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 107,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 108,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 109,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
-      ]
+      ],
+      "avatar": "Avatars/Alex.png"
     },
     {
       "userName": "mir3",
@@ -109,8 +71,8 @@
       "email": "mir@gmail.com",
       "isMale": true,
       "securityQuestion": {
-        "question": "5",
-        "answer": "nokia"
+        "question": "1",
+        "answer": "mir"
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
@@ -130,38 +92,19 @@
         {
           "gameId": 104,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 105,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 106,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 107,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 108,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 109,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
-      ]
+      ],
+      "avatar": "Avatars/Alex.png"
     },
     {
       "userName": "mir4",
       "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
-      "nickname": "mir four",
+      "nickname": "mir4",
       "email": "mir@gmail.com",
       "isMale": true,
       "securityQuestion": {
-        "question": "5",
-        "answer": "nokia"
+        "question": "1",
+        "answer": "mir"
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
@@ -181,84 +124,9 @@
         {
           "gameId": 104,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 105,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 106,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 107,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 108,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
-        },
-        {
-          "gameId": 109,
-          "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
-      ]
-    },
-    {
-      "userName": "mir5",
-      "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
-      "nickname": "mir",
-      "email": "mir@gmail.com",
-      "isMale": true,
-      "securityQuestion": {
-        "question": "5",
-        "answer": "nokia"
-      },
-      "numberOfGamesPlayed": 0,
-      "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": []
-    },
-    {
-      "userName": "mir6",
-      "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
-      "nickname": "mir",
-      "email": "mir@gmail.com",
-      "isMale": true,
-      "securityQuestion": {
-        "question": "5",
-        "answer": "nokia"
-      },
-      "numberOfGamesPlayed": 0,
-      "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": []
-    },
-    {
-      "userName": "mir7",
-      "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
-      "nickname": "mir",
-      "email": "mir@gmail.com",
-      "isMale": true,
-      "securityQuestion": {
-        "question": "5",
-        "answer": "nokia"
-      },
-      "numberOfGamesPlayed": 0,
-      "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": []
-    },
-    {
-      "userName": "mir8",
-      "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
-      "nickname": "mir",
-      "email": "mir@gmail.com",
-      "isMale": true,
-      "securityQuestion": {
-        "question": "5",
-        "answer": "nokia"
-      },
-      "numberOfGamesPlayed": 0,
-      "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": []
+      ],
+      "avatar": "Avatars/Alex.png"
     }
   ],
   "loggedInUserName": "mir"

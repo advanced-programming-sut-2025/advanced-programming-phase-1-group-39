@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class SignupMenuScreen implements Screen {
     private Stage stage;
@@ -56,12 +57,14 @@ public class SignupMenuScreen implements Screen {
     private Music music;
     private final SignupGuiController controller;
 
+    private static final int PAD_1 = -10;
+
     public SignupMenuScreen() {
         this.controller = AppGuiControllers.signupGuiController;
         this.skin = GameAssetManager.skin;
         this.background = new Image(GameAssetManager.MenuTexture);
         this.logo = new Image(GameAssetManager.logoTexture);
-        this.menuTitle = new Label("Sign Up", skin);
+        this.menuTitle = new Label("Sign up Menu", skin);
 
         this.usernameLabel = new Label("Username :", skin);
         this.usernameField = new TextField("", skin);
@@ -104,7 +107,7 @@ public class SignupMenuScreen implements Screen {
         music.setLooping(true);
         music.play();
 
-        stage = new Stage(new FitViewport(1920, 1080));
+        stage = new Stage(new StretchViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
 
         // لوگو بالا قرار بگیره
@@ -115,13 +118,13 @@ public class SignupMenuScreen implements Screen {
         );
 
         // بک‌گراند
-        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        background.setSize(stage.getViewport().getWorldWidth(), stage.getViewport().getWorldHeight());
         background.setColor(1, 1, 1, 0.5f);
         stage.addActor(background);
 
         // تنظیمات جدول اصلی
         table.setFillParent(true);
-        table.top().padTop(100);
+        table.top().padTop(120);
         table.center();
 
 //        menuTitle.setFontScale(2.5f);
@@ -137,7 +140,7 @@ public class SignupMenuScreen implements Screen {
         table.row();
         usernameErrorLabel.setColor(Color.valueOf("ff002b"));
         table.add(usernameErrorLabel).left().colspan(2);
-        table.row().padTop(20);
+        table.row().padTop(PAD_1);
 
         // ==== Password ====
         passwordLabel.setColor(Color.valueOf("023047"));
@@ -147,9 +150,9 @@ public class SignupMenuScreen implements Screen {
         table.row();
         passwordErrorLabel.setColor(Color.valueOf("ff002b"));
         table.add(passwordErrorLabel).left().colspan(2);
-        table.row().padTop(20);
+        table.row().padTop(PAD_1);
         randomPasswordButton.setColor(Color.valueOf("E9D8A6"));
-        randomPasswordButton.setPosition(1550, 900);
+        randomPasswordButton.setPosition(1400, 665);
 
 
         // ==== Confirm Password ====
@@ -160,7 +163,7 @@ public class SignupMenuScreen implements Screen {
         table.row();
         confirmPasswordErrorLabel.setColor(Color.valueOf("ff002b"));
         table.add(confirmPasswordErrorLabel).left().colspan(2);
-        table.row().padTop(20);
+        table.row().padTop(PAD_1);
 
         // ==== Nickname ====
         nicknameLabel.setColor(Color.valueOf("023047"));
@@ -170,7 +173,7 @@ public class SignupMenuScreen implements Screen {
         table.row();
         nicknameErrorLabel.setColor(Color.valueOf("ff002b"));
         table.add(nicknameErrorLabel).left().colspan(2);
-        table.row().padTop(20);
+        table.row().padTop(PAD_1);
 
         // ==== Email ====
         emailLabel.setColor(Color.valueOf("023047"));
@@ -180,7 +183,7 @@ public class SignupMenuScreen implements Screen {
         table.row();
         emailErrorLabel.setColor(Color.valueOf("ff002b"));
         table.add(emailErrorLabel).left().colspan(2);
-        table.row().padTop(20);
+        table.row().padTop(PAD_1);
 
         // ==== Gender ====
         genderLabel.setColor(Color.valueOf("023047"));
@@ -197,11 +200,11 @@ public class SignupMenuScreen implements Screen {
         Table buttonRow = new Table();
         buttonRow.add(signUpButton).width(250).padRight(20);
         buttonRow.add(loginButton).width(250);
-        table.add(buttonRow).colspan(2).padTop(20);
+        table.add(buttonRow).colspan(2).padTop(10);
         table.row();
 
         //exitButton.setColor(Color.FIREBRICK);
-        exitButton.setPosition(20, 1300);  // فاصله از لبه پایین و چپ
+        exitButton.setPosition(20, 950);  // فاصله از لبه پایین و چپ
         stage.addActor(exitButton);
 
         // اضافه کردن به استیج
@@ -224,8 +227,10 @@ public class SignupMenuScreen implements Screen {
     }
 
     @Override
-    public void resize(int i, int i1) {
-
+    public void resize(int width, int height) {
+        if (stage != null) {
+            stage.getViewport().update(width, height, true);
+        }
     }
 
     @Override

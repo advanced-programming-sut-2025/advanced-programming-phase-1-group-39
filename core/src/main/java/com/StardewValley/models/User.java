@@ -8,7 +8,7 @@ public class User {
     private String password;
     private String nickname;
     private String email;
-    private boolean isMale;
+    private final boolean isMale;
     private SecurityQuestion securityQuestion;
 
     private int numberOfGamesPlayed;
@@ -17,6 +17,8 @@ public class User {
     private ArrayList<GameMetadata> gamesData = new ArrayList<>();
 
     private Game currentGame = null;
+    private String avatar;
+
     private ArrayList<Player> players = new ArrayList<>();
 
     public User(String userName, String password, String nickname, String email, boolean isMale) {
@@ -121,6 +123,13 @@ public class User {
 
     public void addNumberOfGamesPlayed() {
         this.numberOfGamesPlayed++;
+    }
+
+    //Graphic
+    public String getAvatar() { return avatar; }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

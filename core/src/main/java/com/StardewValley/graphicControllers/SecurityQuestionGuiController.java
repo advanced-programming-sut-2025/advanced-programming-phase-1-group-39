@@ -24,50 +24,60 @@ public class SecurityQuestionGuiController {
             view.getQuestion1().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    view.getQuestion2().setChecked(false);
-                    view.getQuestion3().setChecked(false);
-                    view.getQuestion4().setChecked(false);
-                    view.getQuestion5().setChecked(false);
+                    if (view.getQuestion1().isChecked()) {
+                        view.getQuestion2().setChecked(false);
+                        view.getQuestion3().setChecked(false);
+                        view.getQuestion4().setChecked(false);
+                        view.getQuestion5().setChecked(false);
+                    }
                 }
             });
 
             view.getQuestion2().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    view.getQuestion1().setChecked(false);
-                    view.getQuestion3().setChecked(false);
-                    view.getQuestion4().setChecked(false);
-                    view.getQuestion5().setChecked(false);
+                    if (view.getQuestion2().isChecked()) {
+                        view.getQuestion1().setChecked(false);
+                        view.getQuestion3().setChecked(false);
+                        view.getQuestion4().setChecked(false);
+                        view.getQuestion5().setChecked(false);
+                    }
                 }
             });
 
             view.getQuestion3().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    view.getQuestion1().setChecked(false);
-                    view.getQuestion2().setChecked(false);
-                    view.getQuestion4().setChecked(false);
-                    view.getQuestion5().setChecked(false);
+                    if (view.getQuestion3().isChecked()) {
+                        view.getQuestion1().setChecked(false);
+                        view.getQuestion2().setChecked(false);
+                        view.getQuestion4().setChecked(false);
+                        view.getQuestion5().setChecked(false);
+                    }
                 }
             });
 
             view.getQuestion4().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    view.getQuestion1().setChecked(false);
-                    view.getQuestion2().setChecked(false);
-                    view.getQuestion3().setChecked(false);
-                    view.getQuestion5().setChecked(false);
+                    if (view.getQuestion4().isChecked()) {
+                        view.getQuestion1().setChecked(false);
+                        view.getQuestion2().setChecked(false);
+                        view.getQuestion3().setChecked(false);
+                        view.getQuestion5().setChecked(false);
+                    }
                 }
             });
 
             view.getQuestion5().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    view.getQuestion1().setChecked(false);
-                    view.getQuestion2().setChecked(false);
-                    view.getQuestion3().setChecked(false);
-                    view.getQuestion4().setChecked(false);
+                    if (view.getQuestion5().isChecked()) {
+                        view.getQuestion1().setChecked(false);
+                        view.getQuestion2().setChecked(false);
+                        view.getQuestion3().setChecked(false);
+                        view.getQuestion4().setChecked(false);
+                    }
                 }
             });
 
@@ -75,21 +85,19 @@ public class SecurityQuestionGuiController {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     String answer = view.getAnswer().getText();
-                    App app = App.getApp();
-                        if (answer == null) {
-                            view.getAnswerErrorLabel().setText("answer field cannot be empty");
-                        } else if (setQuestionNumber().equals("0")) {
-                            view.getAnswerErrorLabel().setText("Please choose your Question Number");
-                        } else {
-                            SecurityQuestion question = new SecurityQuestion(setQuestionNumber(), answer);
-                            app.getPendingUser().setSecurityQuestion(question);
-                            String hashPass = HashSHA256.hashPassword(app.getPendingUser().getPassword());
-                            app.getPendingUser().setPassword(hashPass);
-                            app.addUser(app.getPendingUser());
-                            app.setPendingUser(null);
-                            app.setCurrentMenu(Menu.LOGIN_MENU);
-                            Main.getMain().switchScreen(new LoginMenuScreen());
-                        }
+                    if (answer == null) {
+                        view.getAnswerErrorLabel().setText("answer field cannot be empty");
+                    } else if (setQuestionNumber().equals("0")) {
+                        view.getAnswerErrorLabel().setText("Please choose your Question Number");
+                    } else {
+                        SecurityQuestion question = new SecurityQuestion(setQuestionNumber(), answer);
+                        App app = App.getApp();
+                        app.getPendingUser().setSecurityQuestion(question);
+                        app.addUser(app.getPendingUser());
+                        //app.setPendingUser(null);
+                        app.setCurrentMenu(Menu.LOGIN_MENU);
+                        Main.getMain().switchScreen(new LoginMenuScreen());
+                    }
                 }
             });
 

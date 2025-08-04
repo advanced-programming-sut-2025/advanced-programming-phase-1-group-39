@@ -7,9 +7,13 @@ import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.Enums.commands.SignupMenuCommands;
 import com.StardewValley.models.User;
+import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.HashSHA256;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +59,7 @@ public class ProfileGuiController {
 
             view.getChangePasswordButton().addListener(new ChangeListener() {
                 Matcher matcher;
+
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (newPassword == null || newPassword.equals("Enter your new Password")) {
@@ -91,6 +96,7 @@ public class ProfileGuiController {
 
             view.getChangeEmailButton().addListener(new ChangeListener() {
                 Matcher matcher;
+
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
                     if (newEmail == null || newEmail.equals("Enter your new Email")) {
@@ -101,10 +107,35 @@ public class ProfileGuiController {
                         view.getChangeEmailErrorLabel().setText("The new email is the same as the previous one");
                     } else if ((matcher = SignupMenuCommands.Email.getMatcher(newEmail)) == null) {
                         cleanMessages();
-                        view.getChangeEmailErrorLabel().setText("The email format is invalid");;
+                        view.getChangeEmailErrorLabel().setText("The email format is invalid");
                     } else {
                         App.getApp().getLoggedInUser().setEmail(newEmail);
                         view.getChangeEmailErrorLabel().setText("Your new Email Changed Successfully");
+                    }
+                }
+            });
+
+            view.getChangeAvatarsBox().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    String select = view.getChangeAvatarsBox().getSelected();
+                    switch (select) {
+                        case "Alex" -> {
+                            App.getApp().getLoggedInUser().setAvatar(GameAssetManager.avatar1);
+                            view.getAvatarTexture().setDrawable(new TextureRegionDrawable(new Texture(GameAssetManager.avatar1)));
+                        }
+                        case "Sam" -> {
+                            App.getApp().getLoggedInUser().setAvatar(GameAssetManager.avatar2);
+                            view.getAvatarTexture().setDrawable(new TextureRegionDrawable(new Texture(GameAssetManager.avatar2)));
+                        }
+                        case "Leah" -> {
+                            App.getApp().getLoggedInUser().setAvatar(GameAssetManager.avatar3);
+                            view.getAvatarTexture().setDrawable(new TextureRegionDrawable(new Texture(GameAssetManager.avatar3)));
+                        }
+                        case "Penny" -> {
+                            App.getApp().getLoggedInUser().setAvatar(GameAssetManager.avatar4);
+                            view.getAvatarTexture().setDrawable(new TextureRegionDrawable(new Texture(GameAssetManager.avatar4)));
+                        }
                     }
                 }
             });

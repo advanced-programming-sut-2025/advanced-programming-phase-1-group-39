@@ -26,6 +26,15 @@ public class GameAssetManager {
     public static Label.LabelStyle messageBoxStyle;
 
     public static Music music1 = Gdx.audio.newMusic(Gdx.files.internal("musics/01. Stardew Valley Overture.mp3"));
+    // avatars
+    public static String avatar1 = "Avatars/Alex.png";
+    public static String avatar2 = "Avatars/Sam.png";
+    public static String avatar3 = "Avatars/Leah.png";
+    public static String avatar4 = "Avatars/Penny.png";
+
+    public static TextureRegion nameLabel = new TextureRegion(new Texture("Label/Marlon.png"));
+    public static TextureRegion avatarFrame = new TextureRegion(new Texture("Label/Gunther.png"));
+
 
     // Plants
     public static Texture deadPlantTexture = getDeadPlantTexture();

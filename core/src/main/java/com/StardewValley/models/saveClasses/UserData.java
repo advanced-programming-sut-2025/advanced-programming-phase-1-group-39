@@ -18,6 +18,8 @@ public class UserData {
 
     private ArrayList<GameMetadata> gamesData;
 
+    private String avatar;
+
     public UserData(User user) {
         userName = user.getUserName();
         password = user.getPassword();
@@ -28,6 +30,7 @@ public class UserData {
         numberOfGamesPlayed = user.getNumberOfGamesPlayed();
         highestMoneyEarnedInASingleGame = user.getHighestMoneyEarnedInASingleGame();
         gamesData = user.getGamesData();
+        avatar = user.getAvatar();
     }
 
     public User getUser() {
@@ -36,6 +39,7 @@ public class UserData {
         user.setNumberOfGamesPlayed(numberOfGamesPlayed);
         user.setHighestMoneyEarnedInASingleGame(highestMoneyEarnedInASingleGame);
         user.setGamesData(gamesData);
+        user.setAvatar(avatar);
 
         return user;
     }

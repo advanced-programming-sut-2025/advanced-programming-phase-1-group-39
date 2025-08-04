@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
@@ -68,6 +69,9 @@ public class GameScreen implements Screen {
     private ProgressBar energyBar;
     private Image energyBox;
     private Label energyAmount;
+    Table inventoryTable = new Table();
+    private int lastSelectedSlot = -1;
+    private int lastBagHash = 0;
 
     private final int MAX_CACHE_SIZE = 5000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
@@ -139,6 +143,11 @@ public class GameScreen implements Screen {
         hudTable.add(energyStack)
                 .width(1.5f * energyBox.getWidth()).height(1.5f * energyBox.getHeight())
                 .expand().bottom().right().pad(20f);
+
+        // inventory
+        inventoryTable.setFillParent(false);
+        inventoryTable.bottom().center().padTop(950f);
+        rootStack.add(inventoryTable);
     }
 
     public void showError(String message) {
@@ -397,48 +406,45 @@ public class GameScreen implements Screen {
     }
 
     private void renderInventory() {
+        inventoryTable.clear();
+
         Player player = game.getPlayerInTurn();
         Inventory inventory = player.getInventory();
-        int selectedSlot = player.getSelectedSlot(); // Assuming you have this method
-
-        int screenWidth = Gdx.graphics.getWidth();
-        int slotSize = Map.TILE_SIZE / 2;
         int numSlots = player.getMaxInventorySize();
-        int startX = (screenWidth - numSlots * slotSize) / 2 ;
-        int y = Map.TILE_SIZE / 2;
 
-        for (int i = 0; i < numSlots; i++) {
-            int x = startX + i * slotSize;
+        for(int i = 0; i < numSlots; i++) {
+            Stack slotStack = new Stack();
 
-            batch.draw(inventorySlot, x, y, slotSize, slotSize);
+            // اسلات زمینه (پس‌زمینه)
+            Image slotBg = new Image(new Texture("inventory/Mail.2jpg.jpg"));
+            slotStack.add(slotBg);
 
-            String slotNum = String.valueOf(i + 1);
-            smallFont.draw(batch, slotNum, x + 2, y + slotSize - 2);
-        }
+            // اگر آیتم داشت، عکس آیتم و تعدادش
+            if(i < inventory.getInventoryItems().size() && inventory.getInventoryItems().get(i) != null) {
+                TextureRegionDrawable itemDrawable = new TextureRegionDrawable(inventory.getInventoryItems().get(i).getItem().getTexture());
+                Image itemImg = new Image(itemDrawable);
+                slotStack.add(itemImg);
 
-        // Highlight selected slot
-        if (selectedSlot >= 0 && selectedSlot < numSlots) {
-            int highlightX = startX + selectedSlot * slotSize;
-            batch.draw(inventoryHighlightSlot, highlightX, y, slotSize, slotSize);
-        }
-
-        for (int i = 0; i < numSlots; i++) {
-            if (i < inventory.getInventoryItems().size()) {
-                if (inventory.getInventoryItems().get(i) != null) {
-                    int quantity = inventory.getInventoryItems().get(i).getAmount();
-
-                    TextureRegion itemTex = inventory.getInventoryItems().get(i).getItem().getTexture();
-                    if (itemTex != null) {
-                        int x = startX + i * slotSize;
-                        batch.draw(itemTex, x, y, slotSize, slotSize);
-
-                        // Draw item quantity at bottom-right corner
-                        String count = String.valueOf(quantity);
-                        layout.setText(smallFont, count);
-                        smallFont.draw(batch, count, x + slotSize - layout.width - 2, y + layout.height + 2);
-                    }
-                }
+                int quantity = inventory.getInventoryItems().get(i).getAmount();
+                Label countLabel = new Label(String.valueOf(quantity), GameAssetManager.skin);
+                countLabel.setFontScale(1f);
+                slotStack.add(countLabel);
             }
+
+            if(i == player.getSelectedSlot()) {
+                Image highlight = new Image(new Texture("inventory/Mail3.jpg"));
+                slotStack.add(highlight);
+
+                if (i < inventory.getInventoryItems().size() && inventory.getInventoryItems().get(i) != null) {
+                    TextureRegionDrawable itemDrawable = new TextureRegionDrawable(inventory.getInventoryItems()
+                            .get(i).getItem().getTexture());
+                    Image itemImg = new Image(itemDrawable);
+                    slotStack.add(itemImg);
+                }
+
+            }
+
+            inventoryTable.add(slotStack).size(60, 60); // سایز + فاصله بین اسلات‌ها
         }
     }
 
@@ -634,15 +640,17 @@ public class GameScreen implements Screen {
 
         font = new BitmapFont();
         font.getData().setScale(2f);
-        
+
         smallFont = new BitmapFont();
         smallFont.getData().setScale(1f);
+        smallFont.setColor(Color.valueOf("bc6c25"));
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         loadTextures();
         energyBar.setValue((float) game.getPlayerInTurn().getEnergy());
 
         showError("Welcome " + game.getPlayerInTurn().getNickname() + " !");
+        //renderInventory();
     }
 
     @Override
@@ -665,7 +673,13 @@ public class GameScreen implements Screen {
 
             // TODO : (Better) move clock render to uiStage
             renderClockUI();
-            renderInventory();
+            int slot = game.getPlayerInTurn().getSelectedSlot();
+            int bag = game.getPlayerInTurn().getInventory().hashCode();
+            if (slot != lastSelectedSlot || bag != lastBagHash) {
+                renderInventory();
+                lastSelectedSlot = slot;
+                lastBagHash = bag;
+            }
             batch.end();
 
             uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));

@@ -5,6 +5,10 @@ import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.commands.GameCommands;
 import com.StardewValley.models.Enums.commands.InteractionsCommand;
 import com.StardewValley.models.Enums.commands.NPCGameCommand;
+import com.StardewValley.models.cooking.FoodManager;
+import com.StardewValley.models.cooking.FoodRecipe;
+import com.StardewValley.models.crafting.CraftingManager;
+import com.StardewValley.models.crafting.CraftingRecipe;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
@@ -43,6 +47,15 @@ public class GameGuiController {
         Game game = screen.getGame();
         game.goToNextDay();
         screen.showError("Next Day !");
+    }
+
+    public void cook(FoodRecipe recipe) {
+        Result result = FoodManager.cook(recipe.name(), App.getApp().getCurrentGame().getPlayerInTurn());
+        System.out.println(result.message());
+    }
+
+    public void craft(CraftingRecipe recipe, Player player) {
+        System.out.println(CraftingManager.craft(recipe.getName(), player));
     }
 
     public String processCommand(String command) {

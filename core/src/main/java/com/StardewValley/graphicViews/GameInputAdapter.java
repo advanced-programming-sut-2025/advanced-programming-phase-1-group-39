@@ -90,6 +90,17 @@ public class GameInputAdapter extends InputAdapter {
         else if (keycode == Input.Keys.MINUS) {
             screen.getGame().getPlayerInTurn().changeEnergy(-10);
         }
+
+        else if (keycode == Input.Keys.N) {
+            Game game = App.getApp().getCurrentGame();
+            game.getMap().growWateredPlantsAndTrees();
+        } else if (keycode == Input.Keys.C) {
+            screen.changeCookingMenu();
+        } else if (keycode == Input.Keys.B) {
+            screen.changeCraftingMenu();
+        } else if (keycode == Input.Keys.P) {
+            screen.showShopMenu();
+        }
         return true;
     }
 

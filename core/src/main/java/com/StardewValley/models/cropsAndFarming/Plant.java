@@ -69,7 +69,7 @@ public class Plant {
         FertilizerType type = tile.getFertilizer();
 
         boolean needsWater = (type != FertilizerType.QUALITY);
-        boolean isWateredEnough = true; //!needsWater || isWateredToday; // TODO : change
+        boolean isWateredEnough = !needsWater || isWateredToday;
 
         if (!isWateredEnough) {
             daysWithoutWater++;

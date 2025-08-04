@@ -1,17 +1,24 @@
 package com.StardewValley.models.Shops;
 
 
+import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.models.*;
 import com.StardewValley.models.NPC.NPC;
 import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.animals.AnimalType;
 import com.StardewValley.models.animals.LivingPlace;
 import com.StardewValley.models.buildings.AnimalBuilding;
+import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.tools.MilkPail;
 import com.StardewValley.models.tools.Shear;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.google.gson.Gson;
 
 import java.io.FileReader;
@@ -123,6 +130,7 @@ public class MarniesRanch extends Shop {
         }
 
         item.purchase(quantity);
+        player.getInventory().addItem(item, quantity);
         player.changeMoney(-totalPrice);
 
         switch (product.toLowerCase()) {
@@ -223,6 +231,182 @@ public class MarniesRanch extends Shop {
         for (ShopItem item : livestock.values()) {
             item.resetDailyLimit();
         }
+    }
+
+    @Override
+    public void showShopMenu(Stage stage, Skin skin) {
+        Window window = new Window("Marnie's Ranch", skin);
+        window.setSize(1280, 720);
+        window.setPosition(stage.getWidth()/2, stage.getHeight()/2, Align.center);
+        window.setMovable(true);
+        window.setModal(true);
+
+        Table itemTable = new Table();
+        itemTable.top().left();
+
+        ScrollPane scrollPane = new ScrollPane(itemTable, skin);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setFillParent(true);
+        scrollPane.setScrollingDisabled(true, false);
+
+        CheckBox onlyAvailable = new CheckBox("Availables Only", skin);
+
+        class Refresher {
+            void refreshItems() {
+                itemTable.clear();
+
+                for (ShopItem item : supplies.values()) {
+                    if (onlyAvailable.isChecked() && item.getAvailableQuantity() <= 0) continue;
+
+                    Table row = new Table();
+
+                    Image img = new Image(item.getTexture());
+                    row.add(img).size(48).padRight(10);
+
+                    Label info = new Label(item.getName() + " - " + item.getPrice() + "g", skin);
+                    row.add(info).padRight(15).width(200).left();
+
+                    final int[] count = {1};
+                    TextButton minus = new TextButton("-", skin);
+                    TextButton plus = new TextButton("+", skin);
+                    Label countLabel = new Label("1", skin);
+
+                    minus.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            if (count[0] > 1) count[0]--;
+                            countLabel.setText(String.valueOf(count[0]));
+                        }
+                    });
+
+                    plus.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            if (count[0] < item.getAvailableQuantity()) count[0]++;
+                            countLabel.setText(String.valueOf(count[0]));
+                        }
+                    });
+
+                    row.add(minus).padLeft(10);
+                    row.add(countLabel).width(30).center();
+                    row.add(plus);
+
+                    TextButton buy = new TextButton("Buy", skin);
+                    buy.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            Result result = purchase(item.getName(), count[0]);
+                            Dialog d = new Dialog("Result", skin);
+                            d.text(result.message()).button("OK");
+                            d.show(stage);
+
+                            if (result.success()) {
+                                refreshItems();
+                            }
+                        }
+                    });
+
+                    row.add(buy).padLeft(10);
+                    itemTable.add(row).padBottom(10).left().row();
+                }
+                for (LivestockItem item : livestock.values()) {
+                    if (onlyAvailable.isChecked() && item.getAvailableQuantity() <= 0) continue;
+
+                    Table row = new Table();
+
+                    Image img = new Image(item.getTexture());
+                    row.add(img).size(48).padRight(10);
+
+                    Label info = new Label(item.getName() + " - " + item.getPrice() + "g", skin);
+                    row.add(info).padRight(15).width(200).left();
+
+                    final int[] count = {1};
+                    TextButton minus = new TextButton("-", skin);
+                    TextButton plus = new TextButton("+", skin);
+                    Label countLabel = new Label("1", skin);
+
+                    minus.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            if (count[0] > 1) count[0]--;
+                            countLabel.setText(String.valueOf(count[0]));
+                        }
+                    });
+
+                    plus.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            if (count[0] < item.getAvailableQuantity()) count[0]++;
+                            countLabel.setText(String.valueOf(count[0]));
+                        }
+                    });
+
+                    row.add(minus).padLeft(10);
+                    row.add(countLabel).width(30).center();
+                    row.add(plus);
+
+                    final TextField nameField = new TextField("", skin);
+                    TextButton buy = new TextButton("Buy", skin);
+                    buy.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            Dialog nameDialog = new Dialog("Name?", skin) {
+                                @Override
+                                protected void result(Object object) {
+                                    if ((Boolean) object) {
+                                        String animalName = nameField.getText().trim();
+                                        if (animalName.isEmpty()) {
+                                            Dialog warn = new Dialog("Error", skin);
+                                            warn.text("Enter a name").button("Ok");
+                                            warn.show(stage);
+                                            return;
+                                        }
+
+                                        Result result = buyAnimal(item.getName(), animalName);
+                                        Dialog d = new Dialog("Result", skin);
+                                        d.text(result.message()).button("OK");
+                                        d.show(stage);
+
+                                        if (result.success()) {
+                                            refreshItems();
+                                        }
+                                    }
+                                }
+                            };
+
+                            nameDialog.text("Choose a name for your animal");
+                            nameDialog.getContentTable().add(nameField).width(200).pad(10).row();
+                            nameDialog.button("Ok", true);
+                            nameDialog.button("Cancel", false);
+                            nameDialog.show(stage);
+                        }
+                    });
+
+
+                    row.add(buy).padLeft(10);
+                    itemTable.add(row).padBottom(10).left().row();
+                }
+            }
+        }
+
+        Refresher refresh = new Refresher();
+
+        onlyAvailable.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                refresh.refreshItems();
+            }
+        });
+
+        refresh.refreshItems();
+
+        Table content = new Table();
+        content.setFillParent(true);
+        content.add(onlyAvailable).left().padBottom(10).row();
+        content.add(scrollPane).expand().fill().row();
+
+        window.add(content).expand().fill().pad(10);
+        stage.addActor(window);
     }
 
 }

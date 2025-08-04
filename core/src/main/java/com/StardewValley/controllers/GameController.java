@@ -248,7 +248,10 @@ public class GameController {
         Game game = App.getApp().getCurrentGame();
         return new Result(true, game.getMap().helpReadingMap());
     }
-
+    public Result getLocation() {
+        Location loc = App.getApp().getCurrentGame().getPlayerInTurn().getTileLocation();
+        return new Result(true, loc.x() + "," + loc.y());
+    }
 
     public String showEnergy() {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();

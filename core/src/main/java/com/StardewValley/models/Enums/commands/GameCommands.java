@@ -22,6 +22,7 @@ public enum GameCommands {
 
     PRINT_MAP("print\\s+map\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)\\s+-s\\s+(?<size>\\d+)"),
     HELP_READING_MAP("help\\s+reading\\s+map"),
+    LOCATION("location"),
 
     WALK("walk\\s+-l\\s+(?<x>\\d+),(?<y>\\d+)"),
     SET_LOCATION("set\\s+location\\s+-l\\s+(\\d+)\\s+(\\d+)"),

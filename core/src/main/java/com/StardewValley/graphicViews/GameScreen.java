@@ -3,11 +3,16 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
+import com.StardewValley.models.Shops.Shop;
+import com.StardewValley.models.cooking.FoodRecipe;
+import com.StardewValley.models.crafting.CraftingRecipe;
+import com.StardewValley.models.crafting.CraftingWidget;
 import com.StardewValley.models.cropsAndFarming.Plant;
 import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.inventory.Inventory;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.map.TileType;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
@@ -21,11 +26,13 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +40,7 @@ import java.util.LinkedHashMap;
 
 
 public class GameScreen implements Screen {
+    private static GameScreen screen;
     private GameGuiController controller;
     private Game game;
     private GameInputAdapter gameMenuInputAdapter;
@@ -76,10 +84,17 @@ public class GameScreen implements Screen {
     private Image energyBox;
     private Label energyAmount;
 
-    private final int MAX_CACHE_SIZE = 5000;
+    private final int MAX_CACHE_SIZE = 3000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
         @Override
         protected boolean removeEldestEntry(HashMap.Entry<Location, TextureRegion> eldest) {
+            return size() > MAX_CACHE_SIZE;
+        }
+    };
+
+    private final HashMap<Location, TileType> tileTypeCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(HashMap.Entry<Location, TileType> eldest) {
             return size() > MAX_CACHE_SIZE;
         }
     };
@@ -103,7 +118,17 @@ public class GameScreen implements Screen {
     private Image weatherEffectImage;
     private float animationTime = 0f;
 
+    // Cooking and crafting
+    private Table cookingMenuTable;
+    private boolean cookingMenuOpen = false;
+    private Table craftingMenu;
+    private ArrayList<CraftingWidget> craftingWidgets = new ArrayList<>();
+    private boolean craftingMenuOpen = false;
+
+
+
     public GameScreen() {
+        this.screen = this;
         this.controller = AppGuiControllers.gameGuiController;
         controller.setScreen(this);
         this.game = App.getApp().getCurrentGame();
@@ -177,7 +202,7 @@ public class GameScreen implements Screen {
 
     public void loadTextures() {
         playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
-        clock = new Texture(Gdx.files.internal("Clock.png"));
+        clock = new Texture(Gdx.files.internal("clock/Clock.png"));
         clock.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
         Color[] playerColors = new Color[4];
@@ -279,6 +304,7 @@ public class GameScreen implements Screen {
 
         Tile[][] tiles = game.getMap().getTiles();
 
+        //Tiles
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
                 int rowIndex = Constants.WORLD_MAP_HEIGHT - 1 - y;
@@ -288,8 +314,14 @@ public class GameScreen implements Screen {
 
                 Location l = new Location(x, y);
                 TextureRegion texture = tileCache.get(l);
+                TileType type = tileTypeCache.get(l);
 
-                if (texture == null) {
+                if (type == null) {
+                    type = tile.getType();
+                    tileTypeCache.put(l, type);
+                }
+
+                if (texture == null || type != tile.getType()) {
                     texture = tile.getTexture();
                     tileCache.put(l, texture);
                 }
@@ -313,6 +345,7 @@ public class GameScreen implements Screen {
             batch.setColor(1, 1, 1, 1);
         }
 
+        //Obj on tiles
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
                 int rowIndex = Constants.WORLD_MAP_HEIGHT - 1 - y;
@@ -407,12 +440,143 @@ public class GameScreen implements Screen {
 
         batch.draw(clock, drawX, drawY);
         Time time = App.getApp().getCurrentGame().getTime();
+        TextureRegion season = new TextureRegion(new Texture(Gdx.files.internal("clock/" + time.getSeason().name() + ".png")));
+        TextureRegion weather = new TextureRegion(new Texture(Gdx.files.internal("clock/" + App.getApp().getCurrentGame().getTodayWeather().getStatus().name() + ".png")));
+        batch.draw(season, drawX + 210, drawY + 137, (float) season.getRegionWidth() /2, (float) season.getRegionHeight() /2);
+        batch.draw(weather, drawX + 115, drawY + 137, (float) weather.getRegionWidth() /2, (float) weather.getRegionHeight() /2);
 
         String date = (time.getDayOfWeek().toString().substring(0,3)) + ". " + time.getDay();
         font.draw(batch, date, drawX + 150, drawY + 210);
         font.draw(batch, time.getHourText(), drawX + 150, drawY + 120);
-        font.draw(batch, String.valueOf(400), drawX + 200, drawY + 40);
+        font.draw(batch, String.valueOf(App.getApp().getCurrentGame().getPlayerInTurn().getMoney()), drawX + 200, drawY + 40);
     }
+
+    public void changeCookingMenu() {
+        cookingMenuOpen = !cookingMenuOpen;
+        cookingMenuTable.setVisible(cookingMenuOpen);
+        if (cookingMenuOpen) {
+            Gdx.input.setInputProcessor(uiStage);
+        } else {
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
+    public void prepareFoodMenu(Skin skin) {
+        cookingMenuTable = new Table(skin);
+        cookingMenuTable.setFillParent(true);
+        cookingMenuTable.setVisible(false);
+        cookingMenuTable.setBackground(skin.getDrawable("window")); // Use window background from atlas
+        ScrollPane scrollPane = new ScrollPane(cookingMenuTable, skin);
+        scrollPane.setSize(1080, 900);
+        scrollPane.setPosition((uiStage.getWidth() - cookingMenuTable.getWidth())/2,
+                (uiStage.getHeight() - cookingMenuTable.getHeight())/2, Align.center);
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        Label titleLabel = new Label("Cooking Menu", labelStyle);
+        cookingMenuTable.add(titleLabel).pad(10).colspan(3).center();
+        cookingMenuTable.row();
+
+        int perRow = 2;
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        for (FoodRecipe recipe : FoodRecipe.values()) {
+            Image image = new Image(recipe.data.getTexture());
+            Label nameLabel = new Label(recipe.name(), labelStyle);
+            TextButton cookButton = new TextButton("Cook", skin);
+
+            cookButton.setDisabled(player.hasLearnedFoodRecipe(recipe));
+
+            cookingMenuTable.add(image).size(32, 32).pad(5);
+            cookingMenuTable.add(nameLabel).left().pad(5);
+            cookingMenuTable.add(cookButton).pad(5);
+
+            cookButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    controller.cook(recipe);
+                }
+            });
+
+            if (perRow == 0) {
+                cookingMenuTable.row();
+                perRow = 3;
+            } else {
+                perRow--;
+            }
+        }
+        TextButton backButton = new TextButton("Back", skin);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                changeCookingMenu();
+            }
+        });
+        cookingMenuTable.add(backButton).pad(5);
+
+        uiStage.addActor(scrollPane);
+
+    }
+
+    public void changeCraftingMenu() {
+        craftingMenuOpen = !craftingMenuOpen;
+        craftingMenu.setVisible(craftingMenuOpen);
+        if (craftingMenuOpen) {
+            Gdx.input.setInputProcessor(uiStage);
+            for (CraftingWidget widget : craftingWidgets) {
+                widget.update(App.getApp().getCurrentGame().getPlayerInTurn());
+            }
+        } else {
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
+
+    public void prepareCraftingMenu(Skin skin) {
+        craftingMenu = new Table();
+        craftingMenu.setVisible(false);
+        craftingMenu.setBackground(skin.getDrawable("window"));
+
+
+        ScrollPane scrollPane = new ScrollPane(craftingMenu, skin);
+        scrollPane.setSize(700, 700);
+        scrollPane.setPosition((uiStage.getWidth() - craftingMenu.getWidth())/2,
+                (uiStage.getHeight() - craftingMenu.getHeight())/2, Align.center);
+
+        int perRow = 3;
+        for (CraftingRecipe recipe : CraftingRecipe.values()) {
+            CraftingWidget craftingWidget = new CraftingWidget(recipe, App.getApp().getCurrentGame().getPlayerInTurn(), skin, controller);
+            craftingWidgets.add(craftingWidget);
+            craftingMenu.add(craftingWidget).pad(10);
+            if (perRow == 0) {
+                craftingMenu.row();
+                perRow = 3;
+            } else {
+                perRow--;
+            }
+        }
+
+        TextButton backButton = new TextButton("Back", skin);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                changeCraftingMenu();
+            }
+        });
+        craftingMenu.add(backButton).pad(5);
+
+        uiStage.addActor(scrollPane);
+
+    }
+
+    public void showShopMenu() {
+        Player player = game.getPlayerInTurn();
+        Shop shop = game.getShopPlayerIsIn(player);
+        if (shop == null) {
+            System.out.println("You aren't in a shop");
+        } else {
+            Main.getMain().setScreen(new ShopScreen(shop));
+        }
+
+    }
+
+
 
     private void updateEnergyBar() {
         Player player = game.getPlayerInTurn();
@@ -718,12 +882,21 @@ public class GameScreen implements Screen {
 
         font = new BitmapFont();
         font.getData().setScale(2f);
-        
+
         smallFont = new BitmapFont();
         smallFont.getData().setScale(1f);
 
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        Skin skin = new Skin(Gdx.files.internal("skin2/uiskin.json"));
+
+//        uiStage = new Stage(new ScreenViewport());
+
+        prepareFoodMenu(skin);
+        prepareCraftingMenu(skin);
+
         loadTextures();
+
         energyBar.setValue((float) game.getPlayerInTurn().getEnergy());
 
         // effects
@@ -812,5 +985,13 @@ public class GameScreen implements Screen {
         if (game != null) {
             AppDataManager.saveGame(game);
         }
+    }
+
+    public static GameScreen getScreen() {
+        return screen;
+    }
+
+    public Stage getStage() {
+        return uiStage;
     }
 }

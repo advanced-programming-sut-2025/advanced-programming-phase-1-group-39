@@ -5,6 +5,8 @@ import com.StardewValley.models.Location;
 import com.StardewValley.models.NPC.NPC;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.buildings.Building;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Shop extends Building {
     private int openHour;
@@ -22,6 +24,7 @@ public class Shop extends Building {
     public String showAllProducts(){return null;}
     public String showAvailableProducts() {return null;}
     public void endDay() {};
+    public void showShopMenu(Stage stage, Skin skin) {}
 
     public boolean isInWorkingHour(int hour) {
         return hour >= openHour && hour <= closeHour;

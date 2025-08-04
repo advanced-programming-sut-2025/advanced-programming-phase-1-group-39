@@ -19,7 +19,7 @@ public class Food extends Item {
 
     @Override
     public TextureRegion getTexture() {
-        return new TextureRegion(new Texture(Gdx.files.internal("animalProducts/" + name.replaceAll(" ", "_") + ".png")));
+        return new TextureRegion(new Texture(Gdx.files.internal("foods/" + name.replaceAll(" ", "_") + ".png")));
     }
 
     public String getName() {

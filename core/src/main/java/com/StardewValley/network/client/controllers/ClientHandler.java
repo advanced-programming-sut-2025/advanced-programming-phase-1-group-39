@@ -14,11 +14,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class ClientHandler implements Runnable {
+    private String username;
     private Socket clientSocket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private String clientIdentifier;
-    private String lobbyId; // <<-- فیلد جدید برای دانستن اینکه کلاینت در کدام لابی است
+    private String lobbyId;
+    private int gameId = -1;
 
     public ClientHandler(Socket socket) {
         this.clientSocket = socket;
@@ -28,7 +30,14 @@ public class ClientHandler implements Runnable {
 
     public String getClientIdentifier() { return clientIdentifier; }
     public String getLobbyId() { return lobbyId; }
+    public int getGameId() {
+        return gameId;
+    }
+
     public void setLobbyId(String lobbyId) { this.lobbyId = lobbyId; }
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
 
     @Override
     public void run() {
@@ -51,12 +60,12 @@ public class ClientHandler implements Runnable {
         switch (request.getType()) {
             case CREATE_LOBBY:
                 String lobbyName = (String) request.getPayload();
-                ServerMain.createLobby(lobbyName, this);
+                ServerMain.createLobby(lobbyName, username, this);
                 break;
 
             case JOIN_LOBBY:
                 String requestedLobbyId = (String) request.getPayload();
-                ServerMain.joinLobby(requestedLobbyId, this);
+                ServerMain.joinLobby(requestedLobbyId, username, this);
                 break;
 
             case GET_LOBBY_LIST:
@@ -74,6 +83,12 @@ public class ClientHandler implements Runnable {
                     ServerMain.broadcastChatMessageToLobby(this.lobbyId, chatMessage);
                 }
                 break;
+
+            case PlAYER_MOVE: // مطمئن شوید RequestType شما درست است
+                if (username != null) {
+                    ServerMain.forwardRequestToGameSession(request, this);
+                }
+                break;
         }
     }
 
@@ -86,5 +101,13 @@ public class ClientHandler implements Runnable {
         } catch (Exception e) {
             System.err.println("Error sending message to " + clientIdentifier);
         }
+    }
+
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getUsername() {
+            return username;
     }
 }

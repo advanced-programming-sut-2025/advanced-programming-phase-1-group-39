@@ -15,6 +15,12 @@ import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.map.TileType;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
+import com.StardewValley.network.client.NetworkClient;
+import com.StardewValley.network.shares.GameState;
+import com.StardewValley.network.shares.dtos.GameStateDTO;
+import com.StardewValley.network.shares.dtos.PlayerStateDTO;
+import com.StardewValley.network.shares.message.Request;
+import com.StardewValley.network.shares.message.RequestType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -133,6 +139,10 @@ public class GameScreen implements Screen {
     private boolean craftingMenuOpen = false;
 
 
+    //Network
+    private NetworkClient networkClient;
+
+
 
     public GameScreen() {
         this.screen = this;
@@ -188,6 +198,9 @@ public class GameScreen implements Screen {
                 .width(1.5f * energyBox.getWidth()).height(1.5f * energyBox.getHeight())
                 .expand().bottom().right().pad(20f).row();
 
+
+        networkClient = new NetworkClient(this);
+        networkClient.connect("127.0.0.1", 8080);
     }
 
     // utils
@@ -922,6 +935,34 @@ public class GameScreen implements Screen {
         return game;
     }
 
+
+    //Network Handle
+    public void handleServerUpdate(Request serverRequest) {
+        if (serverRequest.getType() == RequestType.UPDATE_GAME_STATE) {
+            GameStateDTO newState = (GameStateDTO) serverRequest.getPayload();
+            updateGameWorldFromDTO(newState);
+        }
+    }
+
+    private void updateGameWorldFromDTO(GameStateDTO newState) {
+        // 1. آپدیت وضعیت بازیکنان
+        java.util.Map<String, PlayerStateDTO> playerStates = newState.getPlayerStates();
+        for (Player localPlayer : this.game.getPlayers()) {
+            PlayerStateDTO stateFromServer = playerStates.get(localPlayer.getUsername());
+            if (stateFromServer != null) {
+                // موقعیت بازیکن محلی را با اطلاعات سرور تنظیم کن
+                localPlayer.setLocationAbsolut(stateFromServer.getX(), stateFromServer.getY());
+                localPlayer.setDirection(stateFromServer.getDirection());
+            }
+        }
+
+        // 2. آپدیت زمان بازی
+        this.game.getTime().updateFrom(newState.getGameTime()); // باید متد updateFrom را در کلاس Time بنویسید
+
+        // 3. بقیه موارد...
+    }
+
+
     @Override
     public void show() {
         App.getApp().getMusic().pause();
@@ -1002,7 +1043,7 @@ public class GameScreen implements Screen {
 
             checkGoingNextDay();
 
-            gameMenuInputAdapter.handlePlayerMovement(v, game);
+            gameMenuInputAdapter.handlePlayerMovement(v, game, networkClient);
 
             updateEnergyBar();
             renderCamera();

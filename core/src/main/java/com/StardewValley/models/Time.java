@@ -95,6 +95,14 @@ public class Time {
         return allTimeByHour() >= time.allTimeByHour();
     }
 
+    public void updateFrom(Time time) {
+        this.day = time.day;
+        this.year = time.year;
+        this.season = time.season;
+        this.dayOfWeek = time.dayOfWeek;
+        this.hour = time.hour;
+    }
+
     public Time clone() {
         return new Time(this.day, this.year, this.season, this.dayOfWeek, this.hour);
     }

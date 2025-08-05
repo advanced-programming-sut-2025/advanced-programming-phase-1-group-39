@@ -1,12 +1,21 @@
 package com.StardewValley.network.shares.message;
 
 public enum RequestType {
-    CREATE_LOBBY,       // درخواست ایجاد لابی از کلاینت به سرور
-    JOIN_LOBBY,         // <<-- این خط اضافه شده است -- درخواست پیوستن به لابی
-    GET_LOBBY_LIST,     // درخواست لیست لابی‌ها از کلاینت به سرور
+    //Lobby
+    CREATE_LOBBY,
+    JOIN_LOBBY,
+    GET_LOBBY_LIST,
     UPDATE_LOBBY_LIST,
-    LOBBY_CHAT_MESSAGE, // ارسال لیست به‌روز شده لابی‌ها از سرور به کلاینت‌ها
-    START_GAME,         // <<-- درخواست شروع بازی از کلاینت (ادمین) به سرور
-    GAME_STARTED,       // <<-- پیام سرور به کلاینت‌ها مبنی بر شروع بازی
-    GAME_START_FAILED   // <<-- پیام سرور به ادمین در صورت عدم موفقیت
+    LOBBY_CHAT_MESSAGE,
+
+    //Start Game
+    START_GAME,
+    GAME_STARTED,
+    GAME_START_FAILED,
+
+    //InGame
+    PlAYER_MOVE,
+    UPDATE_GAME_STATE,
+    SHOR_ERROR_MESSAGE,
+    BUILD_GREENHOUSE,
 }

@@ -131,8 +131,6 @@ public class Game {
         return id;
     }
 
-    public void setMainPlayer(Player mainPlayer) { this.mainPlayer = mainPlayer; }
-
     public Player getMainPlayer() { return mainPlayer; }
 
     // NPC
@@ -260,11 +258,11 @@ public class Game {
     }
 
     public void addNpcMap() {
-        gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
-        baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
-
         initializeNPCs();
         makeNPCBuildings();
+
+        gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
+        baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
     }
 
     // time

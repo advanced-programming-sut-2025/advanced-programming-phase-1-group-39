@@ -79,6 +79,8 @@ public class GameScreen implements Screen {
     private TextureRegion inventoryHighlightSlot;
 
 
+    private MiniMapWidget miniMapWidget;
+
     private ProgressBar energyBar;
     private Image energyBox;
     private Label energyAmount;
@@ -160,7 +162,7 @@ public class GameScreen implements Screen {
         messageTable.add(errorLabel).bottom().padBottom(50).expandY(); // expandY is needed to effect by the bottom()
 
         // for hud table
-        Table hudTable = new Table();
+        Table hudTable = new Table().debugTable();
         hudTable.setFillParent(true);
         rootStack.add(hudTable);
 
@@ -178,10 +180,13 @@ public class GameScreen implements Screen {
         barTable.add(energyAmount).top().padTop(-10f).row();
         barTable.add(energyBar).expand().fill().pad(80,8,20,0);
         energyStack.add(barTable);
+        miniMapWidget = new MiniMapWidget(this.game);
+        hudTable.add(miniMapWidget).size(200, 150).expandX().top().left().pad(20);
 
         hudTable.add(energyStack)
                 .width(1.5f * energyBox.getWidth()).height(1.5f * energyBox.getHeight())
-                .expand().bottom().right().pad(20f);
+                .expand().bottom().right().pad(20f).row();
+
     }
 
     // utils

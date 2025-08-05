@@ -120,15 +120,11 @@ public class Game {
     }
 
     public void startGame() {
-        initializeNPCs();
-        makeNPCBuildings();
-
         for (Player player : players) {
             resetPlayerLocation(player);
         }
 
         initializeFriendships();
-
     }
 
     public int getId() {
@@ -266,6 +262,9 @@ public class Game {
     public void addNpcMap() {
         gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
         baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
+
+        initializeNPCs();
+        makeNPCBuildings();
     }
 
     // time

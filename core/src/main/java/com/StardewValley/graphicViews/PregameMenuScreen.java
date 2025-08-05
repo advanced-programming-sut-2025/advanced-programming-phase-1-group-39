@@ -193,12 +193,14 @@ public class PregameMenuScreen implements Screen {
         SelectBox<FarmType> mapSelectBox = new SelectBox<>(skin);
         mapSelectBox.setItems(FarmType.MINE_FARM, FarmType.LAKE_FARM);
 
+
+        int playerIndex = playerNumber - 1;
         Map sampleMap = new Map(new Random());
-        sampleMap.makeSampleMap(FarmType.MINE_FARM, playerNumber);
-        MiniMapWidget miniMap = new MiniMapWidget(sampleMap, FarmType.MINE_FARM, playerNumber - 1);
+        sampleMap.makeSampleMap(FarmType.MINE_FARM, playerIndex);
+        MiniMapWidget miniMap = new MiniMapWidget(sampleMap, FarmType.MINE_FARM, playerIndex);
 
         mapSelectBox.setSelectedIndex(0);
-        Label header = new Label("Choosing Map for " + controller.getUserNickName(playerNumber - 1) + "'s Farm", skin);
+        Label header = new Label("Choosing Map for " + controller.getUserNickName(playerIndex) + "'s Farm", skin);
         header.setFontScale(2f);
         header.setColor(Color.YELLOW);
 
@@ -223,10 +225,10 @@ public class PregameMenuScreen implements Screen {
 
         mapSelectBox.addListener(new ChangeListener() {
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                mapIds[playerNumber - 1] = mapSelectBox.getSelectedIndex();
+                mapIds[playerIndex] = mapSelectBox.getSelectedIndex();
                 Map sampleMap = new Map(new Random());
-                sampleMap.makeSampleMap(mapSelectBox.getSelected(), playerNumber);
-                MiniMapWidget newMiniMap = new MiniMapWidget(sampleMap, mapSelectBox.getSelected(), playerNumber- 1);
+                sampleMap.makeSampleMap(mapSelectBox.getSelected(), playerIndex);
+                MiniMapWidget newMiniMap = new MiniMapWidget(sampleMap, mapSelectBox.getSelected(), playerIndex);
                 minimapCell.setActor(newMiniMap);
             }
         });

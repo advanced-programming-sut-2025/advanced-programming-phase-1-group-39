@@ -15,6 +15,7 @@ public class Lobby implements Serializable {
     // <<-- برای thread-safety بهتر، لیست را final می‌کنیم --
     private final List<String> players;
     private final String admin;
+    private boolean gameStarted;
 
     public Lobby(String lobbyName, String admin) {
         this.id = UUID.randomUUID().toString().substring(0, 8);
@@ -22,6 +23,7 @@ public class Lobby implements Serializable {
         this.admin = admin;
         this.players = Collections.synchronizedList(new ArrayList<>());
         this.players.add(admin);
+        this.gameStarted = false;
     }
 
     // Getter ها
@@ -30,6 +32,12 @@ public class Lobby implements Serializable {
     public List<String> getPlayers() { return new ArrayList<>(players); }
     public String getAdmin() { return admin; }
     public int getPlayerCount() { return players.size(); } // متد کمکی
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
+    }
 
     public boolean isFull() {
         return players.size() >= MAX_PLAYERS;
@@ -48,6 +56,7 @@ public class Lobby implements Serializable {
     @Override
     public String toString() {
         // از getPlayerCount() استفاده می‌کنیم که مستقیما سایز لیست همگام‌شده را می‌خواند
-        return "ID: " + id + " | Name: " + lobbyName + " | Players: " + getPlayerCount() + "/" + MAX_PLAYERS;
+        String status = gameStarted ? "[In Game]" : "[Waiting]";
+        return status + " ID: " + id + " | Name: " + lobbyName + " | Players: " + getPlayerCount() + "/" + MAX_PLAYERS;
     }
 }

@@ -17,6 +17,7 @@ public class ClientMain {
     private static final int SERVER_PORT = 8080;
     private static ObjectOutputStream out;
     private static boolean inLobby = false;
+    private static boolean gameRunning = false;
 
     public static void main(String[] args) {
         try (Socket socket = new Socket(SERVER_IP, SERVER_PORT)) {
@@ -45,43 +46,59 @@ public class ClientMain {
     private static void showMenu() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\n--- Main Menu ---");
-            System.out.println("1. Create Lobby");
-            System.out.println("2. Join Lobby");
-            System.out.println("3. Refresh Lobby List");
-            System.out.println("4. Send Chat Message (if in lobby)");
-            System.out.print("Enter command: ");
-            String command = scanner.nextLine();
+            if (gameRunning) {
+                // منوی داخل بازی (فعلا ساده)
+                System.out.print("[In Game] Enter chat message: ");
+                String message = scanner.nextLine();
+                sendRequest(new Request(RequestType.LOBBY_CHAT_MESSAGE, message));
+            } else {
+                // منوی لابی
+                System.out.println("\n--- Main Menu ---");
+                System.out.println("1. Create Lobby");
+                System.out.println("2. Join Lobby");
+                System.out.println("3. Refresh Lobby List");
+                System.out.println("4. Send Chat Message (if in lobby)");
+                System.out.println("5. Start Game (if admin)");
+                System.out.print("Enter command: ");
+                String command = scanner.nextLine();
 
-            switch (command) {
-                case "1":
-                    System.out.print("Enter lobby name: ");
-                    String lobbyName = scanner.nextLine();
-                    sendRequest(new Request(RequestType.CREATE_LOBBY, lobbyName));
-                    // <<-- رفع باگ اصلی: سازنده هم باید بداند که در لابی است --
-                    inLobby = true;
-                    break;
-                case "2":
-                    System.out.print("Enter Lobby ID to join: ");
-                    String lobbyId = scanner.nextLine();
-                    sendRequest(new Request(RequestType.JOIN_LOBBY, lobbyId));
-                    inLobby = true;
-                    break;
-                case "3":
-                    sendRequest(new Request(RequestType.GET_LOBBY_LIST, null));
-                    break;
-                case "4":
-                    if (inLobby) {
-                        System.out.print("Enter message: ");
-                        String message = scanner.nextLine();
-                        sendRequest(new Request(RequestType.LOBBY_CHAT_MESSAGE, message));
-                    } else {
-                        System.out.println("You must be in a lobby to chat.");
-                    }
-                    break;
-                default:
-                    System.out.println("Invalid command.");
-                    break;
+                switch (command) {
+                    case "1":
+                        System.out.print("Enter lobby name: ");
+                        String lobbyName = scanner.nextLine();
+                        sendRequest(new Request(RequestType.CREATE_LOBBY, lobbyName));
+                        inLobby = true;
+                        break;
+                    case "2":
+                        System.out.print("Enter Lobby ID to join: ");
+                        String lobbyId = scanner.nextLine();
+                        sendRequest(new Request(RequestType.JOIN_LOBBY, lobbyId));
+                        inLobby = true;
+                        break;
+                    case "3":
+                        sendRequest(new Request(RequestType.GET_LOBBY_LIST, null));
+                        break;
+                    case "4":
+                        if (inLobby) {
+                            System.out.print("Enter message: ");
+                            String message = scanner.nextLine();
+                            sendRequest(new Request(RequestType.LOBBY_CHAT_MESSAGE, message));
+                        } else {
+                            System.out.println("You must be in a lobby to chat.");
+                        }
+                        break;
+                    case "5":
+                        if (inLobby) {
+                            System.out.println("Sending start game request...");
+                            sendRequest(new Request(RequestType.START_GAME, null));
+                        } else {
+                            System.out.println("You must be in a lobby to start a game.");
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid command.");
+                        break;
+                }
             }
         }
     }
@@ -114,6 +131,22 @@ public class ClientMain {
                 ChatMessage chatMessage = (ChatMessage) request.getPayload();
                 System.out.print("\r" + " ".repeat(50) + "\r");
                 System.out.println("[Lobby Chat] " + chatMessage);
+                System.out.print("Enter command: ");
+                break;
+
+            case GAME_STARTED:
+                gameRunning = true;
+                System.out.print("\r" + " ".repeat(50) + "\r");
+                System.out.println("================================");
+                System.out.println("GAME HAS STARTED! Welcome to Stardew Valley.");
+                System.out.println("You can now chat with other players in the game.");
+                System.out.println("================================");
+                break;
+
+            case GAME_START_FAILED:
+                String errorMessage = (String) request.getPayload();
+                System.out.print("\r" + " ".repeat(50) + "\r");
+                System.out.println("[Error] Could not start game: " + errorMessage);
                 System.out.print("Enter command: ");
                 break;
         }

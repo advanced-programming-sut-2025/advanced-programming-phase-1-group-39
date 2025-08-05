@@ -63,12 +63,15 @@ public class ClientHandler implements Runnable {
                 sendMessage(new Request(RequestType.UPDATE_LOBBY_LIST, ServerMain.getLobbies()));
                 break;
 
-            // <<-- منطق جدید برای چت --
+            case START_GAME:
+                ServerMain.startGame(this);
+                break;
+
             case LOBBY_CHAT_MESSAGE:
-                if (lobbyId != null) { // فقط اگر در لابی باشد می‌تواند چت کند
+                if (lobbyId != null) {
                     String messageContent = (String) request.getPayload();
                     ChatMessage chatMessage = new ChatMessage(this.clientIdentifier, messageContent);
-                    ServerMain.broadcastMessageToLobby(this.lobbyId, chatMessage);
+                    ServerMain.broadcastChatMessageToLobby(this.lobbyId, chatMessage);
                 }
                 break;
         }
@@ -77,7 +80,7 @@ public class ClientHandler implements Runnable {
     public void sendMessage(Request request) {
         try {
             synchronized (out) {
-                out.writeObject(request);
+                out.writeUnshared(request);
                 out.flush();
             }
         } catch (Exception e) {

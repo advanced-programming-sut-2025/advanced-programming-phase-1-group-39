@@ -1,10 +1,13 @@
 package com.StardewValley.models.Shops;
 
 
+import com.StardewValley.graphicViews.GameInputAdapter;
+import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.models.*;
 import com.StardewValley.models.NPC.NPC;
 import com.StardewValley.models.tools.Tool;
 import com.StardewValley.models.tools.ToolType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -257,8 +260,17 @@ public class BlackSmithShop extends Shop {
         Table content = new Table();
         content.setFillParent(true);
         content.padTop(20);
-        content.add(onlyAvailable).left().pad(5).row();
+        content.add(onlyAvailable).right().pad(20).row();
         content.add(scrollPane).expand().fill().row();
+        TextButton backButton = new TextButton("Back", skin);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                window.setVisible(false);
+                Gdx.input.setInputProcessor(GameScreen.getScreen().getGameMenuInputAdapter());
+            }
+        });
+        content.add(backButton).padTop(10).center();
 
         window.add(content).expand().fill().pad(10);
         stage.addActor(window);

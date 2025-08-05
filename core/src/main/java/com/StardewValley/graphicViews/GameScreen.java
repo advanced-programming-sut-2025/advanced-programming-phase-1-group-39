@@ -126,6 +126,7 @@ public class GameScreen implements Screen {
 
     // Cooking and crafting
     private Table cookingMenuTable;
+    private ArrayList<TextButton> cookingMenuButtons = new ArrayList<>();
     private boolean cookingMenuOpen = false;
     private Table craftingMenu;
     private ArrayList<CraftingWidget> craftingWidgets = new ArrayList<>();
@@ -490,6 +491,11 @@ public class GameScreen implements Screen {
         cookingMenuTable.setVisible(cookingMenuOpen);
         if (cookingMenuOpen) {
             Gdx.input.setInputProcessor(uiStage);
+            Player player = game.getPlayerInTurn();
+            ArrayList<FoodRecipe> recipes = new ArrayList<>(java.util.List.of(FoodRecipe.values()));
+            for (int i = 0; i < cookingMenuButtons.size(); i++) {
+                cookingMenuButtons.get(i).setDisabled(!player.hasLearnedFoodRecipe(recipes.get(i)));
+            }
         } else {
             Gdx.input.setInputProcessor(gameMenuInputAdapter);
         }
@@ -500,7 +506,7 @@ public class GameScreen implements Screen {
         cookingMenuTable.setVisible(false);
         cookingMenuTable.setBackground(skin.getDrawable("window")); // Use window background from atlas
         ScrollPane scrollPane = new ScrollPane(cookingMenuTable, skin);
-        scrollPane.setSize(1080, 900);
+        scrollPane.setSize(720, 1080);
         scrollPane.setPosition((uiStage.getWidth() - cookingMenuTable.getWidth())/2,
                 (uiStage.getHeight() - cookingMenuTable.getHeight())/2, Align.center);
 
@@ -509,14 +515,13 @@ public class GameScreen implements Screen {
         cookingMenuTable.add(titleLabel).pad(10).colspan(3).center();
         cookingMenuTable.row();
 
-        int perRow = 2;
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         for (FoodRecipe recipe : FoodRecipe.values()) {
             Image image = new Image(recipe.data.getTexture());
             Label nameLabel = new Label(recipe.name(), labelStyle);
             TextButton cookButton = new TextButton("Cook", skin);
 
-            cookButton.setDisabled(player.hasLearnedFoodRecipe(recipe));
+            cookingMenuButtons.add(cookButton);
 
             cookingMenuTable.add(image).size(32, 32).pad(5);
             cookingMenuTable.add(nameLabel).left().pad(5);
@@ -528,13 +533,7 @@ public class GameScreen implements Screen {
                     controller.cook(recipe);
                 }
             });
-
-            if (perRow == 0) {
-                cookingMenuTable.row();
-                perRow = 3;
-            } else {
-                perRow--;
-            }
+            cookingMenuTable.row();
         }
         TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -605,7 +604,8 @@ public class GameScreen implements Screen {
         if (shop == null) {
             System.out.println("You aren't in a shop");
         } else {
-            Main.getMain().setScreen(new ShopScreen(shop));
+            Gdx.input.setInputProcessor(uiStage);
+            shop.showShopMenu(uiStage, GameAssetManager.skin);
         }
 
     }
@@ -1070,6 +1070,9 @@ public class GameScreen implements Screen {
 
     public static GameScreen getScreen() {
         return screen;
+    }
+    public GameInputAdapter getGameMenuInputAdapter() {
+        return gameMenuInputAdapter;
     }
 
     public Stage getStage() {

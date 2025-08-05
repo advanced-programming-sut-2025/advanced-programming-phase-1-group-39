@@ -123,9 +123,6 @@ public class Game {
         initializeNPCs();
         makeNPCBuildings();
 
-        gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
-        baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
-
         for (Player player : players) {
             resetPlayerLocation(player);
         }
@@ -264,6 +261,11 @@ public class Game {
         player.addFirstBuildingObjects(this);
         gameMap.addRandomFarm(farmType, number, player);
         baseMap.addRandomFarm(farmType, number, player);
+    }
+
+    public void addNpcMap() {
+        gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
+        baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
     }
 
     // time

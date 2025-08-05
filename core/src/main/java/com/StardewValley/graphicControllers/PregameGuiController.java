@@ -54,7 +54,7 @@ public class PregameGuiController {
         return new Result(true, "");
     }
 
-    public void startGame(int[] mapIds) {
+    public void makeMapOfGame(int[] mapIds) {
         // start making a game for users
         int gameId = Game.lastGameId;
         ArrayList<Player> players = new ArrayList<>();
@@ -75,6 +75,10 @@ public class PregameGuiController {
         for (Player player : players) {
             game.addRandomFarmForPlayer(player, FarmType.getFarmTypeById(mapIds[c++]));
         }
+        game.addNpcMap();
+    }
+
+    public void startGame() {
         game.startGame();
         App.getApp().setCurrentMenu(Menu.GAME);
         Main.getMain().switchScreen(new GameScreen());
@@ -92,5 +96,9 @@ public class PregameGuiController {
     public String getUserNickName(int index) {
         User user = gameUsers.get(index);
         return user.getNickname();
+    }
+
+    public Game getGame() {
+        return game;
     }
 }

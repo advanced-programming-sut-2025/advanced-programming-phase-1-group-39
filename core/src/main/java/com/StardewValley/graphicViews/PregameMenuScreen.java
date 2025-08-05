@@ -3,6 +3,7 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.PregameGuiController;
 import com.StardewValley.models.App;
+import com.StardewValley.models.Game;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.map.Map;
@@ -45,7 +46,7 @@ public class PregameMenuScreen implements Screen {
     private Window newGameWindow;
     private ArrayList<Table> startGamePages = new ArrayList<>();
     private int startGamePageIndex = 0;
-    private final int numOfStartGamePages = 5;
+    private final int numOfStartGamePages = 6;
     private Table startGameContentTable;
 
     private TextButton nextButton;
@@ -194,7 +195,7 @@ public class PregameMenuScreen implements Screen {
 
         Map sampleMap = new Map(new Random());
         sampleMap.makeSampleMap(FarmType.MINE_FARM, playerNumber);
-        MiniMapWidget miniMap = new MiniMapWidget(sampleMap, FarmType.MINE_FARM, playerNumber);
+        MiniMapWidget miniMap = new MiniMapWidget(sampleMap, FarmType.MINE_FARM, playerNumber - 1);
 
         mapSelectBox.setSelectedIndex(0);
         Label header = new Label("Choosing Map for " + controller.getUserNickName(playerNumber - 1) + "'s Farm", skin);
@@ -218,14 +219,14 @@ public class PregameMenuScreen implements Screen {
         page.add(new Label("Map Type:", skin)).right().padRight(10);
         page.add(mapSelectBox).width(500).left().row();
 
-        Cell<MiniMapWidget> minimapCell = page.add(miniMap).center().colspan(2).size(800, 600);
+        Cell<MiniMapWidget> minimapCell = page.add(miniMap).center().colspan(2).padTop(10).size(600, 450);
 
         mapSelectBox.addListener(new ChangeListener() {
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 mapIds[playerNumber - 1] = mapSelectBox.getSelectedIndex();
                 Map sampleMap = new Map(new Random());
                 sampleMap.makeSampleMap(mapSelectBox.getSelected(), playerNumber);
-                MiniMapWidget newMiniMap = new MiniMapWidget(sampleMap, mapSelectBox.getSelected(), playerNumber);
+                MiniMapWidget newMiniMap = new MiniMapWidget(sampleMap, mapSelectBox.getSelected(), playerNumber- 1);
                 minimapCell.setActor(newMiniMap);
             }
         });
@@ -233,6 +234,22 @@ public class PregameMenuScreen implements Screen {
 
         return page;
     }
+
+    private void buildMergedMap() {
+        Table mergedMapTable = new Table();
+        Skin skin = GameAssetManager.skin;
+        Label header = new Label("Merged Map", skin);
+        header.setFontScale(2f);
+        header.setColor(Color.YELLOW);
+        MiniMapWidget miniMap = new MiniMapWidget(controller.getGame());
+
+        mergedMapTable.add(header).center().colspan(2);
+        mergedMapTable.row().padTop(15);
+        mergedMapTable.add(miniMap).center().colspan(2).size(800, 600);
+
+        startGamePages.set(5, mergedMapTable);
+    }
+
 
     public void buildNewGameWindow() {
         Skin skin = GameAssetManager.skin;
@@ -246,7 +263,7 @@ public class PregameMenuScreen implements Screen {
         );
 
         startGamePages.add(addUsernamesFormTable(skin));
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
             startGamePages.add(new Table());
 
 
@@ -270,10 +287,13 @@ public class PregameMenuScreen implements Screen {
                         }
                         showPage(1);
                     }
+                } else if (startGamePageIndex == numOfStartGamePages - 2) {
+                    controller.makeMapOfGame(mapIds);
+                    buildMergedMap();
+                    showPage(1);
                 } else if (startGamePageIndex == numOfStartGamePages - 1) {
-                    controller.startGame(mapIds);
+                    controller.startGame();
                 } else {
-
                     showPage(1);
                 }
             }
@@ -290,7 +310,7 @@ public class PregameMenuScreen implements Screen {
         });
 
         newGameWindow.add(startGameContentTable).expand().fill().colspan(2);
-        newGameWindow.row().pad(100, 45 , 30 , 45).expandX().fillX();
+        newGameWindow.row().pad(50, 45 , 30 , 45).expandX().fillX();
         newGameWindow.add(previousButton).width(250).left();
         newGameWindow.add(nextButton).width(250).right();
 

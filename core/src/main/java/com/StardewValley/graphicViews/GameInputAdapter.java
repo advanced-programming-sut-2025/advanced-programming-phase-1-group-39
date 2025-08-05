@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameInputAdapter extends InputAdapter {
     private GameGuiController controller;
@@ -26,7 +27,7 @@ public class GameInputAdapter extends InputAdapter {
 
         Direction currentDirection = Direction.NONE;
 
-        Vector2 movement = new Vector2(0,0);
+        Vector2 movement = new Vector2(0, 0);
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             movement.y += 1;
             currentDirection = Direction.UP;
@@ -78,6 +79,19 @@ public class GameInputAdapter extends InputAdapter {
         }
     }
 
+    public static Direction getMouseDirectionAroundPlayer(Location playerLoc, Location mouseTileLoc) {
+        int dx = mouseTileLoc.x() - playerLoc.x();
+        int dy = mouseTileLoc.y() - playerLoc.y();
+
+        for (Direction dir : Direction.values()) {
+            if (dir == Direction.NONE) continue;
+            if (dx == dir.dx && dy == dir.dy) {
+                return dir;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public boolean keyDown(int keycode) {
@@ -87,8 +101,6 @@ public class GameInputAdapter extends InputAdapter {
             screen.blackBackgroundAnimation(() -> controller.changeTurn());
         } else if (keycode == Input.Keys.BACKSLASH || keycode == Input.Keys.SLASH) {
             screen.toggleTerminalBox();
-        } else if (keycode == Input.Buttons.LEFT) {
-
         }
         return true;
     }
@@ -101,6 +113,28 @@ public class GameInputAdapter extends InputAdapter {
         int size = game.getPlayerInTurn().getMaxInventorySize();
         int next = (current + (amountY > 0 ? 1 : -1) + size) % size;
         game.getPlayerInTurn().setSelectedSlot(next);
+        return true;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        // ۱. مختصات screen به world
+        Vector3 worldCoords = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
+        // ۲. تبدیل world به tile
+        Location mouseTile = Map.pixelToTileConverter(new Location(worldCoords.x, worldCoords.y));
+        Player player = screen.getGame().getPlayerInTurn();
+        Location playerTile = player.getTileLocation();
+
+        Direction dir = getMouseDirectionAroundPlayer(playerTile, mouseTile);
+
+        // دیباگ برای تست مختصات:
+        System.out.println("mouseTile: " + mouseTile.x() + "," + mouseTile.y());
+        System.out.println("playerTile: " + playerTile.x() + "," + playerTile.y());
+        System.out.println("dir: " + dir);
+
+        if (dir != null) {
+            controller.useTool(dir);
+        }
         return true;
     }
 }

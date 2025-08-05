@@ -693,6 +693,11 @@ public class GameScreen implements Screen {
         return game;
     }
 
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+
     @Override
     public void show() {
         App.getApp().getMusic().pause();
@@ -781,4 +786,5 @@ public class GameScreen implements Screen {
             AppDataManager.saveGame(game);
         }
     }
+
 }

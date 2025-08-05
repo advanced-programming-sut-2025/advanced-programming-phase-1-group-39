@@ -2,9 +2,16 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.controllers.*;
 import com.StardewValley.models.*;
+import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.Enums.commands.GameCommands;
 import com.StardewValley.models.Enums.commands.InteractionsCommand;
 import com.StardewValley.models.Enums.commands.NPCGameCommand;
+import com.StardewValley.models.map.AnsiColors;
+import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.tools.Axe;
+import com.StardewValley.models.tools.FishingPole;
+import com.StardewValley.models.tools.Pickaxe;
+import com.StardewValley.models.tools.Tool;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
@@ -301,4 +308,31 @@ public class GameGuiController {
         }
         return text.replaceAll("\\u001B\\[[;\\d]*m", "");
     }
+
+    public void useTool(Direction direction) {
+        Game game = screen.getGame();
+        Player player = game.getPlayerInTurn();
+
+        Tile tile = game.getMap().getTile(player.getTileLocation().x() + direction.dx,
+                player.getTileLocation().y() + direction.dy);
+        if (tile != null) {
+            ItemStack itemStack = player.getInventory().getInHand();
+            if (itemStack != null && itemStack.getItem() instanceof Tool tool) {
+                int energyConsumed = tool.getUsingEnergy(player.getSkills(), game.getTodayWeather());
+                if (player.getTurnEnergy() >= energyConsumed) {
+                    boolean result = tool.useTool(tile, player, player.getSkills()).success();
+                    if (!result) {
+                        if (tool instanceof Pickaxe || tool instanceof Axe) {
+                            energyConsumed -= 1;
+                            player.changeEnergy(-energyConsumed);
+                        }
+                    } else {
+                        player.changeEnergy(-
+                                energyConsumed);
+                    }
+                }
+            }
+        }
+    }
+
 }

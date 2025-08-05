@@ -7,7 +7,9 @@ import com.StardewValley.models.NPC.NPC;
 import com.StardewValley.models.Shops.Shop;
 import com.StardewValley.models.artisan.ArtisanMachine;
 import com.StardewValley.models.buildings.Building;
+import com.StardewValley.models.buildings.Cabin;
 import com.StardewValley.models.buildings.GreenHouse;
+import com.StardewValley.models.buildings.ShippingBin;
 import com.StardewValley.models.cropsAndFarming.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -82,6 +84,56 @@ public class Map {
         }
     }
 
+    public void makeSampleMap(FarmType farmType, int playerNumber) {
+        try (FileReader reader = new FileReader("projectData/resources/data/Map/farmTypes.json")) {
+            Gson gson = new Gson();
+            JsonArray array = gson.fromJson(reader, JsonArray.class);
+
+            int id = 0;
+            if (farmType == FarmType.LAKE_FARM) {
+                id = 1;
+            }
+            JsonObject farmObject = array.get(id).getAsJsonObject(); // FarmType
+
+            Location location = Map.getStartOfFarm(playerNumber);
+            int startX = location.x(), startY = location.y();
+
+            // fixeds
+            JsonObject fixedElements = farmObject.getAsJsonObject("fixedElements");
+            // adding buildings
+            Location startOfFarm = Map.getStartOfFarm(playerNumber);
+
+            Building cabin = new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5));
+            Building greenhouse = new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0));
+            Building shippingBin = new ShippingBin("Shipping Bin", new Location(startOfFarm.x() + 77, startOfFarm.y() + 10), 1, 1);
+
+            addObjectToMap(cabin, "cabin", 0,0);
+
+            addObjectToMap(greenhouse, "greenhouse", 0,0);
+
+            addObjectToMap(shippingBin, "Shipping Bin", 0,0);
+
+
+            // adding main lake and quarry from json
+            JsonObject quarry = fixedElements.getAsJsonObject("quarry");
+            addObjectToMap(quarry, "quarry", startX, startY);
+
+            JsonArray lakes = fixedElements.getAsJsonArray("lakes");
+            JsonObject mainLake = lakes.get(0).getAsJsonObject();
+            addObjectToMap(mainLake, "lake", startX, startY);
+            // add small lake
+            if (farmType == FarmType.LAKE_FARM) {
+                JsonObject smallLake = lakes.get(1).getAsJsonObject();
+                addObjectToMap(smallLake, "lake", startX, startY);
+            }
+            ArrayList<Building> buildings = new ArrayList<>(List.of(cabin, greenhouse, shippingBin));
+
+            fillFarmWithRandoms(startX, startY, 0.25, 0.3, Season.SPRING, buildings, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void addRandomFarm(FarmType farmType, int playerNumber, Player player) {
         try (FileReader reader = new FileReader("projectData/resources/data/Map/farmTypes.json")) {
@@ -124,7 +176,6 @@ public class Map {
             }
             ArrayList<Building> buildings = new ArrayList<>(List.of(cabin, greenhouse, shippingBin));
 
-            // random fill map
             fillFarmWithRandoms(startX, startY, 0.25, 0.3, Season.SPRING, buildings, true);
         } catch (Exception e) {
             e.printStackTrace();

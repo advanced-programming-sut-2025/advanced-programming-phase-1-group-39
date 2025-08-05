@@ -3,6 +3,7 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.models.Constants;
 import com.StardewValley.models.Location;
 import com.StardewValley.models.NPC.NPC;
+import com.StardewValley.models.map.FarmType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,16 +16,18 @@ import com.StardewValley.models.map.Tile;
 
 public class MiniMapWidget extends Actor {
     private Game game;
+    private Map map;
     private Texture mapTexture;
     private Texture playerDotTexture;
     private Texture NPCDotTexture;
 
-    private int width, height;
-
     private enum type {
-        MapWithoutPlayer,
-        Buildings
+        AllMap,
+        Farms
     }
+    private type currentType = type.AllMap;
+    private int playerNum = 0;
+    private FarmType farmType;
 
     public MiniMapWidget(Game game) {
         this.game = game;
@@ -32,26 +35,63 @@ public class MiniMapWidget extends Actor {
         createPlayerAndNPCDotTexture();
     }
 
+    public MiniMapWidget(Map map, FarmType farmType, int playerNum) {
+        this.map = map;
+        this.currentType = type.Farms;
+        this.farmType = farmType;
+        this.playerNum = playerNum;
+        createMapTexture();
+        createPlayerAndNPCDotTexture();
+    }
+
     private void createMapTexture() {
-        Map map = game.getMap();
+        Map map;
+        if (game != null)
+            map = game.getMap();
+        else
+            map = this.map;
         int width = Constants.WORLD_MAP_WIDTH;
         int height = Constants.WORLD_MAP_HEIGHT;
+        int farmWidth = Constants.FARM_WIDTH;
+        int farmHeight = Constants.FARM_HEIGHT;
+
 
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                Tile tile = map.getTiles()[y][x];
-                if (tile != null) {
-                    pixmap.setColor(getColorForTile(tile));
-                    pixmap.drawPixel(x, y);
+        if (currentType == type.AllMap) {
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    Tile tile = map.getTiles()[y][x];
+                    if (tile != null) {
+                        pixmap.setColor(getColorForTile(tile));
+                        pixmap.drawPixel(x, y);
+                    }
+                }
+            }
+        } else {
+            // TODO : set start and end of farm
+            pixmap.setColor(new Color(0.8f, 0.6f, 0.3f, 1));
+            pixmap.fill();
+
+            Location farmStart = Map.getStartOfFarm(this.playerNum);
+            int startX = farmStart.x();
+            int startY = farmStart.y();
+            int endX = farmWidth + startX;
+            int endY = farmHeight + startY;
+            for (int y = startY; y < endY; y++) {
+                for (int x = startX; x < endX; x++) {
+                    Tile tile = map.getTiles()[y][x];
+                    if (tile != null) {
+                        pixmap.setColor(getColorForTile(tile));
+                        pixmap.drawPixel(x, y);
+                    }
                 }
             }
         }
+
         mapTexture = new Texture(pixmap);
         pixmap.dispose();
     }
-
 
     private void createPlayerAndNPCDotTexture() {
         Pixmap pixmap = new Pixmap(4, 4, Pixmap.Format.RGBA8888);
@@ -106,6 +146,7 @@ public class MiniMapWidget extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(mapTexture, getX(), getY(), getWidth(), getHeight());
 
+        if (currentType == type.Farms) return;
         for (Player player : game.getPlayers()) {
             float mapX = (player.getX() / (Map.TILE_SIZE * Constants.WORLD_MAP_WIDTH)) * getWidth();
 

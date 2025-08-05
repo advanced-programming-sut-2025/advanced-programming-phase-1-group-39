@@ -4,6 +4,7 @@ import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.PregameGuiController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Result;
+import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.map.Map;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
@@ -23,6 +24,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PregameMenuScreen implements Screen {
     private PregameGuiController controller;
@@ -187,14 +189,13 @@ public class PregameMenuScreen implements Screen {
     public Table addMapSelectionTable(Skin skin, int playerNumber) {
         Table page = new Table();
 
-        SelectBox<String> mapSelectBox = new SelectBox<>(skin);
-        mapSelectBox.setItems(Map.getFarmTypeName(0), Map.getFarmTypeName(1));
+        SelectBox<FarmType> mapSelectBox = new SelectBox<>(skin);
+        mapSelectBox.setItems(FarmType.MINE_FARM, FarmType.LAKE_FARM);
 
-        mapSelectBox.addListener(new ChangeListener() {
-            public void changed(ChangeEvent changeEvent, Actor actor) {
-                mapIds[playerNumber - 1] = mapSelectBox.getSelectedIndex();
-            }
-        });
+        Map sampleMap = new Map(new Random());
+        sampleMap.makeSampleMap(FarmType.MINE_FARM, playerNumber);
+        MiniMapWidget miniMap = new MiniMapWidget(sampleMap, FarmType.MINE_FARM, playerNumber);
+
         mapSelectBox.setSelectedIndex(0);
         Label header = new Label("Choosing Map for " + controller.getUserNickName(playerNumber - 1) + "'s Farm", skin);
         header.setFontScale(2f);
@@ -215,7 +216,20 @@ public class PregameMenuScreen implements Screen {
         page.add(farmPlaceLabel).center().colspan(2);
         page.row().padTop(50);
         page.add(new Label("Map Type:", skin)).right().padRight(10);
-        page.add(mapSelectBox).width(500).left();
+        page.add(mapSelectBox).width(500).left().row();
+
+        Cell<MiniMapWidget> minimapCell = page.add(miniMap).center().colspan(2).size(800, 600);
+
+        mapSelectBox.addListener(new ChangeListener() {
+            public void changed(ChangeEvent changeEvent, Actor actor) {
+                mapIds[playerNumber - 1] = mapSelectBox.getSelectedIndex();
+                Map sampleMap = new Map(new Random());
+                sampleMap.makeSampleMap(mapSelectBox.getSelected(), playerNumber);
+                MiniMapWidget newMiniMap = new MiniMapWidget(sampleMap, mapSelectBox.getSelected(), playerNumber);
+                minimapCell.setActor(newMiniMap);
+            }
+        });
+
 
         return page;
     }
@@ -259,6 +273,7 @@ public class PregameMenuScreen implements Screen {
                 } else if (startGamePageIndex == numOfStartGamePages - 1) {
                     controller.startGame(mapIds);
                 } else {
+
                     showPage(1);
                 }
             }

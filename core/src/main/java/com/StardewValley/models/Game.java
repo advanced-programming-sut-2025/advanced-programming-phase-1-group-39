@@ -245,6 +245,14 @@ public class Game {
         return gameMap;
     }
 
+    public void setFarmTypeOfPlayer(Player player, FarmType farmType) {
+        int number = players.indexOf(player);
+        if (number == -1) {
+            return;
+        }
+        player.setFarmType(farmType);
+        player.setFarmBound(Map.getStartOfFarm(number));
+    }
 
     public void addRandomFarmForPlayer(Player player, FarmType farmType) {
         int number = players.indexOf(player);
@@ -252,8 +260,7 @@ public class Game {
             return;
         }
 
-        player.setFarmType(farmType);
-        player.setFarmBound(Map.getStartOfFarm(number));
+        setFarmTypeOfPlayer(player, farmType);
         player.addFirstBuildingObjects(this);
         gameMap.addRandomFarm(farmType, number, player);
         baseMap.addRandomFarm(farmType, number, player);

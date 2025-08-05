@@ -10,4 +10,14 @@ dependencies {
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
+
+  // برای ارتباطات شبکه (کلاینت-سرور)
+  implementation 'com.esotericsoftware:kryonet:2.22.0-RC1'
+
+  // برای ساخت و مدیریت توکن‌های JWT (احراز هویت)
+  // پیاده‌سازی اصلی
+  implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+  // پیاده‌سازی زمان اجرا (Runtime)
+  runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+  runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // یا jjwt-gson
 }

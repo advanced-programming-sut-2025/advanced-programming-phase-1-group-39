@@ -17,6 +17,9 @@ public class MiniMapWidget extends Actor {
     private Game game;
     private Texture mapTexture;
     private Texture playerDotTexture;
+    private Texture NPCDotTexture;
+
+    private int width, height;
 
     private enum type {
         MapWithoutPlayer,
@@ -26,7 +29,7 @@ public class MiniMapWidget extends Actor {
     public MiniMapWidget(Game game) {
         this.game = game;
         createMapTexture();
-        createPlayerDotTexture();
+        createPlayerAndNPCDotTexture();
     }
 
     private void createMapTexture() {
@@ -50,24 +53,52 @@ public class MiniMapWidget extends Actor {
     }
 
 
-    private void createPlayerDotTexture() {
-         for (Player player : game.getPlayers()) {
-            Pixmap pixmap = new Pixmap(2, 2, Pixmap.Format.RGBA8888);
-            pixmap.setColor(Color.RED); // رنگ نقطه بازیکن
-            pixmap.fill();
-            playerDotTexture = new Texture(pixmap);
-            pixmap.dispose();
-         }
+    private void createPlayerAndNPCDotTexture() {
+        Pixmap pixmap = new Pixmap(4, 4, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.RED); // رنگ نقطه بازیکن
+        pixmap.fill();
+        playerDotTexture = new Texture(pixmap);
+        pixmap.dispose();
+
+        Pixmap NPCpixmap = new Pixmap(3, 3, Pixmap.Format.RGBA8888);
+        NPCpixmap.setColor(Color.PURPLE); // رنگ نقطه NPC
+        NPCpixmap.fill();
+        NPCDotTexture = new Texture(NPCpixmap);
+        NPCpixmap.dispose();
     }
 
     private Color getColorForTile(Tile tile) {
+        if (tile.getPlant() != null) {
+            return Color.GREEN;
+        }
+        if (tile.getTree() != null) {
+            return new Color(0, 0.4f, 0, 1); // dark green
+        }
+        if (tile.getItemOnTile() != null) {
+            return Color.ORANGE;
+        }
+
         switch (tile.getType()) {
-            case WATER: return Color.BLUE;
+            case WATER: return Color.ROYAL;
             case WALL: return Color.DARK_GRAY;
             case INDOOR: return Color.BROWN;
-            case SOIL: return Color.TAN;
-            case PATH: return Color.LIGHT_GRAY;
-            default: return Color.FOREST;
+            case SELL_BASKET:
+                return Color.YELLOW;
+            case QUARRY:
+                return Color.GRAY; // خاکستری برای معدن
+            case PATH:
+                return Color.TAN;
+            case SOIL:
+                if (tile.isPlowed() && tile.isWatered()) {
+                    return new Color(0.35f, 0.2f, 0.1f, 1); // قهوه‌ای تیره برای خاک خیس
+                } else if (tile.isPlowed()) {
+                    return new Color(0.55f, 0.35f, 0.15f, 1); // قهوه‌ای برای خاک شخم‌زده
+                } else {
+                    return new Color(0.8f, 0.6f, 0.3f, 1); // رنگ شنی/خاکی برای خاک عادی
+                }
+            case Lawn:
+                return Color.FOREST;
+            default: return Color.BLACK;
         }
     }
 
@@ -92,7 +123,7 @@ public class MiniMapWidget extends Actor {
             // محور Y را باید معکوس کنیم
             float mapY = (1 - (y / (Constants.WORLD_MAP_HEIGHT))) * getHeight();
 
-            batch.draw(playerDotTexture, getX() + mapX, getY() + mapY);
+            batch.draw(NPCDotTexture, getX() + mapX, getY() + mapY);
         }
     }
 }

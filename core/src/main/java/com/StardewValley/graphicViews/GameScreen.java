@@ -78,6 +78,9 @@ public class GameScreen implements Screen {
     private TextureRegion inventorySlot;
     private TextureRegion inventoryHighlightSlot;
 
+    // MiniMap window
+    private Cell<MiniMapWidget> minimapCell;
+    private Window bigMinimapWindow = null;
 
     private MiniMapWidget miniMapWidget;
 
@@ -152,18 +155,8 @@ public class GameScreen implements Screen {
         uiStage.addActor(rootStack);
 
 
-        // for error message
-        Table messageTable = new Table();
-        messageTable.setFillParent(true);
-        rootStack.add(messageTable);
-
-        errorLabel = new Label("", GameAssetManager.messageBoxStyle);
-        errorLabel.setVisible(false);
-        errorLabel.setAlignment(Align.center);
-        messageTable.add(errorLabel).bottom().padBottom(50).expandY(); // expandY is needed to effect by the bottom()
-
         // for hud table
-        Table hudTable = new Table().debugTable();
+        Table hudTable = new Table();
         hudTable.setFillParent(true);
         rootStack.add(hudTable);
 
@@ -181,13 +174,24 @@ public class GameScreen implements Screen {
         barTable.add(energyAmount).top().padTop(-10f).row();
         barTable.add(energyBar).expand().fill().pad(80,8,20,0);
         energyStack.add(barTable);
+
         miniMapWidget = new MiniMapWidget(this.game);
-        hudTable.add(miniMapWidget).size(200, 150).expandX().top().left().pad(20);
+        minimapCell = hudTable.add(miniMapWidget).size(200, 150).top().left().pad(20);
 
         hudTable.add(energyStack)
                 .width(1.5f * energyBox.getWidth()).height(1.5f * energyBox.getHeight())
-                .expand().bottom().right().pad(20f).row();
+                .expand().bottom().right().pad(20f);
 
+
+        // for error message
+        Table messageTable = new Table();
+        messageTable.setFillParent(true);
+        rootStack.add(messageTable);
+
+        errorLabel = new Label("", GameAssetManager.messageBoxStyle);
+        errorLabel.setVisible(false);
+        errorLabel.setAlignment(Align.center);
+        messageTable.add(errorLabel).bottom().padBottom(50).expandY(); // expandY is needed to effect by the bottom()
     }
 
     // utils
@@ -415,6 +419,7 @@ public class GameScreen implements Screen {
         }
     }
 
+
     public void renderPlayers(float data) {
         for (Player player : game.getPlayers()) {
             renderPlayer(player, data);
@@ -463,6 +468,29 @@ public class GameScreen implements Screen {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         camera.position.set(player.getX(), player.getY(), 0);
         camera.update();
+    }
+
+
+    // mini map window
+    public void toggleBiggerMiniMap() {
+        if (bigMinimapWindow != null) {
+            bigMinimapWindow.remove();
+            bigMinimapWindow = null;
+            minimapCell.setActor(miniMapWidget);
+            return;
+        }
+
+        minimapCell.setActor(null);
+
+        bigMinimapWindow = new Window("", GameAssetManager.skin);
+        bigMinimapWindow.setMovable(true);
+        bigMinimapWindow.setResizable(true);
+
+        bigMinimapWindow.add(miniMapWidget).size(1000, 750);
+        bigMinimapWindow.pack(); // اندازه پنجره را تنظیم کن
+
+        bigMinimapWindow.setPosition(uiStage.getWidth() / 2, uiStage.getHeight() / 2, Align.center);
+        uiStage.addActor(bigMinimapWindow);
     }
 
     private void renderClockUI() {
@@ -1042,7 +1070,7 @@ public class GameScreen implements Screen {
         camera.viewportHeight = h;
         camera.update();
 
-//        Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
 
     @Override

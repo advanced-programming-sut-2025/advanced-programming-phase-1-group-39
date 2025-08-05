@@ -30,7 +30,7 @@ public class GameInputAdapter extends InputAdapter {
         // greenhouse check
         if (controller.nearGreenHouse(player) && !player.isBuildGreenhouse()) {
             Result buildGreenHousePopup = controller.buildGreenHouseRequest(player);
-            if (!buildGreenHousePopup.success()) {
+            if (buildGreenHousePopup.success()) {
                 screen.showPopup(buildGreenHousePopup.message(), ()->{
                     screen.blackBackgroundAnimation(()-> controller.buildGreenhouse(player, game), 0.5f);
                 });
@@ -116,6 +116,10 @@ public class GameInputAdapter extends InputAdapter {
             screen.changeCraftingMenu();
         } else if (keycode == Input.Keys.P) {
             screen.showShopMenu();
+        }
+
+        else if (keycode == Input.Keys.M) {
+            screen.toggleBiggerMiniMap();
         }
         return true;
     }

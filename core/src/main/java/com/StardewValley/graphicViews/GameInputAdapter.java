@@ -65,9 +65,6 @@ public class GameInputAdapter extends InputAdapter {
             player.setDirection(Direction.NONE);
             return;
         }
-
-        Map map = game.getMap();
-
         float newX = player.getX() + movement.x;
         float newY = player.getY() + movement.y;
 
@@ -79,10 +76,10 @@ public class GameInputAdapter extends InputAdapter {
             return;
         }
 
-        if (map.isPositionPassable(newX, player.getY())) {
+        if (game.isPositionPassable(newX, player.getY())) {
             player.setLocationAbsolut(newX, player.getY());
         }
-        if (map.isPositionPassable(player.getX(), newY)) {
+        if (game.isPositionPassable(player.getX(), newY)) {
             player.setLocationAbsolut(player.getX(), newY);
         }
         player.setDirection(currentDirection);

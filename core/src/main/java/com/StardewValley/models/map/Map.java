@@ -723,9 +723,9 @@ public class Map {
         return new Location((int)(pX / TILE_SIZE), Constants.WORLD_MAP_HEIGHT - 1 - (int) (pY / Map.TILE_SIZE));
     }
 
-    public boolean isPositionPassable(float pixelX, float pixelY) {
-        Location tileLoc = Map.pixelToTileConverter(new Location(pixelX, pixelY));
-        Tile tile = getTile(tileLoc.x(), tileLoc.y());
-        return tile != null && tile.canWalkOnTile();
+    public static Location TileToPixelConverter(Location tileLocation) {
+        float tX = tileLocation.x();
+        float tY = tileLocation.y();
+        return new Location((int)(tX * TILE_SIZE), (Constants.WORLD_MAP_HEIGHT - 1 - tY) * Map.TILE_SIZE);
     }
 }

@@ -4,6 +4,8 @@ import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.Shops.Shop;
+import com.StardewValley.models.buildings.Building;
+import com.StardewValley.models.buildings.ShippingBin;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingRecipe;
 import com.StardewValley.models.crafting.CraftingWidget;
@@ -217,8 +219,6 @@ public class GameScreen implements Screen {
 
     public void showPopup(String message, Runnable runnable) {
         if (popupWindow.isVisible() || message.isEmpty()) return;
-        System.out.println("showing popup ...");
-
 
         popupWindow.setSize(800, 500);
         popupWindow.setPosition(
@@ -419,6 +419,19 @@ public class GameScreen implements Screen {
         }
     }
 
+    public void renderBuildings() {
+        for (Player player : game.getPlayers()) {
+            for (Building building : player.getFarmBuildings()) {
+                if (building instanceof ShippingBin) {
+                    Location inMapLocation = Map.TileToPixelConverter(building.getLocation());
+                    int tileSize = Map.TILE_SIZE;
+
+                    TextureRegion texture = new TextureRegion(GameAssetManager.shippingBinTexture);
+                    batch.draw(texture, inMapLocation.x(), inMapLocation.y(), tileSize, tileSize);
+                }
+            }
+        }
+    }
 
     public void renderPlayers(float data) {
         for (Player player : game.getPlayers()) {
@@ -1039,6 +1052,7 @@ public class GameScreen implements Screen {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
             renderTiles();
+            renderBuildings();
             renderPlayers(v);
 
             // TODO : (Better) move clock render to uiStage

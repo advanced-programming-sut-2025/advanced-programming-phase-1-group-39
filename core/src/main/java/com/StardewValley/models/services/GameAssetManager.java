@@ -55,6 +55,9 @@ public class GameAssetManager {
     public static ProgressBar.ProgressBarStyle orangeBarStyle;
     public static ProgressBar.ProgressBarStyle redBarStyle;
 
+    // Buildings
+    public static Texture shippingBinTexture = new Texture(Gdx.files.internal("map/tiles/shippingBin.png"));
+
     // effects
     public static Animation<TextureRegion> rainingAnimation ;
     public static Animation<TextureRegion> snowAnimation ;

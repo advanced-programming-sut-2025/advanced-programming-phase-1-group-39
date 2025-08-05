@@ -307,9 +307,15 @@ public class Player {
         Building cabin = new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5));
         Building greenhouse = new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0));
         Building shippingBin = new ShippingBin("Shipping Bin", new Location(startOfFarm.x() + 77, startOfFarm.y() + 10), 1, 1);
+
         addToBuildings(cabin);
         addToBuildings(greenhouse);
         addToBuildings(shippingBin);
+
+        for (Building building : playerFarmBuildings) {
+            building.updateMap(game.getMap());
+            building.updateMap(game.getBaseMap());
+        }
     }
 
     public void addToBuildings(Building building) {

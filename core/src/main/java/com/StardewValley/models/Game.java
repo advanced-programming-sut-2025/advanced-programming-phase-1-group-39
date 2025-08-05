@@ -739,13 +739,12 @@ public class Game {
         return output.toString();
     }
 
-    //Load
-//    public void setGameMapRandomly(long seed) {
-//        this.gameMap = new Map(randomGenerator);
-//        for (Player player : players) {
-//            addRandomFarmForPlayer(player, FarmType.getFarmTypeById((int) (Math.random() * 2)));
-//        }
-//    }
+
+    public boolean isPositionPassable(float pixelX, float pixelY) {
+        Location tileLoc = Map.pixelToTileConverter(new Location(pixelX, pixelY));
+        Tile tile = gameMap.getTile(tileLoc.x(), tileLoc.y());
+        return tile != null && tile.canWalkOnTile();
+    }
 
     public long getMapRandSeed() {
         return mapRandSeed;

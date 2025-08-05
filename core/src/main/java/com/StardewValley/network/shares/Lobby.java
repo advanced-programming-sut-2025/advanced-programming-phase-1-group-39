@@ -2,33 +2,52 @@ package com.StardewValley.network.shares;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 public class Lobby implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static final int MAX_PLAYERS = 4;
 
     private final String id;
     private final String lobbyName;
-    private final List<String> players; // نام بازیکنان
-    private String admin; // نام ادمین
+    // <<-- برای thread-safety بهتر، لیست را final می‌کنیم --
+    private final List<String> players;
+    private final String admin;
 
     public Lobby(String lobbyName, String admin) {
-        this.id = UUID.randomUUID().toString(); // یک ID یونیک برای هر لابی
+        this.id = UUID.randomUUID().toString().substring(0, 8);
         this.lobbyName = lobbyName;
         this.admin = admin;
-        this.players = new ArrayList<>();
+        this.players = Collections.synchronizedList(new ArrayList<>());
         this.players.add(admin);
     }
 
-    // Getter ها را اینجا اضافه کنید
+    // Getter ها
     public String getId() { return id; }
     public String getLobbyName() { return lobbyName; }
-    public List<String> getPlayers() { return players; }
+    public List<String> getPlayers() { return new ArrayList<>(players); }
     public String getAdmin() { return admin; }
+    public int getPlayerCount() { return players.size(); } // متد کمکی
+
+    public boolean isFull() {
+        return players.size() >= MAX_PLAYERS;
+    }
+
+    public boolean addPlayer(String playerName) {
+        synchronized (players) { // اطمینان از اتمیک بودن عملیات روی لیست
+            if (!isFull() && !players.contains(playerName)) {
+                players.add(playerName);
+                return true;
+            }
+            return false;
+        }
+    }
 
     @Override
     public String toString() {
-        return "Lobby: " + lobbyName + " | Admin: " + admin + " | Players: " + players.size() + "/4";
+        // از getPlayerCount() استفاده می‌کنیم که مستقیما سایز لیست همگام‌شده را می‌خواند
+        return "ID: " + id + " | Name: " + lobbyName + " | Players: " + getPlayerCount() + "/" + MAX_PLAYERS;
     }
 }

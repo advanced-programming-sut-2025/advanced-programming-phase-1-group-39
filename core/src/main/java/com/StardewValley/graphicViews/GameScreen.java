@@ -32,7 +32,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,8 +68,6 @@ public class GameScreen implements Screen {
 
     private boolean wentNextDay = false;
 
-
-    private float stateTime = 0f;
 
     // UI
     private Texture clock;
@@ -111,6 +108,11 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
 
     private Label errorLabel;
+    private Window popupWindow;
+    private Label popupText;
+    private TextButton popupYesButton;
+    private TextButton popupNoButton;
+    private Runnable popupRunnable;
 
     // effects
     private Stage effectsStage;
@@ -146,6 +148,7 @@ public class GameScreen implements Screen {
         rootStack.setFillParent(true);
         uiStage.addActor(rootStack);
 
+
         // for error message
         Table messageTable = new Table();
         messageTable.setFillParent(true);
@@ -174,15 +177,14 @@ public class GameScreen implements Screen {
         Table barTable = new Table();
         barTable.add(energyAmount).top().padTop(-10f).row();
         barTable.add(energyBar).expand().fill().pad(80,8,20,0);
-//        barTable.add(energyBar).expand().fill().pad(10);
         energyStack.add(barTable);
-
 
         hudTable.add(energyStack)
                 .width(1.5f * energyBox.getWidth()).height(1.5f * energyBox.getHeight())
                 .expand().bottom().right().pad(20f);
     }
 
+    // utils
     public void showError(String message) {
         if(message == null || message.isEmpty()) {
             errorLabel.setVisible(false);
@@ -201,6 +203,37 @@ public class GameScreen implements Screen {
                 Actions.visible(false)
         ));
     }
+
+
+    public void showPopup(String message, Runnable runnable) {
+        if (popupWindow.isVisible() || message.isEmpty()) return;
+        System.out.println("showing popup ...");
+
+
+        popupWindow.setSize(800, 500);
+        popupWindow.setPosition(
+                uiStage.getWidth() / 2f,
+                uiStage.getHeight() / 2f,
+                Align.center
+        );
+
+        popupRunnable = runnable;
+
+        popupText.setText(message);
+        popupWindow.getColor().a = 1;
+        popupWindow.setVisible(true);
+
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    public void hidePopup() {
+        popupWindow.addAction(Actions.sequence(
+                Actions.fadeOut(0.3f),
+                Actions.visible(false)
+        ));
+        Gdx.input.setInputProcessor(gameMenuInputAdapter);
+    }
+
 
     public void loadTextures() {
         playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
@@ -658,6 +691,7 @@ public class GameScreen implements Screen {
     public void closeAllUiMenus() {
         if (exitWindow != null) hideExitMenu();
         if (terminalWindow != null && terminalWindow.isVisible()) hideExitMenu();
+        if (popupWindow != null && popupWindow.isVisible()) hidePopup();
     }
     // exit Menu
     public void toggleExitMenu() {
@@ -877,7 +911,6 @@ public class GameScreen implements Screen {
                 wentNextDay = false;
             }, 1.0f));
         }
-
     }
 
     public Game getGame() {
@@ -898,8 +931,6 @@ public class GameScreen implements Screen {
 
         Skin skin = new Skin(Gdx.files.internal("skin2/uiskin.json"));
 
-//        uiStage = new Stage(new ScreenViewport());
-
         prepareFoodMenu(skin);
         prepareCraftingMenu(skin);
 
@@ -918,6 +949,42 @@ public class GameScreen implements Screen {
 
         effectsStage.addActor(weatherEffectImage);
 
+
+        // popup window
+        popupWindow = new Window("", GameAssetManager.skin);
+        popupWindow.setVisible(false);
+        popupWindow.setModal(true);
+
+        popupText = new Label("", GameAssetManager.messageBoxStyle);
+        popupText.setWrap(true);
+        popupText.setAlignment(Align.center);
+        popupYesButton = new TextButton("Yes", GameAssetManager.skin);
+        popupNoButton = new TextButton("No", GameAssetManager.skin);
+
+        popupWindow.add(popupText).width(760).colspan(2).expandX().fillX().pad(20).row();
+        popupWindow.add(popupNoButton).pad(20).uniformX();
+        popupWindow.add(popupYesButton).pad(20).uniformX();
+        popupWindow.pack();
+        popupWindow.setVisible(false);
+
+
+        uiStage.addActor(popupWindow);
+
+        popupNoButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hidePopup();
+            }
+        });
+
+        popupYesButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                popupRunnable.run();
+                hidePopup();
+            }
+        });
+
         showError("Welcome " + game.getPlayerInTurn().getNickname() + " !");
     }
 
@@ -926,6 +993,7 @@ public class GameScreen implements Screen {
         try {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 
             checkGoingNextDay();
 
@@ -936,7 +1004,6 @@ public class GameScreen implements Screen {
 
             // everything render based on camera
             batch.setProjectionMatrix(camera.combined);
-            stateTime += v;
             batch.begin();
             renderTiles();
             renderPlayers(v);
@@ -970,7 +1037,7 @@ public class GameScreen implements Screen {
         camera.viewportHeight = h;
         camera.update();
 
-        Gdx.input.setInputProcessor(gameMenuInputAdapter);
+//        Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
 
     @Override

@@ -43,10 +43,20 @@ public class GameGuiController {
         }
     }
 
-    public void goToNextDay() {
+    public boolean nearGreenHouse(Player player) {
         Game game = screen.getGame();
-        game.goToNextDay();
-        screen.showError("Next Day !");
+        if (game.getMap().isNearBuilding(player, player.getBuildingByName("greenhouse"))) {
+            return true;
+        }
+        return false;
+    }
+
+    public Result buildGreenHouseRequest(Player player) {
+        if(player.canBuildGreenHouse()) {
+            return new Result(true, "You are already building a green house!\ndo you want to build it?");
+        } else {
+            return new Result(false, "Needed resources to build the greenhouse: \n\t500 woods\n\t1000 G money");
+        }
     }
 
     public void cook(FoodRecipe recipe) {

@@ -1,5 +1,6 @@
 package com.StardewValley.graphicViews;
 
+
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.map.Map;
@@ -20,10 +21,23 @@ public class GameInputAdapter extends InputAdapter {
     public void handlePlayerMovement(float delta, Game game) {
         float speed = game.getGameSetting().getPlayerSpeed();
 
+        // check if not conscious
         Player player = game.getPlayerInTurn();
         if (player.getCurrentState().equals(GameScreen.PlayerState.Unconscious)) return;
         float   initialX = player.getX(),
                 initialY = player.getY();
+
+        // greenhouse check
+        if (controller.nearGreenHouse(player)) {
+            Result buildGreenHousePopup = controller.buildGreenHouseRequest(player);
+            if (!buildGreenHousePopup.success()) {
+                screen.showPopup(buildGreenHousePopup.message(), ()->{
+                    screen.blackBackgroundAnimation(()-> screen.showError("hi"), 0.5f);
+                });
+            } else {
+                screen.showError(buildGreenHousePopup.message());
+            }
+        }
 
 
         Direction currentDirection = Direction.NONE;

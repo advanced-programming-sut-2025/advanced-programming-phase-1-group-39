@@ -639,4 +639,5 @@ public class Player {
     public void resetAnimationStateTime() {
         this.animationStateTime = 0f;
     }
+
 }

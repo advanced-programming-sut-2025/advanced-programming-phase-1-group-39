@@ -59,6 +59,12 @@ public class GameGuiController {
         }
     }
 
+    public String buildGreenhouse(Player player, Game game) {
+        player.buildGreenHouse();
+        player.getBuildingByName("greenhouse").updateMap(game.getMap());
+        return "your green house was built!";
+    }
+
     public void cook(FoodRecipe recipe) {
         Result result = FoodManager.cook(recipe.name(), App.getApp().getCurrentGame().getPlayerInTurn());
         System.out.println(result.message());

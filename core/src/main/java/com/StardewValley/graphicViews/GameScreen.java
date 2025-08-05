@@ -624,7 +624,7 @@ public class GameScreen implements Screen {
         this.energyAmount.setText(energyAmount);
 
         if (player.getTurnEnergy() < 10) {
-            showError("Your turn energy : " + (int) Math.ceil(player.getTurnEnergy() + 1) + " !");
+            showError("Your turn energy : " + (int) Math.ceil(player.getTurnEnergy()) + " !");
         }
 
         if (player.getTurnEnergy() <= 0 && player.getCurrentState() != PlayerState.Unconscious) {

@@ -28,11 +28,11 @@ public class GameInputAdapter extends InputAdapter {
                 initialY = player.getY();
 
         // greenhouse check
-        if (controller.nearGreenHouse(player)) {
+        if (controller.nearGreenHouse(player) && !player.isBuildGreenhouse()) {
             Result buildGreenHousePopup = controller.buildGreenHouseRequest(player);
             if (!buildGreenHousePopup.success()) {
                 screen.showPopup(buildGreenHousePopup.message(), ()->{
-                    screen.blackBackgroundAnimation(()-> screen.showError("hi"), 0.5f);
+                    screen.blackBackgroundAnimation(()-> controller.buildGreenhouse(player, game), 0.5f);
                 });
             } else {
                 screen.showError(buildGreenHousePopup.message());

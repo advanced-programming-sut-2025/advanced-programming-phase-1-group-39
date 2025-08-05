@@ -5,6 +5,7 @@ import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.commands.GameCommands;
 import com.StardewValley.models.Enums.commands.InteractionsCommand;
 import com.StardewValley.models.Enums.commands.NPCGameCommand;
+import com.StardewValley.models.buildings.GreenHouse;
 import com.StardewValley.models.cooking.FoodManager;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingManager;
@@ -61,6 +62,7 @@ public class GameGuiController {
 
     public String buildGreenhouse(Player player, Game game) {
         player.buildGreenHouse();
+        (player.getBuildingByName("greenhouse")).updateMap(game.getMap());
         player.getBuildingByName("greenhouse").updateMap(game.getMap());
         return "your green house was built!";
     }

@@ -24,6 +24,9 @@ public class GreenHouse extends Building {
     @Override
     public void updateMap(Map map) {
         if (!isBuild) return;
+
+//        buildWalls(map);
+
         Tile[][] tiles = map.getTiles();
         int x = this.getLocation().x();
         int y = this.getLocation().y();

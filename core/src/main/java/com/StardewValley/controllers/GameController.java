@@ -16,6 +16,7 @@ import com.StardewValley.models.animals.Fish;
 import com.StardewValley.models.artisan.ArtisanGood;
 import com.StardewValley.models.artisan.ArtisanMachine;
 import com.StardewValley.models.buildings.Cabin;
+import com.StardewValley.models.buildings.GreenHouse;
 import com.StardewValley.models.buildings.ShippingBin;
 import com.StardewValley.models.cooking.FoodManager;
 import com.StardewValley.models.cooking.FoodRecipe;
@@ -168,7 +169,7 @@ public class GameController {
         Game game = App.getApp().getCurrentGame();
         Player player = game.getPlayerInTurn();
         player.buildGreenHouse();
-        player.getBuildingByName("greenhouse").updateMap(game.getMap());
+        ((GreenHouse) player.getBuildingByName("greenhouse")).updateMap(game.getMap());
         return "your green house was built!";
     }
 

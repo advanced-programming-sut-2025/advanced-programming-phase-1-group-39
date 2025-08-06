@@ -214,7 +214,7 @@ public class GameScreen implements Screen {
 
         Table barTable = new Table();
         barTable.add(energyAmount).top().padTop(-10f).row();
-        barTable.add(energyBar).expand().fill().pad(80,8,20,0);
+        barTable.add(energyBar).expand().fill().pad(80, 8, 20, 0);
         energyStack.add(barTable);
 
         miniMapWidget = new MiniMapWidget(this.game);
@@ -243,7 +243,7 @@ public class GameScreen implements Screen {
 
     // utils and menu
     public void showError(String message) {
-        if(message == null || message.isEmpty()) {
+        if (message == null || message.isEmpty()) {
             errorLabel.setVisible(false);
             return;
         }
@@ -330,12 +330,13 @@ public class GameScreen implements Screen {
 
     private void setDisableButton(TextButton button, boolean disable) {
         button.setDisabled(disable);
-        if(disable) {
+        if (disable) {
             button.setColor(Color.GRAY);
         } else {
             button.setColor(Color.WHITE);
         }
     }
+
     public void loadAnimalInfoPopup() {
         animalWindow = new Window("", GameAssetManager.skin);
         animalWindow.setVisible(false);
@@ -447,7 +448,6 @@ public class GameScreen implements Screen {
         animalWindow.setVisible(false);
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
-
 
 
     public void loadTextures() {
@@ -698,15 +698,16 @@ public class GameScreen implements Screen {
     public void cheatPlayer() {
         Player player = game.getPlayerInTurn();
         Location pLoc = player.getTileLocation();
-        player.addToBuildings(new AnimalBuilding("coop", new Location(pLoc.x() + 1, pLoc.y() + 1), 7,4, LivingPlace.COOP));
+        player.addToBuildings(new AnimalBuilding("coop", new Location(pLoc.x() + 1, pLoc.y() + 1), 7, 4, LivingPlace.COOP));
         AnimalBuilding building = player.getAnimalBuilding(LivingPlace.COOP);
         building.updateMap(game.getMap());
 
-        Animal animal = new Animal(AnimalType.CHICKEN, "joojeh", 500, LivingPlace.COOP, new ArrayList<>() );
+        Animal animal = new Animal(AnimalType.CHICKEN, "joojeh", 500, LivingPlace.COOP, new ArrayList<>());
         player.addAnimal(animal);
         building.addAnimalAndSetLocationInside(animal);
         showError("cheated Animal");
     }
+
     /// end of test
 
     public void renderPlayers(float data) {
@@ -715,7 +716,7 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void renderPlayer(Player currentPlayer , float delta) {
+    private void renderPlayer(Player currentPlayer, float delta) {
         int animIndex = switch (currentPlayer.getDirection()) {
             case DOWN -> 0;
             case RIGHT -> 1;
@@ -801,7 +802,7 @@ public class GameScreen implements Screen {
         batch.draw(seasonTexture, drawX + 210, drawY + 137, (float) seasonTexture.getRegionWidth() / 2, (float) seasonTexture.getRegionHeight() / 2);
         batch.draw(weatherTexture, drawX + 115, drawY + 137, (float) weatherTexture.getRegionWidth() / 2, (float) weatherTexture.getRegionHeight() / 2);
 
-        String date = (time.getDayOfWeek().toString().substring(0,3)) + ". " + time.getDay();
+        String date = (time.getDayOfWeek().toString().substring(0, 3)) + ". " + time.getDay();
         font.draw(batch, date, drawX + 150, drawY + 210);
         font.draw(batch, time.getHourText(), drawX + 150, drawY + 120);
         font.draw(batch, String.valueOf(App.getApp().getCurrentGame().getPlayerInTurn().getMoney()), drawX + 200, drawY + 40);
@@ -821,6 +822,7 @@ public class GameScreen implements Screen {
             Gdx.input.setInputProcessor(gameMenuInputAdapter);
         }
     }
+
     public void prepareFoodMenu(Skin skin) {
         cookingMenuTable = new Table(skin);
         cookingMenuTable.setFillParent(true);
@@ -828,8 +830,8 @@ public class GameScreen implements Screen {
         cookingMenuTable.setBackground(skin.getDrawable("window")); // Use window background from atlas
         ScrollPane scrollPane = new ScrollPane(cookingMenuTable, skin);
         scrollPane.setSize(720, 1080);
-        scrollPane.setPosition((uiStage.getWidth() - cookingMenuTable.getWidth())/2,
-                (uiStage.getHeight() - cookingMenuTable.getHeight())/2, Align.center);
+        scrollPane.setPosition((uiStage.getWidth() - cookingMenuTable.getWidth()) / 2,
+                (uiStage.getHeight() - cookingMenuTable.getHeight()) / 2, Align.center);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         Label titleLabel = new Label("Cooking Menu", labelStyle);
@@ -890,8 +892,8 @@ public class GameScreen implements Screen {
 
         ScrollPane scrollPane = new ScrollPane(craftingMenu, skin);
         scrollPane.setSize(700, 700);
-        scrollPane.setPosition((uiStage.getWidth() - craftingMenu.getWidth())/2,
-                (uiStage.getHeight() - craftingMenu.getHeight())/2, Align.center);
+        scrollPane.setPosition((uiStage.getWidth() - craftingMenu.getWidth()) / 2,
+                (uiStage.getHeight() - craftingMenu.getHeight()) / 2, Align.center);
 
         int perRow = 3;
         for (CraftingRecipe recipe : CraftingRecipe.values()) {
@@ -929,7 +931,6 @@ public class GameScreen implements Screen {
             shop.showShopMenu(uiStage, GameAssetManager.skin);
         }
     }
-
 
 
     private void updateEnergyBar() {
@@ -1067,6 +1068,9 @@ public class GameScreen implements Screen {
                             break;
                         case "Map":
                             contentCell.setActor(getMapMenuTable());
+                            break;
+                        case "Setting":
+                            contentCell.setActor(getSettingsTable());
                             break;
                         default:
                             Label comingSoon = new Label(tab + " content coming soon!", skin);
@@ -1322,6 +1326,7 @@ public class GameScreen implements Screen {
                 public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                     showSkillImageTooltip(descRegion, skillIcon);
                 }
+
                 @Override
                 public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                     hideSkillImageTooltip();
@@ -1388,12 +1393,67 @@ public class GameScreen implements Screen {
 
         mapTable.add(title).growX().height(70).padBottom(22).center().row();
 
-            mapTable.add(miniMapWidget).size(720, 540).center().row();
+        mapTable.add(miniMapWidget).size(720, 540).center().row();
 
         mapTable.pad(36, 36, 36, 36).center();
         return mapTable;
     }
 
+    private Table getSettingsTable() {
+        Skin skin = GameAssetManager.skin;
+        Table settingsTable = new Table(skin);
+
+        Label title = new Label("Settings", skin, "title");
+        title.setAlignment(Align.center);
+        title.setFontScale(1.18f);
+
+        // ------------------------------
+        Label changePlayer = new Label("Change Player :", skin);
+        changePlayer.setFontScale(1.1f);
+        changePlayer.setColor(Color.valueOf("9A8C98"));
+
+        TextField changePlayerField = new TextField("", skin);
+        changePlayerField.setMessageText("Enter new player username...");
+        changePlayerField.setMaxLength(20);
+
+        TextButton changePlayerButton = new TextButton("Change Player", skin);
+        changePlayerButton.setColor(Color.valueOf("E9D8A6"));
+
+        TextButton exitButton = new TextButton("Exit", skin);
+        exitButton.setColor(Color.valueOf("E9D8A6"));
+        // ------------------------------
+        settingsTable.pad(36);
+        settingsTable.add(title).colspan(2).growX().height(70).padBottom(100).center().row();
+
+        settingsTable.add(changePlayer).left().padRight(12).width(180).height(38).row();
+        settingsTable.add(changePlayerField).left().width(800).row();
+
+        settingsTable.add(changePlayerButton).left().padTop(35).padRight(50).row();
+
+        settingsTable.add(exitButton).colspan(2).padTop(70).row();
+        // ------------------------------
+        changePlayerButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String newName = changePlayerField.getText().trim();
+                if (controller.isUsernameExist(newName)) {
+                    User newUser = controller.getUserByUsername(newName);
+                    if (newUser.getCurrentGame() == null) {
+                        newUser.setCurrentGame(game);
+                    }
+                }
+            }
+        });
+
+        exitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Main.getMain().switchScreen(new MainMenuScreen());
+            }
+        });
+
+        return settingsTable;
+    }
 
 
     // WINDOWS
@@ -1403,6 +1463,7 @@ public class GameScreen implements Screen {
         if (popupWindow != null && popupWindow.isVisible()) hidePopup();
         if (animalWindow != null && animalWindow.isVisible()) hideAnimalInfoPopup();
     }
+
     // exit Menu
     public void toggleExitMenu() {
         if (exitWindow != null) {
@@ -1602,7 +1663,7 @@ public class GameScreen implements Screen {
             weatherEffectImage.setVisible(true);
             animationTime += delta;
 
-            ((TextureRegionDrawable)weatherEffectImage.getDrawable()).setRegion(currentAnimation.getKeyFrame(animationTime, true));
+            ((TextureRegionDrawable) weatherEffectImage.getDrawable()).setRegion(currentAnimation.getKeyFrame(animationTime, true));
         } else {
             weatherEffectImage.setVisible(false);
         }
@@ -1616,7 +1677,7 @@ public class GameScreen implements Screen {
             wentNextDay = true;
 
             showError("Time to sleep 10 PM. Going next day");
-            delayForAndDo(1.0f, () -> blackBackgroundAnimation(()-> {
+            delayForAndDo(1.0f, () -> blackBackgroundAnimation(() -> {
                 game.goToNextDay();
                 wentNextDay = false;
             }, 1.0f));
@@ -1632,7 +1693,7 @@ public class GameScreen implements Screen {
         float targetAlpha = 0f;
 
         if (currentHour >= startHour && currentHour < endHour) {
-            float progress = (float)(currentHour - startHour) / (endHour - startHour);
+            float progress = (float) (currentHour - startHour) / (endHour - startHour);
             targetAlpha = progress * GameSetting.getMaxNightAlpha();
         } else if (currentHour >= endHour || currentHour < 6) {
             targetAlpha = GameSetting.getMaxNightAlpha();
@@ -1762,7 +1823,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int w, int h) {
-        uiStage.getViewport().update(w,h, true);
+        uiStage.getViewport().update(w, h, true);
 
         effectsStage.getViewport().update(w, h, true);
 
@@ -1799,6 +1860,7 @@ public class GameScreen implements Screen {
     public static GameScreen getScreen() {
         return screen;
     }
+
     public GameInputAdapter getGameMenuInputAdapter() {
         return gameMenuInputAdapter;
     }

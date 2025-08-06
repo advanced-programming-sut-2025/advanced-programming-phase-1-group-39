@@ -434,6 +434,22 @@ public class GameGuiController {
         return null;
     }
 
+    public boolean isUsernameExist(String username) {
+        for (User user : App.getApp().getUsers()) {
+            if (user.getUserName().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public User getUserByUsername(String username) {
+        for (User user : App.getApp().getUsers()) {
+            if (user.getUserName().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
 
 }

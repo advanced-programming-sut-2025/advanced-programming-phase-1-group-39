@@ -35,6 +35,10 @@ public class GameAssetManager {
     public static TextureRegion nameLabel = new TextureRegion(new Texture("Label/Marlon.png"));
     public static TextureRegion avatarFrame = new TextureRegion(new Texture("Label/Gunther.png"));
 
+    // inventory :
+    public static TextureRegion inventorySlot = new TextureRegion(new Texture("inventory/Mail.2jpg.jpg"));
+    public static TextureRegion inventoryHighlightSlot = new TextureRegion(new Texture("inventory/Mail3.jpg"));
+
 
     // Plants
     public static Texture deadPlantTexture = getDeadPlantTexture();

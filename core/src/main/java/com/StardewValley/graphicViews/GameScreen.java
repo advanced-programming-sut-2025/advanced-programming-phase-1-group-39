@@ -72,6 +72,8 @@ public class GameScreen implements Screen {
     private Label energyAmount;
 
     // inventory
+    private Integer pendingTrashSlot = null;
+    private boolean pendingInventoryUiRefresh = false;
     private Window inventoryWindow = null;
     Table inventoryTable = new Table();
     private int lastSelectedSlot = -1;
@@ -724,15 +726,14 @@ public class GameScreen implements Screen {
             tabBtn.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    contentCell.setActor(null);   // محتوا رو خالی کن
+                    contentCell.setActor(null);
                     switch (tab) {
                         case "Journal":
                             contentCell.setActor(getQuestsList());
                             break;
                         case "Inventory":
-                            //contentCell.setActor(getInventoryList()); // اینو خودت بساز، لیست آیتم‌ها یا هرچی
+                            contentCell.setActor(getInventoryContentTable());
                             break;
-                        // بقیه تب‌ها اینجا
                         default:
                             Label comingSoon = new Label(tab + " content coming soon!", skin);
                             comingSoon.setAlignment(Align.center);
@@ -744,7 +745,6 @@ public class GameScreen implements Screen {
         mainTable.add(tabsRow).growX().padTop(35).row();
 
         // ==== ردیف وسط: محتوای تب جاری ====
-        // اولش می‌تونی پیش‌فرض بزاری مثلا Journal
         contentCell = mainTable.add(getQuestsList()).expand().fill();
         mainTable.row();
 
@@ -807,6 +807,139 @@ public class GameScreen implements Screen {
         return questsTable;
     }
 
+    private Table getInventoryTable() {
+        Table inventoryGrid = new Table();
+        Skin skin = GameAssetManager.skin;
+
+        Player player = game.getPlayerInTurn();
+        Inventory inventory = player.getInventory();
+        int numSlots = player.getMaxInventorySize();  // باید 100 تا باشه
+        ArrayList<ItemStack> items = inventory.getInventoryItems();
+
+        // فقط یک مقدار برای اندازه اسلات‌ها
+        final float slotSize = 82f;
+
+        // Table اصلی ۱۰ ردیف داره، هر ردیف ۱۰ اسلات
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                int i = row * 10 + col;
+
+                // استک برای هر اسلات (عکس، انتخاب، تعداد...)
+                Stack slotStack = new Stack();
+
+                // بک‌گراند
+                Image slotBg = new Image(GameAssetManager.inventorySlot);
+                slotBg.setColor(Color.WHITE);
+                slotStack.add(slotBg);
+
+                // آیتم در اسلات؟
+                if (i < items.size() && items.get(i) != null && items.get(i).getItem() != null) {
+                    TextureRegion itemTex = items.get(i).getItem().getTexture();
+                    Image itemImg = new Image(new TextureRegionDrawable(itemTex));
+                    slotStack.add(itemImg);
+
+                    int quantity = items.get(i).getAmount();
+                    if (quantity > 1) {
+                        Table countTable = new Table();
+                        Label lbl = new Label(String.valueOf(quantity), skin);
+                        lbl.setFontScale(0.74f);
+                        lbl.setColor(Color.GOLD);
+                        countTable.add(lbl).bottom().center().padBottom(4);
+                        countTable.setFillParent(true);
+                        countTable.bottom();
+                        slotStack.add(countTable);
+                    }
+                }
+
+                // انتخاب شده؟
+                if (i == player.getSelectedSlot()) {
+                    Image highlight = new Image(GameAssetManager.inventoryHighlightSlot);
+                    highlight.setColor(new Color(1, 1, 1, 0.41f));
+                    slotStack.add(highlight);
+                }
+
+                // رفتار کلیک: انتخاب این اسلات
+                final int slotIndex = i;
+                slotStack.addListener(new InputListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        player.setSelectedSlot(slotIndex);
+                        // رفرش ویو
+                        updateInventoryContent();
+                        return true;
+                    }
+                });
+
+                inventoryGrid.add(slotStack).size(slotSize, slotSize).pad(4);
+            }
+            inventoryGrid.row();
+        }
+
+        return inventoryGrid;
+    }
+
+    private Table getInventoryContentTable() {
+        Skin skin = GameAssetManager.skin;
+
+        // آیکون سطل
+        Image trashImg = new Image(new Texture("inventory/stardewmoddingapi_ou7895mbeu.png")); // مسیر عکس سطل!
+        trashImg.setSize(55, 55);
+        trashImg.setScaling(Scaling.fit);
+        trashImg.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                // فقط slot رو علامت میزنیم تا بعداً پاک بشه، الان کاری نمی‌کنیم
+                Player player = game.getPlayerInTurn();
+                int idx = player.getSelectedSlot();
+                Inventory inv = player.getInventory();
+                ArrayList<ItemStack> items = inv.getInventoryItems();
+
+                if (idx >= 0 && idx < items.size() && items.get(idx) != null) {
+                    pendingTrashSlot = idx; // علامت کن برای حذف!
+                }
+
+                return true;
+            }
+        });
+
+        Table inventoryMenuTable = new Table(skin);
+
+        // تیبل ۱۰ در ۱۰ رو بساز، توی یه ScrollPane بگذار
+        Table gridTable = getInventoryTable();
+        ScrollPane scrollPane = new ScrollPane(gridTable, skin);
+        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollbarsOnTop(true);
+        scrollPane.setOverscroll(false, false);
+        scrollPane.setForceScroll(false, true);
+        scrollPane.setScrollPercentY(0); // اول جدول
+
+        // ارتفاع ویو: فقط دو ردیف دیده بشه
+        float slotSize = 82 + 8; // اسلات و پدینگ
+        scrollPane.setHeight(2 * slotSize);
+
+        // ---- لیبل بالای جدول ----
+        Label titleLabel = new Label("Inventory", skin, "title");
+        titleLabel.setAlignment(Align.center);
+        titleLabel.setFontScale(1.16f);
+        inventoryMenuTable.add(titleLabel).center().padBottom(28).row();
+
+        // سطل کنار اسکرول قرار بگیره
+        Table toolsRow = new Table();
+        toolsRow.add(scrollPane).width(944).height(2 * slotSize).padRight(14); // 10*82 + پدها
+        toolsRow.add(trashImg).size(55, 55).center();
+
+        inventoryMenuTable.add(toolsRow).center().padTop(33);
+        inventoryMenuTable.row();
+
+        return inventoryMenuTable;
+    }
+
+    private void updateInventoryContent() {
+        if (contentCell != null) {
+            contentCell.setActor(getInventoryContentTable());
+        }
+    }
 
 
 
@@ -849,6 +982,12 @@ public class GameScreen implements Screen {
             updateEnergyBar();
             renderCamera();
 
+            if (pendingTrashSlot != null) {
+                game.getPlayerInTurn().getInventory().getInventoryItems().set(pendingTrashSlot, null);
+                pendingInventoryUiRefresh = true;
+                pendingTrashSlot = null;
+            }
+
             // everything render based on camera
             batch.setProjectionMatrix(camera.combined);
             stateTime += v;
@@ -866,7 +1005,10 @@ public class GameScreen implements Screen {
                 lastBagHash = bag;
             }
             batch.end();
-
+            if (pendingInventoryUiRefresh) {
+                updateInventoryContent();
+                pendingInventoryUiRefresh = false;
+            }
             uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
             uiStage.draw();
         } catch (Exception e) {

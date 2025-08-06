@@ -25,6 +25,7 @@ public class ClientHandler implements Runnable {
     public ClientHandler(Socket socket) {
         this.clientSocket = socket;
         this.clientIdentifier = socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
+
         this.lobbyId = null; // در ابتدا در هیچ لابی نیست
     }
 

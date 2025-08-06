@@ -3,9 +3,11 @@ package com.StardewValley.models;
 
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.services.GameAssetManager;
+import com.StardewValley.network.shares.Lobby;
 import com.badlogic.gdx.audio.Music;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class App {
     private static App app;
@@ -24,6 +26,11 @@ public class App {
 
     private Menu currentMenu = Menu.SIGNUP_MENU;
 
+    // NETWORK
+    private List<String> onlineUsers = new ArrayList<>();
+    private List<Lobby> availableLobbies = new ArrayList<>();
+
+
     private App() {
 
     }
@@ -35,6 +42,22 @@ public class App {
         return app;
     }
 
+    // NETWORK
+    public List<String> getOnlineUsers() {
+        return onlineUsers;
+    }
+
+    public void setOnlineUsers(List<String> onlineUsers) {
+        this.onlineUsers = onlineUsers;
+    }
+
+    public List<Lobby> getAvailableLobbies() {
+        return availableLobbies;
+    }
+
+    public void setAvailableLobbies(List<Lobby> availableLobbies) {
+        this.availableLobbies = availableLobbies;
+    }
 
     public void addUser(User user) {
         users.add(user);

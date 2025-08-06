@@ -199,6 +199,7 @@ public class GameScreen implements Screen {
                 .expand().bottom().right().pad(20f).row();
 
 
+
         networkClient = Main.getMain().getNetworkClient();
     }
 

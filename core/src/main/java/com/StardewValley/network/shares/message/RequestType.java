@@ -1,11 +1,16 @@
 package com.StardewValley.network.shares.message;
 
 public enum RequestType {
-    //Lobby
+    // first connect to server
+    SEND_IDENTITY,
+
+    //Lobby and Online Users
+    UPDATE_LOBBY_LIST,
+    UPDATE_ONLINE_USERS,
+
     CREATE_LOBBY,
     JOIN_LOBBY,
     GET_LOBBY_LIST,
-    UPDATE_LOBBY_LIST,
     LOBBY_CHAT_MESSAGE,
 
     //Start Game

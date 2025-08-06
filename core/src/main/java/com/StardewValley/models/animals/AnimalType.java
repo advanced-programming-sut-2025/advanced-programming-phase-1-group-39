@@ -1,6 +1,5 @@
 package com.StardewValley.models.animals;
 
-import com.StardewValley.models.animals.LivingPlace;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,27 +14,27 @@ public enum AnimalType {
                         new AnimalProduct("Egg", 50),
                         new AnimalProduct("Large Egg", 95)
                 ),
-                1),
+                1, "shops/MarniesRanch/Chicken.png"),
 
         DUCK("Duck", 1200, LivingPlace.BIG_COOP,
                 List.of(
                         new AnimalProduct("Duck Egg", 95),
                         new AnimalProduct("Duck Feather", 250)
                 ),
-                2),
+                2, "shops/MarniesRanch/Duck.png"),
 
         RABBIT("Rabbit", 8000, LivingPlace.DELUXE_COOP,
                 List.of(
                         new AnimalProduct("Wool", 340),
                         new AnimalProduct("Rabbit's Foot", 565)
                 ),
-                4),
+                4, "shops/MarniesRanch/Rabbit.png"),
 
         DINOSAUR("Dinosaur", 14000, LivingPlace.BIG_COOP,
                 List.of(
                         new AnimalProduct("Dinosaur Egg", 350)
                 ),
-                7),
+                7, "shops/MarniesRanch/Dinosaur.png"),
 
         // Barn
         COW("Cow", 1500, LivingPlace.BARN,
@@ -43,26 +42,26 @@ public enum AnimalType {
                         new AnimalProduct("Milk", 125),
                         new AnimalProduct("Large Milk", 190)
                 ),
-                1),
+                1, "shops/MarniesRanch/Cow.png"),
 
         GOAT("Goat", 4000, LivingPlace.BIG_BARN,
                 List.of(
                         new AnimalProduct("Goat Milk", 225),
                         new AnimalProduct("Large Goat Milk", 345)
                 ),
-                2),
+                2, "shops/MarniesRanch/Goat.png"),
 
         SHEEP("Sheep", 8000, LivingPlace.DELUXE_BARN,
                 List.of(
                         new AnimalProduct("Wool", 340)
                 ),
-                3),
+                3, "shops/MarniesRanch/Sheep.png"),
 
         PIG("Pig", 16000, LivingPlace.DELUXE_BARN,
                 List.of(
                         new AnimalProduct("Truffle", 625)
                 ),
-                1);
+                1, "shops/MarniesRanch/Pig.png");
 
         public final String displayName;
         public final int price;
@@ -70,12 +69,17 @@ public enum AnimalType {
         public final ArrayList<AnimalProduct> products;
         public final int produceCycleDays;
 
-        AnimalType(String displayName, int price, LivingPlace livingPlace, List<AnimalProduct> products, int produceCycleDays) {
+        public final String path;
+        public transient TextureRegion textureRegion;
+
+        AnimalType(String displayName, int price, LivingPlace livingPlace, List<AnimalProduct> products, int produceCycleDays, String path) {
             this.displayName = displayName;
             this.price = price;
             this.livingPlace = livingPlace;
             this.products = new ArrayList<>(products);
             this.produceCycleDays = produceCycleDays;
+
+            this.path = path;
         }
 
         public Animal create(String name) {
@@ -99,4 +103,15 @@ public enum AnimalType {
                 return null;
         }
 
+        public static void loadAllTextures() {
+                for (AnimalType type : values()) {
+                        Texture texture = new Texture(Gdx.files.internal(type.path));
+                        texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+                        type.textureRegion = new TextureRegion(texture);
+                }
+        }
+
+        public TextureRegion getTextureRegion() {
+                return textureRegion;
+        }
 }

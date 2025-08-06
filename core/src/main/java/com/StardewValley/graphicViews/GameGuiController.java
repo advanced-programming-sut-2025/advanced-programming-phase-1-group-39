@@ -1,11 +1,16 @@
 package com.StardewValley.graphicViews;
 
-import com.StardewValley.controllers.*;
-import com.StardewValley.models.*;
+import com.StardewValley.controllers.AppControllers;
+import com.StardewValley.controllers.GameController;
+import com.StardewValley.controllers.NPCGameController;
+import com.StardewValley.controllers.PlayersInteractionController;
+import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.commands.GameCommands;
 import com.StardewValley.models.Enums.commands.InteractionsCommand;
 import com.StardewValley.models.Enums.commands.NPCGameCommand;
-import com.StardewValley.models.buildings.GreenHouse;
+import com.StardewValley.models.Game;
+import com.StardewValley.models.Player;
+import com.StardewValley.models.Result;
 import com.StardewValley.models.cooking.FoodManager;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingManager;
@@ -74,6 +79,11 @@ public class GameGuiController {
 
     public void craft(CraftingRecipe recipe, Player player) {
         System.out.println(CraftingManager.craft(recipe.getName(), player));
+    }
+
+    // Animal
+    public void shepherdAnimal() {
+        
     }
 
     public String processCommand(String command) {

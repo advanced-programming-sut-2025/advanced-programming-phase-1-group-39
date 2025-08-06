@@ -1,19 +1,19 @@
 package com.StardewValley.models.animals;
 
-import com.StardewValley.models.animals.AnimalProductQuality;
 import com.StardewValley.models.Location;
-import com.StardewValley.models.animals.AnimalProduct;
-import com.StardewValley.models.animals.AnimalType;
-import com.StardewValley.models.animals.LivingPlace;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Animal {
     private AnimalType type;
     private String name;
     private int price;
     private LivingPlace place;
+
     private Location location;
+    private Location lastLocation;
 
     private ArrayList<AnimalProduct> products;
 
@@ -24,6 +24,8 @@ public class Animal {
     private int daysSinceLastProduce = 0;
 
     private AnimalProduct todayProduct = null;
+
+    private static final int walkingBound = 5;
 
     public Animal(AnimalType type, String name, int price, LivingPlace place, ArrayList<AnimalProduct> products) {
         this.type = type;
@@ -44,8 +46,28 @@ public class Animal {
     public int getPrice() { return price; }
     public LivingPlace getPlace() { return place; }
     public ArrayList<AnimalProduct> getProducts() { return products; }
-    public Location getLocation() { return location; }
+
+
+    private Location getRandomLocationToGo() {
+        Random rand = new Random();
+
+        double angle = 2 * Math.PI * rand.nextDouble();
+
+        double radius = walkingBound * Math.sqrt(rand.nextDouble());
+
+        int dx = (int)(radius * Math.cos(angle));
+        int dy = (int)(radius * Math.sin(angle));
+
+        return new Location(location.x() + dx, location.y() + dy);
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
     public void setLocation(Location location) { this.location = location; }
+
+
     public int getFriendship() { return friendship; }
 
     public void changeFriendship(int amount) {
@@ -136,5 +158,9 @@ public class Animal {
                 ", outsideToday=" + outsideToday +
                 ", daysSinceLastProduce=" + daysSinceLastProduce +
                 '}';
+    }
+
+    public TextureRegion getTexture() {
+        return type.getTextureRegion();
     }
 }

@@ -4,6 +4,7 @@ import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.Shops.Shop;
+import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.buildings.Building;
 import com.StardewValley.models.buildings.ShippingBin;
 import com.StardewValley.models.cooking.FoodRecipe;
@@ -350,6 +351,7 @@ public class GameScreen implements Screen {
                 return Color.WHITE; // رنگ عادی و بدون تغییر
         }
     }
+
     public void renderTiles() {
         float camX = camera.position.x;
         float camY = camera.position.y;
@@ -440,6 +442,7 @@ public class GameScreen implements Screen {
         }
     }
 
+
     public void renderBuildings() {
         for (Player player : game.getPlayers()) {
             for (Building building : player.getFarmBuildings()) {
@@ -450,6 +453,18 @@ public class GameScreen implements Screen {
                     TextureRegion texture = new TextureRegion(GameAssetManager.shippingBinTexture);
                     batch.draw(texture, inMapLocation.x(), inMapLocation.y(), tileSize, tileSize);
                 }
+            }
+        }
+    }
+
+    public void renderAnimals() {
+        for (Player player : game.getPlayers()) {
+            for (Animal animal : player.getAnimals()) {
+                Location inMapLocation = Map.TileToPixelConverter(animal.getLocation());
+                int tileSize = Map.TILE_SIZE;
+
+                TextureRegion texture = new TextureRegion(animal.getTexture());
+                batch.draw(texture, inMapLocation.x(), inMapLocation.y(), tileSize, tileSize);
             }
         }
     }
@@ -1074,6 +1089,7 @@ public class GameScreen implements Screen {
             batch.begin();
             renderTiles();
             renderBuildings();
+            renderAnimals();
             renderPlayers(v);
 
             // TODO : (Better) move clock render to uiStage

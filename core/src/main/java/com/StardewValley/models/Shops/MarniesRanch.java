@@ -8,7 +8,6 @@ import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.animals.AnimalType;
 import com.StardewValley.models.animals.LivingPlace;
 import com.StardewValley.models.buildings.AnimalBuilding;
-import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.tools.MilkPail;
 import com.StardewValley.models.tools.Shear;
 import com.badlogic.gdx.Gdx;
@@ -174,7 +173,7 @@ public class MarniesRanch extends Shop {
 
         Animal animal = type.create(name);
         player.addAnimal(animal);
-        building.addAnimal(animal);
+        building.addAnimalAndSetLocationInside(animal);
 
         item.purchase(1);
         player.changeMoney(-totalPrice);

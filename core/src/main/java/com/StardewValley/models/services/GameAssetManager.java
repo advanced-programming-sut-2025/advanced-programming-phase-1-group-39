@@ -1,5 +1,6 @@
 package com.StardewValley.models.services;
 
+import com.StardewValley.models.animals.AnimalType;
 import com.StardewValley.models.map.TileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -77,6 +78,7 @@ public class GameAssetManager {
         loadEffects();
 
         TileType.loadAllTextures();
+        AnimalType.loadAllTextures();
     }
 
     private static void loadEffects() {

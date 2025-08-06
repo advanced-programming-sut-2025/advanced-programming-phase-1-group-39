@@ -5,6 +5,9 @@ import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.Shops.Shop;
 import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.animals.AnimalType;
+import com.StardewValley.models.animals.LivingPlace;
+import com.StardewValley.models.buildings.AnimalBuilding;
 import com.StardewValley.models.buildings.Building;
 import com.StardewValley.models.buildings.ShippingBin;
 import com.StardewValley.models.cooking.FoodRecipe;
@@ -25,6 +28,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -61,6 +65,8 @@ public class GameScreen implements Screen {
     //  player
     private TextureAtlas playerAtlas;
     private HashMap<Player, ArrayList<Animation<TextureRegion>>> playersAnimations = new LinkedHashMap<>();
+    private TextureRegion seasonTexture;
+    private TextureRegion weatherTexture;
 
     // // player states
     public enum PlayerState {
@@ -460,15 +466,28 @@ public class GameScreen implements Screen {
     public void renderAnimals(float v) {
         for (Player player : game.getPlayers()) {
             for (Animal animal : player.getAnimals()) {
-                animal.updateAnimalMovement(v);
+                Vector2 movement = animal.updateAnimalMovement(v);
+                gameMenuInputAdapter.handleAnimalMovement(game , animal, movement);
+                System.out.println("animal " + animal.getName() + " moved to " + animal.getX() + " " + animal.getY());
 
-                Location inMapLocation = Map.TileToPixelConverter(animal.getLocation());
+                TextureRegion texture = animal.getTexture();
                 int tileSize = Map.TILE_SIZE;
-
-                TextureRegion texture = new TextureRegion(animal.getTexture());
-                batch.draw(texture, inMapLocation.x(), inMapLocation.y(), tileSize, tileSize);
+                batch.draw(texture, animal.getX(), animal.getY(), tileSize, tileSize);
             }
         }
+    }
+/// test
+    public void cheatPlayer() {
+        Player player = game.getPlayerInTurn();
+
+        player.addToBuildings(new AnimalBuilding("coop", player.getTileLocation(), 7,4, LivingPlace.COOP));
+        AnimalBuilding building = player.getAnimalBuilding(LivingPlace.COOP);
+        building.updateMap(game.getMap());
+
+        Animal animal = new Animal(AnimalType.CHICKEN, "joojeh", 500, LivingPlace.COOP, new ArrayList<>() );
+        player.addAnimal(animal);
+        building.addAnimalAndSetLocationInside(animal);
+        showError("cheated Animal");
     }
 
     public void renderPlayers(float data) {
@@ -554,10 +573,9 @@ public class GameScreen implements Screen {
 
         batch.draw(clock, drawX, drawY);
         Time time = App.getApp().getCurrentGame().getTime();
-        TextureRegion season = new TextureRegion(new Texture(Gdx.files.internal("clock/" + time.getSeason().name() + ".png")));
-        TextureRegion weather = new TextureRegion(new Texture(Gdx.files.internal("clock/" + App.getApp().getCurrentGame().getTodayWeather().getStatus().name() + ".png")));
-        batch.draw(season, drawX + 210, drawY + 137, (float) season.getRegionWidth() /2, (float) season.getRegionHeight() /2);
-        batch.draw(weather, drawX + 115, drawY + 137, (float) weather.getRegionWidth() /2, (float) weather.getRegionHeight() /2);
+
+        batch.draw(seasonTexture, drawX + 210, drawY + 137, (float) seasonTexture.getRegionWidth() / 2, (float) seasonTexture.getRegionHeight() / 2);
+        batch.draw(weatherTexture, drawX + 115, drawY + 137, (float) weatherTexture.getRegionWidth() / 2, (float) weatherTexture.getRegionHeight() / 2);
 
         String date = (time.getDayOfWeek().toString().substring(0,3)) + ". " + time.getDay();
         font.draw(batch, date, drawX + 150, drawY + 210);
@@ -681,12 +699,11 @@ public class GameScreen implements Screen {
         Player player = game.getPlayerInTurn();
         Shop shop = game.getShopPlayerIsIn(player);
         if (shop == null) {
-            System.out.println("You aren't in a shop");
+            showError("You aren't in a shop");
         } else {
             Gdx.input.setInputProcessor(uiStage);
             shop.showShopMenu(uiStage, GameAssetManager.skin);
         }
-
     }
 
 
@@ -1070,6 +1087,17 @@ public class GameScreen implements Screen {
         });
 
         showError("Welcome " + game.getPlayerInTurn().getNickname() + " !");
+
+        Time time = game.getTime();
+        Weather todayWeather = game.getTodayWeather();
+
+        Texture seasonTex = new Texture(Gdx.files.internal("clock/" + time.getSeason().name() + ".png"));
+        seasonTex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        this.seasonTexture = new TextureRegion(seasonTex);
+
+        Texture weatherTex = new Texture(Gdx.files.internal("clock/" + todayWeather.getStatus().name() + ".png"));
+        weatherTex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        this.weatherTexture = new TextureRegion(weatherTex);
     }
 
     @Override
@@ -1091,8 +1119,8 @@ public class GameScreen implements Screen {
             batch.begin();
             renderTiles();
             renderBuildings();
-            renderAnimals(v);
             renderPlayers(v);
+            renderAnimals(v);
 
             // TODO : (Better) move clock render to uiStage
             renderClockUI();
@@ -1110,6 +1138,10 @@ public class GameScreen implements Screen {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (batch.isDrawing()) {
+                batch.end();
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Direction;
+import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -89,6 +90,19 @@ public class GameInputAdapter extends InputAdapter {
         }
     }
 
+    public void handleAnimalMovement(Game game, Animal animal, Vector2 movement) {
+        float newX = animal.getX() + movement.x;
+        float newY = animal.getY() + movement.y;
+
+        // check farm borders
+        if (game.isPositionPassable(newX, animal.getY())) {
+            animal.setLoc(newX, animal.getY());
+        }
+        if (game.isPositionPassable(animal.getX(), newY)) {
+            animal.setLoc(animal.getX(), newY);
+        }
+    }
+
 
     @Override
     public boolean keyDown(int keycode) {
@@ -113,6 +127,8 @@ public class GameInputAdapter extends InputAdapter {
             screen.changeCraftingMenu();
         } else if (keycode == Input.Keys.P) {
             screen.showShopMenu();
+        } else if (keycode == Input.Keys.TAB) {
+            screen.cheatPlayer();
         }
 
         else if (keycode == Input.Keys.M) {

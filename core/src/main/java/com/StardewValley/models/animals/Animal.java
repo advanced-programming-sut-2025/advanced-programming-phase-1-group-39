@@ -2,6 +2,7 @@ package com.StardewValley.models.animals;
 
 import com.StardewValley.models.GameSetting;
 import com.StardewValley.models.Location;
+import com.StardewValley.models.map.Map;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -14,9 +15,10 @@ public class Animal {
     private int price;
     private LivingPlace place;
 
-    private Location location;
-    private Location firstLocation;
-    private Location toGoLocation;
+    private Vector2 position;
+    private Vector2 firstLocation;
+    private Vector2 toGoLocation;
+
 
     private ArrayList<AnimalProduct> products;
 
@@ -28,7 +30,7 @@ public class Animal {
 
     private AnimalProduct todayProduct = null;
 
-    private static final int walkingBound = 5;
+    private static final int walkingBoundInTile = 5;
 
     public Animal(AnimalType type, String name, int price, LivingPlace place, ArrayList<AnimalProduct> products) {
         this.type = type;
@@ -51,44 +53,52 @@ public class Animal {
     public ArrayList<AnimalProduct> getProducts() { return products; }
 
 
-    public void updateAnimalMovement(float deltaTime) {
-        Vector2 currentLocation = new Vector2(location.x(), location.y());
-        Vector2 targetLocation = new Vector2(toGoLocation.x(), toGoLocation.y());
-
-        if (currentLocation.dst(targetLocation) < 1.0f) {
+    public Vector2 updateAnimalMovement(float deltaTime) {
+        if (position.dst(toGoLocation) < 1.0f) {
             setNewRandomToGoLocation();
+            return position;
         } else {
-            Vector2 direction = targetLocation.sub(currentLocation).nor();
+            Vector2 target = toGoLocation.cpy();
+            Vector2 direction = target.sub(position).nor();
 
-            float distanceToMove = GameSetting.getAnimalSpeed() * deltaTime;
-
-            currentLocation.add(direction.scl(distanceToMove));
-
-            location = new Location((int)currentLocation.x, (int)currentLocation.y);
+            return new Vector2(position.x, position.y).mulAdd(direction, GameSetting.getAnimalSpeed() * deltaTime);
         }
     }
-
 
     private void setNewRandomToGoLocation() {
         Random rand = new Random();
         double angle = 2 * Math.PI * rand.nextDouble();
-        double radius = walkingBound * Math.sqrt(rand.nextDouble());
+        double radius = walkingBoundInTile * Map.TILE_SIZE * Math.sqrt(rand.nextDouble());
 
-        int dx = (int)(radius * Math.cos(angle));
-        int dy = (int)(radius * Math.sin(angle));
+        float dx = (float)(radius * Math.cos(angle));
+        float dy = (float)(radius * Math.sin(angle));
 
-        // Set the new target destination
-        toGoLocation = new Location(location.x() + dx, location.y() + dy);
+        toGoLocation.set(firstLocation.x + dx, firstLocation.y + dy);
+    }
+
+    public float getX() {
+        return position.x;
+    }
+    public float getY() {
+        return position.y;
+    }
+
+    public void setLoc(float x, float y) {
+        position.x = x;
+        position.y = y;
     }
 
     public Location getLocation() {
-        return location;
+        return new Location((int)position.x, (int)position.y);
     }
 
     public void setLocation(Location location) {
-        this.location = location;
-        this.firstLocation = location;
+        Location inMap = Map.TileToPixelConverter(location);
+        this.position = new Vector2(inMap.x(), inMap.y());
+        this.firstLocation = new Vector2(inMap.x(), inMap.y());
+        this.toGoLocation = new Vector2(inMap.x(), inMap.y());
     }
+
 
 
     public int getFriendship() { return friendship; }
@@ -173,7 +183,7 @@ public class Animal {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", place=" + place +
-                ", location=" + location +
+                ", location=" + position +
                 ", products=" + products +
                 ", friendship=" + friendship +
                 ", pettedToday=" + pettedToday +

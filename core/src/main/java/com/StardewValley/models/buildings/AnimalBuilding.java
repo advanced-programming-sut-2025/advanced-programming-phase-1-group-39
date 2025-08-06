@@ -33,8 +33,8 @@ public class AnimalBuilding extends Building {
     }
 
     public Location getRandomLocationInside() {
-        int randX = new Random().nextInt(getWidth()) + getLocation().x();
-        int randY = new Random().nextInt(getHeight()) + getLocation().y();
+        int randX = new Random().nextInt(getWidth() - 2) + getLocation().x() + 1;
+        int randY = new Random().nextInt(getHeight() - 2) + getLocation().y() + 1;
         return new Location(randX, randY);
     }
 

@@ -19,7 +19,6 @@ public class NetworkClient {
     private ObjectInputStream in;
     private Socket socket;
 
-    // <<-- رفرنس‌ها به کلاس‌های اصلی، نه به یک اسکرین خاص -->>
     private final Main main;
     private final App app;
 
@@ -43,8 +42,6 @@ public class NetworkClient {
 
     private void listenToServer() {
         try {
-            sendIdentityToServer();
-
             while (true) {
                 Request serverRequest = (Request) in.readObject();
                 // <<-- بسیار مهم: هر آپدیتی باید در ترد اصلی LibGDX انجام شود -->>
@@ -111,9 +108,6 @@ public class NetworkClient {
 
 
     // send messages
-    public void sendIdentityToServer() {
-
-    }
 
     public void sendJoinLobbyRequest(String lobbyId, String username) {
         sendRequest(new Request(RequestType.JOIN_LOBBY, new String[]{lobbyId, username}));

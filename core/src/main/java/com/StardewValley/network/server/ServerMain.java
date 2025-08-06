@@ -199,9 +199,35 @@ public class ServerMain {
         }
     }
 
-    public static void removeClient(ClientHandler clientHandler) {
-        clients.remove(clientHandler);
-        // TODO: منطق خروج بازیکن از لابی و بازی
-        System.out.println("Player disconnected: " + clientHandler.getClientIdentifier());
+
+    public static void handleDisconnection(ClientHandler handler) {
+        // اگر بازیکن اصلا در بازی نبود، فقط حذفش کن
+        if (handler.getGameId() == -1) {
+            removeClient(handler); // از لیست کلی حذف می‌شود و لیست آنلاین‌ها آپدیت می‌شود
+            return;
+        }
+
+        // اگر بازیکن در یک بازی فعال بود، منطق داکیومنت را اجرا کن
+        GameSession session = activeGames.get(handler.getGameId());
+        if (session != null) {
+            System.out.println("Player " + handler.getUsername() + " disconnected from game " + handler.getGameId() + ". Starting 2-minute timer.");
+            // به سشن بازی می‌گوییم که این بازیکن قطع شده و تایمر را شروع کند
+            session.onPlayerDisconnected(handler.getUsername());
+        } else {
+            // اگر بازی‌ای پیدا نشد (حالت نادر)، فقط حذفش کن
+            removeClient(handler);
+        }
     }
+
+    public static void removeClient(ClientHandler handler) {
+        clients.remove(handler);
+        System.out.println("Client " + handler.getClientIdentifier() + " removed.");
+        // TODO: منطق خروج بازیکن از لابی و بازی
+        broadcastOnlineUserList(); // لیست کاربران را برای بقیه آپدیت کن
+    }
+
+    private static void broadcastOnlineUserList() {
+
+    }
+
 }

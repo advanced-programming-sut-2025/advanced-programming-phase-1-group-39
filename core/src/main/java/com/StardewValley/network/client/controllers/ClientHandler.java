@@ -9,6 +9,7 @@ import com.StardewValley.network.shares.message.RequestType;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,9 +53,14 @@ public class ClientHandler implements Runnable {
                 Request request = (Request) in.readObject();
                 handleRequest(request);
             }
+        } catch (SocketException e) {
+            // این خطا معمولا وقتی رخ می‌دهد که کلاینت به طور ناگهانی قطع می‌شود
+            System.out.println("Client " + getClientIdentifier() + " disconnected abruptly.");
         } catch (Exception e) {
-            System.out.println("Some Error occured in ClientHandler : \n" + e.getMessage());
-            ServerMain.removeClient(this);
+            // سایر خطاها
+            System.out.println("Error with client " + getClientIdentifier() + ": " + e.getMessage());
+        } finally {
+            ServerMain.handleDisconnection(this);
         }
     }
 

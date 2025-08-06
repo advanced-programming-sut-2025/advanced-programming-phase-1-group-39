@@ -12,10 +12,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GameSession implements Runnable {
     private Game actualGame;
     private List<ClientHandler> playersInSession;
+
+    private final Map<String, Long> disconnectedPlayers = new ConcurrentHashMap<>();
+
     private boolean isRunning = true;
 
     public GameSession(List<ClientHandler> players, Game game) {
@@ -66,6 +70,7 @@ public class GameSession implements Runnable {
         }
     }
 
+
     /*public void processMoveRequest(PlayerMovePayload payload, String clientUsername) {
         Player playerToMove = actualGame.getPlayerByUsername(clientUsername);
         if (playerToMove != null) {
@@ -97,4 +102,48 @@ public class GameSession implements Runnable {
             // کلاینت در فریم بعدی آپدیت را دریافت کرده و می‌بیند که بازیکن حرکت نکرده است.
         }
     }*/
+
+    // Check disconnection
+    public void onPlayerDisconnected(String username) {
+        // 1. بازیکن را به لیست قطع شده‌ها اضافه کن و زمان فعلی را ثبت کن
+        disconnectedPlayers.put(username, System.currentTimeMillis());
+
+        // 2. به بقیه بازیکنان در بازی اطلاع بده
+        String message = "Player '" + username + "' has disconnected. They have 2 minutes to reconnect.";
+        Request infoRequest = new Request(RequestType.PLAYER_DISCONNECTED, message);
+        broadcastToSession(infoRequest);
+
+        // 3. یک ترد جدید برای چک کردن تایمر 2 دقیقه‌ای بساز
+        new Thread(() -> {
+            try {
+                // 120,000 میلی‌ثانیه = 2 دقیقه
+                Thread.sleep(120000);
+
+                // اگر بعد از 2 دقیقه، بازیکن هنوز در لیست قطع شده‌ها بود، یعنی برنگشته
+                if (disconnectedPlayers.containsKey(username)) {
+                    // بازیکن را به طور کامل حذف کن
+                    kickPlayerPermanently(username);
+                }
+            } catch (InterruptedException e) {
+                // اگر بازیکن زودتر برگشت، این ترد interrupt می‌شود
+            }
+        }).start();
+    }
+
+    public void onPlayerReconnected(String username) {
+        // اگر بازیکن در لیست قطع شده‌ها بود، او را برگردان
+        if (disconnectedPlayers.containsKey(username)) {
+            disconnectedPlayers.remove(username);
+
+            String message = "Player '" + username + "' has reconnected!";
+            Request infoRequest = new Request(RequestType.PLAYER_RECONNECTED, message);
+            broadcastToSession(infoRequest);
+            // TODO: باید ترد تایمر آن بازیکن را interrupt کنیم تا kick نشود
+        }
+    }
+
+    private void kickPlayerPermanently(String username) {
+        disconnectedPlayers.remove(username);
+        System.out.println("Player " + username + " did not reconnect in time. Kicking permanently.");
+    }
 }

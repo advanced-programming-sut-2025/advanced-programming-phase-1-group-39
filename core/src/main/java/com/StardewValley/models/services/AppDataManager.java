@@ -12,6 +12,7 @@ import com.StardewValley.models.Shops.*;
 import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.animals.AnimalProduct;
 import com.StardewValley.models.animals.Fish;
+import com.StardewValley.models.animals.LivingPlace;
 import com.StardewValley.models.artisan.*;
 import com.StardewValley.models.buildings.*;
 import com.StardewValley.models.cooking.Food;
@@ -196,6 +197,7 @@ public class AppDataManager {
         kryo.register(String.class);
 
         kryo.register(Vector2.class);
+        kryo.register(LivingPlace.class);
 
     }
 

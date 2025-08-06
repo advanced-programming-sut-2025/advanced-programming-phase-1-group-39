@@ -2,6 +2,7 @@ package com.StardewValley.network.server;
 
 import com.StardewValley.models.Player; // import Player model
 import com.StardewValley.models.Game; // import Game model
+import com.StardewValley.models.Result;
 import com.StardewValley.network.client.controllers.ClientHandler;
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.message.*;
@@ -54,7 +55,7 @@ public class ServerMain {
     }
 
     // متد joinLobby با دریافت نام کاربری
-    public static void joinLobby(String lobbyId, String username, ClientHandler joiningClient) {
+    public static Result joinLobby(String lobbyId, String username, ClientHandler joiningClient) {
         synchronized (lobbies) {
             for (Lobby lobby : lobbies) {
                 if (lobby.getId().equals(lobbyId) && !lobby.isFull()) {
@@ -62,15 +63,15 @@ public class ServerMain {
                     if (success) {
                         joiningClient.setUsername(username); // نام کاربری را در هندلر ذخیره کن
                         joiningClient.setLobbyId(lobby.getId());
-                        System.out.println("Player " + username + " joined lobby. New state: " + lobby);
                         broadcastLobbyListInternal();
+                        return new Result(true,
+                                "Player " + username + " joined lobby. New state: " + lobby);
                     } else {
-                        System.out.println("Failed to join lobby for player " + username);
+                        return new Result(false, "Failed to join lobby (Admin: " + username + ")");
                     }
-                    return;
                 }
             }
-            System.err.println("Lobby with ID " + lobbyId + " not found or is full.");
+            return new Result(false, "Lobby with ID " + lobbyId + " not found or is full.");
         }
     }
 

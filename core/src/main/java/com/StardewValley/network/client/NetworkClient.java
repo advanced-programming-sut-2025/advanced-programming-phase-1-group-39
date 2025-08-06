@@ -2,6 +2,7 @@ package com.StardewValley.network.client;
 
 import com.StardewValley.Main; // <<-- وارد کردن کلاس اصلی بازی
 import com.StardewValley.models.App; // <<-- وارد کردن مدل App
+import com.StardewValley.models.Result;
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
 import com.StardewValley.network.shares.message.LobbyData;
@@ -15,6 +16,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static com.StardewValley.network.server.ServerMain.joinLobby;
 
 public class NetworkClient {
     private ObjectOutputStream out;
@@ -70,13 +74,19 @@ public class NetworkClient {
                 }
                 break;
 
-
             case UPDATE_LOBBY_LIST:
                 if (payload instanceof List) {
                     List<Lobby> lobbies = (List<Lobby>) payload;
                     app.setAvailableLobbies(lobbies);
                 }
                 break;
+
+            case JOIN_LOBBY_RESPONSE:
+                if (payload instanceof Boolean) {
+                    Boolean response = (Boolean) payload;
+                    joinLobby(response);
+                }
+
 
             case GAME_STARTED:
                 // سرور دستور شروع بازی را داده است
@@ -127,9 +137,17 @@ public class NetworkClient {
         sendRequest(new Request(RequestType.CREATE_LOBBY, new LobbyData(lobbyName, usernameOfAdmin, isPrivate, isVisibleToAll, password)));
     }
 
-
+    //TODO : after click on each lobby or searching lobby by id
     public void sendJoinLobbyRequest(String lobbyId, String username) {
         sendRequest(new Request(RequestType.JOIN_LOBBY, new String[]{lobbyId, username}));
+    }
+
+    public void joinLobby(boolean success) {
+        if (!success) {
+        //TODO  : show error
+        } else {
+        //TODO  : show lobby window
+        }
     }
 
     public void sendReactionRequest(String reaction) {

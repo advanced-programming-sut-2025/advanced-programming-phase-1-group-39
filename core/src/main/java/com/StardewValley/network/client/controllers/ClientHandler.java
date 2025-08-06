@@ -1,6 +1,7 @@
 package com.StardewValley.network.client.controllers;
 
 
+import com.StardewValley.models.Result;
 import com.StardewValley.network.server.ServerMain;
 import com.StardewValley.network.shares.message.ChatMessage;
 import com.StardewValley.network.shares.message.LobbyData;
@@ -83,8 +84,11 @@ public class ClientHandler implements Runnable {
 
             case JOIN_LOBBY:
                 String requestedLobbyId = (String) request.getPayload();
-                ServerMain.joinLobby(requestedLobbyId, username, this);
+                Result res = ServerMain.joinLobby(requestedLobbyId, username, this);
+                sendMessage(new Request(RequestType.JOIN_LOBBY_RESPONSE, res.success()));
                 break;
+
+
 
             case START_GAME:
                 ServerMain.startGame(this);

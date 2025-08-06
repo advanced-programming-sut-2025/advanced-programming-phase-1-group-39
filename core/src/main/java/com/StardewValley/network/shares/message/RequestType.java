@@ -5,12 +5,16 @@ public enum RequestType {
     SEND_USERNAME,
 
     //Lobby and Online Users
-    UPDATE_LOBBY_LIST,
+    UPDATE_LOBBY_LIST, // server
     UPDATE_ONLINE_USERS,
 
+    REFRESH_LOBBY_LIST, // client
     CREATE_LOBBY,
+
     JOIN_LOBBY,
-    REFRESH_LOBBY_LIST,
+    JOIN_LOBBY_RESPONSE, // server
+
+
     LOBBY_CHAT_MESSAGE,
 
     //Start Game

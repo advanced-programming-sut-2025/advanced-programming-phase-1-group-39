@@ -61,6 +61,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         try {
+            Main.getBatch().setProjectionMatrix(new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
             stage = new Stage(new FitViewport(1920, 1080));
             Gdx.input.setInputProcessor(stage);
 

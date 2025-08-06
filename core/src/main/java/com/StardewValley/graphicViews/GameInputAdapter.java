@@ -101,6 +101,8 @@ public class GameInputAdapter extends InputAdapter {
             screen.blackBackgroundAnimation(() -> controller.changeTurn());
         } else if (keycode == Input.Keys.BACKSLASH || keycode == Input.Keys.SLASH) {
             screen.toggleTerminalBox();
+        } else if (keycode == Input.Keys.E) {
+            screen.toggleInventoryMenu();
         }
         return true;
     }

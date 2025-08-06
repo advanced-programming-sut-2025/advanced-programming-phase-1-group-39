@@ -2,6 +2,7 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
+import com.StardewValley.models.NPC.PlayerNPCInteraction;
 import com.StardewValley.models.cropsAndFarming.Plant;
 import com.StardewValley.models.cropsAndFarming.Tree;
 import com.StardewValley.models.inventory.Inventory;
@@ -69,9 +70,13 @@ public class GameScreen implements Screen {
     private ProgressBar energyBar;
     private Image energyBox;
     private Label energyAmount;
+
+    // inventory
+    private Window inventoryWindow = null;
     Table inventoryTable = new Table();
     private int lastSelectedSlot = -1;
     private int lastBagHash = 0;
+    private Cell<?> contentCell;
 
     private final int MAX_CACHE_SIZE = 5000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
@@ -688,6 +693,122 @@ public class GameScreen implements Screen {
         }
         return null;
     }
+
+    public void toggleInventoryMenu() {
+        if (inventoryWindow != null) {
+            hideInventoryMenu();
+            return;
+        }
+        Skin skin = GameAssetManager.skin;
+        inventoryWindow = new Window("Inventory", skin);
+        inventoryWindow.setModal(true);
+        inventoryWindow.setSize(1200, 1000); // هر سایزی دوست داشتی
+        inventoryWindow.setPosition(
+                uiStage.getWidth() / 2f,
+                uiStage.getHeight() / 2f,
+                Align.center
+        );
+
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+
+        // ==== ردیف اول: دکمه‌های تب ====
+        String[] tabNames = {"Journal", "Inventory", "Skills", "Map", "Setting"};
+        Table tabsRow = new Table();
+
+        // رو این دکمه‌ها اکشن تعویض محتوا می‌ذاریم:
+        for (String tab : tabNames) {
+            TextButton tabBtn = new TextButton(tab, skin);
+            tabsRow.add(tabBtn).pad(5);
+
+            tabBtn.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    contentCell.setActor(null);   // محتوا رو خالی کن
+                    switch (tab) {
+                        case "Journal":
+                            contentCell.setActor(getQuestsList());
+                            break;
+                        case "Inventory":
+                            //contentCell.setActor(getInventoryList()); // اینو خودت بساز، لیست آیتم‌ها یا هرچی
+                            break;
+                        // بقیه تب‌ها اینجا
+                        default:
+                            Label comingSoon = new Label(tab + " content coming soon!", skin);
+                            comingSoon.setAlignment(Align.center);
+                            contentCell.setActor(comingSoon);
+                    }
+                }
+            });
+        }
+        mainTable.add(tabsRow).growX().padTop(35).row();
+
+        // ==== ردیف وسط: محتوای تب جاری ====
+        // اولش می‌تونی پیش‌فرض بزاری مثلا Journal
+        contentCell = mainTable.add(getQuestsList()).expand().fill();
+        mainTable.row();
+
+        // ==== ردیف آخر: دکمه Close پایین ====
+        TextButton closeBtn = new TextButton("Close", skin);
+        closeBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideInventoryMenu();
+            }
+        });
+        Table closeRow = new Table();
+        closeRow.add(closeBtn).center().padBottom(12);
+        mainTable.add(closeRow).growX().bottom().row();
+
+        inventoryWindow.clearChildren();
+        inventoryWindow.add(mainTable).grow().pad(8);
+
+        uiStage.addActor(inventoryWindow);
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    private void hideInventoryMenu() {
+        if (inventoryWindow != null) {
+            inventoryWindow.remove();
+            inventoryWindow = null;
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
+
+    private Table getQuestsList() {
+        Table questsTable = new Table();
+        Skin skin = GameAssetManager.skin;
+
+        Label title = new Label("Journal - Quests", skin, "title");
+        title.setAlignment(Align.center);
+        title.setFontScale(1f);
+
+        questsTable.add(title).colspan(2).padBottom(32).center().row();
+
+        // NPC names & quests
+        String[] npcs = { "Abigail", "Harvey", "Leah", "Robin", "Sebastian" };
+        String[] colors = { "e63946", "f1faee", "a8dadc", "457b9d", "1d3557" };
+
+        for (int i = 0; i < npcs.length; i++) {
+            Label nameLabel = new Label(npcs[i] + ":", skin, "subtitle");
+            nameLabel.setColor(Color.valueOf(colors[i]));
+            nameLabel.setFontScale(0.9f);
+
+            Label questsLabel = new Label(controller.getQuesList(npcs[i].toLowerCase()), skin);
+            questsLabel.setWrap(true);
+            questsLabel.setColor(Color.valueOf(colors[i]));
+            questsLabel.setFontScale(0.9f);
+
+            questsTable.add(nameLabel).padRight(50).top().left().width(170);
+            questsTable.add(questsLabel).growX().padBottom(30).padTop(10).left().row();
+        }
+
+        questsTable.pad(30, 20, 30, 20).top().left();
+        return questsTable;
+    }
+
+
+
 
     public Game getGame() {
         return game;

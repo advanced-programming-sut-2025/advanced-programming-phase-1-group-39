@@ -6,6 +6,9 @@ import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.Enums.commands.GameCommands;
 import com.StardewValley.models.Enums.commands.InteractionsCommand;
 import com.StardewValley.models.Enums.commands.NPCGameCommand;
+import com.StardewValley.models.NPC.PlayerNPCInteraction;
+import com.StardewValley.models.NPC.Quest;
+import com.StardewValley.models.PlayerInteraction.Friendship;
 import com.StardewValley.models.map.AnsiColors;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.tools.Axe;
@@ -15,6 +18,7 @@ import com.StardewValley.models.tools.Tool;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 
@@ -254,43 +258,7 @@ public class GameGuiController {
             result = interactionsController.showGiftHistory(matcher);
         } else if ((matcher = InteractionsCommand.GetFlower.getMatcher(command)) != null) {
             result = interactionsController.getFlower(matcher);
-//        } else if ((matcher = GameCommands.DELETE_GAME.getMatcher(command)) != null) {
-//            result = gameController.deleteGame();
-//            if (result.success()) {
-//                int count = 0;
-//                int accepted = 0;
-//                while (count != 3) {
-//                     ("next player enter yes or no :");
-//                    String input = Input.getNextLine();
-//                    if (input.equalsIgnoreCase("yes")) {
-//                        message = ("next player enter yes or no :");
-//                        input = Input.getNextLine();
-//                        count++;
-//                        accepted++;
-//                    } else if (input.equalsIgnoreCase("no")) {
-//                        message = ("next player enter yes or no :");
-//                        input = Input.getNextLine();
-//                        count++;
-//                    } else {
-//                        message = ("enter yes or no please :");
-//                        input = Input.getNextLine();
-//                    }
-//                }
-//                if (accepted == 3) {
-//                    App app = App.getApp();
-//                    Game game = app.getCurrentGame();
-//                    for (Player player : game.getPlayers()) {
-//                        ProfileMenuController.setHighScore(player.getUsername());
-//                        app.getUsers().get(ProfileMenuController.getIndexInUsers(player.getUsername())).setCurrentGame(null);
-//                    }
-//                    app.removeGame(app.getCurrentGame());
-//                    app.setCurrentGame(null);
-//                    app.setCurrentMenu(Menu.MAIN_MENU);
-//                    message = ("The game has been successfully deleted. You're now back at the main menu!");
-//                } else {
-//                    message = ("The game cannot be deleted because not all players agreed to the removal.");
-//                }
-//            }
+
         } else if ((GameCommands.SHOW_MONEY.getMatcher(command)) != null) {
             message = (gameController.showMoney());
         } else {
@@ -334,5 +302,72 @@ public class GameGuiController {
             }
         }
     }
+
+    public String getQuesList(String NPCName) {
+        App app = App.getApp();
+        Game game = screen.getGame();
+        Player player = game.getPlayerInTurn();
+        StringBuilder output = new StringBuilder();
+        PlayerNPCInteraction friendship = player.getFriendship(NPCName);
+        int count = 0;
+        if (NPCName.equals("Sebastian")) { output.append("     "); }
+        if (getMission(1, NPCName) != null) {
+            count++;
+            output.append(count).append(") ").append(getMission(1, NPCName)).append("\n");
+        }
+        if (getMission(2, NPCName) != null && player.getFriendship(NPCName).getFriendshipLevel() >= 1) {
+            count++;
+            output.append(count).append(") ").append(getMission(2, NPCName)).append("\n");
+        }
+        if (getMission(3, NPCName) != null &&
+                player.getFriendship(NPCName).getFriendshipLevel() >= 1 &&
+                friendship.getActiveMission3().isGreater(game.getTime())) {
+            count++;
+            output.append(count).append(") ").append(getMission(3, NPCName)).append("\n");
+        }
+        return output.toString();
+    }
+
+    //    private String activeMissions() {
+//        App app = App.getApp();
+//        Game game = app.getCurrentGame();
+//        Player currentPlayer = game.getPlayerInTurn();
+//        String Output;
+//        StringBuilder output = new StringBuilder();
+//        output.append("Quests in Progress :");
+//        int count = 0;
+//        for (PlayerNPCInteraction friendship : currentPlayer.getAllFriendships()) {
+//            if (getMission(1, friendship.getNPCName()) != null) {
+//                count++;
+//                output.append(count).append(") ").append(getMission(1, friendship.getNPCName())).append("\n");
+//            }
+//            if (getMission(2, friendship.getNPCName()) != null && currentPlayer.getFriendship(friendship.getNPCName()).getFriendshipLevel() >= 1) {
+//                count++;
+//                output.append(count).append(") ").append(getMission(2, friendship.getNPCName())).append("\n");
+//            }
+//            if (getMission(3, friendship.getNPCName()) != null &&
+//                    currentPlayer.getFriendship(friendship.getNPCName()).getFriendshipLevel() >= 1 &&
+//                    friendship.getActiveMission3().isGreater(game.getTime())) {
+//                count++;
+//                output.append(count).append(") ").append(getMission(3, friendship.getNPCName())).append("\n");
+//            }
+//        }
+//        output.deleteCharAt(output.length() - 1);
+//        Output = output.toString();
+//        return Output;
+//    }
+
+    private String getMission(int level, String NPCName) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        for (Quest quest : game.getNPC(NPCName).getQuests()) {
+            if (quest.getLevel() == level) {
+                return game.getNPC(NPCName).getMissions().get(level - 1);
+            }
+        }
+        return null;
+    }
+
+
 
 }

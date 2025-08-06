@@ -965,6 +965,8 @@ public class GameScreen implements Screen {
         }
     }
 
+    // inventory
+
     private void renderInventory() {
         inventoryTable.clear();
 
@@ -1062,6 +1064,9 @@ public class GameScreen implements Screen {
                             break;
                         case "Skills":
                             contentCell.setActor(getSkillsMenuTable());
+                            break;
+                        case "Map":
+                            contentCell.setActor(getMapMenuTable());
                             break;
                         default:
                             Label comingSoon = new Label(tab + " content coming soon!", skin);
@@ -1371,6 +1376,22 @@ public class GameScreen implements Screen {
     private void hideSkillImageTooltip() {
         if (skillDescImage != null)
             skillDescImage.setVisible(false);
+    }
+
+    private Table getMapMenuTable() {
+        Skin skin = GameAssetManager.skin;
+        Table mapTable = new Table(skin);
+
+        Label title = new Label("World Map", skin, "title");
+        title.setAlignment(Align.center);
+        title.setFontScale(1.18f);
+
+        mapTable.add(title).growX().height(70).padBottom(22).center().row();
+
+            mapTable.add(miniMapWidget).size(720, 540).center().row();
+
+        mapTable.pad(36, 36, 36, 36).center();
+        return mapTable;
     }
 
 

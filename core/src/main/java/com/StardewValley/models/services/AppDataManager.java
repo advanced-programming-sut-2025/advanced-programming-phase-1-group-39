@@ -9,10 +9,7 @@ import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.NPC.*;
 import com.StardewValley.models.PlayerInteraction.Friendship;
 import com.StardewValley.models.Shops.*;
-import com.StardewValley.models.animals.Animal;
-import com.StardewValley.models.animals.AnimalProduct;
-import com.StardewValley.models.animals.Fish;
-import com.StardewValley.models.animals.LivingPlace;
+import com.StardewValley.models.animals.*;
 import com.StardewValley.models.artisan.*;
 import com.StardewValley.models.buildings.*;
 import com.StardewValley.models.cooking.Food;
@@ -166,6 +163,10 @@ public class AppDataManager {
         kryo.register(Skill.class);
         kryo.register(Location.class);
         kryo.register(Animal.class);
+
+        kryo.register(LivingPlace.class);
+        kryo.register(AnimalType.class);
+
         kryo.register(AnimalProduct.class); // NO ARG CONSTRUCTOR NOT ADDED
         kryo.register(PlayerNPCInteraction.class);
 
@@ -197,7 +198,6 @@ public class AppDataManager {
         kryo.register(String.class);
 
         kryo.register(Vector2.class);
-        kryo.register(LivingPlace.class);
 
     }
 

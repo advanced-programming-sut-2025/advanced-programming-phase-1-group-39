@@ -272,6 +272,8 @@ public class GameScreen implements Screen {
     public void showPopup(String message, Runnable runnable) {
         if (popupWindow.isVisible() || message.isEmpty()) return;
 
+        closeAllUiMenus();
+
         popupWindow.setSize(800, 500);
         popupWindow.setPosition(
                 uiStage.getWidth() / 2f,
@@ -321,7 +323,7 @@ public class GameScreen implements Screen {
         animalWindow.add(animalName).padRight(15).row();
 
         animalImage = new Image();
-        animalWindow.add(animalImage).padRight(15).size(100, 100).row();
+        animalWindow.add(animalImage).padRight(15).size(100, 100).colspan(2).row();
 
         TextButton petAnimal = new TextButton("Pet", GameAssetManager.skin);
         getProductsButton = new TextButton("Get Products", GameAssetManager.skin);
@@ -397,7 +399,7 @@ public class GameScreen implements Screen {
 
         animalToggled = animal;
         animalName.setText(animal.getName());
-        animalImage = new Image(animal.getTexture());
+        animalImage.setDrawable(new TextureRegionDrawable(animal.getTexture()));
 
         setDisableButton(getProductsButton, !animal.hasProductReady());
 
@@ -646,8 +648,8 @@ public class GameScreen implements Screen {
     /// test
     public void cheatPlayer() {
         Player player = game.getPlayerInTurn();
-
-        player.addToBuildings(new AnimalBuilding("coop", player.getTileLocation(), 7,4, LivingPlace.COOP));
+        Location pLoc = player.getTileLocation();
+        player.addToBuildings(new AnimalBuilding("coop", new Location(pLoc.x() + 1, pLoc.y() + 1), 7,4, LivingPlace.COOP));
         AnimalBuilding building = player.getAnimalBuilding(LivingPlace.COOP);
         building.updateMap(game.getMap());
 
@@ -961,6 +963,7 @@ public class GameScreen implements Screen {
         if (exitWindow != null) hideExitMenu();
         if (terminalWindow != null && terminalWindow.isVisible()) hideExitMenu();
         if (popupWindow != null && popupWindow.isVisible()) hidePopup();
+        if (animalWindow != null && animalWindow.isVisible()) hideAnimalInfoPopup();
     }
     // exit Menu
     public void toggleExitMenu() {

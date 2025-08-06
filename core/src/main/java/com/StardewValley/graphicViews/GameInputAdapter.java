@@ -129,23 +129,24 @@ public class GameInputAdapter extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 worldCoordinates = new Vector3(screenX, screenY, 0);
-        screen.getCamera().unproject(worldCoordinates);
+        if (button == Input.Buttons.RIGHT) {
+            Vector3 worldCoordinates = new Vector3(screenX, screenY, 0);
+            screen.getCamera().unproject(worldCoordinates);
 
-        for (Player player : screen.getGame().getPlayers()) {
-            for (Animal animal : player.getAnimals()) {
-                float animalX = animal.getX();
-                float animalY = animal.getY();
-                int tileSize = Map.TILE_SIZE;
-                Rectangle animalBounds = new Rectangle(animalX, animalY, tileSize, tileSize);
+            for (Player player : screen.getGame().getPlayers()) {
+                for (Animal animal : player.getAnimals()) {
+                    float animalX = animal.getX();
+                    float animalY = animal.getY();
+                    int tileSize = Map.TILE_SIZE;
+                    Rectangle animalBounds = new Rectangle(animalX, animalY, tileSize, tileSize);
 
-                if (animalBounds.contains(worldCoordinates.x, worldCoordinates.y)) {
-                    screen.showAnimalInfoPopup(animal);
-                    return true;
+                    if (animalBounds.contains(worldCoordinates.x, worldCoordinates.y)) {
+                        screen.showAnimalInfoPopup(animal);
+                        return true;
+                    }
                 }
             }
         }
-
         return false;
     }
 

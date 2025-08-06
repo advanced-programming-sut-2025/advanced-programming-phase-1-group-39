@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class AnimalBuilding extends Building {
-    protected final LivingPlace type;
-    protected final ArrayList<Animal> animals;
+    protected LivingPlace type;
+    protected ArrayList<Animal> animals;
 
     public float stateTime = 0;
 
@@ -18,6 +18,7 @@ public class AnimalBuilding extends Building {
         this.type = type;
         this.animals = new ArrayList<>();
     }
+    public AnimalBuilding() {}
 
     public int getCapacity() {
         if (type.getCapacity() - animals.size() <= 0) {

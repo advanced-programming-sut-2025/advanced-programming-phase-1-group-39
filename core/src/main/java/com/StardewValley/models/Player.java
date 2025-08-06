@@ -384,19 +384,27 @@ public class Player {
         animals.put(animal.getName(), animal);
     }
 
-    public int sellAnimal(Animal animal) {
-        int money = (int) (animal.getPrice() * (((double) animal.getFriendship() / 1000) + 0.3));
-        changeMoney(money);
-        animals.remove(animal.getName());
-
+    public AnimalBuilding getAnimalLivingPlaceBuilding(Animal animal) {
         AnimalBuilding animalBuilding;
         for (Building building : this.playerFarmBuildings) {
             if (building instanceof AnimalBuilding) {
                 if (((AnimalBuilding) building).hasAnimal(animal)) {
                     animalBuilding = (AnimalBuilding) building;
-                    animalBuilding.removeAnimal(animal);
+                    return animalBuilding;
                 }
             }
+        }
+        return null;
+    }
+
+    public int sellAnimal(Animal animal) {
+        int money = (int) (animal.getPrice() * (((double) animal.getFriendship() / 1000) + 0.3));
+        changeMoney(money);
+        animals.remove(animal.getName());
+
+        AnimalBuilding animalBuilding = getAnimalLivingPlaceBuilding(animal);
+        if (animalBuilding != null) {
+            animalBuilding.removeAnimal(animal);
         }
         return money;
     }
@@ -648,8 +656,5 @@ public class Player {
         this.animationStateTime += delta;
     }
 
-    public void resetAnimationStateTime() {
-        this.animationStateTime = 0f;
-    }
 
 }

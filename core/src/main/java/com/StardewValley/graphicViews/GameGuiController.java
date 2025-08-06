@@ -4,14 +4,12 @@ import com.StardewValley.controllers.AppControllers;
 import com.StardewValley.controllers.GameController;
 import com.StardewValley.controllers.NPCGameController;
 import com.StardewValley.controllers.PlayersInteractionController;
-import com.StardewValley.models.App;
+import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.commands.GameCommands;
 import com.StardewValley.models.Enums.commands.InteractionsCommand;
 import com.StardewValley.models.Enums.commands.NPCGameCommand;
-import com.StardewValley.models.Game;
-import com.StardewValley.models.Player;
-import com.StardewValley.models.Result;
 import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.buildings.AnimalBuilding;
 import com.StardewValley.models.cooking.FoodManager;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingManager;
@@ -87,6 +85,15 @@ public class GameGuiController {
         screen.showPopup("Do you REALLy want to sell " + animal.getName() + " ?", () -> {
             return;
         });
+    }
+
+    public void shepherdAnimal(Animal animal) {
+        Player player = screen.getGame().getPlayerInTurn();
+        AnimalBuilding building = player.getAnimalLivingPlaceBuilding(animal);
+        Location buildingLocation = building.getLocation();
+        animal.sendOutside(buildingLocation.x() + 1, buildingLocation.y() + building.getHeight() + 1);
+
+        screen.showError("You shepherd animal! " + animal.getName() + " goes outside");
     }
 
     public String processCommand(String command) {

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public enum TileType {
-    SOIL('.', true, "soil.png"),
+    SOIL('.', true, "soil2.png"),
     WATER('~', false, "water.png"),
     WALL('O', false, "wall.png"),
     INDOOR('*', true, "indoor.png"),

@@ -13,6 +13,22 @@
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
       "gamesData": [
+        {
+          "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 102,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 103,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 104,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        }
       ],
       "avatar": "Avatars/Alex.png"
     },
@@ -29,7 +45,22 @@
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
       "gamesData": [
-
+        {
+          "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 102,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 103,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 104,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        }
       ],
       "avatar": "Avatars/Alex.png"
     },
@@ -46,6 +77,22 @@
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
       "gamesData": [
+        {
+          "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 102,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 103,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 104,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        }
       ],
       "avatar": "Avatars/Alex.png"
     },
@@ -62,6 +109,22 @@
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
       "gamesData": [
+        {
+          "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 102,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 103,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 104,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        }
       ],
       "avatar": "Avatars/Alex.png"
     }

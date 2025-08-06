@@ -331,6 +331,25 @@ public class GameScreen implements Screen {
         return texture;
     }
 
+
+    private Color getSeasonTintColor() {
+        switch (game.getTime().getSeason()) {
+            case SPRING:
+                // #D1E05D
+                return new Color(0.82f, 0.88f, 0.36f, 1f);
+            case SUMMER:
+                // #F6FF49
+                return new Color(0.96f, 1f, 0.28f, 1f);
+            case FALL:
+                // #FFC481
+                return new Color(1f, 0.77f, 0.51f, 1f);
+            case WINTER:
+                // #b8ffeb
+                return new Color(0.72f, 1f, 0.92f, 1f);
+            default:
+                return Color.WHITE; // رنگ عادی و بدون تغییر
+        }
+    }
     public void renderTiles() {
         float camX = camera.position.x;
         float camY = camera.position.y;
@@ -374,6 +393,9 @@ public class GameScreen implements Screen {
                 float drawX = x * tileSize;
                 float drawY = y * tileSize;
 
+                Color tileColor = new Color(1, 1, 1, 1);
+                Color seasonTint = getSeasonTintColor();
+
                 if (tile.isPlowed() && tile.isWatered()) {
                     batch.setColor(0.35f, 0.25f, 0.2f, 1f);
                 } else if (tile.isPlowed()) {
@@ -384,10 +406,9 @@ public class GameScreen implements Screen {
                     batch.setColor(1f, 1f, 1f, 1f);
                 }
 
-
+                batch.setColor(tileColor.mul(seasonTint));
                 batch.draw(texture, drawX, drawY, tileSize, tileSize);
             }
-            batch.setColor(1, 1, 1, 1);
         }
 
         //Obj on tiles

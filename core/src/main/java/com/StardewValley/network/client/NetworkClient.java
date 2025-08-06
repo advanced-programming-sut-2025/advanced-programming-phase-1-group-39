@@ -95,6 +95,13 @@ public class NetworkClient {
 //                gameMain.startGameScreen();
                 break;
 
+            case GAME_START_FAILED:
+                String errorMessage = (String) payload;
+                // TODO: یک متد برای نمایش خطاهای عمومی در UI بسازید
+                // gameMain.showErrorPopup(errorMessage);
+                break;
+
+
             case UPDATE_GAME_STATE:
                 // این پیام فقط زمانی که در GameScreen هستیم معنا دارد
                 if (payload instanceof GameStateDTO) {
@@ -102,13 +109,6 @@ public class NetworkClient {
 //                    app.getCurrentGame().updateFromDTO((GameStateDTO) payload);
                 }
                 break;
-
-            case GAME_START_FAILED:
-                String errorMessage = (String) payload;
-                // TODO: یک متد برای نمایش خطاهای عمومی در UI بسازید
-                // gameMain.showErrorPopup(errorMessage);
-                break;
-
         }
     }
 

@@ -457,9 +457,11 @@ public class GameScreen implements Screen {
         }
     }
 
-    public void renderAnimals() {
+    public void renderAnimals(float v) {
         for (Player player : game.getPlayers()) {
             for (Animal animal : player.getAnimals()) {
+                animal.updateAnimalMovement(v);
+
                 Location inMapLocation = Map.TileToPixelConverter(animal.getLocation());
                 int tileSize = Map.TILE_SIZE;
 
@@ -1089,7 +1091,7 @@ public class GameScreen implements Screen {
             batch.begin();
             renderTiles();
             renderBuildings();
-            renderAnimals();
+            renderAnimals(v);
             renderPlayers(v);
 
             // TODO : (Better) move clock render to uiStage

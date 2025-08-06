@@ -1,7 +1,9 @@
 package com.StardewValley.models.animals;
 
+import com.StardewValley.models.GameSetting;
 import com.StardewValley.models.Location;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,7 +15,8 @@ public class Animal {
     private LivingPlace place;
 
     private Location location;
-    private Location lastLocation;
+    private Location firstLocation;
+    private Location toGoLocation;
 
     private ArrayList<AnimalProduct> products;
 
@@ -48,24 +51,44 @@ public class Animal {
     public ArrayList<AnimalProduct> getProducts() { return products; }
 
 
-    private Location getRandomLocationToGo() {
+    public void updateAnimalMovement(float deltaTime) {
+        Vector2 currentLocation = new Vector2(location.x(), location.y());
+        Vector2 targetLocation = new Vector2(toGoLocation.x(), toGoLocation.y());
+
+        if (currentLocation.dst(targetLocation) < 1.0f) {
+            setNewRandomToGoLocation();
+        } else {
+            Vector2 direction = targetLocation.sub(currentLocation).nor();
+
+            float distanceToMove = GameSetting.getAnimalSpeed() * deltaTime;
+
+            currentLocation.add(direction.scl(distanceToMove));
+
+            location = new Location((int)currentLocation.x, (int)currentLocation.y);
+        }
+    }
+
+
+    private void setNewRandomToGoLocation() {
         Random rand = new Random();
-
         double angle = 2 * Math.PI * rand.nextDouble();
-
         double radius = walkingBound * Math.sqrt(rand.nextDouble());
 
         int dx = (int)(radius * Math.cos(angle));
         int dy = (int)(radius * Math.sin(angle));
 
-        return new Location(location.x() + dx, location.y() + dy);
+        // Set the new target destination
+        toGoLocation = new Location(location.x() + dx, location.y() + dy);
     }
 
     public Location getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) { this.location = location; }
+    public void setLocation(Location location) {
+        this.location = location;
+        this.firstLocation = location;
+    }
 
 
     public int getFriendship() { return friendship; }

@@ -198,14 +198,4 @@ public class GameInputAdapter extends InputAdapter {
         return false;
     }
 
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        Game game = screen.getGame();
-
-        int current = game.getPlayerInTurn().getSelectedSlot();
-        int size = game.getPlayerInTurn().getMaxInventorySize();
-        int next = (current + (amountY > 0 ? 1 : -1) + size) % size;
-        game.getPlayerInTurn().setSelectedSlot(next);
-        return true;
-    }
 }

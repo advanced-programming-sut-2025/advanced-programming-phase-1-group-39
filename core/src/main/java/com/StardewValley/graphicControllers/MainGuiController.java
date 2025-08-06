@@ -54,6 +54,14 @@ public class MainGuiController {
                     Gdx.app.exit();
                 }
             });
+
+            // Network (Online game)
+            view.getGameOnlineButton().addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent changeEvent, Actor actor) {
+                    Main.getMain().switchScreen(new LobbyScreen());
+                }
+            });
         }
     }
 }

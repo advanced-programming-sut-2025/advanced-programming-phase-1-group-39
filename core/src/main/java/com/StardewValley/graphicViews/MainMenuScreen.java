@@ -27,6 +27,7 @@ public class MainMenuScreen implements Screen {
     private final Label menuTitle;
 
     private TextButton gameMenuButton;
+    private TextButton gameOnlineButton;
     private TextButton profileMenuButton;
     private TextButton logoutButton;
     private TextButton exitButton;
@@ -45,7 +46,8 @@ public class MainMenuScreen implements Screen {
         this.background = new Image(GameAssetManager.MenuTexture2);
         this.logo = new Image(GameAssetManager.logoTexture);
         this.menuTitle = new Label("Main Menu", skin);
-        this.gameMenuButton = new TextButton("Game Menu", skin);
+        this.gameMenuButton = new TextButton("Offline Game", skin);
+        this.gameOnlineButton = new TextButton("Online Game", skin);
         this.profileMenuButton = new TextButton("Profile", skin);
         this.logoutButton = new TextButton("Logout", skin);
         this.exitButton = new TextButton("Exit", skin);
@@ -126,6 +128,10 @@ public class MainMenuScreen implements Screen {
             table.add(gameMenuButton).width(400).height(100).padBottom(30);
             table.row();
 
+            gameOnlineButton.setColor(Color.valueOf("E9D8A6"));
+            table.add(gameOnlineButton).width(400).height(100).padBottom(30);
+            table.row();
+
             // دکمه Profile Menu
             profileMenuButton.setColor(Color.valueOf("E9D8A6"));
             table.add(profileMenuButton).width(400).height(100).padBottom(50);
@@ -187,6 +193,10 @@ public class MainMenuScreen implements Screen {
 
     public TextButton getGameMenuButton() {
         return gameMenuButton;
+    }
+
+    public TextButton getGameOnlineButton() {
+        return gameOnlineButton;
     }
 
     public TextButton getProfileMenuButton() {

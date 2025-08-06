@@ -76,7 +76,7 @@ public class ClientMain {
                         inLobby = true;
                         break;
                     case "3":
-                        sendRequest(new Request(RequestType.GET_LOBBY_LIST, null));
+                        sendRequest(new Request(RequestType.REFRESH_LOBBY_LIST, null));
                         break;
                     case "4":
                         if (inLobby) {

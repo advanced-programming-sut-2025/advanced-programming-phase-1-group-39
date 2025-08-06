@@ -1,5 +1,7 @@
 package com.StardewValley.network.shares;
 
+import com.StardewValley.network.shares.message.LobbyData;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,18 +14,24 @@ public class Lobby implements Serializable {
 
     private final String id;
     private final String lobbyName;
+    private boolean isPrivate;
+    private boolean isVisibleToAll;
+
     // <<-- برای thread-safety بهتر، لیست را final می‌کنیم --
     private final List<String> players;
     private final String admin;
     private boolean gameStarted;
 
-    public Lobby(String lobbyName, String admin) {
+    public Lobby(String lobbyName, String admin, boolean isPrivate, boolean isVisibleToAll) {
         this.id = UUID.randomUUID().toString().substring(0, 8);
         this.lobbyName = lobbyName;
         this.admin = admin;
         this.players = Collections.synchronizedList(new ArrayList<>());
         this.players.add(admin);
         this.gameStarted = false;
+
+        this.isPrivate = isPrivate;
+        this.isVisibleToAll = isVisibleToAll;
     }
 
     // Getter ها
@@ -44,7 +52,7 @@ public class Lobby implements Serializable {
     }
 
     public boolean addPlayer(String playerName) {
-        synchronized (players) { // اطمینان از اتمیک بودن عملیات روی لیست
+        synchronized (players) {
             if (!isFull() && !players.contains(playerName)) {
                 players.add(playerName);
                 return true;

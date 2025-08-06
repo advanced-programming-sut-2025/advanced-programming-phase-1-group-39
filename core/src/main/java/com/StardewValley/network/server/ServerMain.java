@@ -42,13 +42,13 @@ public class ServerMain {
 
 
         // متد createLobby با دریافت نام کاربری ادمین
-    public static void createLobby(String lobbyName, String adminUsername, ClientHandler adminHandler) {
-        Lobby newLobby = new Lobby(lobbyName, adminUsername); // ادمین با نام کاربری شناخته می‌شود
+    public static void createLobby(LobbyData lobbyData, ClientHandler adminHandler) {
+        Lobby newLobby = new Lobby(lobbyData.lobbyName, lobbyData.adminUsername, lobbyData.isPrivate, lobbyData.isVisibleToAll);
         synchronized (lobbies) {
             lobbies.add(newLobby);
-            adminHandler.setUsername(adminUsername); // نام کاربری را در هندلر ذخیره کن
             adminHandler.setLobbyId(newLobby.getId());
-            System.out.println("New lobby created: " + newLobby + " by " + adminUsername);
+            System.out.println("New lobby created: " + newLobby + " by " + adminHandler.getUsername());
+
             broadcastLobbyListInternal();
         }
     }

@@ -10,7 +10,7 @@ public enum RequestType {
 
     CREATE_LOBBY,
     JOIN_LOBBY,
-    GET_LOBBY_LIST,
+    REFRESH_LOBBY_LIST,
     LOBBY_CHAT_MESSAGE,
 
     //Start Game

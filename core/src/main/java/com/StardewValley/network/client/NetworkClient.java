@@ -4,6 +4,7 @@ import com.StardewValley.Main; // <<-- وارد کردن کلاس اصلی با�
 import com.StardewValley.models.App; // <<-- وارد کردن مدل App
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
+import com.StardewValley.network.shares.message.LobbyData;
 import com.StardewValley.network.shares.message.PlayerReactionPayload;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
@@ -115,6 +116,17 @@ public class NetworkClient {
     public void sendUsername(String username) {
         sendRequest(new Request(RequestType.SEND_USERNAME, username));
     }
+
+    // TODO : call after click refresh
+    public void sendRefreshLobbiesRequest() {
+        sendRequest(new Request(RequestType.REFRESH_LOBBY_LIST, null));
+    }
+
+    //TODO : call after click on create lobby and filled details
+    public void sendCreateLobbyRequest(String lobbyName, String usernameOfAdmin, boolean isPrivate, boolean isVisibleToAll, String password) {
+        sendRequest(new Request(RequestType.CREATE_LOBBY, new LobbyData(lobbyName, usernameOfAdmin, isPrivate, isVisibleToAll, password)));
+    }
+
 
     public void sendJoinLobbyRequest(String lobbyId, String username) {
         sendRequest(new Request(RequestType.JOIN_LOBBY, new String[]{lobbyId, username}));

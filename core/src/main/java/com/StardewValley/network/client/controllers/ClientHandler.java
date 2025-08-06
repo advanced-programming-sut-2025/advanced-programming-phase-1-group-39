@@ -3,6 +3,7 @@ package com.StardewValley.network.client.controllers;
 
 import com.StardewValley.network.server.ServerMain;
 import com.StardewValley.network.shares.message.ChatMessage;
+import com.StardewValley.network.shares.message.LobbyData;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
 
@@ -10,9 +11,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class ClientHandler implements Runnable {
     private String username;
@@ -73,18 +71,19 @@ public class ClientHandler implements Runnable {
                 }
                 break;
 
+            case REFRESH_LOBBY_LIST:
+                sendMessage(new Request(RequestType.UPDATE_LOBBY_LIST, ServerMain.getLobbies()));
+                break;
+
+
             case CREATE_LOBBY:
-                String lobbyName = (String) request.getPayload();
-                ServerMain.createLobby(lobbyName, username, this);
+                LobbyData lobbyData = (LobbyData) request.getPayload();
+                ServerMain.createLobby(lobbyData, this);
                 break;
 
             case JOIN_LOBBY:
                 String requestedLobbyId = (String) request.getPayload();
                 ServerMain.joinLobby(requestedLobbyId, username, this);
-                break;
-
-            case GET_LOBBY_LIST:
-                sendMessage(new Request(RequestType.UPDATE_LOBBY_LIST, ServerMain.getLobbies()));
                 break;
 
             case START_GAME:

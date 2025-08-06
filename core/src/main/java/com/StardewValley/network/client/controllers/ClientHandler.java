@@ -16,8 +16,8 @@ import java.util.List;
 public class ClientHandler implements Runnable {
     private String username;
     private Socket clientSocket;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
+    private ObjectOutputStream out; // To Client
+    private ObjectInputStream in;   // From Client
     private String clientIdentifier;
     private String lobbyId;
     private int gameId = -1;
@@ -52,6 +52,7 @@ public class ClientHandler implements Runnable {
                 handleRequest(request);
             }
         } catch (Exception e) {
+            System.out.println("Some Error occured in ClientHandler : \n" + e.getMessage());
             ServerMain.removeClient(this);
         }
     }

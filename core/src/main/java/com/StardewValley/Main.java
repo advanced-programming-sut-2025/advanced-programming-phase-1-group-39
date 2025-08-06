@@ -9,6 +9,8 @@ import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.models.services.SaveAppManager;
+import com.StardewValley.network.client.NetworkClient;
+import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.views.AppView;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -20,6 +22,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Main extends Game {
     private static Main main;
     public static SpriteBatch batch;
+
+    private NetworkClient networkClient;
 
     @Override
     public void create() {
@@ -36,6 +40,21 @@ public class Main extends Game {
 //        terminalController.setDaemon(true);
 //        terminalController.start();
     }
+
+    public void goOnline() {
+        boolean connected = true;
+        if (networkClient == null) {
+            networkClient = new NetworkClient();
+            connected = networkClient.connect("127.0.0.1", 8080);
+        }
+        if (connected)
+            switchScreen(new LobbyScreen());
+    }
+
+    public NetworkClient getNetworkClient() {
+        return networkClient;
+    }
+
 
     @Override
     public void render() {

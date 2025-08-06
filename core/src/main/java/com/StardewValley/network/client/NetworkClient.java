@@ -13,16 +13,15 @@ import java.net.Socket;
 
 // در پکیج کلاینت
 public class NetworkClient {
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
+    private ObjectOutputStream out; // To Server
+    private ObjectInputStream in;  //From Server
     private Socket socket;
     private GameScreen gameScreen; // <<-- یک رفرنس به گیم اسکرین
 
-    public NetworkClient(GameScreen screen) {
-        this.gameScreen = screen;
+    public NetworkClient() {
     }
 
-    public void connect(String ip, int port) {
+    public boolean connect(String ip, int port) {
         try {
             socket = new Socket(ip, port);
             out = new ObjectOutputStream(socket.getOutputStream());
@@ -30,10 +29,11 @@ public class NetworkClient {
 
             // یک ترد جدا برای گوش دادن به پیام‌های سرور
             new Thread(this::listenToServer).start();
+            return true;
 
         } catch (IOException e) {
             e.printStackTrace();
-            // TODO: نمایش خطا در UI
+            return false;
         }
     }
 

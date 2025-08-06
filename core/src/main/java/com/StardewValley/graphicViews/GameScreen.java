@@ -199,8 +199,7 @@ public class GameScreen implements Screen {
                 .expand().bottom().right().pad(20f).row();
 
 
-        networkClient = new NetworkClient(this);
-        networkClient.connect("127.0.0.1", 8080);
+        networkClient = Main.getMain().getNetworkClient();
     }
 
     // utils

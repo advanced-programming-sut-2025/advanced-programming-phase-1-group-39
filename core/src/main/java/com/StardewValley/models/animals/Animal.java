@@ -1,5 +1,6 @@
 package com.StardewValley.models.animals;
 
+import com.StardewValley.models.Game;
 import com.StardewValley.models.GameSetting;
 import com.StardewValley.models.Location;
 import com.StardewValley.models.map.Map;
@@ -53,15 +54,21 @@ public class Animal {
     public ArrayList<AnimalProduct> getProducts() { return products; }
 
 
-    public Vector2 updateAnimalMovement(float deltaTime) {
+    public void updateMovement(float deltaTime, Game game) {
         if (position.dst(toGoLocation) < 1.0f) {
             setNewRandomToGoLocation();
-            return position;
-        } else {
-            Vector2 target = toGoLocation.cpy();
-            Vector2 direction = target.sub(position).nor();
+            return;
+        }
 
-            return new Vector2(position.x, position.y).mulAdd(direction, GameSetting.getAnimalSpeed() * deltaTime);
+        // مسیر به سمت مقصد را محاسبه کن
+        Vector2 direction = toGoLocation.cpy().sub(position).nor();
+        // قدم بعدی را محاسبه کن
+        Vector2 nextStep = position.cpy().mulAdd(direction, GameSetting.getAnimalSpeed() * deltaTime);
+
+        if (game.isPositionPassable(nextStep.x, nextStep.y)) {
+            position.set(nextStep);
+        } else {
+            setNewRandomToGoLocation();
         }
     }
 

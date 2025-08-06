@@ -466,8 +466,8 @@ public class GameScreen implements Screen {
     public void renderAnimals(float v) {
         for (Player player : game.getPlayers()) {
             for (Animal animal : player.getAnimals()) {
-                Vector2 movement = animal.updateAnimalMovement(v);
-                gameMenuInputAdapter.handleAnimalMovement(game , animal, movement);
+                animal.updateMovement(v, game);
+
                 System.out.println("animal " + animal.getName() + " moved to " + animal.getX() + " " + animal.getY());
 
                 TextureRegion texture = animal.getTexture();

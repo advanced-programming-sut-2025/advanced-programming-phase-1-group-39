@@ -145,6 +145,8 @@ public class GameScreen implements Screen {
     private Image weatherEffectImage;
     private float animationTime = 0f;
 
+    private Image nightOverlay;
+
     // Cooking and crafting
     private Table cookingMenuTable;
     private ArrayList<TextButton> cookingMenuButtons = new ArrayList<>();
@@ -152,7 +154,6 @@ public class GameScreen implements Screen {
     private Table craftingMenu;
     private ArrayList<CraftingWidget> craftingWidgets = new ArrayList<>();
     private boolean craftingMenuOpen = false;
-
 
 
     public GameScreen() {
@@ -172,6 +173,12 @@ public class GameScreen implements Screen {
         rootStack.setFillParent(true);
         uiStage.addActor(rootStack);
 
+        // night black background
+        nightOverlay = new Image(GameAssetManager.blackBox);
+        nightOverlay.setFillParent(true);
+        nightOverlay.setTouchable(Touchable.disabled);
+        rootStack.add(nightOverlay);
+        nightOverlay.getColor().a = 0;
 
         // for hud table
         Table hudTable = new Table();
@@ -1185,6 +1192,24 @@ public class GameScreen implements Screen {
         }
     }
 
+    private void updateNightOverlay() {
+        Time time = game.getTime();
+        int currentHour = time.getHour();
+
+        int startHour = 17;
+        int endHour = 22;
+        float targetAlpha = 0f;
+
+        if (currentHour >= startHour && currentHour < endHour) {
+            float progress = (float)(currentHour - startHour) / (endHour - startHour);
+            targetAlpha = progress * GameSetting.getMaxNightAlpha();
+        } else if (currentHour >= endHour || currentHour < 6) {
+            targetAlpha = GameSetting.getMaxNightAlpha();
+        }
+
+        nightOverlay.getColor().a = targetAlpha;
+    }
+
 
     public Game getGame() {
         return game;
@@ -1256,6 +1281,8 @@ public class GameScreen implements Screen {
             checkGoingNextDay();
 
             gameMenuInputAdapter.handlePlayerMovement(v, game);
+
+            updateNightOverlay();
 
             updateEnergyBar();
             renderCamera();

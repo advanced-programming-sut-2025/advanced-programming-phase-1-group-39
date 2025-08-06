@@ -27,9 +27,10 @@ import com.StardewValley.models.saveClasses.*;
 import com.StardewValley.models.tools.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -193,6 +194,8 @@ public class AppDataManager {
         kryo.register(ArrayList.class);
         kryo.register(HashMap.class);
         kryo.register(String.class);
+
+        kryo.register(Vector2.class);
 
     }
 

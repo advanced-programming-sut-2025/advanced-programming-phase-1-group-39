@@ -3,11 +3,14 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Direction;
+import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameInputAdapter extends InputAdapter {
     private GameGuiController controller;
@@ -122,6 +125,31 @@ public class GameInputAdapter extends InputAdapter {
             screen.toggleBiggerMiniMap();
         }
         return true;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Vector3 worldCoordinates = new Vector3(screenX, screenY, 0);
+        screen.getCamera().unproject(worldCoordinates);
+
+        for (Player player : screen.getGame().getPlayers()) {
+            for (Animal animal : player.getAnimals()) {
+                float animalX = animal.getX();
+                float animalY = animal.getY();
+                int tileSize = Map.TILE_SIZE;
+                Rectangle animalBounds = new Rectangle(animalX, animalY, tileSize, tileSize);
+
+                if (animalBounds.contains(worldCoordinates.x, worldCoordinates.y)) {
+                    System.out.println("Clicked on animal: " + animal.getName());
+
+                    screen.showAnimalInfoPopup(animal);
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     @Override

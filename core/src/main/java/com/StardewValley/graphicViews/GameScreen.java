@@ -127,6 +127,13 @@ public class GameScreen implements Screen {
     private TextButton popupNoButton;
     private Runnable popupRunnable;
 
+    // animal popup
+    private Window animalWindow;
+    private Label animalName;
+    private Image animalImage;
+    private Animal animalToggled;
+
+
     // effects
     private Stage effectsStage;
     private Animation<TextureRegion> rainAnimation;
@@ -202,7 +209,7 @@ public class GameScreen implements Screen {
         messageTable.add(errorLabel).bottom().padBottom(50).expandY(); // expandY is needed to effect by the bottom()
     }
 
-    // utils
+    // utils and menu
     public void showError(String message) {
         if(message == null || message.isEmpty()) {
             errorLabel.setVisible(false);
@@ -222,6 +229,42 @@ public class GameScreen implements Screen {
         ));
     }
 
+
+    public void loadPopupWindow() {
+        popupWindow = new Window("", GameAssetManager.skin);
+        popupWindow.setVisible(false);
+        popupWindow.setModal(true);
+
+        popupText = new Label("", GameAssetManager.messageBoxStyle);
+        popupText.setWrap(true);
+        popupText.setAlignment(Align.center);
+        popupYesButton = new TextButton("Yes", GameAssetManager.skin);
+        popupNoButton = new TextButton("No", GameAssetManager.skin);
+
+        popupWindow.add(popupText).width(760).colspan(2).expandX().fillX().pad(20).row();
+        popupWindow.add(popupNoButton).pad(20).uniformX();
+        popupWindow.add(popupYesButton).pad(20).uniformX();
+        popupWindow.pack();
+        popupWindow.setVisible(false);
+
+
+        uiStage.addActor(popupWindow);
+
+        popupNoButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hidePopup();
+            }
+        });
+
+        popupYesButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                popupRunnable.run();
+                hidePopup();
+            }
+        });
+    }
 
     public void showPopup(String message, Runnable runnable) {
         if (popupWindow.isVisible() || message.isEmpty()) return;
@@ -249,6 +292,109 @@ public class GameScreen implements Screen {
         ));
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
+
+    public void loadAnimalInfoPopup() {
+        animalWindow = new Window("", GameAssetManager.skin);
+        animalWindow.setVisible(false);
+        animalWindow.setModal(true);
+
+        Label animalHeader = new Label("Animal Info", GameAssetManager.skin);
+        animalHeader.setAlignment(Align.center);
+        animalWindow.add(animalHeader).colspan(2).row();
+
+        Label animalNameLabel = new Label("Name : ", GameAssetManager.skin);
+        animalWindow.add(animalNameLabel).padRight(15);
+
+        animalName = new Label("", GameAssetManager.skin);
+        animalWindow.add(animalName).padRight(15).row();
+
+        animalImage = new Image();
+        animalWindow.add(animalImage).padRight(15).row();
+
+        TextButton petAnimal = new TextButton("Pet", GameAssetManager.skin);
+        TextButton getProducts = new TextButton("Get Products", GameAssetManager.skin);
+        getProducts.setDisabled(true);
+        TextButton feedAnimal = new TextButton("Feed", GameAssetManager.skin);
+        TextButton shepherdAnimal = new TextButton("Shepherd Animal", GameAssetManager.skin);
+        TextButton sell = new TextButton("Sell !!", GameAssetManager.skin);
+        TextButton back = new TextButton("Back", GameAssetManager.skin);
+
+        int buttonSize = 250;
+        animalWindow.add(petAnimal).pad(20).colspan(2).width(buttonSize).row();
+        animalWindow.add(getProducts).pad(20).colspan(2).width(buttonSize).row();
+        animalWindow.add(feedAnimal).pad(20).colspan(2).width(buttonSize).row();
+        animalWindow.add(sell).pad(20).colspan(2).width(buttonSize).row();
+        animalWindow.add(back).padTop(35).colspan(2).width(buttonSize).row();
+
+        animalWindow.pack();
+        animalWindow.setVisible(false);
+
+        uiStage.addActor(animalWindow);
+
+        petAnimal.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hidePopup();
+            }
+        });
+        getProducts.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hidePopup();
+            }
+        });
+        feedAnimal.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hidePopup();
+            }
+        });
+        shepherdAnimal.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hidePopup();
+            }
+        });
+        sell.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                controller.sellAnimal(animalToggled);
+            }
+        });
+        back.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideAnimalInfoPopup();
+            }
+        });
+
+    }
+
+    public void showAnimalInfoPopup(Animal animal) {
+        closeAllUiMenus();
+
+        if (animalWindow.isVisible()) hideAnimalInfoPopup();
+
+        animalWindow.setSize(800, 500);
+        animalWindow.setPosition(
+                uiStage.getWidth() / 2f,
+                uiStage.getHeight() / 2f,
+                Align.center
+        );
+
+        animalToggled = animal;
+        animalName.setText(animal.getName());
+        animalImage = new Image(animal.getTexture());
+        animalWindow.getColor().a = 1;
+        animalWindow.setVisible(true);
+
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    public void hideAnimalInfoPopup() {
+        animalWindow.setVisible(false);
+    }
+
 
 
     public void loadTextures() {
@@ -473,6 +619,7 @@ public class GameScreen implements Screen {
             }
         }
     }
+
 
 /// test
     public void cheatPlayer() {
@@ -1013,8 +1160,13 @@ public class GameScreen implements Screen {
         }
     }
 
+
     public Game getGame() {
         return game;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 
     @Override
@@ -1051,39 +1203,9 @@ public class GameScreen implements Screen {
 
 
         // popup window
-        popupWindow = new Window("", GameAssetManager.skin);
-        popupWindow.setVisible(false);
-        popupWindow.setModal(true);
+        loadPopupWindow();
 
-        popupText = new Label("", GameAssetManager.messageBoxStyle);
-        popupText.setWrap(true);
-        popupText.setAlignment(Align.center);
-        popupYesButton = new TextButton("Yes", GameAssetManager.skin);
-        popupNoButton = new TextButton("No", GameAssetManager.skin);
-
-        popupWindow.add(popupText).width(760).colspan(2).expandX().fillX().pad(20).row();
-        popupWindow.add(popupNoButton).pad(20).uniformX();
-        popupWindow.add(popupYesButton).pad(20).uniformX();
-        popupWindow.pack();
-        popupWindow.setVisible(false);
-
-
-        uiStage.addActor(popupWindow);
-
-        popupNoButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                hidePopup();
-            }
-        });
-
-        popupYesButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                popupRunnable.run();
-                hidePopup();
-            }
-        });
+        loadAnimalInfoPopup();
 
         showError("Welcome " + game.getPlayerInTurn().getNickname() + " !");
 

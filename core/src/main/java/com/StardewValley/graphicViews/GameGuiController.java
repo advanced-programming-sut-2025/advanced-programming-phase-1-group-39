@@ -11,6 +11,7 @@ import com.StardewValley.models.Enums.commands.NPCGameCommand;
 import com.StardewValley.models.Game;
 import com.StardewValley.models.Player;
 import com.StardewValley.models.Result;
+import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.cooking.FoodManager;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingManager;
@@ -82,8 +83,10 @@ public class GameGuiController {
     }
 
     // Animal
-    public void shepherdAnimal() {
-        
+    public void sellAnimal(Animal animal) {
+        screen.showPopup("Do you REALLy want to sell " + animal.getName() + " ?", () -> {
+            return;
+        });
     }
 
     public String processCommand(String command) {

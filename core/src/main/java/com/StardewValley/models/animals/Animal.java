@@ -196,4 +196,8 @@ public class Animal {
     public TextureRegion getTexture() {
         return type.getTextureRegion();
     }
+
+    public boolean isOutsideToday() {
+        return outsideToday;
+    }
 }

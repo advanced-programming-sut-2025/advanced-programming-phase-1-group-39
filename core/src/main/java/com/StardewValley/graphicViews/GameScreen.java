@@ -132,6 +132,9 @@ public class GameScreen implements Screen {
     private Label animalName;
     private Image animalImage;
     private Animal animalToggled;
+    private TextButton feedAnimalButton;
+    private TextButton getProductsButton;
+    private TextButton shepherdAnimalButton;
 
 
     // effects
@@ -293,6 +296,15 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
 
+
+    private void setDisableButton(TextButton button, boolean disable) {
+        button.setDisabled(disable);
+        if(disable) {
+            button.setColor(Color.GRAY);
+        } else {
+            button.setColor(Color.WHITE);
+        }
+    }
     public void loadAnimalInfoPopup() {
         animalWindow = new Window("", GameAssetManager.skin);
         animalWindow.setVisible(false);
@@ -309,20 +321,21 @@ public class GameScreen implements Screen {
         animalWindow.add(animalName).padRight(15).row();
 
         animalImage = new Image();
-        animalWindow.add(animalImage).padRight(15).row();
+        animalWindow.add(animalImage).padRight(15).size(100, 100).row();
 
         TextButton petAnimal = new TextButton("Pet", GameAssetManager.skin);
-        TextButton getProducts = new TextButton("Get Products", GameAssetManager.skin);
-        getProducts.setDisabled(true);
-        TextButton feedAnimal = new TextButton("Feed", GameAssetManager.skin);
-        TextButton shepherdAnimal = new TextButton("Shepherd Animal", GameAssetManager.skin);
+        getProductsButton = new TextButton("Get Products", GameAssetManager.skin);
+        setDisableButton(getProductsButton, true);
+        feedAnimalButton = new TextButton("Feed", GameAssetManager.skin);
+        setDisableButton(feedAnimalButton, true);
+        shepherdAnimalButton = new TextButton("Shepherd Animal", GameAssetManager.skin);
         TextButton sell = new TextButton("Sell !!", GameAssetManager.skin);
         TextButton back = new TextButton("Back", GameAssetManager.skin);
 
-        int buttonSize = 250;
+        int buttonSize = 300;
         animalWindow.add(petAnimal).pad(20).colspan(2).width(buttonSize).row();
-        animalWindow.add(getProducts).pad(20).colspan(2).width(buttonSize).row();
-        animalWindow.add(feedAnimal).pad(20).colspan(2).width(buttonSize).row();
+        animalWindow.add(getProductsButton).pad(20).colspan(2).width(buttonSize).row();
+        animalWindow.add(feedAnimalButton).pad(20).colspan(2).width(buttonSize).row();
         animalWindow.add(sell).pad(20).colspan(2).width(buttonSize).row();
         animalWindow.add(back).padTop(35).colspan(2).width(buttonSize).row();
 
@@ -337,19 +350,19 @@ public class GameScreen implements Screen {
                 hideAnimalInfoPopup();
             }
         });
-        getProducts.addListener(new ChangeListener() {
+        getProductsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 hideAnimalInfoPopup();
             }
         });
-        feedAnimal.addListener(new ChangeListener() {
+        feedAnimalButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 hideAnimalInfoPopup();
             }
         });
-        shepherdAnimal.addListener(new ChangeListener() {
+        shepherdAnimalButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 hideAnimalInfoPopup();
@@ -385,6 +398,14 @@ public class GameScreen implements Screen {
         animalToggled = animal;
         animalName.setText(animal.getName());
         animalImage = new Image(animal.getTexture());
+
+        setDisableButton(getProductsButton, !animal.hasProductReady());
+
+        boolean hasFeed = game.getPlayerInTurn().getInventory().hasEnoughStack("Hay", 1);
+        setDisableButton(feedAnimalButton, !hasFeed);
+
+        setDisableButton(shepherdAnimalButton, !animal.isOutsideToday());
+
         animalWindow.getColor().a = 1;
         animalWindow.setVisible(true);
 

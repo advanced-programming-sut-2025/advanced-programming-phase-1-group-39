@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -79,6 +80,9 @@ public class GameScreen implements Screen {
     private int lastSelectedSlot = -1;
     private int lastBagHash = 0;
     private Cell<?> contentCell;
+    private Window skillTooltip;
+    private Label skillTooltipLabel;
+    private Image skillDescImage; // تصویر توضیح مهارت
 
     private final int MAX_CACHE_SIZE = 5000;
     private final HashMap<Location, TextureRegion> tileCache = new LinkedHashMap<>(MAX_CACHE_SIZE, 0.75f, true) {
@@ -383,7 +387,6 @@ public class GameScreen implements Screen {
 
         TextureRegion currentFrame = null;
         if (equippedTool == null) {
-            // عادی
             Animation<TextureRegion> currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
             if (currentPlayer.isMoving()) {
                 currentFrame = currentAnimation.getKeyFrame(stateTime, true);
@@ -391,7 +394,6 @@ public class GameScreen implements Screen {
                 currentFrame = currentAnimation.getKeyFrame(0f);
             }
         } else {
-            // ابزار equip شده (مثلا داس)
             String[] toolRegions = {
                     "woman-" + equippedTool + "_down",
                     "woman-" + equippedTool + "_right",
@@ -463,11 +465,9 @@ public class GameScreen implements Screen {
         for (int i = 0; i < numSlots; i++) {
             Stack slotStack = new Stack();
 
-            // اسلات زمینه (پس‌زمینه)
             Image slotBg = new Image(new Texture("inventory/Mail.2jpg.jpg"));
             slotStack.add(slotBg);
 
-            // اگر آیتم داشت، عکس آیتم و تعدادش
             if (i < inventory.getInventoryItems().size() && inventory.getInventoryItems().get(i) != null) {
                 TextureRegionDrawable itemDrawable = new TextureRegionDrawable(inventory.getInventoryItems().get(i).getItem().getTexture());
                 Image itemImg = new Image(itemDrawable);
@@ -492,7 +492,7 @@ public class GameScreen implements Screen {
 
             }
 
-            inventoryTable.add(slotStack).size(60, 60); // سایز + فاصله بین اسلات‌ها
+            inventoryTable.add(slotStack).size(60, 60);
         }
     }
 
@@ -704,7 +704,7 @@ public class GameScreen implements Screen {
         Skin skin = GameAssetManager.skin;
         inventoryWindow = new Window("Inventory", skin);
         inventoryWindow.setModal(true);
-        inventoryWindow.setSize(1200, 1000); // هر سایزی دوست داشتی
+        inventoryWindow.setSize(1356, 1000);
         inventoryWindow.setPosition(
                 uiStage.getWidth() / 2f,
                 uiStage.getHeight() / 2f,
@@ -715,7 +715,7 @@ public class GameScreen implements Screen {
         mainTable.setFillParent(true);
 
         // ==== ردیف اول: دکمه‌های تب ====
-        String[] tabNames = {"Journal", "Inventory", "Skills", "Map", "Setting"};
+        String[] tabNames = {"Journal", "Inventory", "Skills", "Map", "Setting", "Social"};
         Table tabsRow = new Table();
 
         // رو این دکمه‌ها اکشن تعویض محتوا می‌ذاریم:
@@ -733,6 +733,9 @@ public class GameScreen implements Screen {
                             break;
                         case "Inventory":
                             contentCell.setActor(getInventoryContentTable());
+                            break;
+                        case "Skills":
+                            contentCell.setActor(getSkillsMenuTable());
                             break;
                         default:
                             Label comingSoon = new Label(tab + " content coming soon!", skin);
@@ -786,8 +789,8 @@ public class GameScreen implements Screen {
         questsTable.add(title).colspan(2).padBottom(32).center().row();
 
         // NPC names & quests
-        String[] npcs = { "Abigail", "Harvey", "Leah", "Robin", "Sebastian" };
-        String[] colors = { "e63946", "f1faee", "a8dadc", "457b9d", "1d3557" };
+        String[] npcs = {"Abigail", "Harvey", "Leah", "Robin", "Sebastian"};
+        String[] colors = {"e63946", "f1faee", "a8dadc", "457b9d", "1d3557"};
 
         for (int i = 0; i < npcs.length; i++) {
             Label nameLabel = new Label(npcs[i] + ":", skin, "subtitle");
@@ -813,26 +816,21 @@ public class GameScreen implements Screen {
 
         Player player = game.getPlayerInTurn();
         Inventory inventory = player.getInventory();
-        int numSlots = player.getMaxInventorySize();  // باید 100 تا باشه
+        int numSlots = player.getMaxInventorySize();
         ArrayList<ItemStack> items = inventory.getInventoryItems();
 
-        // فقط یک مقدار برای اندازه اسلات‌ها
         final float slotSize = 82f;
 
-        // Table اصلی ۱۰ ردیف داره، هر ردیف ۱۰ اسلات
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
                 int i = row * 10 + col;
 
-                // استک برای هر اسلات (عکس، انتخاب، تعداد...)
                 Stack slotStack = new Stack();
 
-                // بک‌گراند
                 Image slotBg = new Image(GameAssetManager.inventorySlot);
                 slotBg.setColor(Color.WHITE);
                 slotStack.add(slotBg);
 
-                // آیتم در اسلات؟
                 if (i < items.size() && items.get(i) != null && items.get(i).getItem() != null) {
                     TextureRegion itemTex = items.get(i).getItem().getTexture();
                     Image itemImg = new Image(new TextureRegionDrawable(itemTex));
@@ -851,20 +849,17 @@ public class GameScreen implements Screen {
                     }
                 }
 
-                // انتخاب شده؟
                 if (i == player.getSelectedSlot()) {
                     Image highlight = new Image(GameAssetManager.inventoryHighlightSlot);
                     highlight.setColor(new Color(1, 1, 1, 0.41f));
                     slotStack.add(highlight);
                 }
 
-                // رفتار کلیک: انتخاب این اسلات
                 final int slotIndex = i;
                 slotStack.addListener(new InputListener() {
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                         player.setSelectedSlot(slotIndex);
-                        // رفرش ویو
                         updateInventoryContent();
                         return true;
                     }
@@ -881,21 +876,18 @@ public class GameScreen implements Screen {
     private Table getInventoryContentTable() {
         Skin skin = GameAssetManager.skin;
 
-        // آیکون سطل
-        Image trashImg = new Image(new Texture("inventory/stardewmoddingapi_ou7895mbeu.png")); // مسیر عکس سطل!
-        trashImg.setSize(55, 55);
+        Image trashImg = new Image(new Texture("inventory/stardewmoddingapi_ou7895mbeu.png"));
         trashImg.setScaling(Scaling.fit);
         trashImg.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // فقط slot رو علامت میزنیم تا بعداً پاک بشه، الان کاری نمی‌کنیم
                 Player player = game.getPlayerInTurn();
                 int idx = player.getSelectedSlot();
                 Inventory inv = player.getInventory();
                 ArrayList<ItemStack> items = inv.getInventoryItems();
 
                 if (idx >= 0 && idx < items.size() && items.get(idx) != null) {
-                    pendingTrashSlot = idx; // علامت کن برای حذف!
+                    pendingTrashSlot = idx;
                 }
 
                 return true;
@@ -904,7 +896,6 @@ public class GameScreen implements Screen {
 
         Table inventoryMenuTable = new Table(skin);
 
-        // تیبل ۱۰ در ۱۰ رو بساز، توی یه ScrollPane بگذار
         Table gridTable = getInventoryTable();
         ScrollPane scrollPane = new ScrollPane(gridTable, skin);
         scrollPane.setScrollingDisabled(true, false);
@@ -914,8 +905,7 @@ public class GameScreen implements Screen {
         scrollPane.setForceScroll(false, true);
         scrollPane.setScrollPercentY(0); // اول جدول
 
-        // ارتفاع ویو: فقط دو ردیف دیده بشه
-        float slotSize = 82 + 8; // اسلات و پدینگ
+        float slotSize = 82 + 8;
         scrollPane.setHeight(2 * slotSize);
 
         // ---- لیبل بالای جدول ----
@@ -924,7 +914,6 @@ public class GameScreen implements Screen {
         titleLabel.setFontScale(1.16f);
         inventoryMenuTable.add(titleLabel).center().padBottom(28).row();
 
-        // سطل کنار اسکرول قرار بگیره
         Table toolsRow = new Table();
         toolsRow.add(scrollPane).width(944).height(2 * slotSize).padRight(14); // 10*82 + پدها
         toolsRow.add(trashImg).size(55, 55).center();
@@ -941,6 +930,122 @@ public class GameScreen implements Screen {
         }
     }
 
+    private Table getSkillsMenuTable() {
+        Skin skin = GameAssetManager.skin;
+        Player player = game.getPlayerInTurn();
+
+        Table skillsTable = new Table(skin);
+
+        // عنوان
+        Label title = new Label("Skills", skin, "title");
+        //title.setAlignment(Align.center);
+        title.setFontScale(1.15f);
+        skillsTable.add(title).padBottom(36).center().colspan(2).padLeft(700).row();
+
+        // اسامی و آیکون و عکس توضیح هر مهارت
+        String[] skills = {"Farming", "Fishing", "Mining", "Foraging"};
+        String[] skillIcons = {
+                GameAssetManager.farmingSkillName,
+                GameAssetManager.fishingSkillName,
+                GameAssetManager.miningSkillName,
+                GameAssetManager.foragingSkillName
+        };
+        String[] skillDescImgs = {
+                "inventory/farming.png",
+                "inventory/fishing.png",
+                "inventory/mining.png",
+                "inventory/foraging.png"
+        };
+        int[] skillLevels = {
+                player.getSkills().getFarmingLevel(),
+                player.getSkills().getFishingLevel(),
+                player.getSkills().getMiningLevel(),
+                player.getSkills().getForagingLevel()
+        };
+        // تصاویر ستاره برای همه مهارت‌ها مشترک
+        String[] starImages = {
+                GameAssetManager.star1Name,
+                GameAssetManager.star2Name,
+                GameAssetManager.star3Name,
+                GameAssetManager.star4Name
+        };
+
+        String[] skillColors = {
+                "#B2E672", // Farming
+                "#7DD1F4", // Fishing
+                "#DDBEEA", // Mining
+                "#FECC5C"  // Foraging
+        };
+
+        for (int i = 0; i < skills.length; i++) {
+            Table row = new Table(skin);
+
+            // آیکون مهارت
+            Image skillIcon = new Image(new TextureRegion(new Texture(skillIcons[i])));
+            skillIcon.setSize(64, 64);
+
+            // عکس توضیح مهارت مخصوص همون اسکیل
+            final TextureRegion descRegion = new TextureRegion(new Texture(skillDescImgs[i]));
+            skillIcon.addListener(new InputListener() {
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    showSkillImageTooltip(descRegion, skillIcon);
+                }
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    hideSkillImageTooltip();
+                }
+            });
+
+            row.add(skillIcon).size(64, 64).padRight(18);
+
+            // عنوان
+            Label lbl = new Label(skills[i], skin, "title");
+            lbl.setColor(Color.valueOf(skillColors[i]));
+            lbl.setFontScale(0.5f);
+            row.add(lbl).padRight(40);
+
+            // ستاره‌ها (نمایش فقط لول‌هایی که باز شده)
+            Table stars = new Table();
+            int level = skillLevels[i];
+            for (int lv = 0; lv < 4; lv++) {
+                if (lv < level) {
+                    Image star = new Image(new TextureRegion(new Texture(starImages[lv])));
+                    star.setSize(28, 28);
+                    stars.add(star).pad(2);
+                }
+            }
+            row.add(stars).padLeft(24);
+
+            skillsTable.add(row).padBottom(32).left().row();
+        }
+
+        skillsTable.top().pad(40, 36, 30, 36).left();
+        return skillsTable;
+    }
+
+    private void showSkillImageTooltip(TextureRegion region, Actor icon) {
+        if (skillDescImage == null) {
+            skillDescImage = new Image(region);
+            uiStage.addActor(skillDescImage);
+        } else {
+            skillDescImage.setDrawable(new TextureRegionDrawable(region));
+            skillDescImage.setVisible(true);
+        }
+        // اندازه سه برابر آیکون مهارت
+        skillDescImage.setSize(420, 210);
+        // موقعیت سمت چپ آیکون
+        float tipX = icon.localToStageCoordinates(new Vector2(-icon.getWidth() * 3 - 135, 0)).x;
+        float tipY = icon.localToStageCoordinates(new Vector2(0, 50)).y;
+        skillDescImage.setPosition(tipX, tipY);
+        skillDescImage.toFront();
+        skillDescImage.setVisible(true);
+    }
+
+    private void hideSkillImageTooltip() {
+        if (skillDescImage != null)
+            skillDescImage.setVisible(false);
+    }
 
 
     public Game getGame() {
@@ -978,7 +1083,6 @@ public class GameScreen implements Screen {
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             gameMenuInputAdapter.handlePlayerMovement(v, game);
-
             updateEnergyBar();
             renderCamera();
 

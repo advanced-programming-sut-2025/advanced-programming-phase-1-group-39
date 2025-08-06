@@ -334,25 +334,25 @@ public class GameScreen implements Screen {
         petAnimal.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                hidePopup();
+                hideAnimalInfoPopup();
             }
         });
         getProducts.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                hidePopup();
+                hideAnimalInfoPopup();
             }
         });
         feedAnimal.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                hidePopup();
+                hideAnimalInfoPopup();
             }
         });
         shepherdAnimal.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                hidePopup();
+                hideAnimalInfoPopup();
             }
         });
         sell.addListener(new ChangeListener() {
@@ -375,7 +375,7 @@ public class GameScreen implements Screen {
 
         if (animalWindow.isVisible()) hideAnimalInfoPopup();
 
-        animalWindow.setSize(800, 500);
+        animalWindow.setSize(500, 1000);
         animalWindow.setPosition(
                 uiStage.getWidth() / 2f,
                 uiStage.getHeight() / 2f,
@@ -393,6 +393,7 @@ public class GameScreen implements Screen {
 
     public void hideAnimalInfoPopup() {
         animalWindow.setVisible(false);
+        Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
 
 
@@ -621,7 +622,7 @@ public class GameScreen implements Screen {
     }
 
 
-/// test
+    /// test
     public void cheatPlayer() {
         Player player = game.getPlayerInTurn();
 

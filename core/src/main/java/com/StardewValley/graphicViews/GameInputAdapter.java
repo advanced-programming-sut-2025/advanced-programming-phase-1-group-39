@@ -140,10 +140,7 @@ public class GameInputAdapter extends InputAdapter {
                 Rectangle animalBounds = new Rectangle(animalX, animalY, tileSize, tileSize);
 
                 if (animalBounds.contains(worldCoordinates.x, worldCoordinates.y)) {
-                    System.out.println("Clicked on animal: " + animal.getName());
-
                     screen.showAnimalInfoPopup(animal);
-
                     return true;
                 }
             }

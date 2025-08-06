@@ -26,4 +26,7 @@ public enum RequestType {
 
     PLAYER_DISCONNECTED,
     PLAYER_RECONNECTED,
+
+    PLAYER_REACTION,
+    SHOW_REACTION_ON_PLAYER,
 }

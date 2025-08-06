@@ -4,6 +4,7 @@ import com.StardewValley.Main; // <<-- وارد کردن کلاس اصلی با�
 import com.StardewValley.models.App; // <<-- وارد کردن مدل App
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
+import com.StardewValley.network.shares.message.PlayerReactionPayload;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
 import com.badlogic.gdx.Gdx;
@@ -111,5 +112,11 @@ public class NetworkClient {
 
     public void sendJoinLobbyRequest(String lobbyId, String username) {
         sendRequest(new Request(RequestType.JOIN_LOBBY, new String[]{lobbyId, username}));
+    }
+
+    public void sendReactionRequest(String reaction) {
+        PlayerReactionPayload payload = new PlayerReactionPayload(reaction);
+        Request request = new Request(RequestType.PLAYER_REACTION, payload);
+        sendRequest(request);
     }
 }

@@ -4,10 +4,7 @@ import com.StardewValley.models.Player; // import Player model
 import com.StardewValley.models.Game; // import Game model
 import com.StardewValley.network.client.controllers.ClientHandler;
 import com.StardewValley.network.shares.Lobby;
-import com.StardewValley.network.shares.message.ChatMessage;
-import com.StardewValley.network.shares.message.PlayerMovePayload;
-import com.StardewValley.network.shares.message.Request;
-import com.StardewValley.network.shares.message.RequestType;
+import com.StardewValley.network.shares.message.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -152,8 +149,9 @@ public class ServerMain {
                 // اینجا بر اساس نوع درخواست، متد مربوطه در سشن را صدا می‌زنیم
                 if (request.getType() == RequestType.PlAYER_MOVE && request.getPayload() instanceof PlayerMovePayload) {
                     //session.processMoveRequest((PlayerMovePayload) request.getPayload(), fromClient.getUsername());
+                } else if (request.getType() == RequestType.PLAYER_REACTION && request.getPayload() instanceof PlayerReactionPayload) {
+                    session.processReactionRequest((PlayerReactionPayload) request.getPayload(), fromClient.getUsername());
                 }
-                // سایر درخواست‌های بازی اینجا مدیریت می‌شوند
                 // else if (request.getType() == RequestType.USE_TOOL) { ... }
             }
         }

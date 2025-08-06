@@ -4,7 +4,9 @@ import com.StardewValley.models.*;
 import com.StardewValley.network.client.controllers.ClientHandler;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
 import com.StardewValley.network.shares.dtos.PlayerStateDTO;
+import com.StardewValley.network.shares.dtos.ShowReactionDTO;
 import com.StardewValley.network.shares.message.PlayerMovePayload;
+import com.StardewValley.network.shares.message.PlayerReactionPayload;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
 
@@ -145,5 +147,16 @@ public class GameSession implements Runnable {
     private void kickPlayerPermanently(String username) {
         disconnectedPlayers.remove(username);
         System.out.println("Player " + username + " did not reconnect in time. Kicking permanently.");
+    }
+
+    public void processReactionRequest(PlayerReactionPayload payload, String fromUsername) {
+        System.out.println("Player " + fromUsername + " reacted with: " + payload.getReactionContent());
+
+        // ساخت DTO برای ارسال به همه کلاینت‌ها
+        ShowReactionDTO reactionInfo = new ShowReactionDTO(fromUsername, payload.getReactionContent());
+        Request reactionRequest = new Request(RequestType.SHOW_REACTION_ON_PLAYER, reactionInfo);
+
+        // ارسال به همه بازیکنان در این جلسه (شامل خود فرد هم می‌شود اگر بخواهید)
+        broadcastToSession(reactionRequest);
     }
 }

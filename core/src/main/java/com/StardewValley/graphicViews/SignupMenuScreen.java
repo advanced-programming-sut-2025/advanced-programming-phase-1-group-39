@@ -4,7 +4,6 @@ import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.SignupGuiController;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
-import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -13,8 +12,6 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class SignupMenuScreen implements Screen {
@@ -127,10 +124,6 @@ public class SignupMenuScreen implements Screen {
         table.top().padTop(120);
         table.center();
 
-//        menuTitle.setFontScale(2.5f);
-//        menuTitle.setColor(Color.valueOf("ffc750"));
-//        table.add(menuTitle).colspan(2).center().padBottom(40);
-//        table.row().pad(10, 0, 10, 0);
 
         // ==== Username ====
         usernameLabel.setColor(Color.valueOf("023047"));

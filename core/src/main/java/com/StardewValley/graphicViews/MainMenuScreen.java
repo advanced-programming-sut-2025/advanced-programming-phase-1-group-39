@@ -5,7 +5,6 @@ import com.StardewValley.graphicControllers.MainGuiController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
-import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -18,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainMenuScreen implements Screen {
     private Stage stage;
@@ -68,7 +66,7 @@ public class MainMenuScreen implements Screen {
             music.play();
 
             // تنظیم و اضافه‌کردن بک‌گراند
-            background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            background.setSize(stage.getWidth(), stage.getHeight());
             background.setColor(1, 1, 1, 0.5f);
             stage.addActor(background);
 

@@ -633,7 +633,7 @@ public class GameScreen implements Screen {
                     int tileSize = Map.TILE_SIZE;
 
                     TextureRegion texture = new TextureRegion(GameAssetManager.shippingBinTexture);
-                    batch.draw(texture, inMapLocation.x(), inMapLocation.y(), tileSize, tileSize);
+                    batch.draw(texture, inMapLocation.x(), inMapLocation.y());
                 }
             }
         }
@@ -1291,9 +1291,10 @@ public class GameScreen implements Screen {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
             renderTiles();
-            renderBuildings();
-            renderPlayers(v);
             renderAnimals(v);
+
+            renderPlayers(v);
+            renderBuildings();
 
             // TODO : (Better) move clock render to uiStage
             renderClockUI();

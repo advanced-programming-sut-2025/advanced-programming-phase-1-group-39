@@ -105,7 +105,7 @@ public class Map {
 
             Building cabin = new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5));
             Building greenhouse = new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0));
-            Building shippingBin = new ShippingBin("Shipping Bin", new Location(startOfFarm.x() + 77, startOfFarm.y() + 10), 1, 1);
+            Building shippingBin = new ShippingBin("Shipping Bin", new Location(startOfFarm.x() + 77, startOfFarm.y() + 10), 2, 1);
 
             addObjectToMap(cabin, "cabin", 0,0);
 

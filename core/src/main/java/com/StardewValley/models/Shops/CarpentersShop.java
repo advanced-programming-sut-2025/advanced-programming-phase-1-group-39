@@ -130,7 +130,7 @@ public class CarpentersShop extends Shop {
             if (!game.getMap().canAddBuilding(new Location(x, y), 1, 1)) {
                 return new Result(false, "You can't build " + name + " in this tile");
             }
-            ShippingBin bin = new ShippingBin("Shipping Bin", new Location(x,y), data.width, data.height);
+            ShippingBin bin = new ShippingBin("Shipping Bin", new Location(x,y), 2, 1);
             game.addBuilding(bin);
             player.addToBuildings(bin);
             bin.updateMap(game.getMap());

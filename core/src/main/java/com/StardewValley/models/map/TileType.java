@@ -11,7 +11,7 @@ public enum TileType {
     INDOOR('*', true, "indoor.png"),
     DESTROYED('×', false, "destroyed.png"),
     QUARRY('Q', true,  "quarry.png"),
-    SELL_BASKET('B', false, "shippingBin.png"),
+    SELL_BASKET('B', false, "soil2.png"),
     DISABLE(' ', false, "disable.png"),
     PATH('#', true,  "path.png"),
     Lawn('.', true,  "lawn.png");

@@ -65,9 +65,13 @@ public class GameInputAdapter extends InputAdapter {
         // check can move to
         movement.nor().scl(speed * delta);
         if (movement.isZero()) {
+            player.setMoving(false);
             player.setDirection(Direction.NONE);
             return;
         }
+
+        Map map = game.getMap();
+
         float newX = player.getX() + movement.x;
         float newY = player.getY() + movement.y;
 
@@ -85,6 +89,7 @@ public class GameInputAdapter extends InputAdapter {
         if (game.isPositionPassable(player.getX(), newY)) {
             player.setLocationAbsolut(player.getX(), newY);
         }
+        player.setMoving(true);
         player.setDirection(currentDirection);
         // change energy
         if (player.getX() != initialX || player.getY() != initialY) {
@@ -92,6 +97,18 @@ public class GameInputAdapter extends InputAdapter {
         }
     }
 
+    public static Direction getMouseDirectionAroundPlayer(Location playerLoc, Location mouseTileLoc) {
+        int dx = mouseTileLoc.x() - playerLoc.x();
+        int dy = mouseTileLoc.y() - playerLoc.y();
+
+        for (Direction dir : Direction.values()) {
+            if (dir == Direction.NONE) continue;
+            if (dx == dir.dx && dy == dir.dy) {
+                return dir;
+            }
+        }
+        return null;
+    }
 
 
     @Override
@@ -106,6 +123,8 @@ public class GameInputAdapter extends InputAdapter {
         ///  test
         else if (keycode == Input.Keys.MINUS) {
             screen.getGame().getPlayerInTurn().changeEnergy(-10);
+        } else if (keycode == Input.Keys.TAB) {
+            screen.cheatPlayer();
         }
 
         else if (keycode == Input.Keys.N) {
@@ -117,13 +136,24 @@ public class GameInputAdapter extends InputAdapter {
             screen.changeCraftingMenu();
         } else if (keycode == Input.Keys.P) {
             screen.showShopMenu();
-        } else if (keycode == Input.Keys.TAB) {
-            screen.cheatPlayer();
+        } else if (keycode == Input.Keys.E) {
+            screen.toggleInventoryMenu();
         }
 
         else if (keycode == Input.Keys.M) {
             screen.toggleBiggerMiniMap();
         }
+        return true;
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        Game game = screen.getGame();
+
+        int current = game.getPlayerInTurn().getSelectedSlot();
+        int size = game.getPlayerInTurn().getMaxInventorySize();
+        int next = (current + (amountY > 0 ? 1 : -1) + size) % size;
+        game.getPlayerInTurn().setSelectedSlot(next);
         return true;
     }
 
@@ -145,6 +175,24 @@ public class GameInputAdapter extends InputAdapter {
                         return true;
                     }
                 }
+            }
+        } else if (button == Input.Buttons.LEFT) {
+            // ۱. مختصات screen به world
+            Vector3 worldCoords = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
+            // ۲. تبدیل world به tile
+            Location mouseTile = Map.pixelToTileConverter(new Location(worldCoords.x, worldCoords.y));
+            Player player = screen.getGame().getPlayerInTurn();
+            Location playerTile = player.getTileLocation();
+
+            Direction dir = getMouseDirectionAroundPlayer(playerTile, mouseTile);
+
+            // دیباگ برای تست مختصات:
+            System.out.println("mouseTile: " + mouseTile.x() + "," + mouseTile.y());
+            System.out.println("playerTile: " + playerTile.x() + "," + playerTile.y());
+            System.out.println("dir: " + dir);
+
+            if (dir != null) {
+                controller.useTool(dir);
             }
         }
         return false;

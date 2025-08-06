@@ -363,4 +363,70 @@ public class GameGuiController {
         }
         return text.replaceAll("\\u001B\\[[;\\d]*m", "");
     }
+
+    public void useTool(Direction direction) {
+        Game game = screen.getGame();
+        Player player = game.getPlayerInTurn();
+
+        Tile tile = game.getMap().getTile(player.getTileLocation().x() + direction.dx,
+                player.getTileLocation().y() + direction.dy);
+        if (tile != null) {
+            ItemStack itemStack = player.getInventory().getInHand();
+            if (itemStack != null && itemStack.getItem() instanceof Tool tool) {
+                int energyConsumed = tool.getUsingEnergy(player.getSkills(), game.getTodayWeather());
+                if (player.getTurnEnergy() >= energyConsumed) {
+                    boolean result = tool.useTool(tile, player, player.getSkills()).success();
+                    if (!result) {
+                        if (tool instanceof Pickaxe || tool instanceof Axe) {
+                            energyConsumed -= 1;
+                            player.changeEnergy(-energyConsumed);
+                        }
+                    } else {
+                        player.changeEnergy(-
+                                energyConsumed);
+                    }
+                }
+            }
+        }
+    }
+
+    public String getQuesList(String NPCName) {
+        App app = App.getApp();
+        Game game = screen.getGame();
+        Player player = game.getPlayerInTurn();
+        StringBuilder output = new StringBuilder();
+        PlayerNPCInteraction friendship = player.getFriendship(NPCName);
+        int count = 0;
+        if (NPCName.equals("Sebastian")) { output.append("     "); }
+        if (getMission(1, NPCName) != null) {
+            count++;
+            output.append(count).append(") ").append(getMission(1, NPCName)).append("\n");
+        }
+        if (getMission(2, NPCName) != null && player.getFriendship(NPCName).getFriendshipLevel() >= 1) {
+            count++;
+            output.append(count).append(") ").append(getMission(2, NPCName)).append("\n");
+        }
+        if (getMission(3, NPCName) != null &&
+                player.getFriendship(NPCName).getFriendshipLevel() >= 1 &&
+                friendship.getActiveMission3().isGreater(game.getTime())) {
+            count++;
+            output.append(count).append(") ").append(getMission(3, NPCName)).append("\n");
+        }
+        return output.toString();
+    }
+
+
+    private String getMission(int level, String NPCName) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        for (Quest quest : game.getNPC(NPCName).getQuests()) {
+            if (quest.getLevel() == level) {
+                return game.getNPC(NPCName).getMissions().get(level - 1);
+            }
+        }
+        return null;
+    }
+
+
+
 }

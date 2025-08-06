@@ -64,6 +64,10 @@ public class GameScreen implements Screen {
     //  player
     private TextureAtlas playerAtlas;
     private HashMap<Player, ArrayList<Animation<TextureRegion>>> playersAnimations = new LinkedHashMap<>();
+
+    private float stateTime = 0f;
+
+
     private TextureRegion seasonTexture;
     private TextureRegion weatherTexture;
 
@@ -126,6 +130,18 @@ public class GameScreen implements Screen {
     private TextButton popupYesButton;
     private TextButton popupNoButton;
     private Runnable popupRunnable;
+
+    // inventory
+    private Integer pendingTrashSlot = null;
+    private boolean pendingInventoryUiRefresh = false;
+    private Window inventoryWindow = null;
+    Table inventoryTable = new Table();
+    private int lastSelectedSlot = -1;
+    private int lastBagHash = 0;
+    private Cell<?> contentCell;
+    private Window skillTooltip;
+    private Label skillTooltipLabel;
+    private Image skillDescImage; // تصویر توضیح مهارت
 
     // animal popup
     private Window animalWindow;
@@ -206,6 +222,11 @@ public class GameScreen implements Screen {
         hudTable.add(energyStack)
                 .width(1.5f * energyBox.getWidth()).height(1.5f * energyBox.getHeight())
                 .expand().bottom().right().pad(20f);
+
+        // inventory
+        inventoryTable.setFillParent(false);
+        inventoryTable.bottom().center().padTop(950f);
+        rootStack.add(inventoryTable);
 
 
         // for error message
@@ -429,7 +450,7 @@ public class GameScreen implements Screen {
 
 
     public void loadTextures() {
-        playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
+        playerAtlas = new TextureAtlas(Gdx.files.internal("characters/woman/woman.atlas"));
         clock = new Texture(Gdx.files.internal("clock/Clock.png"));
         clock.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
@@ -450,24 +471,44 @@ public class GameScreen implements Screen {
 
     private void loadPlayerAnimations(Player player) {
         ArrayList<Animation<TextureRegion>> animations = new ArrayList<>();
-        for (int i = 14; i > 9; i--) {
-            Array<TextureRegion> walkFrames = new Array<>();
-            if (i == 14) {
-                for (int j = 0; j < 4; j++) {
-                    String region = "player_" + 13 + "_" + 0;
-                    walkFrames.add(playerAtlas.findRegion(region));
-                }
-            } else {
-                for (int j = 0; j < 4; j++) {
-                    String region = "player_" + i + "_" + j;
-                    walkFrames.add(playerAtlas.findRegion(region));
-                }
-            }
-            animations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+
+        // DOWN
+        Array<TextureRegion> walkDown = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_ down", i);
+            if (r == null) System.out.println("[Null region] woman-move_ down, " + i);
+            walkDown.add(r);
         }
+        animations.add(new Animation<>(0.15f, walkDown, Animation.PlayMode.LOOP));
+
+        // RIGHT
+        Array<TextureRegion> walkRight = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_ right", i);
+            if (r == null) System.out.println("[Null region] woman-move_ right, " + i);
+            walkRight.add(r);
+        }
+        animations.add(new Animation<>(0.15f, walkRight, Animation.PlayMode.LOOP));
+
+        // UP
+        Array<TextureRegion> walkUp = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_ up", i);
+            if (r == null) System.out.println("[Null region] woman-move_ up, " + i);
+            walkUp.add(r);
+        }
+        animations.add(new Animation<>(0.15f, walkUp, Animation.PlayMode.LOOP));
+
+        // LEFT
+        Array<TextureRegion> walkLeft = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_left", i); // بدون فاصله
+            if (r == null) System.out.println("[Null region] woman-move_left, " + i);
+            walkLeft.add(r);
+        }
+        animations.add(new Animation<>(0.15f, walkLeft, Animation.PlayMode.LOOP));
 
         playersAnimations.put(player, animations);
-        player.setCurrentState(PlayerState.WalkingOrIdle);
     }
 
     private TextureRegion getTileObjectTexture(Tile tile) {
@@ -691,8 +732,28 @@ public class GameScreen implements Screen {
                 currentAnimation = playersAnimations.get(currentPlayer).get(0); // TODO : change to unco
                 break;
             default:
-                currentAnimation = playersAnimations.get(currentPlayer).get(0);
-                break;
+                String equippedTool = getEquippedToolKey(currentPlayer);
+
+                TextureRegion currentFrame = null;
+                if (equippedTool == null) {
+                    Animation<TextureRegion> currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
+                    if (currentPlayer.isMoving()) {
+                        currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+                    } else {
+                        currentFrame = currentAnimation.getKeyFrame(0f);
+                    }
+                } else {
+                    String[] toolRegions = {
+                            "woman-" + equippedTool + "_down",
+                            "woman-" + equippedTool + "_right",
+                            "woman-" + equippedTool + "_up",
+                            "woman-" + equippedTool + "_left"
+                    };
+                    currentFrame = playerAtlas.findRegion(toolRegions[animIndex]);
+                    if (currentFrame == null) {
+                        System.out.println("[NULL tool region] " + toolRegions[animIndex]);
+                    }
+                }
         }
 
         batch.setColor(currentPlayer.getColor());
@@ -706,7 +767,10 @@ public class GameScreen implements Screen {
 
         currentPlayer.updateAnimationStateTime(delta);
 
-        batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_H);
+
+        float scale = 0.8f;
+        batch.draw(currentFrame, drawX, drawY, currentFrame.getRegionWidth() * scale, currentFrame.getRegionHeight() * scale);
+
 
         batch.setColor(Color.WHITE);
     }
@@ -1289,6 +1353,7 @@ public class GameScreen implements Screen {
 
             // everything render based on camera
             batch.setProjectionMatrix(camera.combined);
+            stateTime += v;
             batch.begin();
             renderTiles();
             renderAnimals(v);

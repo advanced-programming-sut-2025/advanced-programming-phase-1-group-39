@@ -39,6 +39,28 @@ public class GameAssetManager {
     public static TextureRegion nameLabel = new TextureRegion(new Texture("Label/Marlon.png"));
     public static TextureRegion avatarFrame = new TextureRegion(new Texture("Label/Gunther.png"));
 
+    // inventory :
+    public static TextureRegion inventorySlot = new TextureRegion(new Texture("inventory/Mail.2jpg.jpg"));
+    public static TextureRegion inventoryHighlightSlot = new TextureRegion(new Texture("inventory/Mail3.jpg"));
+
+    // skills :
+    public static TextureRegion star1 = new TextureRegion(new Texture("inventory/Achievement_Star_06.png"));
+    public static TextureRegion star2 = new TextureRegion(new Texture("inventory/Achievement_Star_02.png"));
+    public static TextureRegion star3 = new TextureRegion(new Texture("inventory/Achievement_Star_12.png"));
+    public static TextureRegion star4 = new TextureRegion(new Texture("inventory/Achievement_Star_09.png"));
+    public static String star1Name = "inventory/Achievement_Star_06.png";
+    public static String star2Name = "inventory/Achievement_Star_02.png";
+    public static String star3Name = "inventory/Achievement_Star_12.png";
+    public static String star4Name = "inventory/Achievement_Star_09.png";
+
+    public static TextureRegion farmingSkill = new TextureRegion(new Texture("inventory/Farming_Skill_Icon.png"));
+    public static TextureRegion fishingSkill = new TextureRegion(new Texture("inventory/Fishing_Skill_Icon.png"));
+    public static TextureRegion foragingSkill = new TextureRegion(new Texture("inventory/Foraging_Skill_Icon.png"));
+    public static TextureRegion miningSkill = new TextureRegion(new Texture("inventory/Mining_Skill_Icon.png"));
+    public static String farmingSkillName = "inventory/Farming_Skill_Icon.png";
+    public static String fishingSkillName = "inventory/Fishing_Skill_Icon.png";
+    public static String foragingSkillName = "inventory/Foraging_Skill_Icon.png";
+    public static String miningSkillName = "inventory/Mining_Skill_Icon.png";
 
     // Plants
     public static Texture deadPlantTexture = getDeadPlantTexture();

@@ -34,6 +34,7 @@ public class Player {
 
     // graphic - based on pixels
     private float x, y;
+    private boolean isMoving;
 
     private String username;
     private String nickname;
@@ -639,6 +640,10 @@ public class Player {
     }
 
     // state of player
+    public boolean isMoving() { return isMoving; }
+
+    public void setMoving(boolean moving) { this.isMoving = moving; }
+
     public GameScreen.PlayerState getCurrentState() {
         return currentState;
     }

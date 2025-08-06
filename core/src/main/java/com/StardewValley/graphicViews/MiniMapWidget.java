@@ -158,7 +158,7 @@ public class MiniMapWidget extends Actor {
         for (NPC npc : game.getNpcs()) {
             Location npcLoc = npc.getLocation();
             float x = npcLoc.x(),
-                y = Constants.WORLD_MAP_HEIGHT - npcLoc.y() - 1;
+                    y = Constants.WORLD_MAP_HEIGHT - npcLoc.y() - 1;
             float mapX = (x / (Constants.WORLD_MAP_WIDTH)) * getWidth();
 
             // محور Y را باید معکوس کنیم

@@ -73,16 +73,16 @@ public class GameGuiController {
 
     public void cook(FoodRecipe recipe) {
         Result result = FoodManager.cook(recipe.name(), App.getApp().getCurrentGame().getPlayerInTurn());
-        System.out.println(result.message());
+        screen.showError(result.message());
     }
 
     public void craft(CraftingRecipe recipe, Player player) {
-        System.out.println(CraftingManager.craft(recipe.getName(), player));
+        screen.showError(CraftingManager.craft(recipe.getName(), player).message());
     }
 
     // Animal
     public void sellAnimal(Animal animal) {
-        screen.showPopup("Do you REALLy want to sell " + animal.getName() + " ?", () -> {
+        screen.showPopup("Do you REALLY want to sell " + animal.getName() + " ?", () -> {
             return;
         });
     }

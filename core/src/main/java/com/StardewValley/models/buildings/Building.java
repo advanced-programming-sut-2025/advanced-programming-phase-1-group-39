@@ -51,10 +51,10 @@ public abstract class Building {
             }
         }
 
-        buildWalls(map);
+        buildWallsAndDoor(map);
     }
 
-    public void buildWalls(Map map) {
+    public void buildWallsAndDoor(Map map) {
         Tile[][] tiles = map.getTiles();
         int x = this.getLocation().x();
         int y = this.getLocation().y();
@@ -69,5 +69,7 @@ public abstract class Building {
             tiles[j][x].setType(TileType.WALL);
             tiles[j][x + w - 1].setType(TileType.WALL);
         }
+
+        tiles[y + h - 1][x + w/2].setType(TileType.INDOOR);
     }
 }

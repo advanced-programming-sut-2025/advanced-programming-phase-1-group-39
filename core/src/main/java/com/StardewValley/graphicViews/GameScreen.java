@@ -473,6 +473,7 @@ public class GameScreen implements Screen {
             }
         }
     }
+
 /// test
     public void cheatPlayer() {
         Player player = game.getPlayerInTurn();
@@ -486,6 +487,7 @@ public class GameScreen implements Screen {
         building.addAnimalAndSetLocationInside(animal);
         showError("cheated Animal");
     }
+    /// end of test
 
     public void renderPlayers(float data) {
         for (Player player : game.getPlayers()) {

@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ServerMain {
-    private static final int PORT = 8080;
+    private static final int PORT = 5050;
     private static final List<ClientHandler> clients = Collections.synchronizedList(new ArrayList<>());
     private static final List<Lobby> lobbies = Collections.synchronizedList(new ArrayList<>());
     private static final Map<Integer, GameSession> activeGames = Collections.synchronizedMap(new HashMap<>());
@@ -24,7 +24,7 @@ public class ServerMain {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("New player connected: " + clientSocket.getInetAddress().getHostAddress());
+                System.out.println("New player connected: " + clientSocket.getInetAddress().getHostAddress() + ":" + clientSocket.getPort());
 
                 ClientHandler clientHandler = new ClientHandler(clientSocket);
                 clients.add(clientHandler);
@@ -35,7 +35,13 @@ public class ServerMain {
         }
     }
 
-    // متد createLobby با دریافت نام کاربری ادمین
+    public static synchronized void registerNewClient(String username, ClientHandler handler) {
+        handler.setUsername(username);
+        broadcastOnlineUserList();
+    }
+
+
+        // متد createLobby با دریافت نام کاربری ادمین
     public static void createLobby(String lobbyName, String adminUsername, ClientHandler adminHandler) {
         Lobby newLobby = new Lobby(lobbyName, adminUsername); // ادمین با نام کاربری شناخته می‌شود
         synchronized (lobbies) {
@@ -199,9 +205,8 @@ public class ServerMain {
 
 
     public static void handleDisconnection(ClientHandler handler) {
-        // اگر بازیکن اصلا در بازی نبود، فقط حذفش کن
         if (handler.getGameId() == -1) {
-            removeClient(handler); // از لیست کلی حذف می‌شود و لیست آنلاین‌ها آپدیت می‌شود
+            removeClient(handler);
             return;
         }
 
@@ -225,7 +230,17 @@ public class ServerMain {
     }
 
     private static void broadcastOnlineUserList() {
+        System.out.println("Try to broadcast online user list.");
+        synchronized (clients) {
+            List<String> clientsUsernames = new ArrayList<>();
+            for (ClientHandler client : clients) {
+                clientsUsernames.add(client.getUsername());
+            }
 
+            for (ClientHandler client : clients) {
+                client.sendMessage(new Request(RequestType.UPDATE_ONLINE_USERS, clientsUsernames));
+            }
+        }
     }
 
 }

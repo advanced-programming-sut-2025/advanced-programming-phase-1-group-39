@@ -31,7 +31,7 @@ public class Main extends Game {
         main = this;
         batch = new SpriteBatch();
 
-
+        goOnline(); // TODO : change the place to LobbyScreen
         switchScreen(getScreenByMenu(App.getApp().getCurrentMenu()));
 
 //        Thread terminalController = new Thread(() -> {
@@ -45,7 +45,7 @@ public class Main extends Game {
         boolean connected = true;
         if (networkClient == null) {
             networkClient = new NetworkClient();
-            connected = networkClient.connect("127.0.0.1", 8080);
+            connected = networkClient.connect("127.0.0.1", 5050);
         }
         if (connected)
             switchScreen(new LobbyScreen());

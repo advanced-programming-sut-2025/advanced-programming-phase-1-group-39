@@ -2,8 +2,6 @@ package com.StardewValley.graphicViews;
 
 
 import com.StardewValley.models.*;
-import com.StardewValley.models.Enums.Direction;
-import com.StardewValley.models.map.Map;
 import com.StardewValley.network.client.NetworkClient;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
@@ -78,7 +76,7 @@ public class GameInputAdapter extends InputAdapter {
 
         // <<--- بخش کلیدی: ارسال درخواست به سرور ---<<
         // کلاینت دیگر خودش را حرکت نمی‌دهد، فقط قصدش را به سرور اعلام می‌کند.
-        networkClient.sendMoveRequest(movementIntent.x, movementIntent.y);
+//        networkClient.sendMoveRequest(movementIntent.x, movementIntent.y);
 
         // تمام منطق قبلی از اینجا به بعد حذف می‌شود!
     /*

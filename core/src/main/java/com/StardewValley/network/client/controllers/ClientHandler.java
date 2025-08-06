@@ -47,17 +47,17 @@ public class ClientHandler implements Runnable {
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(clientSocket.getInputStream());
 
-            sendMessage(new Request(RequestType.UPDATE_LOBBY_LIST, ServerMain.getLobbies()));
+
+//            sendMessage(new Request(RequestType.UPDATE_LOBBY_LIST, ServerMain.getLobbies()));
 
             while (true) {
                 Request request = (Request) in.readObject();
                 handleRequest(request);
             }
         } catch (SocketException e) {
-            // این خطا معمولا وقتی رخ می‌دهد که کلاینت به طور ناگهانی قطع می‌شود
+            // قطع ناگهانی
             System.out.println("Client " + getClientIdentifier() + " disconnected abruptly.");
         } catch (Exception e) {
-            // سایر خطاها
             System.out.println("Error with client " + getClientIdentifier() + ": " + e.getMessage());
         } finally {
             ServerMain.handleDisconnection(this);
@@ -66,6 +66,13 @@ public class ClientHandler implements Runnable {
 
     private void handleRequest(Request request) {
         switch (request.getType()) {
+            case SEND_USERNAME:
+                if (request.getPayload() instanceof String) {
+                    String username = (String) request.getPayload();
+                    ServerMain.registerNewClient(username, this);
+                }
+                break;
+
             case CREATE_LOBBY:
                 String lobbyName = (String) request.getPayload();
                 ServerMain.createLobby(lobbyName, username, this);

@@ -33,6 +33,8 @@ public class NetworkClient {
             socket = new Socket(ip, port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
+
+            sendUsername(app.getLoggedInUser().getUserName());
             new Thread(this::listenToServer).start();
             return true;
         } catch (IOException e) {
@@ -60,17 +62,18 @@ public class NetworkClient {
         Object payload = request.getPayload();
 
         switch (request.getType()) {
-            case UPDATE_LOBBY_LIST:
-                if (payload instanceof List) {
-                    List<Lobby> lobbies = (List<Lobby>) payload;
-                    app.setAvailableLobbies(lobbies);
-                }
-                break;
-
             case UPDATE_ONLINE_USERS:
                 if (payload instanceof List) {
                     List<String> usernames = (List<String>) payload;
                     app.setOnlineUsers(usernames);
+                }
+                break;
+
+
+            case UPDATE_LOBBY_LIST:
+                if (payload instanceof List) {
+                    List<Lobby> lobbies = (List<Lobby>) payload;
+                    app.setAvailableLobbies(lobbies);
                 }
                 break;
 
@@ -109,6 +112,9 @@ public class NetworkClient {
 
 
     // send messages
+    public void sendUsername(String username) {
+        sendRequest(new Request(RequestType.SEND_USERNAME, username));
+    }
 
     public void sendJoinLobbyRequest(String lobbyId, String username) {
         sendRequest(new Request(RequestType.JOIN_LOBBY, new String[]{lobbyId, username}));

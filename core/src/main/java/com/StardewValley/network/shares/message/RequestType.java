@@ -2,7 +2,7 @@ package com.StardewValley.network.shares.message;
 
 public enum RequestType {
     // first connect to server
-    SEND_IDENTITY,
+    SEND_USERNAME,
 
     //Lobby and Online Users
     UPDATE_LOBBY_LIST,

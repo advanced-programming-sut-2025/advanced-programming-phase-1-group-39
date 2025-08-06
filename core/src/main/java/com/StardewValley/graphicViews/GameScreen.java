@@ -1,6 +1,7 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
+import com.StardewValley.graphicViews.widgets.ReactionBubble;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.Shops.Shop;
@@ -946,19 +947,12 @@ public class GameScreen implements Screen {
 
         if (serverRequest.getType() == RequestType.SHOW_REACTION_ON_PLAYER) {
             ShowReactionDTO dto = (ShowReactionDTO) serverRequest.getPayload();
-
-            // **اینجا منطق نهایی گرافیکی شما قرار خواهد گرفت**
-            // برای الان، فقط در کنسول چاپ می‌کنیم تا مطمئن شویم پیام رسیده
-            System.out.println("[REACTION] Player '" + dto.getReactingPlayerUsername() +
-                    "' says: " + dto.getReactionContent());
-
-            // TODO (برای آینده):
-            // 1. Player targetPlayer = game.getPlayerByUsername(dto.getReactingPlayerUsername());
-            // 2. یک آبجکت گرافیکی (مثلا یک Label) با متن dto.getReactionContent() بساز.
-            // 3. موقعیت این Label را بالای سر targetPlayer تنظیم کن (targetPlayer.getX(), targetPlayer.getY() + TILE_SIZE).
-            // 4. آن را به uiStage اضافه کن.
-            // 5. یک Action به آن اضافه کن که بعد از 5 ثانیه، Label را محو و حذف کند:
-            //    label.addAction(Actions.sequence(Actions.delay(5f), Actions.fadeOut(0.5f), Actions.removeActor()));
+            Player targetPlayer = game.getPlayerByUsername(dto.getReactingPlayerUsername());
+            if (targetPlayer != null) {
+                // Todo: چک و تکمیل شود
+                ReactionBubble bubble = new ReactionBubble(targetPlayer, dto.getReactionType(), GameAssetManager.skin);
+                uiStage.addActor(bubble);
+            }
         }
     }
 

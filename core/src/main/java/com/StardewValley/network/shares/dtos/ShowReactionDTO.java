@@ -1,22 +1,19 @@
 package com.StardewValley.network.shares.dtos;
 
+import com.StardewValley.network.shares.message.ReactionType;
+
 import java.io.Serializable;
 
 public class ShowReactionDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private final String reactingPlayerUsername;
-    private final String reactionContent;
+    private final ReactionType reactionType; // به جای String
 
-    public ShowReactionDTO(String reactingPlayerUsername, String reactionContent) {
+    public ShowReactionDTO(String reactingPlayerUsername, ReactionType reactionType) {
         this.reactingPlayerUsername = reactingPlayerUsername;
-        this.reactionContent = reactionContent;
+        this.reactionType = reactionType;
     }
 
-    public String getReactingPlayerUsername() {
-        return reactingPlayerUsername;
-    }
-
-    public String getReactionContent() {
-        return reactionContent;
-    }
+    public String getReactingPlayerUsername() { return reactingPlayerUsername; }
+    public ReactionType getReactionType() { return reactionType; }
 }

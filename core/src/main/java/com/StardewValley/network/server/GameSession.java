@@ -150,10 +150,10 @@ public class GameSession implements Runnable {
     }
 
     public void processReactionRequest(PlayerReactionPayload payload, String fromUsername) {
-        System.out.println("Player " + fromUsername + " reacted with: " + payload.getReactionContent());
+        System.out.println("Player " + fromUsername + " reacted with: " + payload.getReactionType().getDisplayText());
 
         // ساخت DTO برای ارسال به همه کلاینت‌ها
-        ShowReactionDTO reactionInfo = new ShowReactionDTO(fromUsername, payload.getReactionContent());
+        ShowReactionDTO reactionInfo = new ShowReactionDTO(fromUsername, payload.getReactionType());
         Request reactionRequest = new Request(RequestType.SHOW_REACTION_ON_PLAYER, reactionInfo);
 
         // ارسال به همه بازیکنان در این جلسه (شامل خود فرد هم می‌شود اگر بخواهید)

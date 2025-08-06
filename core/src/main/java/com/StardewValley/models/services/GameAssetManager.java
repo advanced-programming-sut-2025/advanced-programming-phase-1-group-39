@@ -1,5 +1,6 @@
 package com.StardewValley.models.services;
 
+import com.StardewValley.models.map.TileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
@@ -15,8 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.ArrayList;
 
 public class GameAssetManager {
     public static Skin skin;
@@ -76,6 +75,8 @@ public class GameAssetManager {
         loadBarStyles();
 
         loadEffects();
+
+        TileType.loadAllTextures();
     }
 
     private static void loadEffects() {

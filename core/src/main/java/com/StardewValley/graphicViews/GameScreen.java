@@ -28,7 +28,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -467,8 +466,6 @@ public class GameScreen implements Screen {
         for (Player player : game.getPlayers()) {
             for (Animal animal : player.getAnimals()) {
                 animal.updateMovement(v, game);
-
-                System.out.println("animal " + animal.getName() + " moved to " + animal.getX() + " " + animal.getY());
 
                 TextureRegion texture = animal.getTexture();
                 int tileSize = Map.TILE_SIZE;

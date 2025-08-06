@@ -60,9 +60,7 @@ public class Animal {
             return;
         }
 
-        // مسیر به سمت مقصد را محاسبه کن
         Vector2 direction = toGoLocation.cpy().sub(position).nor();
-        // قدم بعدی را محاسبه کن
         Vector2 nextStep = position.cpy().mulAdd(direction, GameSetting.getAnimalSpeed() * deltaTime);
 
         if (game.isPositionPassable(nextStep.x, nextStep.y)) {
@@ -88,11 +86,6 @@ public class Animal {
     }
     public float getY() {
         return position.y;
-    }
-
-    public void setLoc(float x, float y) {
-        position.x = x;
-        position.y = y;
     }
 
     public Location getLocation() {

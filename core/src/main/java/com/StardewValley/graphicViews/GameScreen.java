@@ -3,6 +3,7 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
+import com.StardewValley.models.NPC.PlayerNPCInteraction;
 import com.StardewValley.models.Shops.Shop;
 import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.animals.AnimalType;
@@ -41,6 +42,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -142,7 +144,11 @@ public class GameScreen implements Screen {
     private Cell<?> contentCell;
     private Window skillTooltip;
     private Label skillTooltipLabel;
-    private Image skillDescImage; // تصویر توضیح مهارت
+    private Image skillDescImage;
+    private Texture starTexture;
+    private HashMap<String, Integer> friendPlayers;
+    private String[] npcNames = {"Sebastian", "Abigail", "Harvey", "Leah", "Robin"};
+
 
     // animal popup
     private Window animalWindow;
@@ -178,6 +184,7 @@ public class GameScreen implements Screen {
         this.controller = AppGuiControllers.gameGuiController;
         controller.setScreen(this);
         this.game = App.getApp().getCurrentGame();
+        this.friendPlayers = getFriendshipLevel();
         gameMenuInputAdapter = new GameInputAdapter(controller, this);
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
         batch = new SpriteBatch();
@@ -452,6 +459,7 @@ public class GameScreen implements Screen {
 
     public void loadTextures() {
         playerAtlas = new TextureAtlas(Gdx.files.internal("characters/woman/woman.atlas"));
+        starTexture = new Texture(Gdx.files.internal("inventory/Achievement_Star_06.png"));
         clock = new Texture(Gdx.files.internal("clock/Clock.png"));
         clock.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
@@ -1072,6 +1080,9 @@ public class GameScreen implements Screen {
                         case "Setting":
                             contentCell.setActor(getSettingsTable());
                             break;
+                        case "Social":
+                            contentCell.setActor(getSocialMenuTable(game.getMainPlayer()));
+                            break;
                         default:
                             Label comingSoon = new Label(tab + " content coming soon!", skin);
                             comingSoon.setAlignment(Align.center);
@@ -1453,6 +1464,77 @@ public class GameScreen implements Screen {
         });
 
         return settingsTable;
+    }
+
+    private Table getSocialMenuTable(Player player) {
+
+        Skin skin = GameAssetManager.skin;
+        Table socialTable = new Table(skin);
+
+        Label title = new Label("Social", skin, "title");
+        title.setAlignment(Align.center);
+        title.setFontScale(1.18f);
+        socialTable.add(title).growX().height(70).padBottom(25).center().row();
+
+        // بخش دوستان (بازیکنان)
+        Label friendsLabel = new Label("Friends:", skin, "subtitle");
+        friendsLabel.setFontScale(1.1f);
+        friendsLabel.setColor(Color.valueOf("7b81a9"));
+        socialTable.add(friendsLabel).left().padBottom(12).padTop(10).row();
+
+        ArrayList<Player> otherPlayers = game.getOtherPlayers(player.getUsername());
+        for (Player otherPlayer : otherPlayers) {
+            socialTable.add(getSocialRow(otherPlayer.getUsername(), friendPlayers.get(otherPlayer.getUsername()))).left().padBottom(8).row();
+        }
+
+        // بخش NPC ها
+        Label npcsLabel = new Label("NPCs:", skin, "subtitle");
+        npcsLabel.setFontScale(1.1f);
+        npcsLabel.setColor(Color.valueOf("BA9B82"));
+        socialTable.add(npcsLabel).left().padBottom(8).row();
+
+        ArrayList<PlayerNPCInteraction> friendships = player.getAllFriendships();
+        for (String npc : npcNames) {
+            int level = 0;
+            for (PlayerNPCInteraction f : friendships) {
+                if (f.getNPCName().equalsIgnoreCase(npc)) {
+                    level = f.getFriendshipLevel();
+                }
+            }
+            socialTable.add(getSocialRow(npc, level)).left().padBottom(12).row();
+        }
+
+        socialTable.pad(25, 45, 35, 45).center();
+        return socialTable;
+    }
+
+    private Table getSocialRow(String name, int level) {
+        Table row = new Table();
+        Skin skin = GameAssetManager.skin;
+
+        Label nameLabel = new Label(name, skin);
+        nameLabel.setFontScale(1.05f);
+        nameLabel.setColor(Color.valueOf("e9edc9"));
+
+        row.add(nameLabel).width(140).padRight(15).left();
+
+        for (int i = 0; i < level; i++) {
+            row.add(new Image(starTexture)).size(24, 24).pad(2);
+        }
+        for (int i = level; i < 5; i++) {
+            row.add().size(24, 24).pad(2);
+        }
+        return row;
+    }
+
+    public HashMap<String, Integer> getFriendshipLevel() {
+        Player player = game.getPlayerInTurn();
+        ArrayList<Player> otherPlayers = game.getOtherPlayers(player.getUsername());
+        HashMap<String, Integer> friendshipLevel = new HashMap<>();
+        for (Player otherPlayer : otherPlayers) {
+            friendshipLevel.put(otherPlayer.getUsername(), game.getFriendship(player, otherPlayer).getFriendshipLevel());
+        }
+        return friendshipLevel;
     }
 
 

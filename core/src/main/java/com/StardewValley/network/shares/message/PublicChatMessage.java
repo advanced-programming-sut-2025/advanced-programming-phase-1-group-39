@@ -2,13 +2,14 @@ package com.StardewValley.network.shares.message;
 
 import java.io.Serializable;
 
-public class ChatMessage implements Serializable {
+public class PublicChatMessage implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final String senderName;
     private final String messageContent;
 
-    public ChatMessage(String senderName, String messageContent) {
+
+    public PublicChatMessage(String senderName, String messageContent) {
         this.senderName = senderName;
         this.messageContent = messageContent;
     }

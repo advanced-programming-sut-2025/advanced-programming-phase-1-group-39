@@ -4,11 +4,7 @@ package com.StardewValley.network.client.controllers;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.network.server.ServerMain;
-import com.StardewValley.network.shares.Lobby;
-import com.StardewValley.network.shares.message.ChatMessage;
-import com.StardewValley.network.shares.message.LobbyData;
-import com.StardewValley.network.shares.message.Request;
-import com.StardewValley.network.shares.message.RequestType;
+import com.StardewValley.network.shares.message.*;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -100,22 +96,29 @@ public class ClientHandler implements Runnable {
                 ServerMain.startGame(this);
                 break;
 
-            case LOBBY_CHAT_MESSAGE:
+            case LOBBY_PUBLIC_CHAT_MESSAGE:
                 if (lobbyId != null) {
                     String messageContent = (String) request.getPayload();
-                    ChatMessage chatMessage = new ChatMessage(this.clientIdentifier, messageContent);
-                    ServerMain.broadcastChatMessageToLobby(this.lobbyId, chatMessage);
+                    PublicChatMessage publicChatMessage = new PublicChatMessage(this.clientIdentifier, messageContent);
+                    ServerMain.broadcastChatMessageToLobby(this.lobbyId, publicChatMessage);
                 }
                 break;
-
-            case PlAYER_MOVE:
-                if (username != null) {
-                    ServerMain.forwardRequestToGameSession(request, this);
+            case LOBBY_PRIVATE_CHAT_MESSAGE:
+                if (lobbyId != null) {
+                    String[] messageContent = (String[]) request.getPayload();
+                    PrivateChatMessage privateChatMessage = new PrivateChatMessage(this.clientIdentifier, messageContent[1], messageContent[0]);
+                    ServerMain.broadcastChatMessageToLobby(this.lobbyId, privateChatMessage);
                 }
                 break;
 
             case PLAYER_REACTION:
                 if (gameId != -1) {
+                    ServerMain.forwardRequestToGameSession(request, this);
+                }
+                break;
+
+            case PlAYER_MOVE:
+                if (username != null) {
                     ServerMain.forwardRequestToGameSession(request, this);
                 }
                 break;

@@ -30,7 +30,6 @@ public class GameSession implements Runnable {
         this.actualGame.startGame();
     }
 
-    // این متد باید در یک ترد جداگانه اجرا شود تا بازی را به روز کند
     @Override
     public void run() {
         long lastTime = System.nanoTime();

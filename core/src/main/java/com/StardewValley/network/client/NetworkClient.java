@@ -1,15 +1,13 @@
 package com.StardewValley.network.client;
 
 import com.StardewValley.Main; // <<-- وارد کردن کلاس اصلی بازی
+import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.models.App; // <<-- وارد کردن مدل App
-import com.StardewValley.models.Result;
+import com.StardewValley.models.Game;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
-import com.StardewValley.network.shares.message.LobbyData;
-import com.StardewValley.network.shares.message.PlayerReactionPayload;
-import com.StardewValley.network.shares.message.Request;
-import com.StardewValley.network.shares.message.RequestType;
+import com.StardewValley.network.shares.message.*;
 import com.badlogic.gdx.Gdx;
 
 import java.io.IOException;
@@ -17,9 +15,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static com.StardewValley.network.server.ServerMain.joinLobby;
 
 public class NetworkClient {
     private ObjectOutputStream out;
@@ -90,18 +85,35 @@ public class NetworkClient {
                 break;
 
 
-            case GAME_STARTED:
-                // سرور دستور شروع بازی را داده است
-                // به کلاس Main می‌گوییم که صفحه را به GameScreen تغییر دهد
-                // payload می‌تواند شامل داده‌های اولیه بازی باشد
-//                gameMain.startGameScreen();
-                break;
-
             case GAME_START_FAILED:
                 String errorMessage = (String) payload;
                 // TODO: یک متد برای نمایش خطاهای عمومی در UI بسازید
                 // gameMain.showErrorPopup(errorMessage);
                 break;
+
+            case GAME_STARTED:
+                if (payload instanceof Game) {
+                    Game receivedGame = (Game) payload;
+                    app.setCurrentGame(receivedGame);
+
+                    main.switchScreen(new GameScreen());
+                }
+                break;
+
+            case LOBBY_PUBLIC_CHAT_MESSAGE:
+                if (payload instanceof PublicChatMessage) {
+                    PublicChatMessage receivedMessage = (PublicChatMessage) payload;
+                    // TODO : show message in user public message box
+                }
+                break;
+
+            case LOBBY_PRIVATE_CHAT_MESSAGE:
+                if (payload instanceof PrivateChatMessage) {
+                    PrivateChatMessage receivedMessage = (PrivateChatMessage) payload;
+                    // TODO : show message in user private message box (only by this)
+                }
+                break;
+
 
 
             case UPDATE_GAME_STATE:
@@ -163,8 +175,21 @@ public class NetworkClient {
         sendRequest(new Request(RequestType.START_GAME, null));
     }
 
+    // TODO : after message in game
+    public void sendChatMessagePublicRequest(String message) {
+        String messageContent = message;
+        Request request = new Request(RequestType.LOBBY_PUBLIC_CHAT_MESSAGE, messageContent);
+        sendRequest(request);
+    }
+
+    // TODO : after private message in game
+    public void sendChatMessagePrivateRequest(String message, String reciever) {
+        Request request = new Request(RequestType.LOBBY_PRIVATE_CHAT_MESSAGE, new String[]{message, reciever});
+        sendRequest(request);
+    }
 
     // in game
+    // TODO : after reaction in game
     public void sendReactionRequest(String reaction) {
         PlayerReactionPayload payload = new PlayerReactionPayload(reaction);
         Request request = new Request(RequestType.PLAYER_REACTION, payload);

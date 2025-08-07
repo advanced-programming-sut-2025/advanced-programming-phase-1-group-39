@@ -1,7 +1,7 @@
 package com.StardewValley.network.client;
 
 import com.StardewValley.network.shares.Lobby;
-import com.StardewValley.network.shares.message.ChatMessage;
+import com.StardewValley.network.shares.message.PublicChatMessage;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
 
@@ -50,7 +50,7 @@ public class ClientMain {
                 // منوی داخل بازی (فعلا ساده)
                 System.out.print("[In Game] Enter chat message: ");
                 String message = scanner.nextLine();
-                sendRequest(new Request(RequestType.LOBBY_CHAT_MESSAGE, message));
+                sendRequest(new Request(RequestType.LOBBY_PUBLIC_CHAT_MESSAGE, message));
             } else {
                 // منوی لابی
                 System.out.println("\n--- Main Menu ---");
@@ -82,7 +82,7 @@ public class ClientMain {
                         if (inLobby) {
                             System.out.print("Enter message: ");
                             String message = scanner.nextLine();
-                            sendRequest(new Request(RequestType.LOBBY_CHAT_MESSAGE, message));
+                            sendRequest(new Request(RequestType.LOBBY_PUBLIC_CHAT_MESSAGE, message));
                         } else {
                             System.out.println("You must be in a lobby to chat.");
                         }
@@ -127,10 +127,10 @@ public class ClientMain {
                 System.out.print("Enter command: ");
                 break;
 
-            case LOBBY_CHAT_MESSAGE:
-                ChatMessage chatMessage = (ChatMessage) request.getPayload();
+            case LOBBY_PUBLIC_CHAT_MESSAGE:
+                PublicChatMessage publicChatMessage = (PublicChatMessage) request.getPayload();
                 System.out.print("\r" + " ".repeat(50) + "\r");
-                System.out.println("[Lobby Chat] " + chatMessage);
+                System.out.println("[Lobby Chat] " + publicChatMessage);
                 System.out.print("Enter command: ");
                 break;
 

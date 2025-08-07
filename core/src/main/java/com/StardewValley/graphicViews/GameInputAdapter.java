@@ -27,15 +27,15 @@ public class GameInputAdapter extends InputAdapter {
         // check if not conscious
         Player player = game.getPlayerInTurn();
         if (player.getCurrentState().equals(GameScreen.PlayerState.Unconscious)) return;
-        float   initialX = player.getX(),
+        float initialX = player.getX(),
                 initialY = player.getY();
 
         // greenhouse check
         if (controller.nearGreenHouse(player) && !player.isBuildGreenhouse()) {
             Result buildGreenHousePopup = controller.buildGreenHouseRequest(player);
             if (buildGreenHousePopup.success()) {
-                screen.showPopup(buildGreenHousePopup.message(), ()->{
-                    screen.blackBackgroundAnimation(()-> controller.buildGreenhouse(player, game), 0.5f);
+                screen.showPopup(buildGreenHousePopup.message(), () -> {
+                    screen.blackBackgroundAnimation(() -> controller.buildGreenhouse(player, game), 0.5f);
                 });
             } else {
                 screen.showError(buildGreenHousePopup.message());
@@ -45,7 +45,7 @@ public class GameInputAdapter extends InputAdapter {
 
         Direction currentDirection = Direction.NONE;
 
-        Vector2 movement = new Vector2(0,0);
+        Vector2 movement = new Vector2(0, 0);
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             movement.y += 1;
             currentDirection = Direction.UP;
@@ -125,9 +125,7 @@ public class GameInputAdapter extends InputAdapter {
             screen.getGame().getPlayerInTurn().changeEnergy(-10);
         } else if (keycode == Input.Keys.TAB) {
             screen.cheatPlayer();
-        }
-
-        else if (keycode == Input.Keys.N) {
+        } else if (keycode == Input.Keys.N) {
             Game game = App.getApp().getCurrentGame();
             game.getMap().growWateredPlantsAndTrees();
         } else if (keycode == Input.Keys.C) {
@@ -138,10 +136,20 @@ public class GameInputAdapter extends InputAdapter {
             screen.showShopMenu();
         } else if (keycode == Input.Keys.E) {
             screen.toggleInventoryMenu();
-        }
-
-        else if (keycode == Input.Keys.M) {
+        } else if (keycode == Input.Keys.M) {
             screen.toggleBiggerMiniMap();
+        } else if (keycode >= Input.Keys.NUM_1 && keycode <= Input.Keys.NUM_9) {
+            int selectedSlot = keycode - Input.Keys.NUM_1; // 0 تا 8
+            Player player = screen.getGame().getPlayerInTurn();
+            if (selectedSlot < player.getMaxInventorySize()) {
+                player.setSelectedSlot(selectedSlot);
+            }
+        } else if (keycode == Input.Keys.NUM_0) {
+            Player player = screen.getGame().getPlayerInTurn();
+            int slotIndex = 9; // اسلات دهم
+            if (slotIndex < player.getMaxInventorySize()) {
+                player.setSelectedSlot(slotIndex);
+            }
         }
         return true;
     }

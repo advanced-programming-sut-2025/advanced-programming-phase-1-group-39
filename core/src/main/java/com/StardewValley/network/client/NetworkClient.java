@@ -3,6 +3,7 @@ package com.StardewValley.network.client;
 import com.StardewValley.Main; // <<-- وارد کردن کلاس اصلی بازی
 import com.StardewValley.models.App; // <<-- وارد کردن مدل App
 import com.StardewValley.models.Result;
+import com.StardewValley.models.map.FarmType;
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
 import com.StardewValley.network.shares.message.LobbyData;
@@ -86,6 +87,7 @@ public class NetworkClient {
                     Boolean response = (Boolean) payload;
                     joinLobby(response);
                 }
+                break;
 
 
             case GAME_STARTED:
@@ -138,8 +140,8 @@ public class NetworkClient {
     }
 
     //TODO : after click on each lobby or searching lobby by id
-    public void sendJoinLobbyRequest(String lobbyId, String username) {
-        sendRequest(new Request(RequestType.JOIN_LOBBY, new String[]{lobbyId, username}));
+    public void sendJoinLobbyRequest(String lobbyId) {
+        sendRequest(new Request(RequestType.JOIN_LOBBY, new String[]{lobbyId, app.getLoggedInUser().getUserName()}));
     }
 
     public void joinLobby(boolean success) {
@@ -150,6 +152,19 @@ public class NetworkClient {
         }
     }
 
+    // TODO : on button clicked
+    public void sendChooseMapRequest(FarmType farmType) {
+        sendRequest(new Request(RequestType.CHOOSE_MAP, farmType));
+    }
+
+    // Game starting
+    // TODO : on button clicked
+    public void sendStartGameRequest(String lobbyId) {
+        sendRequest(new Request(RequestType.START_GAME, null));
+    }
+
+
+    // in game
     public void sendReactionRequest(String reaction) {
         PlayerReactionPayload payload = new PlayerReactionPayload(reaction);
         Request request = new Request(RequestType.PLAYER_REACTION, payload);

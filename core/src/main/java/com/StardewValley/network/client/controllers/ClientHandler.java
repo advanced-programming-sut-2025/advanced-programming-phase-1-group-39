@@ -2,7 +2,9 @@ package com.StardewValley.network.client.controllers;
 
 
 import com.StardewValley.models.Result;
+import com.StardewValley.models.map.FarmType;
 import com.StardewValley.network.server.ServerMain;
+import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.message.ChatMessage;
 import com.StardewValley.network.shares.message.LobbyData;
 import com.StardewValley.network.shares.message.Request;
@@ -89,6 +91,10 @@ public class ClientHandler implements Runnable {
                 break;
 
 
+            case CHOOSE_MAP:
+                FarmType farmType = (FarmType) request.getPayload();
+                ServerMain.setPlayerFarmType(this, farmType);
+                break;
 
             case START_GAME:
                 ServerMain.startGame(this);

@@ -27,7 +27,7 @@ public class GameSession implements Runnable {
     public GameSession(List<ClientHandler> players, Game game) {
         this.playersInSession = players;
         this.actualGame = game;
-        this.actualGame.startGame(); // آماده‌سازی اولیه
+        this.actualGame.startGame();
     }
 
     // این متد باید در یک ترد جداگانه اجرا شود تا بازی را به روز کند

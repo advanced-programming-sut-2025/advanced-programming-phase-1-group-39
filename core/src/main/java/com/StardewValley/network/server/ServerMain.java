@@ -3,6 +3,7 @@ package com.StardewValley.network.server;
 import com.StardewValley.models.Player; // import Player model
 import com.StardewValley.models.Game; // import Game model
 import com.StardewValley.models.Result;
+import com.StardewValley.models.map.FarmType;
 import com.StardewValley.network.client.controllers.ClientHandler;
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.message.*;
@@ -109,7 +110,7 @@ public class ServerMain {
             requestingClient.sendMessage(new Request(RequestType.GAME_START_FAILED, "Only the admin can start the game."));
             return;
         }
-        if (targetLobby.getPlayerCount() < 1) { // برای تست می‌توانید با ۱ بازیکن شروع کنید
+        if (targetLobby.getPlayerCount() < 1) {
             requestingClient.sendMessage(new Request(RequestType.GAME_START_FAILED, "You need at least 2 players to start."));
             return;
         }
@@ -170,10 +171,20 @@ public class ServerMain {
     }
 
     public static List<Lobby> getLobbies() {
-        // ... (بدون تغییر)
         synchronized (lobbies) {
             return new ArrayList<>(lobbies);
         }
+    }
+
+    public static Lobby getLobbyById(String id) {
+        synchronized (lobbies) {
+            for (Lobby lobby : lobbies) {
+                if (lobby.getId().equals(id)) {
+                    return lobby;
+                }
+            }
+        }
+        return null;
     }
 
     private static void broadcastLobbyListInternal() {
@@ -231,7 +242,6 @@ public class ServerMain {
     }
 
     private static void broadcastOnlineUserList() {
-        System.out.println("Try to broadcast online user list.");
         synchronized (clients) {
             List<String> clientsUsernames = new ArrayList<>();
             for (ClientHandler client : clients) {
@@ -244,4 +254,11 @@ public class ServerMain {
         }
     }
 
+    public static void setPlayerFarmType(ClientHandler clientHandler, FarmType farmType) {
+        String lobbyId = clientHandler.getLobbyId();
+        Lobby lobby = getLobbyById(lobbyId);
+        if (lobby != null) {
+            lobby.setMapOfPlayer(clientHandler.getUsername(), farmType);
+        }
+    }
 }

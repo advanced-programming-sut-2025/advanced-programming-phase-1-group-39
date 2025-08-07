@@ -1,12 +1,10 @@
 package com.StardewValley.network.shares;
 
+import com.StardewValley.models.map.FarmType;
 import com.StardewValley.network.shares.message.LobbyData;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Lobby implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -18,7 +16,8 @@ public class Lobby implements Serializable {
     private boolean isVisibleToAll;
 
     // <<-- برای thread-safety بهتر، لیست را final می‌کنیم --
-    private final List<String> players;
+    private final List<String> players; //  !! Usernames
+    private final Map<String, FarmType> playersMap = new HashMap<>();
     private final String admin;
     private boolean gameStarted;
 
@@ -55,11 +54,19 @@ public class Lobby implements Serializable {
         synchronized (players) {
             if (!isFull() && !players.contains(playerName)) {
                 players.add(playerName);
+                playersMap.put(playerName, FarmType.MINE_FARM);
                 return true;
             }
             return false;
         }
     }
+
+    public void setMapOfPlayer(String player, FarmType farmType) {
+        if (players.contains(player)) {
+            playersMap.put(player, farmType);
+        }
+    }
+
 
     @Override
     public String toString() {

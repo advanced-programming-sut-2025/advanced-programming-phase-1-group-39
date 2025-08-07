@@ -18,6 +18,7 @@ public enum RequestType {
     LOBBY_CHAT_MESSAGE,
 
     //Start Game
+    CHOOSE_MAP,
     START_GAME,
     GAME_STARTED,
     GAME_START_FAILED,

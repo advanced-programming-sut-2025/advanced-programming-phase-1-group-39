@@ -1,6 +1,8 @@
 buildscript {
   repositories {
     mavenCentral()
+    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://s01.oss.sonatype.org/content/repositories/releases/" }
     maven { url 'https://s01.oss.sonatype.org' }
     gradlePluginPortal()
     mavenLocal()
@@ -30,7 +32,6 @@ allprojects {
 configure(subprojects) {
   apply plugin: 'java-library'
   sourceCompatibility = 23
-
   // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
   // The article can be helpful when using assets.txt in your project.
   tasks.register('generateAssetList') {

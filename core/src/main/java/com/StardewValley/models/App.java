@@ -63,6 +63,15 @@ public class App {
         users.add(user);
     }
 
+    public void updateUser(User user) {
+        for (User appUser : users ) {
+            if (appUser.getUserName().equals(user.getUserName())) {
+                users.remove(appUser);
+                users.add(user);
+            }
+        }
+    }
+
     public void addGame(Game game) {
         games.add(game);
     }

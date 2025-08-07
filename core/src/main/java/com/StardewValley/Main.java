@@ -3,19 +3,10 @@ package com.StardewValley;
 import com.StardewValley.graphicViews.*;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
-import com.StardewValley.models.Player;
-import com.StardewValley.models.User;
-import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.services.AppDataManager;
-import com.StardewValley.models.services.GameAssetManager;
-import com.StardewValley.models.services.SaveAppManager;
 import com.StardewValley.network.client.NetworkClient;
-import com.StardewValley.network.shares.Lobby;
-import com.StardewValley.views.AppView;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -44,10 +35,9 @@ public class Main extends Game {
     }
 
     public void goOnline() {
-        boolean connected = true;
         if (networkClient == null) {
             networkClient = new NetworkClient();
-            connected = networkClient.connect("127.0.0.1", 5050);
+            networkClient.connect("127.0.0.1", 5050);
         }
     }
 
@@ -58,7 +48,7 @@ public class Main extends Game {
 
     // این متد توسط NetworkClient از طریق Gdx.app.postRunnable صدا زده می‌شود
     public void onConnectionSuccess() {
-        networkClient.sendUsername(App.getApp().getLoggedInUser().getUserName());
+        networkClient.sendUserDataToServer(App.getApp().getLoggedInUser());
         setScreen(new LobbyScreen(networkClient));
     }
 

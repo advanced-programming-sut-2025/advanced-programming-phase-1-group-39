@@ -4,6 +4,7 @@ import com.StardewValley.Main; // <<-- وارد کردن کلاس اصلی با�
 import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.models.App; // <<-- وارد کردن مدل App
 import com.StardewValley.models.Game;
+import com.StardewValley.models.User;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
@@ -33,7 +34,7 @@ public class NetworkClient {
         main = Main.getMain();
     }
 
-    public boolean connect(String ip, int port) {
+    public void connect(String ip, int port) {
         new Thread(() -> {
             try {
                 socket = new Socket(ip, port);
@@ -47,7 +48,6 @@ public class NetworkClient {
                 listenToServer();
 
             } catch (IOException e) {
-                // به ترد اصلی UI بگو که اتصال شکست خورد
                 Gdx.app.postRunnable(() -> main.onConnectionFailed("Could not connect to server."));
             }
         }).start();
@@ -166,8 +166,8 @@ public class NetworkClient {
 
 
     // send messages
-    public void sendUsername(String username) {
-        sendRequest(new Request(RequestType.SEND_USERNAME, username));
+    public void sendUserDataToServer(User user) {
+        sendRequest(new Request(RequestType.SEND_USER_DATA, user));
     }
 
     // TODO : call after click refresh

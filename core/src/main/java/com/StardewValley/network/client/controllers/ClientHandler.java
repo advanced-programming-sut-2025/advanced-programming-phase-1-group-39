@@ -2,6 +2,7 @@ package com.StardewValley.network.client.controllers;
 
 
 import com.StardewValley.models.Result;
+import com.StardewValley.models.User;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.network.server.ServerMain;
 import com.StardewValley.network.shares.message.*;
@@ -63,10 +64,10 @@ public class ClientHandler implements Runnable {
 
     private void handleRequest(Request request) {
         switch (request.getType()) {
-            case SEND_USERNAME:
-                if (request.getPayload() instanceof String) {
-                    String username = (String) request.getPayload();
-                    ServerMain.registerNewClient(username, this);
+            case SEND_USER_DATA:
+                if (request.getPayload() instanceof User) {
+                    User user = (User) request.getPayload();
+                    ServerMain.registerNewClient(user, this);
                 }
                 break;
 

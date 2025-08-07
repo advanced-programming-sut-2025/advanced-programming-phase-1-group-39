@@ -1,9 +1,8 @@
 package com.StardewValley.network.server;
 
-import com.StardewValley.models.Player; // import Player model
-import com.StardewValley.models.Game; // import Game model
-import com.StardewValley.models.Result;
+import com.StardewValley.models.*;
 import com.StardewValley.models.map.FarmType;
+import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.network.client.controllers.ClientHandler;
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.message.*;
@@ -23,6 +22,9 @@ public class ServerMain {
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is running on port " + PORT);
+//            System.out.println("Loading server app ...");
+//            AppDataManager.loadApp();
+//            System.out.println("server app Loaded. " + App.getApp().getUsers().size() + " users loaded.");
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
@@ -37,8 +39,15 @@ public class ServerMain {
         }
     }
 
-    public static synchronized void registerNewClient(String username, ClientHandler handler) {
-        handler.setUsername(username);
+    public static synchronized void registerNewClient(User user, ClientHandler handler) {
+        handler.setUsername(user.getUserName());
+        if (App.getApp().getUserByUsername(user.getUserName()) == null) {
+            App.getApp().addUser(user);
+        } else {
+            App.getApp().updateUser(user);
+        }
+
+        AppDataManager.saveApp();
         broadcastOnlineUserList();
     }
 

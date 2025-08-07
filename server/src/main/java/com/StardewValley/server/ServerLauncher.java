@@ -1,8 +1,16 @@
 package com.StardewValley.server;
 
-/** Launches the server application. */
+
+
 public class ServerLauncher {
     public static void main(String[] args) {
-        // TODO Implement server application.
+//        // یک کانفیگ برای برنامه Headless بسازید
+//        HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
+//
+//        // (اختیاری) می‌توانید نرخ رفرش را برای صرفه‌جویی در منابع CPU کم کنید
+//        // config.updatesPerSecond = 60;
+//
+//        // برنامه سرور را به عنوان یک اپلیکیشن Headless اجرا کن
+//        new HeadlessApplication(new ServerApplication(), config);
     }
 }

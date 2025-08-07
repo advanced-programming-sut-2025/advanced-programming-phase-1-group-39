@@ -1,8 +1,14 @@
 package com.StardewValley.graphicViews;
 
+import com.StardewValley.network.client.NetworkClient;
 import com.badlogic.gdx.Screen;
 
 public class LobbyScreen implements Screen {
+    public NetworkClient networkClient;
+
+    public LobbyScreen(NetworkClient networkClient) {
+        this.networkClient = networkClient;
+    }
     @Override
     public void show() {
 

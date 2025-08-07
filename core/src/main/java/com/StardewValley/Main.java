@@ -34,6 +34,8 @@ public class Main extends Game {
         goOnline(); // TODO : change the place to LobbyScreen
         switchScreen(getScreenByMenu(App.getApp().getCurrentMenu()));
 
+
+///  for test only
 //        Thread terminalController = new Thread(() -> {
 //            new AppView().run();
 //        });
@@ -47,12 +49,31 @@ public class Main extends Game {
             networkClient = new NetworkClient();
             connected = networkClient.connect("127.0.0.1", 5050);
         }
-        if (connected)
-            switchScreen(new LobbyScreen());
     }
 
     public NetworkClient getNetworkClient() {
         return networkClient;
+    }
+
+
+    // این متد توسط NetworkClient از طریق Gdx.app.postRunnable صدا زده می‌شود
+    public void onConnectionSuccess() {
+        networkClient.sendUsername(App.getApp().getLoggedInUser().getUserName());
+        setScreen(new LobbyScreen(networkClient));
+    }
+
+    // این متد هم توسط NetworkClient صدا زده می‌شود
+    public void onConnectionFailed(String reason) {
+        System.out.println("Connection Failed: " + reason);
+        // به منوی اصلی برگرد
+        setScreen(new MainMenuScreen());
+    }
+
+    // این متد هم توسط NetworkClient صدا زده می‌شود
+    public void onDisconnectedFromServer(String reason) {
+        System.out.println("Disconnected: " + reason);
+        // به منوی اصلی برگرد
+        setScreen(new MainMenuScreen());
     }
 
 

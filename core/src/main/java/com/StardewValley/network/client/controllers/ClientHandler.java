@@ -117,7 +117,7 @@ public class ClientHandler implements Runnable {
                 }
                 break;
 
-            case PlAYER_MOVE:
+            case PLAYER_MOVE:
                 if (username != null) {
                     ServerMain.forwardRequestToGameSession(request, this);
                 }

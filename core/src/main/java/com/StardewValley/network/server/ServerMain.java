@@ -155,7 +155,7 @@ public class ServerMain {
             GameSession session = activeGames.get(gameId);
             if (session != null) {
                 // اینجا بر اساس نوع درخواست، متد مربوطه در سشن را صدا می‌زنیم
-                if (request.getType() == RequestType.PlAYER_MOVE && request.getPayload() instanceof PlayerMovePayload) {
+                if (request.getType() == RequestType.PLAYER_MOVE && request.getPayload() instanceof PlayerMovePayload) {
                     //session.processMoveRequest((PlayerMovePayload) request.getPayload(), fromClient.getUsername());
                 } else if (request.getType() == RequestType.PLAYER_REACTION && request.getPayload() instanceof PlayerReactionPayload) {
                     session.processReactionRequest((PlayerReactionPayload) request.getPayload(), fromClient.getUsername());
@@ -263,8 +263,7 @@ public class ServerMain {
     public static void removeClient(ClientHandler handler) {
         clients.remove(handler);
         System.out.println("Client " + handler.getClientIdentifier() + " removed.");
-        // TODO: منطق خروج بازیکن از لابی و بازی
-        broadcastOnlineUserList(); // لیست کاربران را برای بقیه آپدیت کن
+        broadcastOnlineUserList();
     }
 
     private static void broadcastOnlineUserList() {

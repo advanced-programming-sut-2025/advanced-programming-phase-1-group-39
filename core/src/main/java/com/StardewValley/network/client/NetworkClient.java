@@ -15,6 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NetworkClient {
     private ObjectOutputStream out;
@@ -24,39 +25,67 @@ public class NetworkClient {
     private final Main main;
     private final App app;
 
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
+
+
     public NetworkClient() {
         app = App.getApp();
         main = Main.getMain();
     }
 
     public boolean connect(String ip, int port) {
-        try {
-            socket = new Socket(ip, port);
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
+        new Thread(() -> {
+            try {
+                socket = new Socket(ip, port);
+                out = new ObjectOutputStream(socket.getOutputStream());
+                in = new ObjectInputStream(socket.getInputStream());
 
-            sendUsername(app.getLoggedInUser().getUserName());
-            new Thread(this::listenToServer).start();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+                // به ترد اصلی UI بگو که اتصال موفق بود
+                Gdx.app.postRunnable(() -> main.onConnectionSuccess());
+
+                // حلقه شنونده را شروع کن
+                listenToServer();
+
+            } catch (IOException e) {
+                // به ترد اصلی UI بگو که اتصال شکست خورد
+                Gdx.app.postRunnable(() -> main.onConnectionFailed("Could not connect to server."));
+            }
+        }).start();
     }
 
     private void listenToServer() {
+        isRunning.set(true);
         try {
-            while (true) {
+            while (isRunning.get()) { // <<-- حلقه به پرچم وابسته است
                 Request serverRequest = (Request) in.readObject();
-                // <<-- بسیار مهم: هر آپدیتی باید در ترد اصلی LibGDX انجام شود -->>
                 Gdx.app.postRunnable(() -> handleServerRequest(serverRequest));
             }
         } catch (Exception e) {
-            System.out.println("Disconnected from server.");
-            // TODO: نمایش پیام قطع اتصال در UI و بازگشت به منوی اصلی
-            // Gdx.app.postRunnable(() -> gameMain.showDisconnectionScreen());
+            // اگر در حین اجرا خطایی رخ دهد (مثل قطع شدن سرور)
+            if (isRunning.get()) { // فقط اگر خودمان قطع نکرده باشیم، پیام خطا بده
+                System.out.println("Disconnected from server.");
+                Gdx.app.postRunnable(() -> main.onDisconnectedFromServer("Connection lost to the server."));
+            }
+        } finally {
+            isRunning.set(false);
         }
     }
+
+    public void disconnect() {
+        if (isRunning.compareAndSet(true, false)) {
+            try {
+                // بستن سوکت باعث می‌شود که ترد listenToServer یک Exception دریافت کرده و خارج شود.
+                if (socket != null && !socket.isClosed()) {
+                    socket.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Disconnected by client.");
+        }
+    }
+
+
 
     // Request : پیام دریافتی از سرور
     private void handleServerRequest(Request request) {

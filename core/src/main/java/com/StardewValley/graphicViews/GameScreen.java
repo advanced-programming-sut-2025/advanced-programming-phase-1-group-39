@@ -623,16 +623,13 @@ public class GameScreen implements Screen {
                 Color seasonTint = getSeasonTintColor();
 
                 if (tile.isPlowed() && tile.isWatered()) {
-                    batch.setColor(0.35f, 0.25f, 0.2f, 1f);
+                    batch.setColor(0.25f, 0.15f, 0.05f, 1f);
                 } else if (tile.isPlowed()) {
-                    batch.setColor(0.4f, 0.25f, 0.1f, 1f);
-                } else if (tile.isWatered()) {
-                    batch.setColor(0.75f, 0.75f, 0.75f, 1f);
+                    batch.setColor(0.5f, 0.35f, 0.2f, 1f);
                 } else {
-                    batch.setColor(1f, 1f, 1f, 1f);
+                    batch.setColor(tileColor.cpy().mul(seasonTint));
                 }
 
-                batch.setColor(tileColor.mul(seasonTint));
                 batch.draw(texture, drawX, drawY, tileSize, tileSize);
             }
         }

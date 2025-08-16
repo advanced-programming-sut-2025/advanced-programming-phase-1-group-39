@@ -147,6 +147,8 @@ public class GameScreen implements Screen {
 
 
     public GameScreen() {
+        Main.getMain().goOnline();
+
         this.screen = this;
         this.controller = AppGuiControllers.gameGuiController;
         controller.setScreen(this);
@@ -206,6 +208,15 @@ public class GameScreen implements Screen {
 
         chatBox = new ChatBox("Game Chat", GameAssetManager.skin, this.networkClient);
         chatBox.setVisible(false);
+        chatBox.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == com.badlogic.gdx.Input.Keys.F1) {
+                    changeChatBox();
+                }
+                return false;
+            }
+        });
         uiStage.addActor(chatBox);
     }
 

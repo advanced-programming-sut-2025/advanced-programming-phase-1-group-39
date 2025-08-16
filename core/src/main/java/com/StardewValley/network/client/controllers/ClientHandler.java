@@ -64,6 +64,11 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleRequest(Request request) {
+        if (gameId != -1 && isGameRequest(request.getType())) {
+            ServerMain.forwardRequestToGameSession(request, this);
+            return;
+        }
+
         switch (request.getType()) {
             case CREATE_LOBBY:
                 String lobbyName = (String) request.getPayload();
@@ -83,18 +88,13 @@ public class ClientHandler implements Runnable {
                 ServerMain.startGame(this);
                 break;
 
-            case PlAYER_MOVE:
-                if (username != null) {
-                    ServerMain.forwardRequestToGameSession(request, this);
-                }
-                break;
-
-            case PLAYER_REACTION:
-                if (gameId != -1) {
-                    ServerMain.forwardRequestToGameSession(request, this);
-                }
-                break;
         }
+    }
+
+    private boolean isGameRequest(RequestType type) {
+        return type == RequestType.PlAYER_MOVE ||
+                type == RequestType.PLAYER_REACTION ||
+                type == RequestType.SEND_CHAT_MESSAGE;
     }
 
     public void sendMessage(Request request) {
@@ -107,7 +107,6 @@ public class ClientHandler implements Runnable {
             System.err.println("Error sending message to " + clientIdentifier);
         }
     }
-
 
     public void setUsername(String username) {
         this.username = username;

@@ -1,6 +1,7 @@
 package com.StardewValley.network.client;
 
 import com.StardewValley.Main; // <<-- وارد کردن کلاس اصلی بازی
+import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.models.App; // <<-- وارد کردن مدل App
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
@@ -20,6 +21,8 @@ public class NetworkClient {
 
     private final Main main;
     private final App app;
+
+    private boolean inGame = true;
 
     public NetworkClient() {
         app = App.getApp();
@@ -77,6 +80,7 @@ public class NetworkClient {
                 // به کلاس Main می‌گوییم که صفحه را به GameScreen تغییر دهد
                 // payload می‌تواند شامل داده‌های اولیه بازی باشد
 //                gameMain.startGameScreen();
+                inGame = true;
                 break;
 
             case UPDATE_GAME_STATE:
@@ -91,6 +95,12 @@ public class NetworkClient {
                 String errorMessage = (String) payload;
                 // TODO: یک متد برای نمایش خطاهای عمومی در UI بسازید
                 // gameMain.showErrorPopup(errorMessage);
+                break;
+
+            default:
+                if (inGame) {
+                    GameScreen.getScreen().handleServerUpdate(request);
+                }
                 break;
 
         }

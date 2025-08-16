@@ -62,8 +62,10 @@ public class ServerMain {
             adminHandler.setLobbyId(newLobby.getId());
             System.out.println("New lobby created: " + newLobby + " by " + adminHandler.getUsername());
 
-            broadcastLobbyListInternal();
+            adminHandler.sendMessage(new Request(RequestType.CREATE_LOBBY_SUCCESS, newLobby));
         }
+
+        broadcastLobbyList();
     }
 
     // متد joinLobby با دریافت نام کاربری

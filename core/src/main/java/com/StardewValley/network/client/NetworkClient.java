@@ -105,7 +105,11 @@ public class NetworkClient {
                     app.setAvailableLobbies(lobbies);
                 }
                 break;
-
+            case CREATE_LOBBY_SUCCESS:
+                Lobby currentLobby = (Lobby) payload;
+                app.setCurrentLobby(currentLobby);
+                main.onJoinLobbyResponse(new Result(true, ""));
+                break;
             case JOIN_LOBBY_RESPONSE:
                 if (payload instanceof JoinLobbyResponse) {
                     JoinLobbyResponse response = (JoinLobbyResponse) payload;
@@ -189,7 +193,7 @@ public class NetworkClient {
 
     // after  on each lobby or searching lobby by id
     public void sendJoinLobbyRequest(String lobbyId) {
-        sendRequest(new Request(RequestType.JOIN_LOBBY, new String[]{lobbyId, app.getLoggedInUser().getUserName()}));
+        sendRequest(new Request(RequestType.JOIN_LOBBY, lobbyId));
     }
 
     // TODO : on button clicked

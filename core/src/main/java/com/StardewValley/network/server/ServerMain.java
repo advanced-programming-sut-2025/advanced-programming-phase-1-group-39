@@ -20,12 +20,11 @@ public class ServerMain {
     public static final Map<Integer, GameSession> activeGames = Collections.synchronizedMap(new HashMap<>());
 
     public static void main(String[] args) {
-        changePlaceOfData();
 
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is running on port " + PORT);
             System.out.println("Loading server app ...");
-            AppDataManager.loadUsersFromFile();
+            AppDataManager.loadAppForServer();
             System.out.println("server app Loaded. " + App.getApp().getUsers().size() + " users loaded.");
 
             while (true) {
@@ -41,9 +40,6 @@ public class ServerMain {
         }
     }
 
-    private static void changePlaceOfData() {
-        AppDataManager.USERS_DATA_PATH = "serverData/users.json";
-    }
 
     public static synchronized void registerNewClient(User user, ClientHandler handler) {
         handler.setUsername(user.getUserName());
@@ -53,7 +49,7 @@ public class ServerMain {
             App.getApp().updateUser(user);
         }
         // saving app for server
-        AppDataManager.saveUsers(App.getApp().getUsers(), App.getApp().getLoggedInUser());
+        AppDataManager.saveAppForServer();
         broadcastOnlineUserList();
     }
 
@@ -74,7 +70,6 @@ public class ServerMain {
     public static JoinLobbyResponse joinLobby(String lobbyId, String username, ClientHandler joiningClient) {
         synchronized (lobbies) {
             Result res;
-            Lobby targetLobby = null;
             for (Lobby lobby : lobbies) {
                 if (lobby.getId().equals(lobbyId) && !lobby.isFull()) {
                     boolean success = lobby.addPlayer(username);
@@ -82,17 +77,17 @@ public class ServerMain {
                         joiningClient.setUsername(username);
                         joiningClient.setLobbyId(lobby.getId());
                         broadcastLobbyListInternal();
-                        targetLobby = lobby;
                         res = new Result(true,
                                 "Player " + username + " joined lobby " + lobby);
+                        return new JoinLobbyResponse(res, lobby);
                     } else {
                         res = new Result(false, "Failed to join lobby (Admin: " + username + ")");
+                        return new JoinLobbyResponse(res, null);
                     }
                 }
             }
             res = new Result(false, "Lobby with ID " + lobbyId + " not found or is full.");
-
-            return new JoinLobbyResponse(res, targetLobby);
+            return new JoinLobbyResponse(res, null);
         }
     }
 
@@ -266,19 +261,17 @@ public class ServerMain {
             return;
         }
 
-        // اگر بازیکن در یک بازی فعال بود، منطق داکیومنت را اجرا کن
         GameSession session = activeGames.get(handler.getGameId());
         if (session != null) {
             System.out.println("Player " + handler.getUsername() + " disconnected from game " + handler.getGameId() + ". Starting 2-minute timer.");
-            // به سشن بازی می‌گوییم که این بازیکن قطع شده و تایمر را شروع کند
             session.onPlayerDisconnected(handler.getUsername());
         } else {
-            // اگر بازی‌ای پیدا نشد (حالت نادر)، فقط حذفش کن
             removeClient(handler);
         }
     }
 
     public static void removeClient(ClientHandler handler) {
+        handler.sendMessage(new Request(RequestType.YOU_WERE_KICKED, "You have been removed from the server."));
         clients.remove(handler);
         System.out.println("Client " + handler.getClientIdentifier() + " removed.");
         broadcastOnlineUserList();

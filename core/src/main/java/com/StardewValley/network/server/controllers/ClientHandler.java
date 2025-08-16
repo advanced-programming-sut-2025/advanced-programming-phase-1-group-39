@@ -7,6 +7,7 @@ import com.StardewValley.models.saveClasses.UserData;
 import com.StardewValley.network.server.ServerMain;
 import com.StardewValley.network.shares.message.*;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -59,6 +60,14 @@ public class ClientHandler implements Runnable {
             System.out.println("Error with client " + getClientIdentifier() + ": " + e.getMessage());
         } finally {
             ServerMain.handleDisconnection(this);
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -141,6 +150,7 @@ public class ClientHandler implements Runnable {
     public void setUsername(String username) {
         this.username = username;
     }
+
     public String getUsername() {
             return username;
     }

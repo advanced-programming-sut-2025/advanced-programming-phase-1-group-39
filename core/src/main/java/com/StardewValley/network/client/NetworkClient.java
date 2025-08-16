@@ -82,7 +82,6 @@ public class NetworkClient {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("Disconnected by client.");
         }
     }
 
@@ -116,6 +115,11 @@ public class NetworkClient {
                 }
                 break;
 
+            case YOU_WERE_KICKED:
+                String reason = (String) request.getPayload();
+                disconnect();
+                main.onDisconnectedFromServer(reason);
+                break;
 
             case GAME_START_FAILED:
                 String errorMessage = (String) payload;
@@ -173,12 +177,12 @@ public class NetworkClient {
         sendRequest(new Request(RequestType.SEND_USER_DATA, new UserData(user)));
     }
 
-    //call after click refresh
+    // call after click refresh
     public void sendRefreshLobbiesRequest() {
         sendRequest(new Request(RequestType.REFRESH_LOBBY_LIST, null));
     }
 
-    //TODO : call after click on create lobby and filled details
+    // call after click on create lobby and filled details
     public void sendCreateLobbyRequest(String lobbyName, String usernameOfAdmin, boolean isPrivate, boolean isVisibleToAll, String password) {
         sendRequest(new Request(RequestType.CREATE_LOBBY, new LobbyData(lobbyName, usernameOfAdmin, isPrivate, isVisibleToAll, password)));
     }

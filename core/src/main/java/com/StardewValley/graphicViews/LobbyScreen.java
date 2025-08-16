@@ -139,8 +139,7 @@ public class LobbyScreen implements Screen {
         createLobbyButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // TODO: باز کردن پنجره ساخت لابی جدید
-                System.out.println("Create lobby window should open...");
+                showCreateLobbyWindow();
             }
         });
     }
@@ -173,7 +172,7 @@ public class LobbyScreen implements Screen {
     }
 
     private void showPasswordDialog(Lobby lobby) {
-        Dialog passwordDialog = new Dialog("Enter Password", skin, "dialog") {
+        Dialog passwordDialog = new Dialog("Enter Password", skin) {
             @Override
             protected void result(Object object) {
                 if ((Boolean) object) {
@@ -249,10 +248,107 @@ public class LobbyScreen implements Screen {
         stage.addActor(joinedWindow);
     }
 
+    private void showCreateLobbyWindow() {
+        // از Dialog استفاده می‌کنیم که یک نوع Window با قابلیت‌های بیشتر است
+        Dialog dialog = new Dialog("Create New Lobby", skin);
+
+        Table content = dialog.getContentTable();
+        content.pad(20);
+
+        // --- ۱. نام لابی ---
+        content.add(new Label("Lobby Name:", skin)).left();
+        TextField lobbyNameField = new TextField("", skin);
+        content.add(lobbyNameField).width(300).pad(10).row();
+
+        // --- ۲. انتخاب نوع دسترسی (Public/Private) ---
+        content.add(new Label("Access:", skin)).left();
+        SelectBox<String> accessSelectBox = new SelectBox<>(skin);
+        accessSelectBox.setItems("Public", "Private");
+        content.add(accessSelectBox).width(300).pad(10).row();
+
+        // --- ۳. فیلد رمز عبور ---
+        Label passwordLabel = new Label("Password:", skin);
+        TextField passwordField = new TextField("", skin);
+        passwordField.setPasswordMode(true);
+        passwordField.setPasswordCharacter('*');
+
+        // در ابتدا فیلد رمز عبور را غیرفعال و مخفی می‌کنیم
+        passwordLabel.setVisible(false);
+        passwordField.setVisible(false);
+        passwordField.setDisabled(true);
+
+        content.add(passwordLabel).left();
+        content.add(passwordField).width(300).pad(10).row();
+
+        // --- ۴. چک‌باکس قابلیت مشاهده ---
+        CheckBox visibleCheckBox = new CheckBox(" Visible to all players in list", skin);
+        visibleCheckBox.setChecked(true); // به صورت پیش‌فرض فعال است
+        content.add(visibleCheckBox).colspan(2).left().pad(10).row();
+
+        // --- دکمه‌های پایین دیالوگ ---
+        TextButton createButton = new TextButton("Create", skin);
+        TextButton cancelButton = new TextButton("Cancel", skin);
+
+        dialog.getButtonTable().add(cancelButton).width(150).pad(20);
+        dialog.getButtonTable().add(createButton).width(150).pad(20);
+
+        // --- منطق و Listener ها ---
+
+        // Listener برای SelectBox دسترسی
+        accessSelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                boolean isPrivate = accessSelectBox.getSelected().equals("Private");
+                passwordLabel.setVisible(isPrivate);
+                passwordField.setVisible(isPrivate);
+                passwordField.setDisabled(!isPrivate);
+            }
+        });
+
+        // Listener برای دکمه Cancel
+        cancelButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                dialog.hide();
+            }
+        });
+
+        // Listener برای دکمه Create
+        createButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String lobbyName = lobbyNameField.getText();
+                boolean isPrivate = accessSelectBox.getSelected().equals("Private");
+                String password = passwordField.getText();
+                boolean isVisible = visibleCheckBox.isChecked();
+                String adminUsername = App.getApp().getLoggedInUser().getUserName();
+
+                // ولیدیشن ساده
+                if (lobbyName.trim().isEmpty()) {
+                    showError("Lobby name cannot be empty.");
+                    return;
+                }
+                if (isPrivate && password.trim().isEmpty()) {
+                    showError("Private lobbies must have a password.");
+                    return;
+                }
+
+                // ارسال درخواست به سرور
+                networkClient.sendCreateLobbyRequest(lobbyName, adminUsername, isPrivate, isVisible, isPrivate ? password : null);
+
+                // دیالوگ را ببند
+                dialog.hide();
+            }
+        });
+
+        // نمایش دیالوگ
+        dialog.show(stage);
+    }
+
     private void rebuildLobbyListUI() {
         lobbyListTable.clear();
         if (currentlyDisplayedLobbies.isEmpty()) {
-            lobbyListTable.add(new Label("No active currentlyDisplayedLobbies found.", skin));
+            lobbyListTable.add(new Label("No active lobby found.", skin));
             return;
         }
 

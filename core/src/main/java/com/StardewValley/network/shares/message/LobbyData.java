@@ -1,6 +1,10 @@
 package com.StardewValley.network.shares.message;
 
-public class LobbyData {
+import java.io.Serializable;
+
+public class LobbyData implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     public String lobbyName;
     public String adminUsername;
     public boolean isPrivate;

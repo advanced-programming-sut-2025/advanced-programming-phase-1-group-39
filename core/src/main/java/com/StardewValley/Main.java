@@ -38,8 +38,7 @@ public class Main extends Game {
         if (networkClient == null) {
             networkClient = new NetworkClient();
             networkClient.connect("127.0.0.1", 5050);
-        }
-        if (!(screen instanceof LobbyScreen)) {
+        } else {
             switchScreen(new LobbyScreen(networkClient));
         }
     }
@@ -48,6 +47,7 @@ public class Main extends Game {
     // --- Events ---
     public void onConnectionSuccess() {
         networkClient.sendUserDataToServer(App.getApp().getLoggedInUser());
+        switchScreen(new LobbyScreen(networkClient));
     }
 
     public void onConnectionFailed(String reason) {
@@ -57,6 +57,12 @@ public class Main extends Game {
 
     public void onDisconnectedFromServer(String reason) {
         System.out.println("Disconnected: " + reason);
+        if (networkClient != null) {
+            networkClient = null;
+        }
+        App.getApp().setCurrentLobby(null);
+        App.getApp().setCurrentGame(null);
+
         switchScreen(new MainMenuScreen());
     }
 

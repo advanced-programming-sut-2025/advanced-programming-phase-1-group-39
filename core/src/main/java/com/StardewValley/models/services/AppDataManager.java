@@ -225,6 +225,18 @@ public class AppDataManager {
         // loading user game -> after he clicked on load game
     }
 
+    public static void saveAppForServer() {
+        saveApp();
+    }
+
+    public static void loadAppForServer() {
+        USERS_DATA_PATH = "serverData/users.json";
+        App app = App.getApp();
+
+        loadUsersFromFile();
+        loadAppDetails(app);
+    }
+
 
     public static void saveUsers(ArrayList<User> users, User loggedInUser) {
         ArrayList<UserData> usersData = new ArrayList<>();
@@ -265,18 +277,6 @@ public class AppDataManager {
             usersData = new UsersData(new ArrayList<>(), null);
         }
     }
-
-//    public static void loadUsersFromFile() {
-//        FileHandle file = Gdx.files.local(USERS_DATA_PATH);
-//
-//        if (!file.exists()) {
-//            Gdx.app.log("UserManager", "Save file not found. Creating a new one.");
-//            usersData = new UsersData(new ArrayList<>(), null);
-//            return;
-//        }
-//
-//        usersData = gson.fromJson(file.readString(), UsersData.class);
-//    }
 
     public static void loadAppDetails(App app) {
         ArrayList<User> users = new ArrayList<>();

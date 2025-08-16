@@ -3,6 +3,8 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
+import com.StardewValley.models.NPC.AbigailNPC;
+import com.StardewValley.models.NPC.NPC;
 import com.StardewValley.models.NPC.PlayerNPCInteraction;
 import com.StardewValley.models.Shops.Shop;
 import com.StardewValley.models.animals.Animal;
@@ -50,7 +52,7 @@ import java.util.LinkedHashMap;
 public class GameScreen implements Screen {
     private static GameScreen screen;
     private GameGuiController controller;
-    private Game game;
+    private static Game game;
     private GameInputAdapter gameMenuInputAdapter;
     private SpriteBatch batch;
 
@@ -64,7 +66,7 @@ public class GameScreen implements Screen {
     private TextField commandInput;
     private String lastCommand;
 
-    //  player
+    // player
     private TextureAtlas playerAtlas;
     private HashMap<Player, ArrayList<Animation<TextureRegion>>> playersAnimations = new LinkedHashMap<>();
 
@@ -147,8 +149,19 @@ public class GameScreen implements Screen {
     private Image skillDescImage;
     private Texture starTexture;
     private HashMap<String, Integer> friendPlayers;
-    private String[] npcNames = {"Sebastian", "Abigail", "Harvey", "Leah", "Robin"};
 
+
+    // NPC
+    private Texture npcAbigail, npcHarvey, npcLeah, npcRobin, npcSebastian;
+    private Texture speechCloudTexture;
+    private Texture speechBubbleTexture;
+    public static Location abigailLocation;
+    public static Location harveyLocation;
+    public static Location leahLocation;
+    public static Location robinLocation;
+    public static Location sebastianLocation;
+    private HashMap<String, Boolean> npcDialogVisible = new HashMap<>();
+    public String[] npcNames = {"sebastian", "abigail", "harvey", "leah", "robin"};
 
     // animal popup
     private Window animalWindow;
@@ -236,6 +249,22 @@ public class GameScreen implements Screen {
         inventoryTable.bottom().center().padTop(950f);
         rootStack.add(inventoryTable);
 
+        // NPC
+        this.npcAbigail = new Texture("NPC/Abigail1.png");
+        this.npcHarvey = new Texture("NPC/Abigail1.png");
+        this.npcLeah = new Texture("NPC/Leah1.png");
+        this.npcRobin = new Texture("NPC/Robin1.png");
+        this.npcSebastian = new Texture("NPC/Sebastian1.png");
+        this.speechCloudTexture = new Texture("NPC/Emot1.png");
+        this.speechBubbleTexture = new Texture("NPC/comment.png");
+        abigailLocation = Map.TileToPixelConverter(game.getNPC("abigail").getLocation());
+        harveyLocation = Map.TileToPixelConverter(game.getNPC("harvey").getLocation());
+        leahLocation = Map.TileToPixelConverter(game.getNPC("leah").getLocation());
+        robinLocation = Map.TileToPixelConverter(game.getNPC("robin").getLocation());
+        sebastianLocation = Map.TileToPixelConverter(game.getNPC("sebastian").getLocation());
+        for (String npcName : npcNames) {
+            npcDialogVisible.put(npcName, false);
+        }
 
         // for error message
         Table messageTable = new Table();
@@ -1537,6 +1566,112 @@ public class GameScreen implements Screen {
         return friendshipLevel;
     }
 
+    // NPC
+    private void renderNPCs(SpriteBatch batch) {
+        renderNPC(batch, npcAbigail, abigailLocation.x(), abigailLocation.y(), "abigail");
+        renderNPC(batch, npcHarvey, harveyLocation.x(), harveyLocation.y(), "harvey");
+        renderNPC(batch, npcLeah, leahLocation.x(), leahLocation.y(), "leah");
+        renderNPC(batch, npcRobin, robinLocation.x(), robinLocation.y(), "robin");
+        renderNPC(batch, npcSebastian, sebastianLocation.x(), sebastianLocation.y(), "sebastian");
+    }
+
+    private void renderNPC(SpriteBatch batch, Texture npcTexture, float x, float y, String id) {
+        // رسم خود NPC
+        float scale = 3.5f;
+        batch.draw(npcTexture, x, y, npcTexture.getWidth() * scale, npcTexture.getHeight() * scale);
+
+
+        float cloudX = x;
+        float cloudY = y + npcTexture.getHeight() * scale + 10;
+
+        if (!npcDialogVisible.get(id)) {
+            // ابر کوچک بدون متن
+            float scale2 = 3f;
+            batch.draw(speechCloudTexture, cloudX, cloudY, speechCloudTexture.getWidth() * scale2,
+                    speechCloudTexture.getHeight() * scale2);
+        } else {
+            // بک‌گراند دیالوگ
+            String condition = controller.getConditions(game.getTime(), game.getPlayerInTurn().getFriendship(id), game.getTodayWeather());
+            String text = controller.getDialogueByConditions(condition, id, game);
+            BitmapFont font = smallFont;
+            font.setColor(Color.BLACK);
+            GlyphLayout layout = new GlyphLayout(font, text);
+
+            float padding = 10f;
+            float bubbleWidth = layout.width + padding * 2;
+            float bubbleHeight = layout.height + padding * 2;
+
+
+            // وسط‌چین روی NPC
+            float bubbleX = cloudX;
+            float bubbleY = cloudY;
+
+            batch.draw(speechBubbleTexture, bubbleX, bubbleY, bubbleWidth, bubbleHeight * 1.2f);
+            font.draw(batch, layout, bubbleX + padding, bubbleY + bubbleHeight - 5f);
+        }
+    }
+
+    public void toggleNpcDialog(String npcId) {
+        npcDialogVisible.put(npcId, !npcDialogVisible.get(npcId));
+    }
+
+    public float getNPCx(String npcId) {
+        return switch (npcId) {
+            case "abigail" -> abigailLocation.x();
+            case "harvey" -> harveyLocation.x();
+            case "leah" -> leahLocation.x();
+            case "robin" -> robinLocation.x();
+            case "sebastian" -> sebastianLocation.x();
+            default -> 0;
+        };
+    }
+
+    public float getNPCy(String npcId) {
+        return switch (npcId) {
+            case "abigail" -> abigailLocation.y();
+            case "harvey" -> harveyLocation.y();
+            case "leah" -> leahLocation.y();
+            case "robin" -> robinLocation.y();
+            case "sebastian" -> sebastianLocation.y();
+            default -> 0;
+        };
+    }
+
+    public Texture getNPCTexture(String npcId) {
+        return switch (npcId) {
+            case "abigail" -> npcAbigail;
+            case "harvey" -> npcHarvey;
+            case "leah" -> npcLeah;
+            case "robin" -> npcRobin;
+            case "sebastian" -> npcSebastian;
+            default -> null;
+        };
+    }
+
+    public boolean isDialogVisible(String npcId) {
+        return npcDialogVisible.get(npcId);
+    }
+
+    public String getNpcDialogText(String npcId) {
+        String condition = controller.getConditions(game.getTime(), game.getPlayerInTurn().getFriendship(npcId), game.getTodayWeather());
+        return controller.getDialogueByConditions(condition, npcId, game);
+    }
+
+    public Texture getSpeechCloudTexture() {
+        return speechCloudTexture;
+    }
+
+    public float getSpeechBubbleWidth(String npcId) {
+        BitmapFont font = smallFont;
+        GlyphLayout layout = new GlyphLayout(font, getNpcDialogText(npcId));
+        return layout.width + 20f; //padding
+    }
+
+    public float getSpeechBubbleHeight(String npcId) {
+        BitmapFont font = smallFont;
+        GlyphLayout layout = new GlyphLayout(font, getNpcDialogText(npcId));
+        return layout.height + 20f;
+    }
 
     // WINDOWS
     public void closeAllUiMenus() {
@@ -1870,6 +2005,7 @@ public class GameScreen implements Screen {
 
             renderBuildings();
             renderPlayers(v);
+            renderNPCs(batch);
 
             // TODO : (Better) move clock render to uiStage
             renderClockUI();

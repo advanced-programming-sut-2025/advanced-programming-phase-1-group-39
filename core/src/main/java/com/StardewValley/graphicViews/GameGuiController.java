@@ -6,6 +6,8 @@ import com.StardewValley.controllers.NPCGameController;
 import com.StardewValley.controllers.PlayersInteractionController;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Direction;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.Enums.commands.GameCommands;
 import com.StardewValley.models.Enums.commands.InteractionsCommand;
 import com.StardewValley.models.Enums.commands.NPCGameCommand;
@@ -451,6 +453,72 @@ public class GameGuiController {
         for (User user : App.getApp().getUsers()) {
             if (user.getUserName().equals(username)) {
                 return user;
+            }
+        }
+        return null;
+    }
+
+    public String getConditions(Time time, PlayerNPCInteraction interaction, Weather weather) {
+        StringBuilder conditions = new StringBuilder();
+        if (interaction.getFriendshipLevel() == 3) {
+            conditions.append("HIGH|");
+        } else if (interaction.getFriendshipLevel() == 2) {
+            conditions.append("MEDIUM|");
+        } else {
+            conditions.append("LOW|");
+        }
+
+        if (time.getSeason().equals(Season.SPRING)) {
+            conditions.append("SPRING|");
+        } else if (time.getSeason().equals(Season.SUMMER)) {
+            conditions.append("SUMMER|");
+        } else if (time.getSeason().equals(Season.FALL)) {
+            conditions.append("FALL|");
+        } else {
+            conditions.append("WINTER|");
+        }
+
+        if (time.getHour() < 15) {
+            conditions.append("DAY|");
+        } else {
+            conditions.append("NIGHT|");
+        }
+
+        if (weather.getStatus().equals(WeatherStatus.SUNNY)) {
+            conditions.append("CLEAR");
+        } else {
+            conditions.append("BAD WEATHER");
+        }
+
+        return conditions.toString();
+    }
+
+    public String getDialogueByConditions(String conditions, String NPCName, Game game) {
+        String output;
+        switch (NPCName) {
+            case "sebastian" -> {
+                HashMap<String, String> map = game.getNPC("sebastian").getDialogues();
+                output = map.get(conditions);
+                return output;
+            }
+            case "abigail" -> {
+                HashMap<String, String> map = game.getNPC("abigail").getDialogues();
+                output = map.get(conditions);
+                return output;
+            }
+            case "harvey" -> {
+                HashMap<String, String> map = game.getNPC("harvey").getDialogues();
+                output = map.get(conditions);
+                return output;
+            }
+            case "leah" -> {
+                HashMap<String, String> map = game.getNPC("leah").getDialogues();
+                output = map.get(conditions);
+            }
+            case "robin" -> {
+                HashMap<String, String> map = game.getNPC("robin").getDialogues();
+                output = map.get(conditions);
+                return output;
             }
         }
         return null;

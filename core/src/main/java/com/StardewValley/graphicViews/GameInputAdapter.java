@@ -8,6 +8,7 @@ import com.StardewValley.models.map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -202,8 +203,28 @@ public class GameInputAdapter extends InputAdapter {
             if (dir != null) {
                 controller.useTool(dir);
             }
+            // چک برای هر NPC
+            for (String npcId : screen.npcNames) {
+                float npcX = screen.getNPCx(npcId);
+                float npcY = screen.getNPCy(npcId);
+                Texture npcTexture = screen.getNPCTexture(npcId);
+
+                float cloudX = npcX;
+                float cloudY = npcY + npcTexture.getHeight() + 10;
+                float cloudW = screen.isDialogVisible(npcId) ?
+                        screen.getSpeechBubbleWidth(npcId) :
+                        screen.getSpeechCloudTexture().getWidth();
+                float cloudH = screen.isDialogVisible(npcId) ?
+                        screen.getSpeechBubbleHeight(npcId) :
+                        screen.getSpeechCloudTexture().getHeight();
+
+                if (worldCoords.x >= cloudX && worldCoords.x <= cloudX + cloudW &&
+                        worldCoords.y >= cloudY && worldCoords.y <= cloudY + cloudH) {
+                    screen.toggleNpcDialog(npcId);
+                    return true;
+                }
+            }// دیگه لازم نیست ادامه بدیم
         }
         return false;
     }
-
 }

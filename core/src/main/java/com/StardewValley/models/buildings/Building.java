@@ -51,6 +51,16 @@ public abstract class Building {
             }
         }
 
+        buildWallsAndDoor(map);
+    }
+
+    public void buildWallsAndDoor(Map map) {
+        Tile[][] tiles = map.getTiles();
+        int x = this.getLocation().x();
+        int y = this.getLocation().y();
+        int w = this.getWidth();
+        int h = this.getHeight();
+
         for (int i = x; i < x + w; i++) {
             tiles[y][i].setType(TileType.WALL);
             tiles[y + h - 1][i].setType(TileType.WALL);
@@ -59,5 +69,7 @@ public abstract class Building {
             tiles[j][x].setType(TileType.WALL);
             tiles[j][x + w - 1].setType(TileType.WALL);
         }
+
+        tiles[y + h - 1][x + w/2].setType(TileType.INDOOR);
     }
 }

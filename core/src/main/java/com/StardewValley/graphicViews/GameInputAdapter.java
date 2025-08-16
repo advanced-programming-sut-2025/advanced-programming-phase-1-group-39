@@ -2,13 +2,15 @@ package com.StardewValley.graphicViews;
 
 
 import com.StardewValley.models.*;
-import com.StardewValley.network.client.NetworkClient;
-import com.StardewValley.network.shares.message.Request;
-import com.StardewValley.network.shares.message.RequestType;
+import com.StardewValley.models.Enums.Direction;
+import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class GameInputAdapter extends InputAdapter {
     private GameGuiController controller;
@@ -19,28 +21,21 @@ public class GameInputAdapter extends InputAdapter {
         this.screen = screen;
     }
 
-    // در کلاس GameInputAdapter.java
+    public void handlePlayerMovement(float delta, Game game) {
+        float speed = game.getGameSetting().getPlayerSpeed();
 
-    public void handlePlayerMovement(float delta, Game game, NetworkClient networkClient) {
-        // 1. دریافت بازیکن محلی (بازیکنی که پشت این کامپیوتر است)
-        // نکته: مفهوم playerInTurn برای حرکت دیگر کاربرد ندارد. ما به بازیکن اصلی این کلاینت نیاز داریم.
-        // فرض می‌کنیم game.getMainPlayer() بازیکن این کلاینت را برمی‌گرداند.
-        Player localPlayer = game.getMainPlayer();
+        // check if not conscious
+        Player player = game.getPlayerInTurn();
+        if (player.getCurrentState().equals(GameScreen.PlayerState.Unconscious)) return;
+        float   initialX = player.getX(),
+                initialY = player.getY();
 
-        // 2. بررسی‌های اولیه سمت کلاینت (اینها خوب هستند و باید بمانند)
-        if (localPlayer.getCurrentState().equals(GameScreen.PlayerState.Unconscious)) {
-            return; // اگر بازیکن بیهوش است، هیچ ورودی ارسال نکن
-        }
-
-        // منطق UI گلخانه کاملاً سمت کلاینت است و می‌تواند باقی بماند.
-        // چون فقط یک پاپ‌آپ نمایش می‌دهد و وضعیت بازی را تغییر نمی‌دهد.
-        // تنها زمانی که کاربر "Yes" را بزند، یک درخواست جداگانه به سرور ارسال می‌شود.
-        if (controller.nearGreenHouse(localPlayer) && !localPlayer.isBuildGreenhouse()) {
-            Result buildGreenHousePopup = controller.buildGreenHouseRequest(localPlayer);
-            if (!buildGreenHousePopup.success()) {
-                screen.showPopup(buildGreenHousePopup.message(), () -> {
-                    // وقتی کاربر "Yes" را کلیک کرد، این درخواست به سرور ارسال می‌شود:
-                    networkClient.sendRequest(new Request(RequestType.BUILD_GREENHOUSE, null));
+        // greenhouse check
+        if (controller.nearGreenHouse(player) && !player.isBuildGreenhouse()) {
+            Result buildGreenHousePopup = controller.buildGreenHouseRequest(player);
+            if (buildGreenHousePopup.success()) {
+                screen.showPopup(buildGreenHousePopup.message(), ()->{
+                    screen.blackBackgroundAnimation(()-> controller.buildGreenhouse(player, game), 0.5f);
                 });
             } else {
                 screen.showError(buildGreenHousePopup.message());
@@ -48,47 +43,141 @@ public class GameInputAdapter extends InputAdapter {
         }
 
 
-        // 3. خواندن ورودی و محاسبه جهت حرکت
-        Vector2 movementIntent = new Vector2(0, 0);
+        Direction currentDirection = Direction.NONE;
+
+        Vector2 movement = new Vector2(0,0);
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            movementIntent.y += 1;
+            movement.y += 1;
+            currentDirection = Direction.UP;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            movementIntent.y -= 1;
+            movement.y -= 1;
+            currentDirection = Direction.DOWN;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            movementIntent.x -= 1;
+            movement.x -= 1;
+            currentDirection = Direction.LEFT;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            movementIntent.x += 1;
+            movement.x += 1;
+            currentDirection = Direction.RIGHT;
         }
-
-        // اگر هیچ کلیدی فشار داده نشده، کاری انجام نده
-        if (movementIntent.isZero()) {
-            // (اختیاری) می‌توانید یک درخواست "توقف حرکت" بفرستید تا سرور جهت بازیکن را NONE کند
-            // networkClient.sendMoveRequest(0, 0);
+        // check can move to
+        movement.nor().scl(speed * delta);
+        if (movement.isZero()) {
+            player.setMoving(false);
+            player.setDirection(Direction.NONE);
             return;
         }
 
-        // 4. محاسبه بردار نهایی حرکت و ارسال به سرور
-        float speed = game.getGameSetting().getPlayerSpeed();
-        movementIntent.nor().scl(speed * delta); // نرمالایز و اعمال سرعت و دلتا
+        Map map = game.getMap();
 
-        // <<--- بخش کلیدی: ارسال درخواست به سرور ---<<
-        // کلاینت دیگر خودش را حرکت نمی‌دهد، فقط قصدش را به سرور اعلام می‌کند.
-//        networkClient.sendMoveRequest(movementIntent.x, movementIntent.y);
+        float newX = player.getX() + movement.x;
+        float newY = player.getY() + movement.y;
 
-        // تمام منطق قبلی از اینجا به بعد حذف می‌شود!
-    /*
-        حذف شد:
-        - Map map = game.getMap();
-        - float newX = ...;
-        - game.getMap().canWalkTo(...);  <-- بررسی برخورد حالا وظیفه سرور است
-        - player.setLocationAbsolut(...); <-- تغییر موقعیت حالا وظیفه سرور است
-        - player.setDirection(...);       <-- تنظیم جهت حالا وظیفه سرور است
-        - player.changeEnergy(...);       <-- تغییر انرژی حالا وظیفه سرور است
-    */
+        // check farm borders
+        Result result;
+        if (!(result = game.getMap().canWalkTo(Map.pixelToTileConverter(new Location(newX, newY)), player, game.getPlayers()))
+                .success()) {
+            screen.showError(result.message());
+            return;
+        }
+
+        if (game.isPositionPassable(newX, player.getY())) {
+            player.setLocationAbsolut(newX, player.getY());
+        }
+        if (game.isPositionPassable(player.getX(), newY)) {
+            player.setLocationAbsolut(player.getX(), newY);
+        }
+        player.setMoving(true);
+        player.setDirection(currentDirection);
+        // change energy
+        if (player.getX() != initialX || player.getY() != initialY) {
+            player.changeEnergy(-Constants.MAX_ENERGY * 0.0005 * ((speed * delta) / Map.TILE_SIZE));
+        }
     }
+
+    public static Direction getMouseDirectionAroundPlayer(Location playerLoc, Location mouseTileLoc) {
+        int dx = mouseTileLoc.x() - playerLoc.x();
+        int dy = mouseTileLoc.y() - playerLoc.y();
+
+        for (Direction dir : Direction.values()) {
+            if (dir == Direction.NONE) continue;
+            if (dx == dir.dx && dy == dir.dy) {
+                return dir;
+            }
+        }
+        return null;
+    }
+
+//    public void handlePlayerMovement(float delta, Game game, NetworkClient networkClient) {
+//        // 1. دریافت بازیکن محلی (بازیکنی که پشت این کامپیوتر است)
+//        // نکته: مفهوم playerInTurn برای حرکت دیگر کاربرد ندارد. ما به بازیکن اصلی این کلاینت نیاز داریم.
+//        // فرض می‌کنیم game.getMainPlayer() بازیکن این کلاینت را برمی‌گرداند.
+//        Player localPlayer = game.getMainPlayer();
+//
+//        // 2. بررسی‌های اولیه سمت کلاینت (اینها خوب هستند و باید بمانند)
+//        if (localPlayer.getCurrentState().equals(GameScreen.PlayerState.Unconscious)) {
+//            return; // اگر بازیکن بیهوش است، هیچ ورودی ارسال نکن
+//        }
+//
+//        // منطق UI گلخانه کاملاً سمت کلاینت است و می‌تواند باقی بماند.
+//        // چون فقط یک پاپ‌آپ نمایش می‌دهد و وضعیت بازی را تغییر نمی‌دهد.
+//        // تنها زمانی که کاربر "Yes" را بزند، یک درخواست جداگانه به سرور ارسال می‌شود.
+//        if (controller.nearGreenHouse(localPlayer) && !localPlayer.isBuildGreenhouse()) {
+//            Result buildGreenHousePopup = controller.buildGreenHouseRequest(localPlayer);
+//            if (!buildGreenHousePopup.success()) {
+//                screen.showPopup(buildGreenHousePopup.message(), () -> {
+//                    // وقتی کاربر "Yes" را کلیک کرد، این درخواست به سرور ارسال می‌شود:
+//                    networkClient.sendRequest(new Request(RequestType.BUILD_GREENHOUSE, null));
+//                });
+//            } else {
+//                screen.showError(buildGreenHousePopup.message());
+//            }
+//        }
+//
+//
+//        // 3. خواندن ورودی و محاسبه جهت حرکت
+//        Vector2 movementIntent = new Vector2(0, 0);
+//        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+//            movementIntent.y += 1;
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+//            movementIntent.y -= 1;
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+//            movementIntent.x -= 1;
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+//            movementIntent.x += 1;
+//        }
+//
+//        // اگر هیچ کلیدی فشار داده نشده، کاری انجام نده
+//        if (movementIntent.isZero()) {
+//            // (اختیاری) می‌توانید یک درخواست "توقف حرکت" بفرستید تا سرور جهت بازیکن را NONE کند
+//            // networkClient.sendMoveRequest(0, 0);
+//            return;
+//        }
+//
+//        // 4. محاسبه بردار نهایی حرکت و ارسال به سرور
+//        float speed = game.getGameSetting().getPlayerSpeed();
+//        movementIntent.nor().scl(speed * delta); // نرمالایز و اعمال سرعت و دلتا
+//
+//        // <<--- بخش کلیدی: ارسال درخواست به سرور ---<<
+//        // کلاینت دیگر خودش را حرکت نمی‌دهد، فقط قصدش را به سرور اعلام می‌کند.
+////        networkClient.sendMoveRequest(movementIntent.x, movementIntent.y);
+//
+//        // تمام منطق قبلی از اینجا به بعد حذف می‌شود!
+//    /*
+//        حذف شد:
+//        - Map map = game.getMap();
+//        - float newX = ...;
+//        - game.getMap().canWalkTo(...);  <-- بررسی برخورد حالا وظیفه سرور است
+//        - player.setLocationAbsolut(...); <-- تغییر موقعیت حالا وظیفه سرور است
+//        - player.setDirection(...);       <-- تنظیم جهت حالا وظیفه سرور است
+//        - player.changeEnergy(...);       <-- تغییر انرژی حالا وظیفه سرور است
+//    */
+//    }
 
 
     @Override
@@ -103,6 +192,8 @@ public class GameInputAdapter extends InputAdapter {
         ///  test
         else if (keycode == Input.Keys.MINUS) {
             screen.getGame().getPlayerInTurn().changeEnergy(-10);
+        } else if (keycode == Input.Keys.TAB) {
+            screen.cheatPlayer();
         }
 
         else if (keycode == Input.Keys.N) {
@@ -114,6 +205,12 @@ public class GameInputAdapter extends InputAdapter {
             screen.changeCraftingMenu();
         } else if (keycode == Input.Keys.P) {
             screen.showShopMenu();
+        } else if (keycode == Input.Keys.E) {
+            screen.toggleInventoryMenu();
+        }
+
+        else if (keycode == Input.Keys.M) {
+            screen.toggleBiggerMiniMap();
         }
         return true;
     }
@@ -128,4 +225,46 @@ public class GameInputAdapter extends InputAdapter {
         game.getPlayerInTurn().setSelectedSlot(next);
         return true;
     }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.RIGHT) {
+            Vector3 worldCoordinates = new Vector3(screenX, screenY, 0);
+            screen.getCamera().unproject(worldCoordinates);
+
+            for (Player player : screen.getGame().getPlayers()) {
+                for (Animal animal : player.getAnimals()) {
+                    float animalX = animal.getX();
+                    float animalY = animal.getY();
+                    int tileSize = Map.TILE_SIZE;
+                    Rectangle animalBounds = new Rectangle(animalX, animalY, tileSize, tileSize);
+
+                    if (animalBounds.contains(worldCoordinates.x, worldCoordinates.y)) {
+                        screen.showAnimalInfoPopup(animal);
+                        return true;
+                    }
+                }
+            }
+        } else if (button == Input.Buttons.LEFT) {
+            // ۱. مختصات screen به world
+            Vector3 worldCoords = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
+            // ۲. تبدیل world به tile
+            Location mouseTile = Map.pixelToTileConverter(new Location(worldCoords.x, worldCoords.y));
+            Player player = screen.getGame().getPlayerInTurn();
+            Location playerTile = player.getTileLocation();
+
+            Direction dir = getMouseDirectionAroundPlayer(playerTile, mouseTile);
+
+            // دیباگ برای تست مختصات:
+            System.out.println("mouseTile: " + mouseTile.x() + "," + mouseTile.y());
+            System.out.println("playerTile: " + playerTile.x() + "," + playerTile.y());
+            System.out.println("dir: " + dir);
+
+            if (dir != null) {
+                controller.useTool(dir);
+            }
+        }
+        return false;
+    }
+
 }

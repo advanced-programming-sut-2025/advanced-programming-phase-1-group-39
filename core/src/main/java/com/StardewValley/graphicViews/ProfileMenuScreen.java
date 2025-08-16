@@ -3,20 +3,17 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.ProfileGuiController;
 import com.StardewValley.models.App;
-import com.StardewValley.models.User;
 import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class ProfileMenuScreen implements Screen {
     private Stage stage;
@@ -113,7 +110,7 @@ public class ProfileMenuScreen implements Screen {
         music.setLooping(true);
         music.play();
 
-        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        background.setSize(stage.getWidth(), stage.getHeight());
         background.setColor(1, 1, 1, 0.5f);
         stage.addActor(background);
 

@@ -15,6 +15,8 @@ import java.util.List;
 public class PregameGuiController {
     private PregameMenuScreen screen;
 
+    private Game game;
+
     public void setScreen(PregameMenuScreen screen) {
         this.screen = screen;
     }
@@ -52,24 +54,31 @@ public class PregameGuiController {
         return new Result(true, "");
     }
 
-    public void startGame(int[] mapIds) {
+    public void makeMapOfGame(int[] mapIds) {
+        // start making a game for users
         int gameId = Game.lastGameId;
         ArrayList<Player> players = new ArrayList<>();
         for (User user : gameUsers) {
             players.add(new Player(user.getUserName(), user.getNickname(), gameId));
         }
-        Game game = new Game(players);
+        game = new Game(players);
+
         App.getApp().addGame(game);
         App.getApp().setCurrentGame(game);
         for (User user : gameUsers) {
             user.setCurrentGame(game);
         }
 
+
         // starting the game
         int c = 0;
         for (Player player : players) {
             game.addRandomFarmForPlayer(player, FarmType.getFarmTypeById(mapIds[c++]));
         }
+        game.addNpcMap();
+    }
+
+    public void startGame() {
         game.startGame();
         App.getApp().setCurrentMenu(Menu.GAME);
         Main.getMain().switchScreen(new GameScreen());
@@ -89,7 +98,7 @@ public class PregameGuiController {
         return user.getNickname();
     }
 
-    public ArrayList<User> getGameUsers() {
-        return gameUsers;
+    public Game getGame() {
+        return game;
     }
 }

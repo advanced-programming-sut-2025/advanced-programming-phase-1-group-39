@@ -1,19 +1,25 @@
 package com.StardewValley.models.animals;
 
-import com.StardewValley.models.animals.AnimalProductQuality;
+import com.StardewValley.models.Game;
+import com.StardewValley.models.GameSetting;
 import com.StardewValley.models.Location;
-import com.StardewValley.models.animals.AnimalProduct;
-import com.StardewValley.models.animals.AnimalType;
-import com.StardewValley.models.animals.LivingPlace;
+import com.StardewValley.models.map.Map;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Animal {
     private AnimalType type;
     private String name;
     private int price;
     private LivingPlace place;
-    private Location location;
+
+    private Vector2 position;
+    private Vector2 firstLocation;
+    private Vector2 toGoLocation;
+
 
     private ArrayList<AnimalProduct> products;
 
@@ -24,6 +30,8 @@ public class Animal {
     private int daysSinceLastProduce = 0;
 
     private AnimalProduct todayProduct = null;
+
+    private static final int walkingBoundInTile = 5;
 
     public Animal(AnimalType type, String name, int price, LivingPlace place, ArrayList<AnimalProduct> products) {
         this.type = type;
@@ -44,8 +52,55 @@ public class Animal {
     public int getPrice() { return price; }
     public LivingPlace getPlace() { return place; }
     public ArrayList<AnimalProduct> getProducts() { return products; }
-    public Location getLocation() { return location; }
-    public void setLocation(Location location) { this.location = location; }
+
+
+    public void updateMovement(float deltaTime, Game game) {
+        if (position.dst(toGoLocation) < 1.0f) {
+            setNewRandomToGoLocation();
+            return;
+        }
+
+        Vector2 direction = toGoLocation.cpy().sub(position).nor();
+        Vector2 nextStep = position.cpy().mulAdd(direction, GameSetting.getAnimalSpeed() * deltaTime);
+
+        if (game.isPositionPassable(nextStep.x, nextStep.y)) {
+            position.set(nextStep);
+        } else {
+            setNewRandomToGoLocation();
+        }
+    }
+
+    private void setNewRandomToGoLocation() {
+        Random rand = new Random();
+        double angle = 2 * Math.PI * rand.nextDouble();
+        double radius = walkingBoundInTile * Map.TILE_SIZE * Math.sqrt(rand.nextDouble());
+
+        float dx = (float)(radius * Math.cos(angle));
+        float dy = (float)(radius * Math.sin(angle));
+
+        toGoLocation.set(firstLocation.x + dx, firstLocation.y + dy);
+    }
+
+    public float getX() {
+        return position.x;
+    }
+    public float getY() {
+        return position.y;
+    }
+
+    public Location getLocation() {
+        return new Location((int)position.x, (int)position.y);
+    }
+
+    public void setLocation(Location location) {
+        Location inMap = Map.TileToPixelConverter(location);
+        this.position = new Vector2(inMap.x(), inMap.y());
+        this.firstLocation = new Vector2(inMap.x(), inMap.y());
+        this.toGoLocation = new Vector2(inMap.x(), inMap.y());
+    }
+
+
+
     public int getFriendship() { return friendship; }
 
     public void changeFriendship(int amount) {
@@ -128,7 +183,7 @@ public class Animal {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", place=" + place +
-                ", location=" + location +
+                ", location=" + position +
                 ", products=" + products +
                 ", friendship=" + friendship +
                 ", pettedToday=" + pettedToday +
@@ -136,5 +191,13 @@ public class Animal {
                 ", outsideToday=" + outsideToday +
                 ", daysSinceLastProduce=" + daysSinceLastProduce +
                 '}';
+    }
+
+    public TextureRegion getTexture() {
+        return type.getTextureRegion();
+    }
+
+    public boolean isOutsideToday() {
+        return outsideToday;
     }
 }

@@ -120,25 +120,16 @@ public class Game {
     }
 
     public void startGame() {
-        initializeNPCs();
-        makeNPCBuildings();
-
-        gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
-        baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
-
         for (Player player : players) {
             resetPlayerLocation(player);
         }
 
         initializeFriendships();
-
     }
 
     public int getId() {
         return id;
     }
-
-    public void setMainPlayer(Player mainPlayer) { this.mainPlayer = mainPlayer; }
 
     public Player getMainPlayer() { return mainPlayer; }
 
@@ -245,6 +236,14 @@ public class Game {
         return gameMap;
     }
 
+    public void setFarmTypeOfPlayer(Player player, FarmType farmType) {
+        int number = players.indexOf(player);
+        if (number == -1) {
+            return;
+        }
+        player.setFarmType(farmType);
+        player.setFarmBound(Map.getStartOfFarm(number));
+    }
 
     public void addRandomFarmForPlayer(Player player, FarmType farmType) {
         int number = players.indexOf(player);
@@ -252,11 +251,18 @@ public class Game {
             return;
         }
 
-        player.setFarmType(farmType);
-        player.setFarmBound(Map.getStartOfFarm(number));
+        setFarmTypeOfPlayer(player, farmType);
         player.addFirstBuildingObjects(this);
         gameMap.addRandomFarm(farmType, number, player);
         baseMap.addRandomFarm(farmType, number, player);
+    }
+
+    public void addNpcMap() {
+        initializeNPCs();
+        makeNPCBuildings();
+
+        gameMap.addShopsAndDisabledTilesToMap(getNpcShops());
+        baseMap.addShopsAndDisabledTilesToMap(getNpcShops());
     }
 
     // time
@@ -733,13 +739,12 @@ public class Game {
         return output.toString();
     }
 
-    //Load
-//    public void setGameMapRandomly(long seed) {
-//        this.gameMap = new Map(randomGenerator);
-//        for (Player player : players) {
-//            addRandomFarmForPlayer(player, FarmType.getFarmTypeById((int) (Math.random() * 2)));
-//        }
-//    }
+
+    public boolean isPositionPassable(float pixelX, float pixelY) {
+        Location tileLoc = Map.pixelToTileConverter(new Location(pixelX, pixelY));
+        Tile tile = gameMap.getTile(tileLoc.x(), tileLoc.y());
+        return tile != null && tile.canWalkOnTile();
+    }
 
     public long getMapRandSeed() {
         return mapRandSeed;

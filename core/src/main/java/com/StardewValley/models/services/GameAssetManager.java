@@ -1,5 +1,7 @@
 package com.StardewValley.models.services;
 
+import com.StardewValley.models.animals.AnimalType;
+import com.StardewValley.models.map.TileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
@@ -15,8 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.ArrayList;
 
 public class GameAssetManager {
     public static Skin skin;
@@ -39,6 +39,28 @@ public class GameAssetManager {
     public static TextureRegion nameLabel = new TextureRegion(new Texture("Label/Marlon.png"));
     public static TextureRegion avatarFrame = new TextureRegion(new Texture("Label/Gunther.png"));
 
+    // inventory :
+    public static TextureRegion inventorySlot = new TextureRegion(new Texture("inventory/Mail.2jpg.jpg"));
+    public static TextureRegion inventoryHighlightSlot = new TextureRegion(new Texture("inventory/Mail3.jpg"));
+
+    // skills :
+    public static TextureRegion star1 = new TextureRegion(new Texture("inventory/Achievement_Star_06.png"));
+    public static TextureRegion star2 = new TextureRegion(new Texture("inventory/Achievement_Star_02.png"));
+    public static TextureRegion star3 = new TextureRegion(new Texture("inventory/Achievement_Star_12.png"));
+    public static TextureRegion star4 = new TextureRegion(new Texture("inventory/Achievement_Star_09.png"));
+    public static String star1Name = "inventory/Achievement_Star_06.png";
+    public static String star2Name = "inventory/Achievement_Star_02.png";
+    public static String star3Name = "inventory/Achievement_Star_12.png";
+    public static String star4Name = "inventory/Achievement_Star_09.png";
+
+    public static TextureRegion farmingSkill = new TextureRegion(new Texture("inventory/Farming_Skill_Icon.png"));
+    public static TextureRegion fishingSkill = new TextureRegion(new Texture("inventory/Fishing_Skill_Icon.png"));
+    public static TextureRegion foragingSkill = new TextureRegion(new Texture("inventory/Foraging_Skill_Icon.png"));
+    public static TextureRegion miningSkill = new TextureRegion(new Texture("inventory/Mining_Skill_Icon.png"));
+    public static String farmingSkillName = "inventory/Farming_Skill_Icon.png";
+    public static String fishingSkillName = "inventory/Fishing_Skill_Icon.png";
+    public static String foragingSkillName = "inventory/Foraging_Skill_Icon.png";
+    public static String miningSkillName = "inventory/Mining_Skill_Icon.png";
 
     // Plants
     public static Texture deadPlantTexture = getDeadPlantTexture();
@@ -54,6 +76,9 @@ public class GameAssetManager {
     public static ProgressBar.ProgressBarStyle yellowBarStyle;
     public static ProgressBar.ProgressBarStyle orangeBarStyle;
     public static ProgressBar.ProgressBarStyle redBarStyle;
+
+    // Buildings
+    public static Texture shippingBinTexture = new Texture(Gdx.files.internal("map/tiles/shippingBin.png"));
 
     // effects
     public static Animation<TextureRegion> rainingAnimation ;
@@ -73,6 +98,9 @@ public class GameAssetManager {
         loadBarStyles();
 
         loadEffects();
+
+        TileType.loadAllTextures();
+        AnimalType.loadAllTextures();
     }
 
     private static void loadEffects() {

@@ -4,6 +4,12 @@ import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.Shops.Shop;
+import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.animals.AnimalType;
+import com.StardewValley.models.animals.LivingPlace;
+import com.StardewValley.models.buildings.AnimalBuilding;
+import com.StardewValley.models.buildings.Building;
+import com.StardewValley.models.buildings.ShippingBin;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingRecipe;
 import com.StardewValley.models.crafting.CraftingWidget;
@@ -15,13 +21,6 @@ import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.map.TileType;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
-import com.StardewValley.network.client.NetworkClient;
-import com.StardewValley.network.shares.GameState;
-import com.StardewValley.network.shares.dtos.GameStateDTO;
-import com.StardewValley.network.shares.dtos.PlayerStateDTO;
-import com.StardewValley.network.shares.dtos.ShowReactionDTO;
-import com.StardewValley.network.shares.message.Request;
-import com.StardewValley.network.shares.message.RequestType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -29,6 +28,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -66,6 +66,12 @@ public class GameScreen implements Screen {
     private TextureAtlas playerAtlas;
     private HashMap<Player, ArrayList<Animation<TextureRegion>>> playersAnimations = new LinkedHashMap<>();
 
+    private float stateTime = 0f;
+
+
+    private TextureRegion seasonTexture;
+    private TextureRegion weatherTexture;
+
     // // player states
     public enum PlayerState {
         WalkingOrIdle,
@@ -85,6 +91,9 @@ public class GameScreen implements Screen {
     private TextureRegion inventorySlot;
     private TextureRegion inventoryHighlightSlot;
 
+    // MiniMap window
+    private Cell<MiniMapWidget> minimapCell;
+    private Window bigMinimapWindow = null;
 
     private MiniMapWidget miniMapWidget;
 
@@ -123,6 +132,28 @@ public class GameScreen implements Screen {
     private TextButton popupNoButton;
     private Runnable popupRunnable;
 
+    // inventory
+    private Integer pendingTrashSlot = null;
+    private boolean pendingInventoryUiRefresh = false;
+    private Window inventoryWindow = null;
+    Table inventoryTable = new Table();
+    private int lastSelectedSlot = -1;
+    private int lastBagHash = 0;
+    private Cell<?> contentCell;
+    private Window skillTooltip;
+    private Label skillTooltipLabel;
+    private Image skillDescImage; // تصویر توضیح مهارت
+
+    // animal popup
+    private Window animalWindow;
+    private Label animalName;
+    private Image animalImage;
+    private Animal animalToggled;
+    private TextButton feedAnimalButton;
+    private TextButton getProductsButton;
+    private TextButton shepherdAnimalButton;
+
+
     // effects
     private Stage effectsStage;
     private Animation<TextureRegion> rainAnimation;
@@ -131,6 +162,8 @@ public class GameScreen implements Screen {
     private Image weatherEffectImage;
     private float animationTime = 0f;
 
+    private Image nightOverlay;
+
     // Cooking and crafting
     private Table cookingMenuTable;
     private ArrayList<TextButton> cookingMenuButtons = new ArrayList<>();
@@ -138,11 +171,6 @@ public class GameScreen implements Screen {
     private Table craftingMenu;
     private ArrayList<CraftingWidget> craftingWidgets = new ArrayList<>();
     private boolean craftingMenuOpen = false;
-
-
-    //Network
-    private NetworkClient networkClient;
-
 
 
     public GameScreen() {
@@ -162,19 +190,15 @@ public class GameScreen implements Screen {
         rootStack.setFillParent(true);
         uiStage.addActor(rootStack);
 
-
-        // for error message
-        Table messageTable = new Table();
-        messageTable.setFillParent(true);
-        rootStack.add(messageTable);
-
-        errorLabel = new Label("", GameAssetManager.messageBoxStyle);
-        errorLabel.setVisible(false);
-        errorLabel.setAlignment(Align.center);
-        messageTable.add(errorLabel).bottom().padBottom(50).expandY(); // expandY is needed to effect by the bottom()
+        // night black background
+        nightOverlay = new Image(GameAssetManager.blackBox);
+        nightOverlay.setFillParent(true);
+        nightOverlay.setTouchable(Touchable.disabled);
+        rootStack.add(nightOverlay);
+        nightOverlay.getColor().a = 0;
 
         // for hud table
-        Table hudTable = new Table().debugTable();
+        Table hudTable = new Table();
         hudTable.setFillParent(true);
         rootStack.add(hudTable);
 
@@ -192,19 +216,32 @@ public class GameScreen implements Screen {
         barTable.add(energyAmount).top().padTop(-10f).row();
         barTable.add(energyBar).expand().fill().pad(80,8,20,0);
         energyStack.add(barTable);
+
         miniMapWidget = new MiniMapWidget(this.game);
-        hudTable.add(miniMapWidget).size(200, 150).expandX().top().left().pad(20);
+        minimapCell = hudTable.add(miniMapWidget).size(200, 150).top().left().pad(20);
 
         hudTable.add(energyStack)
                 .width(1.5f * energyBox.getWidth()).height(1.5f * energyBox.getHeight())
-                .expand().bottom().right().pad(20f).row();
+                .expand().bottom().right().pad(20f);
+
+        // inventory
+        inventoryTable.setFillParent(false);
+        inventoryTable.bottom().center().padTop(950f);
+        rootStack.add(inventoryTable);
 
 
+        // for error message
+        Table messageTable = new Table();
+        messageTable.setFillParent(true);
+        rootStack.add(messageTable);
 
-        networkClient = Main.getMain().getNetworkClient();
+        errorLabel = new Label("", GameAssetManager.messageBoxStyle);
+        errorLabel.setVisible(false);
+        errorLabel.setAlignment(Align.center);
+        messageTable.add(errorLabel).bottom().padBottom(50).expandY(); // expandY is needed to effect by the bottom()
     }
 
-    // utils
+    // utils and menu
     public void showError(String message) {
         if(message == null || message.isEmpty()) {
             errorLabel.setVisible(false);
@@ -225,10 +262,46 @@ public class GameScreen implements Screen {
     }
 
 
+    public void loadPopupWindow() {
+        popupWindow = new Window("", GameAssetManager.skin);
+        popupWindow.setVisible(false);
+        popupWindow.setModal(true);
+
+        popupText = new Label("", GameAssetManager.messageBoxStyle);
+        popupText.setWrap(true);
+        popupText.setAlignment(Align.center);
+        popupYesButton = new TextButton("Yes", GameAssetManager.skin);
+        popupNoButton = new TextButton("No", GameAssetManager.skin);
+
+        popupWindow.add(popupText).width(760).colspan(2).expandX().fillX().pad(20).row();
+        popupWindow.add(popupNoButton).pad(20).uniformX();
+        popupWindow.add(popupYesButton).pad(20).uniformX();
+        popupWindow.pack();
+        popupWindow.setVisible(false);
+
+
+        uiStage.addActor(popupWindow);
+
+        popupNoButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hidePopup();
+            }
+        });
+
+        popupYesButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                popupRunnable.run();
+                hidePopup();
+            }
+        });
+    }
+
     public void showPopup(String message, Runnable runnable) {
         if (popupWindow.isVisible() || message.isEmpty()) return;
-        System.out.println("showing popup ...");
 
+        closeAllUiMenus();
 
         popupWindow.setSize(800, 500);
         popupWindow.setPosition(
@@ -255,8 +328,130 @@ public class GameScreen implements Screen {
     }
 
 
+    private void setDisableButton(TextButton button, boolean disable) {
+        button.setDisabled(disable);
+        if(disable) {
+            button.setColor(Color.GRAY);
+        } else {
+            button.setColor(Color.WHITE);
+        }
+    }
+    public void loadAnimalInfoPopup() {
+        animalWindow = new Window("", GameAssetManager.skin);
+        animalWindow.setVisible(false);
+        animalWindow.setModal(true);
+
+        Label animalHeader = new Label("Animal Info", GameAssetManager.skin);
+        animalHeader.setAlignment(Align.center);
+        animalWindow.add(animalHeader).colspan(2).row();
+
+        Label animalNameLabel = new Label("Name : ", GameAssetManager.skin);
+        animalWindow.add(animalNameLabel).padRight(15);
+
+        animalName = new Label("", GameAssetManager.skin);
+        animalWindow.add(animalName).padRight(15).row();
+
+        animalImage = new Image();
+        animalWindow.add(animalImage).padRight(15).size(100, 100).colspan(2).row();
+
+        TextButton petAnimal = new TextButton("Pet", GameAssetManager.skin);
+        getProductsButton = new TextButton("Get Products", GameAssetManager.skin);
+        setDisableButton(getProductsButton, true);
+        feedAnimalButton = new TextButton("Feed", GameAssetManager.skin);
+        setDisableButton(feedAnimalButton, true);
+        shepherdAnimalButton = new TextButton("Shepherd Animal", GameAssetManager.skin);
+        TextButton sell = new TextButton("Sell !!", GameAssetManager.skin);
+        TextButton back = new TextButton("Back", GameAssetManager.skin);
+
+        int buttonSize = 300;
+        animalWindow.add(petAnimal).pad(20).colspan(2).width(buttonSize).row();
+        animalWindow.add(getProductsButton).pad(20).colspan(2).width(buttonSize).row();
+        animalWindow.add(feedAnimalButton).pad(20).colspan(2).width(buttonSize).row();
+        animalWindow.add(sell).pad(20).colspan(2).width(buttonSize).row();
+        animalWindow.add(back).padTop(35).colspan(2).width(buttonSize).row();
+
+        animalWindow.pack();
+        animalWindow.setVisible(false);
+
+        uiStage.addActor(animalWindow);
+
+        petAnimal.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideAnimalInfoPopup();
+            }
+        });
+        getProductsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideAnimalInfoPopup();
+            }
+        });
+        feedAnimalButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideAnimalInfoPopup();
+            }
+        });
+        shepherdAnimalButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideAnimalInfoPopup();
+            }
+        });
+        sell.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                controller.sellAnimal(animalToggled);
+            }
+        });
+        back.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideAnimalInfoPopup();
+            }
+        });
+
+    }
+
+    public void showAnimalInfoPopup(Animal animal) {
+        closeAllUiMenus();
+
+        if (animalWindow.isVisible()) hideAnimalInfoPopup();
+
+        animalWindow.setSize(500, 1000);
+        animalWindow.setPosition(
+                uiStage.getWidth() / 2f,
+                uiStage.getHeight() / 2f,
+                Align.center
+        );
+
+        animalToggled = animal;
+        animalName.setText(animal.getName());
+        animalImage.setDrawable(new TextureRegionDrawable(animal.getTexture()));
+
+        setDisableButton(getProductsButton, !animal.hasProductReady());
+
+        boolean hasFeed = game.getPlayerInTurn().getInventory().hasEnoughStack("Hay", 1);
+        setDisableButton(feedAnimalButton, !hasFeed);
+
+        setDisableButton(shepherdAnimalButton, !animal.isOutsideToday());
+
+        animalWindow.getColor().a = 1;
+        animalWindow.setVisible(true);
+
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    public void hideAnimalInfoPopup() {
+        animalWindow.setVisible(false);
+        Gdx.input.setInputProcessor(gameMenuInputAdapter);
+    }
+
+
+
     public void loadTextures() {
-        playerAtlas = new TextureAtlas(Gdx.files.internal("characters/Abigail/sprites_player.atlas"));
+        playerAtlas = new TextureAtlas(Gdx.files.internal("characters/woman/woman.atlas"));
         clock = new Texture(Gdx.files.internal("clock/Clock.png"));
         clock.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
@@ -277,24 +472,44 @@ public class GameScreen implements Screen {
 
     private void loadPlayerAnimations(Player player) {
         ArrayList<Animation<TextureRegion>> animations = new ArrayList<>();
-        for (int i = 14; i > 9; i--) {
-            Array<TextureRegion> walkFrames = new Array<>();
-            if (i == 14) {
-                for (int j = 0; j < 4; j++) {
-                    String region = "player_" + 13 + "_" + 0;
-                    walkFrames.add(playerAtlas.findRegion(region));
-                }
-            } else {
-                for (int j = 0; j < 4; j++) {
-                    String region = "player_" + i + "_" + j;
-                    walkFrames.add(playerAtlas.findRegion(region));
-                }
-            }
-            animations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+
+        // DOWN
+        Array<TextureRegion> walkDown = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_ down", i);
+            if (r == null) System.out.println("[Null region] woman-move_ down, " + i);
+            walkDown.add(r);
         }
+        animations.add(new Animation<>(0.15f, walkDown, Animation.PlayMode.LOOP));
+
+        // RIGHT
+        Array<TextureRegion> walkRight = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_ right", i);
+            if (r == null) System.out.println("[Null region] woman-move_ right, " + i);
+            walkRight.add(r);
+        }
+        animations.add(new Animation<>(0.15f, walkRight, Animation.PlayMode.LOOP));
+
+        // UP
+        Array<TextureRegion> walkUp = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_ up", i);
+            if (r == null) System.out.println("[Null region] woman-move_ up, " + i);
+            walkUp.add(r);
+        }
+        animations.add(new Animation<>(0.15f, walkUp, Animation.PlayMode.LOOP));
+
+        // LEFT
+        Array<TextureRegion> walkLeft = new Array<>();
+        for (int i = 0; i < 3; i++) {
+            TextureRegion r = playerAtlas.findRegion("woman-move_left", i); // بدون فاصله
+            if (r == null) System.out.println("[Null region] woman-move_left, " + i);
+            walkLeft.add(r);
+        }
+        animations.add(new Animation<>(0.15f, walkLeft, Animation.PlayMode.LOOP));
 
         playersAnimations.put(player, animations);
-        player.setCurrentState(PlayerState.WalkingOrIdle);
     }
 
     private TextureRegion getTileObjectTexture(Tile tile) {
@@ -341,6 +556,26 @@ public class GameScreen implements Screen {
         return texture;
     }
 
+
+    private Color getSeasonTintColor() {
+        switch (game.getTime().getSeason()) {
+            case SPRING:
+                // #D1E05D
+                return new Color(0.82f, 0.88f, 0.36f, 1f);
+            case SUMMER:
+                // #F6FF49
+                return new Color(0.96f, 1f, 0.28f, 1f);
+            case FALL:
+                // #FFC481
+                return new Color(1f, 0.77f, 0.51f, 1f);
+            case WINTER:
+                // #b8ffeb
+                return new Color(0.72f, 1f, 0.92f, 1f);
+            default:
+                return Color.WHITE; // رنگ عادی و بدون تغییر
+        }
+    }
+
     public void renderTiles() {
         float camX = camera.position.x;
         float camY = camera.position.y;
@@ -384,6 +619,9 @@ public class GameScreen implements Screen {
                 float drawX = x * tileSize;
                 float drawY = y * tileSize;
 
+                Color tileColor = new Color(1, 1, 1, 1);
+                Color seasonTint = getSeasonTintColor();
+
                 if (tile.isPlowed() && tile.isWatered()) {
                     batch.setColor(0.35f, 0.25f, 0.2f, 1f);
                 } else if (tile.isPlowed()) {
@@ -394,10 +632,9 @@ public class GameScreen implements Screen {
                     batch.setColor(1f, 1f, 1f, 1f);
                 }
 
-
+                batch.setColor(tileColor.mul(seasonTint));
                 batch.draw(texture, drawX, drawY, tileSize, tileSize);
             }
-            batch.setColor(1, 1, 1, 1);
         }
 
         //Obj on tiles
@@ -429,6 +666,49 @@ public class GameScreen implements Screen {
         }
     }
 
+
+    public void renderBuildings() {
+        for (Player player : game.getPlayers()) {
+            for (Building building : player.getFarmBuildings()) {
+                if (building instanceof ShippingBin) {
+                    Location inMapLocation = Map.TileToPixelConverter(building.getLocation());
+                    int tileSize = Map.TILE_SIZE;
+
+                    TextureRegion texture = new TextureRegion(GameAssetManager.shippingBinTexture);
+                    batch.draw(texture, inMapLocation.x(), inMapLocation.y());
+                }
+            }
+        }
+    }
+
+    public void renderAnimals(float v) {
+        for (Player player : game.getPlayers()) {
+            for (Animal animal : player.getAnimals()) {
+                animal.updateMovement(v, game);
+
+                TextureRegion texture = animal.getTexture();
+                int tileSize = Map.TILE_SIZE;
+                batch.draw(texture, animal.getX(), animal.getY(), tileSize, tileSize);
+            }
+        }
+    }
+
+
+    /// test
+    public void cheatPlayer() {
+        Player player = game.getPlayerInTurn();
+        Location pLoc = player.getTileLocation();
+        player.addToBuildings(new AnimalBuilding("coop", new Location(pLoc.x() + 1, pLoc.y() + 1), 7,4, LivingPlace.COOP));
+        AnimalBuilding building = player.getAnimalBuilding(LivingPlace.COOP);
+        building.updateMap(game.getMap());
+
+        Animal animal = new Animal(AnimalType.CHICKEN, "joojeh", 500, LivingPlace.COOP, new ArrayList<>() );
+        player.addAnimal(animal);
+        building.addAnimalAndSetLocationInside(animal);
+        showError("cheated Animal");
+    }
+    /// end of test
+
     public void renderPlayers(float data) {
         for (Player player : game.getPlayers()) {
             renderPlayer(player, data);
@@ -436,40 +716,45 @@ public class GameScreen implements Screen {
     }
 
     private void renderPlayer(Player currentPlayer , float delta) {
-        Animation<TextureRegion> currentAnimation;
-
-        switch (currentPlayer.getCurrentState()) {
-            case WalkingOrIdle:
-                int animIndex = switch (currentPlayer.getDirection()) {
-                    case UP -> 3;
-                    case RIGHT -> 2;
-                    case DOWN -> 1;
-                    case LEFT -> 4;
-                    default -> 0;
-                };
-                currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
-                break;
-            case Unconscious:
-                currentAnimation = playersAnimations.get(currentPlayer).get(0); // TODO : change to unco
-                break;
-            default:
-                currentAnimation = playersAnimations.get(currentPlayer).get(0);
-                break;
-        }
+        int animIndex = switch (currentPlayer.getDirection()) {
+            case DOWN -> 0;
+            case RIGHT -> 1;
+            case UP -> 2;
+            case LEFT -> 3;
+            default -> 0;
+        };
 
         batch.setColor(currentPlayer.getColor());
 
-        TextureRegion currentFrame = currentAnimation.getKeyFrame(currentPlayer.getAnimationStateTime(), true);
+        String equippedTool = getEquippedToolKey(currentPlayer);
+
+        TextureRegion currentFrame = null;
+        if (equippedTool == null) {
+            Animation<TextureRegion> currentAnimation = playersAnimations.get(currentPlayer).get(animIndex);
+            if (currentPlayer.isMoving()) {
+                currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+            } else {
+                currentFrame = currentAnimation.getKeyFrame(0f);
+            }
+        } else {
+            String[] toolRegions = {
+                    "woman-" + equippedTool + "_down",
+                    "woman-" + equippedTool + "_right",
+                    "woman-" + equippedTool + "_up",
+                    "woman-" + equippedTool + "_left"
+            };
+            currentFrame = playerAtlas.findRegion(toolRegions[animIndex]);
+            if (currentFrame == null) {
+                System.out.println("[NULL tool region] " + toolRegions[animIndex]);
+            }
+        }
 
         if (currentFrame == null) return;
 
         float drawX = currentPlayer.getX() - (Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W) / 2f;
         float drawY = currentPlayer.getY();
-
-        currentPlayer.updateAnimationStateTime(delta);
-
-        batch.draw(currentFrame, drawX, drawY, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_W, Map.TILE_SIZE * Constants.PLAYER_SPRITE_TILE_H);
-
+        float scale = 0.8f;
+        batch.draw(currentFrame, drawX, drawY, currentFrame.getRegionWidth() * scale, currentFrame.getRegionHeight() * scale);
         batch.setColor(Color.WHITE);
     }
 
@@ -477,6 +762,29 @@ public class GameScreen implements Screen {
         Player player = App.getApp().getCurrentGame().getPlayerInTurn();
         camera.position.set(player.getX(), player.getY(), 0);
         camera.update();
+    }
+
+
+    // mini map window
+    public void toggleBiggerMiniMap() {
+        if (bigMinimapWindow != null) {
+            bigMinimapWindow.remove();
+            bigMinimapWindow = null;
+            minimapCell.setActor(miniMapWidget);
+            return;
+        }
+
+        minimapCell.setActor(null);
+
+        bigMinimapWindow = new Window("", GameAssetManager.skin);
+        bigMinimapWindow.setMovable(true);
+        bigMinimapWindow.setResizable(true);
+
+        bigMinimapWindow.add(miniMapWidget).size(1000, 750);
+        bigMinimapWindow.pack(); // اندازه پنجره را تنظیم کن
+
+        bigMinimapWindow.setPosition(uiStage.getWidth() / 2, uiStage.getHeight() / 2, Align.center);
+        uiStage.addActor(bigMinimapWindow);
     }
 
     private void renderClockUI() {
@@ -489,10 +797,9 @@ public class GameScreen implements Screen {
 
         batch.draw(clock, drawX, drawY);
         Time time = App.getApp().getCurrentGame().getTime();
-        TextureRegion season = new TextureRegion(new Texture(Gdx.files.internal("clock/" + time.getSeason().name() + ".png")));
-        TextureRegion weather = new TextureRegion(new Texture(Gdx.files.internal("clock/" + App.getApp().getCurrentGame().getTodayWeather().getStatus().name() + ".png")));
-        batch.draw(season, drawX + 210, drawY + 137, (float) season.getRegionWidth() /2, (float) season.getRegionHeight() /2);
-        batch.draw(weather, drawX + 115, drawY + 137, (float) weather.getRegionWidth() /2, (float) weather.getRegionHeight() /2);
+
+        batch.draw(seasonTexture, drawX + 210, drawY + 137, (float) seasonTexture.getRegionWidth() / 2, (float) seasonTexture.getRegionHeight() / 2);
+        batch.draw(weatherTexture, drawX + 115, drawY + 137, (float) weatherTexture.getRegionWidth() / 2, (float) weatherTexture.getRegionHeight() / 2);
 
         String date = (time.getDayOfWeek().toString().substring(0,3)) + ". " + time.getDay();
         font.draw(batch, date, drawX + 150, drawY + 210);
@@ -616,12 +923,11 @@ public class GameScreen implements Screen {
         Player player = game.getPlayerInTurn();
         Shop shop = game.getShopPlayerIsIn(player);
         if (shop == null) {
-            System.out.println("You aren't in a shop");
+            showError("You aren't in a shop");
         } else {
             Gdx.input.setInputProcessor(uiStage);
             shop.showShopMenu(uiStage, GameAssetManager.skin);
         }
-
     }
 
 
@@ -660,50 +966,413 @@ public class GameScreen implements Screen {
     }
 
     private void renderInventory() {
+        inventoryTable.clear();
+
         Player player = game.getPlayerInTurn();
         Inventory inventory = player.getInventory();
-        int selectedSlot = player.getSelectedSlot(); // Assuming you have this method
-
-        int screenWidth = Gdx.graphics.getWidth();
-        int slotSize = Map.TILE_SIZE / 2;
         int numSlots = player.getMaxInventorySize();
-        int startX = (screenWidth - numSlots * slotSize) / 2 ;
-        int y = Map.TILE_SIZE / 2;
 
         for (int i = 0; i < numSlots; i++) {
-            int x = startX + i * slotSize;
+            Stack slotStack = new Stack();
 
-            batch.draw(inventorySlot, x, y, slotSize, slotSize);
+            Image slotBg = new Image(new Texture("inventory/Mail.2jpg.jpg"));
+            slotStack.add(slotBg);
 
-            String slotNum = String.valueOf(i + 1);
-            smallFont.draw(batch, slotNum, x + 2, y + slotSize - 2);
-        }
+            if (i < inventory.getInventoryItems().size() && inventory.getInventoryItems().get(i) != null) {
+                TextureRegionDrawable itemDrawable = new TextureRegionDrawable(inventory.getInventoryItems().get(i).getItem().getTexture());
+                Image itemImg = new Image(itemDrawable);
+                slotStack.add(itemImg);
 
-        // Highlight selected slot
-        if (selectedSlot >= 0 && selectedSlot < numSlots) {
-            int highlightX = startX + selectedSlot * slotSize;
-            batch.draw(inventoryHighlightSlot, highlightX, y, slotSize, slotSize);
-        }
-
-        for (int i = 0; i < numSlots; i++) {
-            if (i < inventory.getInventoryItems().size()) {
-                if (inventory.getInventoryItems().get(i) != null) {
-                    int quantity = inventory.getInventoryItems().get(i).getAmount();
-
-                    TextureRegion itemTex = inventory.getInventoryItems().get(i).getItem().getTexture();
-                    if (itemTex != null) {
-                        int x = startX + i * slotSize;
-                        batch.draw(itemTex, x, y, slotSize, slotSize);
-
-                        // Draw item quantity at bottom-right corner
-                        String count = String.valueOf(quantity);
-                        layout.setText(smallFont, count);
-                        smallFont.draw(batch, count, x + slotSize - layout.width - 2, y + layout.height + 2);
-                    }
-                }
+                int quantity = inventory.getInventoryItems().get(i).getAmount();
+                Label countLabel = new Label(String.valueOf(quantity), GameAssetManager.skin);
+                countLabel.setFontScale(1f);
+                slotStack.add(countLabel);
             }
+
+            if (i == player.getSelectedSlot()) {
+                Image highlight = new Image(new Texture("inventory/Mail3.jpg"));
+                slotStack.add(highlight);
+
+                if (i < inventory.getInventoryItems().size() && inventory.getInventoryItems().get(i) != null) {
+                    TextureRegionDrawable itemDrawable = new TextureRegionDrawable(inventory.getInventoryItems()
+                            .get(i).getItem().getTexture());
+                    Image itemImg = new Image(itemDrawable);
+                    slotStack.add(itemImg);
+                }
+
+            }
+
+            inventoryTable.add(slotStack).size(60, 60);
         }
     }
+
+    private String getEquippedToolKey(Player player) {
+        Inventory inventory = player.getInventory();
+        int selectedSlot = player.getSelectedSlot();
+        ArrayList<ItemStack> items = inventory.getInventoryItems();
+        if (selectedSlot >= 0 && selectedSlot < items.size()) {
+            Item selectedItem = items.get(selectedSlot).getItem();
+            if (selectedItem != null) {
+                String name = selectedItem.getName().toLowerCase();
+                if (name.contains("scythe")) return "scythe";
+                if (name.equals("axe")) return "axe";
+                if (name.contains("water")) return "water";
+            }
+        }
+        return null;
+    }
+
+    public void toggleInventoryMenu() {
+        if (inventoryWindow != null) {
+            hideInventoryMenu();
+            return;
+        }
+        Skin skin = GameAssetManager.skin;
+        inventoryWindow = new Window("Inventory", skin);
+        inventoryWindow.setModal(true);
+        inventoryWindow.setSize(1356, 1000);
+        inventoryWindow.setPosition(
+                uiStage.getWidth() / 2f,
+                uiStage.getHeight() / 2f,
+                Align.center
+        );
+
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+
+        // ==== ردیف اول: دکمه‌های تب ====
+        String[] tabNames = {"Journal", "Inventory", "Skills", "Map", "Setting", "Social"};
+        Table tabsRow = new Table();
+
+        // رو این دکمه‌ها اکشن تعویض محتوا می‌ذاریم:
+        for (String tab : tabNames) {
+            TextButton tabBtn = new TextButton(tab, skin);
+            tabsRow.add(tabBtn).pad(5);
+
+            tabBtn.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    contentCell.setActor(null);
+                    switch (tab) {
+                        case "Journal":
+                            contentCell.setActor(getQuestsList());
+                            break;
+                        case "Inventory":
+                            contentCell.setActor(getInventoryContentTable());
+                            break;
+                        case "Skills":
+                            contentCell.setActor(getSkillsMenuTable());
+                            break;
+                        default:
+                            Label comingSoon = new Label(tab + " content coming soon!", skin);
+                            comingSoon.setAlignment(Align.center);
+                            contentCell.setActor(comingSoon);
+                    }
+                }
+            });
+        }
+        mainTable.add(tabsRow).growX().padTop(35).row();
+
+        // ==== ردیف وسط: محتوای تب جاری ====
+        contentCell = mainTable.add(getQuestsList()).expand().fill();
+        mainTable.row();
+
+        // ==== ردیف آخر: دکمه Close پایین ====
+        TextButton closeBtn = new TextButton("Close", skin);
+        closeBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideInventoryMenu();
+            }
+        });
+        Table closeRow = new Table();
+        closeRow.add(closeBtn).center().padBottom(12);
+        mainTable.add(closeRow).growX().bottom().row();
+
+        inventoryWindow.clearChildren();
+        inventoryWindow.add(mainTable).grow().pad(8);
+
+        uiStage.addActor(inventoryWindow);
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    private void hideInventoryMenu() {
+        if (inventoryWindow != null) {
+            inventoryWindow.remove();
+            inventoryWindow = null;
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
+
+    private Table getQuestsList() {
+        Table questsTable = new Table();
+        Skin skin = GameAssetManager.skin;
+
+        Label title = new Label("Journal - Quests", skin, "title");
+        title.setAlignment(Align.center);
+        title.setFontScale(1f);
+
+        questsTable.add(title).colspan(2).padBottom(32).center().row();
+
+        // NPC names & quests
+        String[] npcs = {"Abigail", "Harvey", "Leah", "Robin", "Sebastian"};
+        String[] colors = {"e63946", "f1faee", "a8dadc", "457b9d", "1d3557"};
+
+        for (int i = 0; i < npcs.length; i++) {
+            Label nameLabel = new Label(npcs[i] + ":", skin, "subtitle");
+            nameLabel.setColor(Color.valueOf(colors[i]));
+            nameLabel.setFontScale(0.9f);
+
+            Label questsLabel = new Label(controller.getQuesList(npcs[i].toLowerCase()), skin);
+            questsLabel.setWrap(true);
+            questsLabel.setColor(Color.valueOf(colors[i]));
+            questsLabel.setFontScale(0.9f);
+
+            questsTable.add(nameLabel).padRight(50).top().left().width(170);
+            questsTable.add(questsLabel).growX().padBottom(30).padTop(10).left().row();
+        }
+
+        questsTable.pad(30, 20, 30, 20).top().left();
+        return questsTable;
+    }
+
+    private Table getInventoryTable() {
+        Table inventoryGrid = new Table();
+        Skin skin = GameAssetManager.skin;
+
+        Player player = game.getPlayerInTurn();
+        Inventory inventory = player.getInventory();
+        int numSlots = player.getMaxInventorySize();
+        ArrayList<ItemStack> items = inventory.getInventoryItems();
+
+        final float slotSize = 82f;
+
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                int i = row * 10 + col;
+
+                Stack slotStack = new Stack();
+
+                Image slotBg = new Image(GameAssetManager.inventorySlot);
+                slotBg.setColor(Color.WHITE);
+                slotStack.add(slotBg);
+
+                if (i < items.size() && items.get(i) != null && items.get(i).getItem() != null) {
+                    TextureRegion itemTex = items.get(i).getItem().getTexture();
+                    Image itemImg = new Image(new TextureRegionDrawable(itemTex));
+                    slotStack.add(itemImg);
+
+                    int quantity = items.get(i).getAmount();
+                    if (quantity > 1) {
+                        Table countTable = new Table();
+                        Label lbl = new Label(String.valueOf(quantity), skin);
+                        lbl.setFontScale(0.74f);
+                        lbl.setColor(Color.GOLD);
+                        countTable.add(lbl).bottom().center().padBottom(4);
+                        countTable.setFillParent(true);
+                        countTable.bottom();
+                        slotStack.add(countTable);
+                    }
+                }
+
+                if (i == player.getSelectedSlot()) {
+                    Image highlight = new Image(GameAssetManager.inventoryHighlightSlot);
+                    highlight.setColor(new Color(1, 1, 1, 0.41f));
+                    slotStack.add(highlight);
+                }
+
+                final int slotIndex = i;
+                slotStack.addListener(new InputListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        player.setSelectedSlot(slotIndex);
+                        updateInventoryContent();
+                        return true;
+                    }
+                });
+
+                inventoryGrid.add(slotStack).size(slotSize, slotSize).pad(4);
+            }
+            inventoryGrid.row();
+        }
+
+        return inventoryGrid;
+    }
+
+    private Table getInventoryContentTable() {
+        Skin skin = GameAssetManager.skin;
+
+        Image trashImg = new Image(new Texture("inventory/stardewmoddingapi_ou7895mbeu.png"));
+        trashImg.setScaling(Scaling.fit);
+        trashImg.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Player player = game.getPlayerInTurn();
+                int idx = player.getSelectedSlot();
+                Inventory inv = player.getInventory();
+                ArrayList<ItemStack> items = inv.getInventoryItems();
+
+                if (idx >= 0 && idx < items.size() && items.get(idx) != null) {
+                    pendingTrashSlot = idx;
+                }
+
+                return true;
+            }
+        });
+
+        Table inventoryMenuTable = new Table(skin);
+
+        Table gridTable = getInventoryTable();
+        ScrollPane scrollPane = new ScrollPane(gridTable, skin);
+        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollbarsOnTop(true);
+        scrollPane.setOverscroll(false, false);
+        scrollPane.setForceScroll(false, true);
+        scrollPane.setScrollPercentY(0); // اول جدول
+
+        float slotSize = 82 + 8;
+        scrollPane.setHeight(2 * slotSize);
+
+        // ---- لیبل بالای جدول ----
+        Label titleLabel = new Label("Inventory", skin, "title");
+        titleLabel.setAlignment(Align.center);
+        titleLabel.setFontScale(1.16f);
+        inventoryMenuTable.add(titleLabel).center().padBottom(28).row();
+
+        Table toolsRow = new Table();
+        toolsRow.add(scrollPane).width(944).height(2 * slotSize).padRight(14); // 10*82 + پدها
+        toolsRow.add(trashImg).size(55, 55).center();
+
+        inventoryMenuTable.add(toolsRow).center().padTop(33);
+        inventoryMenuTable.row();
+
+        return inventoryMenuTable;
+    }
+
+    private void updateInventoryContent() {
+        if (contentCell != null) {
+            contentCell.setActor(getInventoryContentTable());
+        }
+    }
+
+    private Table getSkillsMenuTable() {
+        Skin skin = GameAssetManager.skin;
+        Player player = game.getPlayerInTurn();
+
+        Table skillsTable = new Table(skin);
+
+        // عنوان
+        Label title = new Label("Skills", skin, "title");
+        //title.setAlignment(Align.center);
+        title.setFontScale(1.15f);
+        skillsTable.add(title).padBottom(36).center().colspan(2).padLeft(700).row();
+
+        // اسامی و آیکون و عکس توضیح هر مهارت
+        String[] skills = {"Farming", "Fishing", "Mining", "Foraging"};
+        String[] skillIcons = {
+                GameAssetManager.farmingSkillName,
+                GameAssetManager.fishingSkillName,
+                GameAssetManager.miningSkillName,
+                GameAssetManager.foragingSkillName
+        };
+        String[] skillDescImgs = {
+                "inventory/farming.png",
+                "inventory/fishing.png",
+                "inventory/mining.png",
+                "inventory/foraging.png"
+        };
+        int[] skillLevels = {
+                player.getSkills().getFarmingLevel(),
+                player.getSkills().getFishingLevel(),
+                player.getSkills().getMiningLevel(),
+                player.getSkills().getForagingLevel()
+        };
+        // تصاویر ستاره برای همه مهارت‌ها مشترک
+        String[] starImages = {
+                GameAssetManager.star1Name,
+                GameAssetManager.star2Name,
+                GameAssetManager.star3Name,
+                GameAssetManager.star4Name
+        };
+
+        String[] skillColors = {
+                "#B2E672", // Farming
+                "#7DD1F4", // Fishing
+                "#DDBEEA", // Mining
+                "#FECC5C"  // Foraging
+        };
+
+        for (int i = 0; i < skills.length; i++) {
+            Table row = new Table(skin);
+
+            // آیکون مهارت
+            Image skillIcon = new Image(new TextureRegion(new Texture(skillIcons[i])));
+            skillIcon.setSize(64, 64);
+
+            // عکس توضیح مهارت مخصوص همون اسکیل
+            final TextureRegion descRegion = new TextureRegion(new Texture(skillDescImgs[i]));
+            skillIcon.addListener(new InputListener() {
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    showSkillImageTooltip(descRegion, skillIcon);
+                }
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    hideSkillImageTooltip();
+                }
+            });
+
+            row.add(skillIcon).size(64, 64).padRight(18);
+
+            // عنوان
+            Label lbl = new Label(skills[i], skin, "title");
+            lbl.setColor(Color.valueOf(skillColors[i]));
+            lbl.setFontScale(0.5f);
+            row.add(lbl).padRight(40);
+
+            // ستاره‌ها (نمایش فقط لول‌هایی که باز شده)
+            Table stars = new Table();
+            int level = skillLevels[i];
+            for (int lv = 0; lv < 4; lv++) {
+                if (lv < level) {
+                    Image star = new Image(new TextureRegion(new Texture(starImages[lv])));
+                    star.setSize(28, 28);
+                    stars.add(star).pad(2);
+                }
+            }
+            row.add(stars).padLeft(24);
+
+            skillsTable.add(row).padBottom(32).left().row();
+        }
+
+        skillsTable.top().pad(40, 36, 30, 36).left();
+        return skillsTable;
+    }
+
+    private void showSkillImageTooltip(TextureRegion region, Actor icon) {
+        if (skillDescImage == null) {
+            skillDescImage = new Image(region);
+            uiStage.addActor(skillDescImage);
+        } else {
+            skillDescImage.setDrawable(new TextureRegionDrawable(region));
+            skillDescImage.setVisible(true);
+        }
+        // اندازه سه برابر آیکون مهارت
+        skillDescImage.setSize(420, 210);
+        // موقعیت سمت چپ آیکون
+        float tipX = icon.localToStageCoordinates(new Vector2(-icon.getWidth() * 3 - 135, 0)).x;
+        float tipY = icon.localToStageCoordinates(new Vector2(0, 50)).y;
+        skillDescImage.setPosition(tipX, tipY);
+        skillDescImage.toFront();
+        skillDescImage.setVisible(true);
+    }
+
+    private void hideSkillImageTooltip() {
+        if (skillDescImage != null)
+            skillDescImage.setVisible(false);
+    }
+
 
 
     // WINDOWS
@@ -711,6 +1380,7 @@ public class GameScreen implements Screen {
         if (exitWindow != null) hideExitMenu();
         if (terminalWindow != null && terminalWindow.isVisible()) hideExitMenu();
         if (popupWindow != null && popupWindow.isVisible()) hidePopup();
+        if (animalWindow != null && animalWindow.isVisible()) hideAnimalInfoPopup();
     }
     // exit Menu
     public void toggleExitMenu() {
@@ -932,10 +1602,32 @@ public class GameScreen implements Screen {
         }
     }
 
+    private void updateNightOverlay() {
+        Time time = game.getTime();
+        int currentHour = time.getHour();
+
+        int startHour = 17;
+        int endHour = 22;
+        float targetAlpha = 0f;
+
+        if (currentHour >= startHour && currentHour < endHour) {
+            float progress = (float)(currentHour - startHour) / (endHour - startHour);
+            targetAlpha = progress * GameSetting.getMaxNightAlpha();
+        } else if (currentHour >= endHour || currentHour < 6) {
+            targetAlpha = GameSetting.getMaxNightAlpha();
+        }
+
+        nightOverlay.getColor().a = targetAlpha;
+    }
+
+
     public Game getGame() {
         return game;
     }
 
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
 
     //Network Handle
     public void handleServerUpdate(Request serverRequest) {
@@ -1015,41 +1707,22 @@ public class GameScreen implements Screen {
 
 
         // popup window
-        popupWindow = new Window("", GameAssetManager.skin);
-        popupWindow.setVisible(false);
-        popupWindow.setModal(true);
+        loadPopupWindow();
 
-        popupText = new Label("", GameAssetManager.messageBoxStyle);
-        popupText.setWrap(true);
-        popupText.setAlignment(Align.center);
-        popupYesButton = new TextButton("Yes", GameAssetManager.skin);
-        popupNoButton = new TextButton("No", GameAssetManager.skin);
-
-        popupWindow.add(popupText).width(760).colspan(2).expandX().fillX().pad(20).row();
-        popupWindow.add(popupNoButton).pad(20).uniformX();
-        popupWindow.add(popupYesButton).pad(20).uniformX();
-        popupWindow.pack();
-        popupWindow.setVisible(false);
-
-
-        uiStage.addActor(popupWindow);
-
-        popupNoButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                hidePopup();
-            }
-        });
-
-        popupYesButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                popupRunnable.run();
-                hidePopup();
-            }
-        });
+        loadAnimalInfoPopup();
 
         showError("Welcome " + game.getPlayerInTurn().getNickname() + " !");
+
+        Time time = game.getTime();
+        Weather todayWeather = game.getTodayWeather();
+
+        Texture seasonTex = new Texture(Gdx.files.internal("clock/" + time.getSeason().name() + ".png"));
+        seasonTex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        this.seasonTexture = new TextureRegion(seasonTex);
+
+        Texture weatherTex = new Texture(Gdx.files.internal("clock/" + todayWeather.getStatus().name() + ".png"));
+        weatherTex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        this.weatherTexture = new TextureRegion(weatherTex);
     }
 
     @Override
@@ -1068,19 +1741,32 @@ public class GameScreen implements Screen {
 
             // everything render based on camera
             batch.setProjectionMatrix(camera.combined);
+            stateTime += v;
             batch.begin();
             renderTiles();
+            renderAnimals(v);
+
+            renderBuildings();
             renderPlayers(v);
 
             // TODO : (Better) move clock render to uiStage
             renderClockUI();
-            //TODO : correct
-//            renderInventory();
-
+            int slot = game.getPlayerInTurn().getSelectedSlot();
+            int bag = game.getPlayerInTurn().getInventory().hashCode();
+            if (slot != lastSelectedSlot || bag != lastBagHash) {
+                renderInventory();
+                lastSelectedSlot = slot;
+                lastBagHash = bag;
+            }
             batch.end();
 
             // Weather animation
             loadTodayWeatherAnimation(v);
+
+            if (pendingInventoryUiRefresh) {
+                updateInventoryContent();
+                pendingInventoryUiRefresh = false;
+            }
 
             // UI
             uiStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -1088,6 +1774,10 @@ public class GameScreen implements Screen {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (batch.isDrawing()) {
+                batch.end();
+            }
         }
     }
 

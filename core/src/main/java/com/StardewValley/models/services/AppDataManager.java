@@ -9,9 +9,7 @@ import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.NPC.*;
 import com.StardewValley.models.PlayerInteraction.Friendship;
 import com.StardewValley.models.Shops.*;
-import com.StardewValley.models.animals.Animal;
-import com.StardewValley.models.animals.AnimalProduct;
-import com.StardewValley.models.animals.Fish;
+import com.StardewValley.models.animals.*;
 import com.StardewValley.models.artisan.*;
 import com.StardewValley.models.buildings.*;
 import com.StardewValley.models.cooking.Food;
@@ -27,9 +25,10 @@ import com.StardewValley.models.saveClasses.*;
 import com.StardewValley.models.tools.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -164,6 +163,10 @@ public class AppDataManager {
         kryo.register(Skill.class);
         kryo.register(Location.class);
         kryo.register(Animal.class);
+
+        kryo.register(LivingPlace.class);
+        kryo.register(AnimalType.class);
+
         kryo.register(AnimalProduct.class); // NO ARG CONSTRUCTOR NOT ADDED
         kryo.register(PlayerNPCInteraction.class);
 
@@ -193,6 +196,8 @@ public class AppDataManager {
         kryo.register(ArrayList.class);
         kryo.register(HashMap.class);
         kryo.register(String.class);
+
+        kryo.register(Vector2.class);
 
     }
 

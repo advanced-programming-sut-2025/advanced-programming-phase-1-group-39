@@ -34,6 +34,7 @@ public class Player {
 
     // graphic - based on pixels
     private float x, y;
+    private boolean isMoving;
 
     private String username;
     private String nickname;
@@ -306,10 +307,16 @@ public class Player {
     public void addFirstBuildingObjects(Game game) {
         Building cabin = new Cabin(new Location(startOfFarm.x() + 70, startOfFarm.y() + 5));
         Building greenhouse = new GreenHouse(new Location(startOfFarm.x() + 25, startOfFarm.y() + 0));
-        Building shippingBin = new ShippingBin("Shipping Bin", new Location(startOfFarm.x() + 77, startOfFarm.y() + 10), 1, 1);
+        Building shippingBin = new ShippingBin("Shipping Bin", new Location(startOfFarm.x() + 77, startOfFarm.y() + 10), 2, 1);
+
         addToBuildings(cabin);
         addToBuildings(greenhouse);
         addToBuildings(shippingBin);
+
+        for (Building building : playerFarmBuildings) {
+            building.updateMap(game.getMap());
+            building.updateMap(game.getBaseMap());
+        }
     }
 
     public void addToBuildings(Building building) {
@@ -378,19 +385,27 @@ public class Player {
         animals.put(animal.getName(), animal);
     }
 
-    public int sellAnimal(Animal animal) {
-        int money = (int) (animal.getPrice() * (((double) animal.getFriendship() / 1000) + 0.3));
-        changeMoney(money);
-        animals.remove(animal.getName());
-
+    public AnimalBuilding getAnimalLivingPlaceBuilding(Animal animal) {
         AnimalBuilding animalBuilding;
         for (Building building : this.playerFarmBuildings) {
             if (building instanceof AnimalBuilding) {
                 if (((AnimalBuilding) building).hasAnimal(animal)) {
                     animalBuilding = (AnimalBuilding) building;
-                    animalBuilding.removeAnimal(animal);
+                    return animalBuilding;
                 }
             }
+        }
+        return null;
+    }
+
+    public int sellAnimal(Animal animal) {
+        int money = (int) (animal.getPrice() * (((double) animal.getFriendship() / 1000) + 0.3));
+        changeMoney(money);
+        animals.remove(animal.getName());
+
+        AnimalBuilding animalBuilding = getAnimalLivingPlaceBuilding(animal);
+        if (animalBuilding != null) {
+            animalBuilding.removeAnimal(animal);
         }
         return money;
     }
@@ -479,6 +494,8 @@ public class Player {
         }
         return null;
     }
+
+
 
     // skill
     public void learnNewRecipes() {
@@ -623,6 +640,10 @@ public class Player {
     }
 
     // state of player
+    public boolean isMoving() { return isMoving; }
+
+    public void setMoving(boolean moving) { this.isMoving = moving; }
+
     public GameScreen.PlayerState getCurrentState() {
         return currentState;
     }
@@ -640,8 +661,5 @@ public class Player {
         this.animationStateTime += delta;
     }
 
-    public void resetAnimationStateTime() {
-        this.animationStateTime = 0f;
-    }
 
 }

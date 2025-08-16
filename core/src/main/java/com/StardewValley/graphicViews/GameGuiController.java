@@ -1,14 +1,26 @@
 package com.StardewValley.graphicViews;
 
-import com.StardewValley.controllers.*;
+import com.StardewValley.controllers.AppControllers;
+import com.StardewValley.controllers.GameController;
+import com.StardewValley.controllers.NPCGameController;
+import com.StardewValley.controllers.PlayersInteractionController;
 import com.StardewValley.models.*;
+import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.Enums.commands.GameCommands;
 import com.StardewValley.models.Enums.commands.InteractionsCommand;
 import com.StardewValley.models.Enums.commands.NPCGameCommand;
+import com.StardewValley.models.NPC.PlayerNPCInteraction;
+import com.StardewValley.models.NPC.Quest;
+import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.buildings.AnimalBuilding;
 import com.StardewValley.models.cooking.FoodManager;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingManager;
 import com.StardewValley.models.crafting.CraftingRecipe;
+import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.tools.Axe;
+import com.StardewValley.models.tools.Pickaxe;
+import com.StardewValley.models.tools.Tool;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
@@ -61,17 +73,34 @@ public class GameGuiController {
 
     public String buildGreenhouse(Player player, Game game) {
         player.buildGreenHouse();
+        (player.getBuildingByName("greenhouse")).updateMap(game.getMap());
         player.getBuildingByName("greenhouse").updateMap(game.getMap());
         return "your green house was built!";
     }
 
     public void cook(FoodRecipe recipe) {
         Result result = FoodManager.cook(recipe.name(), App.getApp().getCurrentGame().getPlayerInTurn());
-        System.out.println(result.message());
+        screen.showError(result.message());
     }
 
     public void craft(CraftingRecipe recipe, Player player) {
-        System.out.println(CraftingManager.craft(recipe.getName(), player));
+        screen.showError(CraftingManager.craft(recipe.getName(), player).message());
+    }
+
+    // Animal
+    public void sellAnimal(Animal animal) {
+        screen.showPopup("Do you REALLY want to sell " + animal.getName() + " ?", () -> {
+            return;
+        });
+    }
+
+    public void shepherdAnimal(Animal animal) {
+        Player player = screen.getGame().getPlayerInTurn();
+        AnimalBuilding building = player.getAnimalLivingPlaceBuilding(animal);
+        Location buildingLocation = building.getLocation();
+        animal.sendOutside(buildingLocation.x() + 1, buildingLocation.y() + building.getHeight() + 1);
+
+        screen.showError("You shepherd animal! " + animal.getName() + " goes outside");
     }
 
     public String processCommand(String command) {
@@ -341,4 +370,70 @@ public class GameGuiController {
         }
         return text.replaceAll("\\u001B\\[[;\\d]*m", "");
     }
+
+    public void useTool(Direction direction) {
+        Game game = screen.getGame();
+        Player player = game.getPlayerInTurn();
+
+        Tile tile = game.getMap().getTile(player.getTileLocation().x() + direction.dx,
+                player.getTileLocation().y() + direction.dy);
+        if (tile != null) {
+            ItemStack itemStack = player.getInventory().getInHand();
+            if (itemStack != null && itemStack.getItem() instanceof Tool tool) {
+                int energyConsumed = tool.getUsingEnergy(player.getSkills(), game.getTodayWeather());
+                if (player.getTurnEnergy() >= energyConsumed) {
+                    boolean result = tool.useTool(tile, player, player.getSkills()).success();
+                    if (!result) {
+                        if (tool instanceof Pickaxe || tool instanceof Axe) {
+                            energyConsumed -= 1;
+                            player.changeEnergy(-energyConsumed);
+                        }
+                    } else {
+                        player.changeEnergy(-
+                                energyConsumed);
+                    }
+                }
+            }
+        }
+    }
+
+    public String getQuesList(String NPCName) {
+        App app = App.getApp();
+        Game game = screen.getGame();
+        Player player = game.getPlayerInTurn();
+        StringBuilder output = new StringBuilder();
+        PlayerNPCInteraction friendship = player.getFriendship(NPCName);
+        int count = 0;
+        if (NPCName.equals("Sebastian")) { output.append("     "); }
+        if (getMission(1, NPCName) != null) {
+            count++;
+            output.append(count).append(") ").append(getMission(1, NPCName)).append("\n");
+        }
+        if (getMission(2, NPCName) != null && player.getFriendship(NPCName).getFriendshipLevel() >= 1) {
+            count++;
+            output.append(count).append(") ").append(getMission(2, NPCName)).append("\n");
+        }
+        if (getMission(3, NPCName) != null &&
+                player.getFriendship(NPCName).getFriendshipLevel() >= 1 &&
+                friendship.getActiveMission3().isGreater(game.getTime())) {
+            count++;
+            output.append(count).append(") ").append(getMission(3, NPCName)).append("\n");
+        }
+        return output.toString();
+    }
+
+
+    private String getMission(int level, String NPCName) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        for (Quest quest : game.getNPC(NPCName).getQuests()) {
+            if (quest.getLevel() == level) {
+                return game.getNPC(NPCName).getMissions().get(level - 1);
+            }
+        }
+        return null;
+    }
+
+
+
 }

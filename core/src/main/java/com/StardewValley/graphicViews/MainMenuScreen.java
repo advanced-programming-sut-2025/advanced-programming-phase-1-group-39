@@ -5,7 +5,6 @@ import com.StardewValley.graphicControllers.MainGuiController;
 import com.StardewValley.models.App;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
-import com.StardewValley.models.services.SaveAppManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -18,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainMenuScreen implements Screen {
     private Stage stage;
@@ -29,6 +27,7 @@ public class MainMenuScreen implements Screen {
     private final Label menuTitle;
 
     private TextButton gameMenuButton;
+    private TextButton gameOnlineButton;
     private TextButton profileMenuButton;
     private TextButton logoutButton;
     private TextButton exitButton;
@@ -47,7 +46,8 @@ public class MainMenuScreen implements Screen {
         this.background = new Image(GameAssetManager.MenuTexture2);
         this.logo = new Image(GameAssetManager.logoTexture);
         this.menuTitle = new Label("Main Menu", skin);
-        this.gameMenuButton = new TextButton("Game Menu", skin);
+        this.gameMenuButton = new TextButton("Offline Game", skin);
+        this.gameOnlineButton = new TextButton("Online Game", skin);
         this.profileMenuButton = new TextButton("Profile", skin);
         this.logoutButton = new TextButton("Logout", skin);
         this.exitButton = new TextButton("Exit", skin);
@@ -61,6 +61,7 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         try {
+            Main.getBatch().setProjectionMatrix(new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
             stage = new Stage(new FitViewport(1920, 1080));
             Gdx.input.setInputProcessor(stage);
 
@@ -68,7 +69,7 @@ public class MainMenuScreen implements Screen {
             music.play();
 
             // تنظیم و اضافه‌کردن بک‌گراند
-            background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            background.setSize(stage.getWidth(), stage.getHeight());
             background.setColor(1, 1, 1, 0.5f);
             stage.addActor(background);
 
@@ -126,6 +127,10 @@ public class MainMenuScreen implements Screen {
             // دکمه Game Menu
             gameMenuButton.setColor(Color.valueOf("E9D8A6"));
             table.add(gameMenuButton).width(400).height(100).padBottom(30);
+            table.row();
+
+            gameOnlineButton.setColor(Color.valueOf("E9D8A6"));
+            table.add(gameOnlineButton).width(400).height(100).padBottom(30);
             table.row();
 
             // دکمه Profile Menu
@@ -189,6 +194,10 @@ public class MainMenuScreen implements Screen {
 
     public TextButton getGameMenuButton() {
         return gameMenuButton;
+    }
+
+    public TextButton getGameOnlineButton() {
+        return gameOnlineButton;
     }
 
     public TextButton getProfileMenuButton() {

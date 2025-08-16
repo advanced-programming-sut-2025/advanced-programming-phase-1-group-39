@@ -79,6 +79,7 @@ public class GameMenuController {
             if (currentGame.getPlayers().indexOf(currentGame.getPlayerInTurn()) == 3) {
                 currentGame.addRandomFarmForPlayer(currentGame.getPlayerInTurn(),
                         FarmType.getFarmTypeById(Integer.parseInt(mapNumber)));
+                currentGame.addNpcMap();
                 currentGame.startGame();
                 app.setCurrentMenu(Menu.GAME);
                 currentGame.setPlayerInTurn(currentGame.getPlayers().get(0));

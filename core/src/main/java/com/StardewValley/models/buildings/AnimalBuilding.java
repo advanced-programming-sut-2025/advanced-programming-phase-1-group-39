@@ -5,16 +5,20 @@ import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.animals.LivingPlace;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AnimalBuilding extends Building {
-    protected final LivingPlace type;
-    protected final ArrayList<Animal> animals;
+    protected LivingPlace type;
+    protected ArrayList<Animal> animals;
+
+    public float stateTime = 0;
 
     public AnimalBuilding(String name, Location location, int width, int height, LivingPlace type) {
         super(name, location, width, height);
         this.type = type;
         this.animals = new ArrayList<>();
     }
+    public AnimalBuilding() {}
 
     public int getCapacity() {
         if (type.getCapacity() - animals.size() <= 0) {
@@ -29,8 +33,15 @@ public class AnimalBuilding extends Building {
         return false;
     }
 
-    public boolean addAnimal(Animal animal) {
+    public Location getRandomLocationInside() {
+        int randX = new Random().nextInt(getWidth() - 2) + getLocation().x() + 1;
+        int randY = new Random().nextInt(getHeight() - 2) + getLocation().y() + 1;
+        return new Location(randX, randY);
+    }
+
+    public boolean addAnimalAndSetLocationInside(Animal animal) {
         if (animals.size() >= getCapacity()) return false;
+        animal.setLocation(getRandomLocationInside());
         return animals.add(animal);
     }
     public void removeAnimal(Animal animal) {

@@ -41,6 +41,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -162,6 +163,10 @@ public class GameScreen implements Screen {
     public static Location sebastianLocation;
     private HashMap<String, Boolean> npcDialogVisible = new HashMap<>();
     public String[] npcNames = {"sebastian", "abigail", "harvey", "leah", "robin"};
+    private Window npcMenuWindow;
+    private String npcMenuCurrentNpcId;
+    private HashMap<String, Boolean> npcHeartVisible = new HashMap<>();
+    private Texture heartBubbleTexture;
 
     // animal popup
     private Window animalWindow;
@@ -264,6 +269,10 @@ public class GameScreen implements Screen {
         sebastianLocation = Map.TileToPixelConverter(game.getNPC("sebastian").getLocation());
         for (String npcName : npcNames) {
             npcDialogVisible.put(npcName, false);
+        }
+        this.heartBubbleTexture = new Texture("NPC/Emote2.png");
+        for (String npc : npcNames) {
+            npcHeartVisible.put(npc.toLowerCase(), false);
         }
 
         // for error message
@@ -1583,14 +1592,12 @@ public class GameScreen implements Screen {
 
         float cloudX = x;
         float cloudY = y + npcTexture.getHeight() * scale + 10;
-
+        float scale2 = 3f;
         if (!npcDialogVisible.get(id)) {
-            // ابر کوچک بدون متن
-            float scale2 = 3f;
+
             batch.draw(speechCloudTexture, cloudX, cloudY, speechCloudTexture.getWidth() * scale2,
                     speechCloudTexture.getHeight() * scale2);
         } else {
-            // بک‌گراند دیالوگ
             String condition = controller.getConditions(game.getTime(), game.getPlayerInTurn().getFriendship(id), game.getTodayWeather());
             String text = controller.getDialogueByConditions(condition, id, game);
             BitmapFont font = smallFont;
@@ -1601,13 +1608,16 @@ public class GameScreen implements Screen {
             float bubbleWidth = layout.width + padding * 2;
             float bubbleHeight = layout.height + padding * 2;
 
-
-            // وسط‌چین روی NPC
             float bubbleX = cloudX;
             float bubbleY = cloudY;
 
             batch.draw(speechBubbleTexture, bubbleX, bubbleY, bubbleWidth, bubbleHeight * 1.2f);
             font.draw(batch, layout, bubbleX + padding, bubbleY + bubbleHeight - 5f);
+        }
+
+        if (npcHeartVisible.get(id)) {
+            batch.draw(heartBubbleTexture, cloudX, cloudY, speechCloudTexture.getWidth() * scale2,
+                    speechCloudTexture.getHeight() * scale2);
         }
     }
 
@@ -1671,6 +1681,224 @@ public class GameScreen implements Screen {
         BitmapFont font = smallFont;
         GlyphLayout layout = new GlyphLayout(font, getNpcDialogText(npcId));
         return layout.height + 20f;
+    }
+
+    public void openNpcGiftMenu(String npcId) {
+        this.npcMenuCurrentNpcId = npcId;
+
+        Skin skin = GameAssetManager.skin;
+        npcMenuWindow = new Window("Gift to " + npcId, skin);
+        npcMenuWindow.setModal(true);
+        npcMenuWindow.setSize(1356, 1000);
+        npcMenuWindow.setPosition(uiStage.getWidth() / 2f, uiStage.getHeight() / 2f, Align.center);
+
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+
+        // === ردیف اول: دکمه‌های تب ===
+        String[] tabNames = {"Gift", "Info", "Quests"};
+        Table tabsRow = new Table();
+        for (String tab : tabNames) {
+            TextButton tabBtn = new TextButton(tab, skin);
+            tabsRow.add(tabBtn).pad(5);
+
+            tabBtn.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    contentCell.setActor(null);
+                    switch (tab) {
+                        case "Gift":
+                            contentCell.setActor(getGiftContentTable(npcId));
+                            break;
+                        case "Info":
+                            contentCell.setActor(getNpcInfoTable(npcId));
+                            break;
+                        case "Quests":
+                            contentCell.setActor(getNpcQuestTable(npcId));
+                            break;
+                    }
+                }
+            });
+        }
+        mainTable.add(tabsRow).growX().padTop(20).row();
+
+        // === ردیف وسط: محتوای اولیه (Gift) ===
+        contentCell = mainTable.add(getGiftContentTable(npcId)).expand().fill();
+        mainTable.row();
+
+        // === ردیف آخر: دکمه Close ===
+        TextButton closeBtn = new TextButton("Close", skin);
+        closeBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                closeNpcMenu();
+            }
+        });
+        Table closeRow = new Table();
+        closeRow.add(closeBtn).center().padBottom(12);
+        mainTable.add(closeRow).growX().bottom().row();
+
+        npcMenuWindow.clearChildren();
+        npcMenuWindow.add(mainTable).grow().pad(8);
+
+        uiStage.addActor(npcMenuWindow);
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    private Table getGiftInventoryTable() {
+        Table inventoryGrid = new Table();
+        Skin skin = GameAssetManager.skin;
+
+        Player player = game.getPlayerInTurn();
+        Inventory inventory = player.getInventory();
+        int numSlots = player.getMaxInventorySize();
+        ArrayList<ItemStack> items = inventory.getInventoryItems();
+
+        final float slotSize = 82f;
+
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                int i = row * 10 + col;
+
+                Stack slotStack = new Stack();
+
+                Image slotBg = new Image(GameAssetManager.inventorySlot);
+                slotBg.setColor(Color.WHITE);
+                slotStack.add(slotBg);
+
+                if (i < items.size() && items.get(i) != null && items.get(i).getItem() != null) {
+                    TextureRegion itemTex = items.get(i).getItem().getTexture();
+                    Image itemImg = new Image(new TextureRegionDrawable(itemTex));
+                    slotStack.add(itemImg);
+
+                    int quantity = items.get(i).getAmount();
+                    if (quantity > 1) {
+                        Table countTable = new Table();
+                        Label lbl = new Label(String.valueOf(quantity), skin);
+                        lbl.setFontScale(0.74f);
+                        lbl.setColor(Color.GOLD);
+                        countTable.add(lbl).bottom().center().padBottom(4);
+                        countTable.setFillParent(true);
+                        countTable.bottom();
+                        slotStack.add(countTable);
+                    }
+                }
+
+                if (i == player.getSelectedSlot()) {
+                    Image highlight = new Image(GameAssetManager.inventoryHighlightSlot);
+                    highlight.setColor(new Color(1, 1, 1, 0.41f));
+                    slotStack.add(highlight);
+                }
+
+                final int slotIndex = i;
+                slotStack.addListener(new InputListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        player.setSelectedSlot(slotIndex);
+                        // اینجا updateInventoryContent() رو عمدا صدا نمی‌زنیم
+                        return true;
+                    }
+                });
+
+                inventoryGrid.add(slotStack).size(slotSize, slotSize).pad(4);
+            }
+            inventoryGrid.row();
+        }
+
+        return inventoryGrid;
+    }
+
+    private Table getGiftContentTable(String npcId) {
+        Skin skin = GameAssetManager.skin;
+
+        // جدول اسلات‌های اینونتوری
+        Table gridTable = getGiftInventoryTable();
+        ScrollPane scrollPane = new ScrollPane(gridTable, skin);
+        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollbarsOnTop(true);
+        scrollPane.setOverscroll(false, false);
+        scrollPane.setForceScroll(false, true);
+        scrollPane.setScrollPercentY(0);
+
+        float slotSize = 82 + 8;
+        scrollPane.setHeight(2 * slotSize);
+
+        // دکمه تیک برای هدیه دادن
+        Image tickImg = new Image(new Texture("NPC/tick.png"));
+        tickImg.setSize(55, 55);
+        tickImg.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                giveSelectedItemToNpc(npcId);
+            }
+        });
+
+        // لیبل عنوان
+        Label titleLabel = new Label("Select Item to Gift", skin, "title");
+        titleLabel.setAlignment(Align.center);
+        titleLabel.setFontScale(1.1f);
+
+        Table giftTable = new Table(skin);
+        giftTable.add(titleLabel).center().padBottom(20).row();
+
+        Table row = new Table();
+        row.add(scrollPane).width(944).height(2 * slotSize).padRight(14);
+        row.add(tickImg).size(55, 55).center();
+        giftTable.add(row).center().padTop(10).row();
+
+        return giftTable;
+    }
+
+    private Table getNpcInfoTable(String npcId) {
+        Table info = new Table(GameAssetManager.skin);
+        info.add(new Label("Info about " + npcId, GameAssetManager.skin)).center();
+        return info;
+    }
+
+    private Table getNpcQuestTable(String npcId) {
+        Table quests = new Table(GameAssetManager.skin);
+        quests.add(new Label("Quests for " + npcId, GameAssetManager.skin)).center();
+        return quests;
+    }
+
+    public void closeNpcMenu() {
+        if (npcMenuWindow != null) {
+            npcMenuWindow.remove();
+            npcMenuWindow = null;
+            npcMenuCurrentNpcId = null;
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
+
+    private void giveSelectedItemToNpc(String npcId) {
+        String currentNpcId = npcId;
+
+        Player player = game.getPlayerInTurn();
+        int idx = player.getSelectedSlot();
+        Inventory inv = player.getInventory();
+        ArrayList<ItemStack> items = inv.getInventoryItems();
+
+        if (idx >= 0 && idx < items.size() && items.get(idx) != null) {
+            ItemStack stack = items.get(idx);
+
+            if (player.getFriendship(currentNpcId).isFirstGift()) {
+                controller.setFriendshipScore(player.getFriendship(currentNpcId), 200);
+                player.getFriendship(currentNpcId).setFirstGift(false);
+            }
+
+            inv.pickItem(inv.getInventoryItems().get(idx).getName(), 1);
+
+            closeNpcMenu();
+
+            npcHeartVisible.put(currentNpcId.toLowerCase(), true);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    npcHeartVisible.put(currentNpcId.toLowerCase(), false);
+                }
+            }, 5f);
+        }
     }
 
     // WINDOWS

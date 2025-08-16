@@ -524,6 +524,27 @@ public class GameGuiController {
         return null;
     }
 
+    protected void setFriendshipScore(PlayerNPCInteraction interaction, int score) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        int levelScore = interaction.getFriendshipScore() % 200;
+        if (interaction.getFriendshipLevel() != 3) {
+            if (levelScore + score >= 200) {
+                interaction.setFriendshipLevel(interaction.getFriendshipLevel() + 1);
+                if (interaction.getFriendshipLevel() == 1) {
+                    interaction.setActiveMission3(game.getTime().clone());
+                    interaction.getActiveMission3().addToDay(interaction.getDaysPassed());
+                }
+            }
+            interaction.setFriendshipScore(interaction.getFriendshipScore() + score);
+        } else {
+            if (interaction.getFriendshipScore() + score > 800) {
+                interaction.setFriendshipScore(799);
+            } else {
+                interaction.setFriendshipScore(interaction.getFriendshipScore() + score);
+            }
+        }
 
+    }
 
 }

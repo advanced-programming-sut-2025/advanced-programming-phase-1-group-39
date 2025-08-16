@@ -170,6 +170,7 @@ public class GameInputAdapter extends InputAdapter {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.RIGHT) {
             Vector3 worldCoordinates = new Vector3(screenX, screenY, 0);
+            Vector3 worldCoords = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
             screen.getCamera().unproject(worldCoordinates);
 
             for (Player player : screen.getGame().getPlayers()) {
@@ -183,6 +184,16 @@ public class GameInputAdapter extends InputAdapter {
                         screen.showAnimalInfoPopup(animal);
                         return true;
                     }
+                }
+            }
+
+            for (String npcId : screen.npcNames) {
+                Rectangle bounds = new Rectangle(screen.getNPCx(npcId), screen.getNPCy(npcId),
+                        screen.getNPCTexture(npcId).getWidth(),
+                        screen.getNPCTexture(npcId).getHeight());
+                if (bounds.contains(worldCoords.x, worldCoords.y)) {
+                    screen.openNpcGiftMenu(npcId);
+                    return true;
                 }
             }
         } else if (button == Input.Buttons.LEFT) {

@@ -117,6 +117,11 @@ public class NetworkClient {
         Request request = new Request(RequestType.PLAYER_REACTION, payload);
         sendRequest(request);
     }
+    public void sendQuickMessage(QuickMessageType messageType) {
+        QuickMessagePayload payload = new QuickMessagePayload(messageType);
+        Request request = new Request(RequestType.SEND_QUICK_MESSAGE, payload);
+        sendRequest(request);
+    }
 
     public void sendChatMessage(String message, String recipientUsername) {
         ChatMessagePayload payload = (recipientUsername == null || recipientUsername.isEmpty())

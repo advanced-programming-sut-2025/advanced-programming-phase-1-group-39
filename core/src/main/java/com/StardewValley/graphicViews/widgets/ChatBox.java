@@ -24,7 +24,7 @@ public class ChatBox extends Window {
 
         this.setMovable(true);
         this.setSize(600, 300);
-        this.setPosition(20, 20); // گوشه پایین چپ
+        this.setPosition(20, 20);
 
         messageHistoryTable = new Table(skin);
         scrollPane = new ScrollPane(messageHistoryTable, skin);
@@ -43,14 +43,13 @@ public class ChatBox extends Window {
             if (c == '\n' || c == '\r') {
                 String text = textField.getText().trim();
                 if (!text.isEmpty()) {
-                    // **منطق تشخیص چت خصوصی**
                     if (text.startsWith("/w ")) {
                         String[] parts = text.split(" ", 3);
                         if (parts.length == 3) {
                             networkClient.sendChatMessage(parts[2], parts[1]);
                         }
                     } else {
-                        networkClient.sendChatMessage(text, null); // چت عمومی
+                        networkClient.sendChatMessage(text, null);
                     }
                     textField.setText("");
                 }
@@ -65,7 +64,12 @@ public class ChatBox extends Window {
         }
         messageHistoryTable.add(messageLabel).align(Align.left).row();
 
-        // اسکرول به پایین
+        scrollPane.layout();
+        scrollPane.setScrollPercentY(1.0f);
+    }
+
+    public void addCustomMessage(Label label) {
+        messageHistoryTable.add(label).align(Align.left).row();
         scrollPane.layout();
         scrollPane.setScrollPercentY(1.0f);
     }

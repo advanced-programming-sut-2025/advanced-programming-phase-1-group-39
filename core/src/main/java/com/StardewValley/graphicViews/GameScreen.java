@@ -19,10 +19,7 @@ import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.network.client.NetworkClient;
 import com.StardewValley.network.shares.GameState;
-import com.StardewValley.network.shares.dtos.ChatMessageDTO;
-import com.StardewValley.network.shares.dtos.GameStateDTO;
-import com.StardewValley.network.shares.dtos.PlayerStateDTO;
-import com.StardewValley.network.shares.dtos.ShowReactionDTO;
+import com.StardewValley.network.shares.dtos.*;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
 import com.badlogic.gdx.Gdx;
@@ -959,6 +956,18 @@ public class GameScreen implements Screen {
                 // Todo: چک و تکمیل شود
                 ReactionBubble bubble = new ReactionBubble(targetPlayer, dto.getReactionType(), GameAssetManager.skin);
                 uiStage.addActor(bubble);
+            }
+        } else if (serverRequest.getType() == RequestType.RECEIVE_QUICK_MESSAGE) {
+            ShowQuickMessageDTO dto = (ShowQuickMessageDTO) serverRequest.getPayload();
+
+            String formattedMessage = dto.getMessageType().getMessageText();
+            ChatMessageDTO chatMessage = new ChatMessageDTO(dto.getSenderUsername(), formattedMessage, false); // isPrivate = false
+
+            if (chatBox != null) {
+                Label quickMessageLabel = new Label("[Quick] " + chatMessage.toString(), GameAssetManager.skin);
+                quickMessageLabel.setColor(Color.CYAN);
+
+                chatBox.addCustomMessage(quickMessageLabel);
             }
         } else if (serverRequest.getType() == RequestType.RECEIVE_CHAT_MESSAGE) {
             ChatMessageDTO chatMessage = (ChatMessageDTO) serverRequest.getPayload();

@@ -2,10 +2,7 @@ package com.StardewValley.network.server;// در GameSession.java (سمت سرو
 
 import com.StardewValley.models.*;
 import com.StardewValley.network.client.controllers.ClientHandler;
-import com.StardewValley.network.shares.dtos.ChatMessageDTO;
-import com.StardewValley.network.shares.dtos.GameStateDTO;
-import com.StardewValley.network.shares.dtos.PlayerStateDTO;
-import com.StardewValley.network.shares.dtos.ShowReactionDTO;
+import com.StardewValley.network.shares.dtos.*;
 import com.StardewValley.network.shares.message.*;
 
 import java.util.ArrayList;
@@ -199,5 +196,15 @@ public class GameSession implements Runnable {
 
         // ارسال به همه بازیکنان در این جلسه (شامل خود فرد هم می‌شود اگر بخواهید)
         broadcastToSession(reactionRequest);
+    }
+    public void processQuickMessage(QuickMessagePayload payload, String fromUsername) {
+        System.out.println("Quick message from " + fromUsername + ": " + payload.getMessageType().name());
+
+        // ساخت DTO برای ارسال به همه کلاینت‌ها
+        ShowQuickMessageDTO messageInfo = new ShowQuickMessageDTO(fromUsername, payload.getMessageType());
+        Request quickMessageRequest = new Request(RequestType.RECEIVE_QUICK_MESSAGE, messageInfo);
+
+        // ارسال به تمام بازیکنان در این جلسه
+        broadcastToSession(quickMessageRequest);
     }
 }

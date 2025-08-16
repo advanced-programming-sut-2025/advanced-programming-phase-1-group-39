@@ -2,8 +2,7 @@ package com.StardewValley.network.server;
 
 import com.StardewValley.models.*;
 import com.StardewValley.models.map.FarmType;
-import com.StardewValley.models.services.AppDataManager;
-import com.StardewValley.network.client.controllers.ClientHandler;
+import com.StardewValley.network.server.controllers.ClientHandler;
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.message.*;
 
@@ -14,10 +13,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ServerMain {
-    private static final int PORT = 5050;
-    private static final List<ClientHandler> clients = Collections.synchronizedList(new ArrayList<>());
-    private static final List<Lobby> lobbies = Collections.synchronizedList(new ArrayList<>());
-    private static final Map<Integer, GameSession> activeGames = Collections.synchronizedMap(new HashMap<>());
+    public static final int PORT = 5050;
+    public static final List<ClientHandler> clients = Collections.synchronizedList(new ArrayList<>());
+    public static final List<Lobby> lobbies = Collections.synchronizedList(new ArrayList<>());
+    public static final Map<Integer, GameSession> activeGames = Collections.synchronizedMap(new HashMap<>());
 
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
@@ -46,8 +45,8 @@ public class ServerMain {
         } else {
             App.getApp().updateUser(user);
         }
-
-        AppDataManager.saveApp();
+// TODO : saving app for server
+//        AppDataManager.saveApp();
         broadcastOnlineUserList();
     }
 
@@ -85,7 +84,6 @@ public class ServerMain {
         }
     }
 
-    // *** متد اصلی بازنویسی شده ***
     public static void startGame(ClientHandler requestingClient) {
         String lobbyId = requestingClient.getLobbyId();
         if (lobbyId == null) {
@@ -150,7 +148,7 @@ public class ServerMain {
 
         // 5. اطلاع‌رسانی به کلاینت‌ها و آپدیت لیست لابی‌ها
         targetLobby.setGameStarted(true);
-        System.out.println("Game " + gameId + " started in lobby: " + targetLobby.getLobbyName());
+        System.out.println("Game " + gameId + " started in lobby: " + targetLobby.getName());
 
         Request gameStartedRequest = new Request(RequestType.GAME_STARTED, actualGame);
         broadcastMessageToLobby(lobbyId, gameStartedRequest);
@@ -169,7 +167,6 @@ public class ServerMain {
                 } else if (request.getType() == RequestType.PLAYER_REACTION && request.getPayload() instanceof PlayerReactionPayload) {
                     session.processReactionRequest((PlayerReactionPayload) request.getPayload(), fromClient.getUsername());
                 }
-                // else if (request.getType() == RequestType.USE_TOOL) { ... }
             }
         }
     }

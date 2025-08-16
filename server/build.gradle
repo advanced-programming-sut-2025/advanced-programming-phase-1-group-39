@@ -1,41 +1,53 @@
+// این کد باید در فایل "your-project-root/server/build.gradle" باشد
+
+// پلاگین‌های لازم برای سرور
+apply plugin: 'java-library'
 apply plugin: 'application'
 
-
-java.sourceCompatibility = 23
-java.targetCompatibility = 23
-if (JavaVersion.current().isJava9Compatible()) {
-        compileJava.options.release.set(23)
-}
-
+// این خط به Gradle می‌گوید که نقطه شروع برنامه سرور شما کجاست
 mainClassName = 'com.StardewValley.server.ServerLauncher'
 application.setMainClass(mainClassName)
-eclipse.project.name = appName + '-server'
 
+// وابستگی‌های (dependencies) این ماژول
 dependencies {
-  implementation project(':shared')
+  // 1. سرور به کدهای مشترک (مدل‌ها و...) نیاز دارد
+  implementation project(':core')
+
+  // 2. <<-- وابستگی کلیدی به gdx-headless -->>
+  // این خط از متغیر gdxVersion که در فایل build.gradle ریشه تعریف شده، استفاده می‌کند
+
+  implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+  // اگر از Box2D، FreeType یا هر ماژول دیگری در core استفاده می‌کنید که نیاز به natives دارد،
+  // باید ماژول backend-headless مربوط به آنها را اضافه کنید:
+   api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop" // فقط در صورت استفاده
+   api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop" // فقط در صورت استفاده
 }
 
-jar {
-  archiveBaseName.set(appName)
-// the duplicatesStrategy matters starting in Gradle 7.0; this setting works.
-  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-  dependsOn configurations.runtimeClasspath
-  from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-// these "exclude" lines remove some unnecessary duplicate files in the output JAR.
-  exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
-  dependencies {
-    exclude('META-INF/INDEX.LIST', 'META-INF/maven/**')
+sourceSets {
+  main {
+    resources {
+      srcDir '../assets'
+    }
   }
-// setting the manifest makes the JAR runnable.
+}
+
+// این بخش یک فایل JAR قابل اجرا از سرور شما می‌سازد
+// در فایل your-project-root/server/build.gradle
+jar {
+  archiveBaseName.set(appName + '-server')
+  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+  // <<--- این خط مهم است و مطمئن می‌شود که native libraries پک می‌شوند --->>
+  from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+
+  // این exclude ها را دوباره چک کنید، شاید اینها فایل gdx64.dll را حذف می‌کنند
+  exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
+  // این exclude ها هم می‌تواند مشکل ساز باشد، آنها را موقتاً کامنت کنید
+  // dependencies {
+  //   exclude('META-INF/INDEX.LIST', 'META-INF/maven/**')
+  // }
+
   manifest {
     attributes 'Main-Class': project.mainClassName
   }
-// this last step may help on some OSes that need extra instruction to make runnable JARs.
-  doLast {
-    file(archiveFile).setExecutable(true, false)
-  }
-}
-
-// Equivalent to the jar task; here for compatibility with gdx-setup.
-task dist(dependsOn: [jar]) {
 }

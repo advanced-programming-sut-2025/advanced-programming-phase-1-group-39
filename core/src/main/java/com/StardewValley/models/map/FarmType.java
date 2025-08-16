@@ -1,8 +1,11 @@
 package com.StardewValley.models.map;
 
-public enum FarmType {
+import java.io.Serializable;
+
+public enum FarmType implements Serializable {
     LAKE_FARM, MINE_FARM;
 
+    private static final long serialVersionUID = 1L;
     int id;
     FarmType() {
         this.id = ordinal() + 1;

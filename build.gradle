@@ -60,6 +60,7 @@ configure(subprojects) {
 subprojects {
   version = "$projectVersion"
   ext.appName = 'Stardew_Valley_group_39 '
+  ext.gdxVersion = '1.13.1'
   repositories {
     mavenCentral()
     maven { url 'https://s01.oss.sonatype.org' }

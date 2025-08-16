@@ -3,6 +3,7 @@ package com.StardewValley;
 import com.StardewValley.graphicViews.*;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
+import com.StardewValley.models.GameSetting;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.network.client.NetworkClient;
 import com.badlogic.gdx.Game;
@@ -14,7 +15,7 @@ public class Main extends Game {
     private static Main main;
     public static SpriteBatch batch;
 
-    private NetworkClient networkClient;
+    private NetworkClient networkClient = null;
 
     @Override
     public void create() {
@@ -22,9 +23,7 @@ public class Main extends Game {
         main = this;
         batch = new SpriteBatch();
 
-        goOnline(); // TODO : change the place to LobbyScreen
         switchScreen(getScreenByMenu(App.getApp().getCurrentMenu()));
-
 
 ///  for test only
 //        Thread terminalController = new Thread(() -> {
@@ -39,6 +38,9 @@ public class Main extends Game {
             networkClient = new NetworkClient();
             networkClient.connect("127.0.0.1", 5050);
         }
+        if (!(screen instanceof LobbyScreen)) {
+            switchScreen(new LobbyScreen(networkClient));
+        }
     }
 
     public NetworkClient getNetworkClient() {
@@ -49,7 +51,6 @@ public class Main extends Game {
     // این متد توسط NetworkClient از طریق Gdx.app.postRunnable صدا زده می‌شود
     public void onConnectionSuccess() {
         networkClient.sendUserDataToServer(App.getApp().getLoggedInUser());
-        setScreen(new LobbyScreen(networkClient));
     }
 
     // این متد هم توسط NetworkClient صدا زده می‌شود

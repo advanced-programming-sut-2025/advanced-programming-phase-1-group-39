@@ -21,6 +21,11 @@ import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.map.TileType;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
+import com.StardewValley.network.shares.dtos.GameStateDTO;
+import com.StardewValley.network.shares.dtos.PlayerStateDTO;
+import com.StardewValley.network.shares.dtos.ShowReactionDTO;
+import com.StardewValley.network.shares.message.Request;
+import com.StardewValley.network.shares.message.RequestType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -1675,7 +1680,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        App.getApp().getMusic().pause();
+        GameSetting.getMusic().pause();
 
         font = new BitmapFont();
         font.getData().setScale(2f);
@@ -1734,7 +1739,7 @@ public class GameScreen implements Screen {
 
             checkGoingNextDay();
 
-            gameMenuInputAdapter.handlePlayerMovement(v, game, networkClient);
+            gameMenuInputAdapter.handlePlayerMovement(v, game);
 
             updateEnergyBar();
             renderCamera();

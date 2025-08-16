@@ -1,6 +1,10 @@
 package com.StardewValley.models;
 
-public class SecurityQuestion {
+import java.io.Serializable;
+
+public class SecurityQuestion implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String question;
     private String answer;
 

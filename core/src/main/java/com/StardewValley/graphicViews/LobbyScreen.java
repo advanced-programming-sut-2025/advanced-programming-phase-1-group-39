@@ -2,6 +2,8 @@ package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
 import com.StardewValley.models.services.GameAssetManager;
+import com.StardewValley.network.client.NetworkClient;
+import com.StardewValley.network.shares.Lobby;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -26,11 +28,11 @@ public class LobbyScreen implements Screen {
 
     public NetworkClient networkClient;
 
-    public LobbyScreen(NetworkClient networkClient ) {
+    public LobbyScreen(NetworkClient networkClient) {
         this.networkClient = networkClient;
 
         stage = new Stage(new FitViewport(1920, 1080));
-        skin = GameAssetManager.skin; // فرض می‌کنیم Skin شما به صورت استاتیک در دسترس است
+        skin = GameAssetManager.skin;
 
         setupUI();
     }
@@ -117,7 +119,8 @@ public class LobbyScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("Refreshing lobbies...");
-                populateLobbyList(createDummyLobbies());
+                // TODO : complete
+                populateLobbyList(new ArrayList<>());
             }
         });
 
@@ -243,14 +246,12 @@ public class LobbyScreen implements Screen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        populateLobbyList(createDummyLobbies()); // نمایش داده‌های ساختگی برای تست
+        // TODO : get lobbies
+        populateLobbyList(new ArrayList<Lobby>()); // نمایش داده‌های ساختگی برای تست
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         stage.act(Math.min(delta, 1 / 30f));
         stage.draw();
     }
@@ -267,30 +268,5 @@ public class LobbyScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-    }
-
-    // --- کلاس‌ها و متدهای ساختگی برای تست UI (اینها باید با داده‌های واقعی از سرور جایگزین شوند) ---
-    private static class Lobby {
-        private String name, admin;
-        private boolean isPrivate;
-        private List<String> players = new ArrayList<>();
-        public Lobby(String name, boolean isPrivate, String admin, List<String> players) {
-            this.name = name; this.isPrivate = isPrivate; this.admin = admin; this.players.addAll(players);
-        }
-        public String getName() { return name; }
-        public int getPlayerCount() { return players.size(); }
-        public boolean isPrivate() { return isPrivate; }
-        public List<String> getPlayers() { return players; }
-        public String getAdmin() { return admin; }
-    }
-
-    private List<Lobby> createDummyLobbies() {
-        List<Lobby> lobbies = new ArrayList<>();
-        lobbies.add(new Lobby("Fun Times Farm", false, "Ali", List.of("Ali", "Sara")));
-        lobbies.add(new Lobby("Pro Gamers Only", true, "Reza", List.of("Reza")));
-        lobbies.add(new Lobby("Chill Farming", false, "Mina", List.of("Mina", "Hassan", "Neda")));
-        lobbies.add(new Lobby("Late Night Gamers", false, "Kian", List.of("Kian", "Tara", "Pouya", "Sima")));
-        lobbies.add(new Lobby("Expert Only", true, "Farhad", List.of("Farhad", "Maryam")));
-        return lobbies;
     }
 }

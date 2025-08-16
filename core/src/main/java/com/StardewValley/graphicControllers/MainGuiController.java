@@ -59,7 +59,7 @@ public class MainGuiController {
             view.getGameOnlineButton().addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent changeEvent, Actor actor) {
-                    Main.getMain().switchScreen(new LobbyScreen());
+                    Main.getMain().goOnline();
                 }
             });
         }

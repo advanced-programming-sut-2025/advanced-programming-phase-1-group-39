@@ -1,7 +1,7 @@
 package com.StardewValley.network.server;// در GameSession.java (سمت سرور)
 
 import com.StardewValley.models.*;
-import com.StardewValley.network.client.controllers.ClientHandler;
+import com.StardewValley.network.server.controllers.ClientHandler;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
 import com.StardewValley.network.shares.dtos.PlayerStateDTO;
 import com.StardewValley.network.shares.dtos.ShowReactionDTO;

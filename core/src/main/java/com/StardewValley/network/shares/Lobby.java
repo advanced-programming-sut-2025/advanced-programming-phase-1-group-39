@@ -1,7 +1,6 @@
 package com.StardewValley.network.shares;
 
 import com.StardewValley.models.map.FarmType;
-import com.StardewValley.network.shares.message.LobbyData;
 
 import java.io.Serializable;
 import java.util.*;
@@ -35,7 +34,7 @@ public class Lobby implements Serializable {
 
     // Getter ها
     public String getId() { return id; }
-    public String getLobbyName() { return lobbyName; }
+    public String getName() { return lobbyName; }
     public List<String> getPlayers() { return new ArrayList<>(players); }
     public String getAdmin() { return admin; }
     public int getPlayerCount() { return players.size(); } // متد کمکی
@@ -73,5 +72,9 @@ public class Lobby implements Serializable {
         // از getPlayerCount() استفاده می‌کنیم که مستقیما سایز لیست همگام‌شده را می‌خواند
         String status = gameStarted ? "[In Game]" : "[Waiting]";
         return status + " ID: " + id + " | Name: " + lobbyName + " | Players: " + getPlayerCount() + "/" + MAX_PLAYERS;
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
     }
 }

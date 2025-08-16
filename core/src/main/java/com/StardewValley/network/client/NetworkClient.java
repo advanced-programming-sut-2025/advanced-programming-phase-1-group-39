@@ -6,6 +6,7 @@ import com.StardewValley.models.App; // <<-- وارد کردن مدل App
 import com.StardewValley.models.Game;
 import com.StardewValley.models.User;
 import com.StardewValley.models.map.FarmType;
+import com.StardewValley.models.saveClasses.UserData;
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
 import com.StardewValley.network.shares.message.*;
@@ -46,7 +47,6 @@ public class NetworkClient {
 
                 // حلقه شنونده را شروع کن
                 listenToServer();
-
             } catch (IOException e) {
                 Gdx.app.postRunnable(() -> main.onConnectionFailed("Could not connect to server."));
             }
@@ -167,7 +167,7 @@ public class NetworkClient {
 
     // send messages
     public void sendUserDataToServer(User user) {
-        sendRequest(new Request(RequestType.SEND_USER_DATA, user));
+        sendRequest(new Request(RequestType.SEND_USER_DATA, new UserData(user)));
     }
 
     // TODO : call after click refresh
@@ -200,7 +200,7 @@ public class NetworkClient {
 
     // Game starting
     // TODO : on button clicked
-    public void sendStartGameRequest(String lobbyId) {
+    public void sendStartGameRequest() {
         sendRequest(new Request(RequestType.START_GAME, null));
     }
 

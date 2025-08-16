@@ -22,8 +22,6 @@ public class App {
 
     private Game currentGame = null;
 
-    private static Music music = GameAssetManager.music1;
-
     private Menu currentMenu = Menu.SIGNUP_MENU;
 
     // NETWORK
@@ -111,8 +109,6 @@ public class App {
     public Game getCurrentGame() {
         return currentGame;
     }
-
-    public Music getMusic() { return music; }
 
     public boolean isStayLoggedIn() {
         return stayLoggedIn;

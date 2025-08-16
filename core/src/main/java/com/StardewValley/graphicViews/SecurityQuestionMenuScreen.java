@@ -3,6 +3,7 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.graphicControllers.SecurityQuestionGuiController;
 import com.StardewValley.models.App;
+import com.StardewValley.models.GameSetting;
 import com.StardewValley.models.services.GameAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -56,7 +57,7 @@ public class SecurityQuestionMenuScreen implements Screen {
         this.answerErrorLabel = new Label("", skin);
         this.registerButton = new TextButton("Register", skin);
         this.backButton = new TextButton("Back", skin);
-        this.music = App.getApp().getMusic();
+        this.music = GameSetting.getMusic();
         AppGuiControllers.securityQuestionGuiController.setView(this);
     }
 

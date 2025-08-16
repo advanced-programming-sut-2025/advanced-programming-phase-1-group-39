@@ -1,9 +1,9 @@
-package com.StardewValley.network.client.controllers;
+package com.StardewValley.network.server.controllers;
 
 
 import com.StardewValley.models.Result;
-import com.StardewValley.models.User;
 import com.StardewValley.models.map.FarmType;
+import com.StardewValley.models.saveClasses.UserData;
 import com.StardewValley.network.server.ServerMain;
 import com.StardewValley.network.shares.message.*;
 
@@ -46,7 +46,7 @@ public class ClientHandler implements Runnable {
             in = new ObjectInputStream(clientSocket.getInputStream());
 
 
-//            sendMessage(new Request(RequestType.UPDATE_LOBBY_LIST, ServerMain.getLobbies()));
+            sendMessage(new Request(RequestType.UPDATE_LOBBY_LIST, ServerMain.getLobbies()));
 
             while (true) {
                 Request request = (Request) in.readObject();
@@ -65,9 +65,8 @@ public class ClientHandler implements Runnable {
     private void handleRequest(Request request) {
         switch (request.getType()) {
             case SEND_USER_DATA:
-                if (request.getPayload() instanceof User) {
-                    User user = (User) request.getPayload();
-                    ServerMain.registerNewClient(user, this);
+                if (request.getPayload() instanceof UserData userData) {
+                    ServerMain.registerNewClient(userData.getUser(), this);
                 }
                 break;
 

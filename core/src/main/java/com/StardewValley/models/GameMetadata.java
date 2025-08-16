@@ -2,7 +2,11 @@ package com.StardewValley.models;
 
 import com.StardewValley.models.services.AppDataManager;
 
-public class GameMetadata {
+import java.io.Serializable;
+
+public class GameMetadata implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     public int gameId;
     public String description;
 

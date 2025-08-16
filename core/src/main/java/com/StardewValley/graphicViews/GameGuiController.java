@@ -70,7 +70,7 @@ public class GameGuiController {
     }
 
     public Result buildGreenHouseRequest(Player player) {
-        if(player.canBuildGreenHouse()) {
+        if (player.canBuildGreenHouse()) {
             return new Result(true, "You are already building a green house!\ndo you want to build it?");
         } else {
             return new Result(false, "Needed resources to build the greenhouse: \n\t500 woods\n\t1000 G money");
@@ -410,7 +410,9 @@ public class GameGuiController {
         StringBuilder output = new StringBuilder();
         PlayerNPCInteraction friendship = player.getFriendship(NPCName);
         int count = 0;
-        if (NPCName.equals("Sebastian")) { output.append("     "); }
+        if (NPCName.equals("Sebastian")) {
+            output.append("     ");
+        }
         if (getMission(1, NPCName) != null) {
             count++;
             output.append(count).append(") ").append(getMission(1, NPCName)).append("\n");
@@ -426,6 +428,27 @@ public class GameGuiController {
             output.append(count).append(") ").append(getMission(3, NPCName)).append("\n");
         }
         return output.toString();
+    }
+
+    public ArrayList<String> getQuesLists(String NPCName) {
+        App app = App.getApp();
+        Game game = screen.getGame();
+        Player player = game.getPlayerInTurn();
+        ArrayList<String> output = new ArrayList<>();
+        PlayerNPCInteraction friendship = player.getFriendship(NPCName);
+        int count = 0;
+        if (getMission(1, NPCName) != null) {
+            output.add(getMission(1, NPCName));
+        }
+        if (getMission(2, NPCName) != null && player.getFriendship(NPCName).getFriendshipLevel() >= 1) {
+            output.add(getMission(2, NPCName));
+        }
+        if (getMission(3, NPCName) != null &&
+                player.getFriendship(NPCName).getFriendshipLevel() >= 1 &&
+                friendship.getActiveMission3().isGreater(game.getTime())) {
+            output.add(getMission(3, NPCName));
+        }
+        return output;
     }
 
 

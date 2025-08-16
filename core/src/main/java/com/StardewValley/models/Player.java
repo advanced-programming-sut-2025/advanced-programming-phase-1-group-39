@@ -65,8 +65,17 @@ public class Player {
 
     // NPC
     private ArrayList<PlayerNPCInteraction> friendships = initialPlayersFriendship();
-
     private String spouseName;
+    private ArrayList<String> abigalReceivedQuests = new ArrayList<>();
+    private ArrayList<String> harveyReceivedQuests = new ArrayList<>();
+    private ArrayList<String> leahReceivedQuests = new ArrayList<>();
+    private ArrayList<String> robinReceivedQuests = new ArrayList<>();
+    private ArrayList<String> sebastianReceivedQuests = new ArrayList<>();
+    private ArrayList<String> abigailDoQuests = new ArrayList<>();
+    private ArrayList<String> harveyDoQuests = new ArrayList<>();
+    private ArrayList<String> leahDoQuests = new ArrayList<>();
+    private ArrayList<String> robinDoQuests = new ArrayList<>();
+    private ArrayList<String> sebastianDoQuests = new ArrayList<>();
 
     // Graphic
     private transient Direction direction = Direction.NONE;
@@ -661,5 +670,43 @@ public class Player {
         this.animationStateTime += delta;
     }
 
+    public ArrayList<String> getAbigalReceivedQuests() {
+        return abigalReceivedQuests;
+    }
 
+    public ArrayList<String> getHarveyReceivedQuests() {
+        return harveyReceivedQuests;
+    }
+
+    public ArrayList<String> getLeahReceivedQuests() {
+        return leahReceivedQuests;
+    }
+
+    public ArrayList<String> getRobinReceivedQuests() {
+        return robinReceivedQuests;
+    }
+
+    public ArrayList<String> getSebastianReceivedQuests() {
+        return sebastianReceivedQuests;
+    }
+
+    public ArrayList<String> getAbigailDoQuests() {
+        return abigailDoQuests;
+    }
+
+    public ArrayList<String> getHarveyDoQuests() {
+        return harveyDoQuests;
+    }
+
+    public ArrayList<String> getRobinDoQuests() {
+        return robinDoQuests;
+    }
+
+    public ArrayList<String> getSebastianDoQuests() {
+        return sebastianDoQuests;
+    }
+
+    public ArrayList<String> getLeahDoQuests() {
+        return leahDoQuests;
+    }
 }

@@ -6,6 +6,7 @@ import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.NPC.AbigailNPC;
 import com.StardewValley.models.NPC.NPC;
 import com.StardewValley.models.NPC.PlayerNPCInteraction;
+import com.StardewValley.models.NPC.Quest;
 import com.StardewValley.models.Shops.Shop;
 import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.animals.AnimalType;
@@ -167,6 +168,10 @@ public class GameScreen implements Screen {
     private String npcMenuCurrentNpcId;
     private HashMap<String, Boolean> npcHeartVisible = new HashMap<>();
     private Texture heartBubbleTexture;
+    private TextureRegion questIconGreen;
+    private TextureRegion questIconYellow;
+    private TextureRegion questIconRed;
+
 
     // animal popup
     private Window animalWindow;
@@ -500,6 +505,9 @@ public class GameScreen implements Screen {
         starTexture = new Texture(Gdx.files.internal("inventory/Achievement_Star_06.png"));
         clock = new Texture(Gdx.files.internal("clock/Clock.png"));
         clock.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        questIconGreen = new TextureRegion(new Texture("NPC/Emoji3.png"));
+        questIconYellow = new TextureRegion(new Texture("NPC/Emoji2.png"));
+        questIconRed = new TextureRegion(new Texture("NPC/Emoji۱.png"));
 
         Color[] playerColors = new Color[4];
         playerColors[0] = Color.CYAN;
@@ -1714,7 +1722,7 @@ public class GameScreen implements Screen {
                             contentCell.setActor(getNpcInfoTable(npcId));
                             break;
                         case "Quests":
-                            contentCell.setActor(getNpcQuestTable(npcId));
+                            contentCell.setActor(getQuestContentTable(getCompletedQuests(npcId), getDoneQuests(npcId), controller.getQuesLists(npcId)));
                             break;
                     }
                 }
@@ -1853,7 +1861,7 @@ public class GameScreen implements Screen {
                 giveSelectedItemToNpc(npcId);
             }
         });
-        
+
         Label titleLabel = new Label("Select Item to Gift", skin, "title");
         titleLabel.setAlignment(Align.center);
         titleLabel.setFontScale(1.1f);
@@ -1873,12 +1881,6 @@ public class GameScreen implements Screen {
         Table info = new Table(GameAssetManager.skin);
         info.add(new Label("Info about " + npcId, GameAssetManager.skin)).center();
         return info;
-    }
-
-    private Table getNpcQuestTable(String npcId) {
-        Table quests = new Table(GameAssetManager.skin);
-        quests.add(new Label("Quests for " + npcId, GameAssetManager.skin)).center();
-        return quests;
     }
 
     public void closeNpcMenu() {
@@ -1918,6 +1920,83 @@ public class GameScreen implements Screen {
                 }
             }, 5f);
         }
+    }
+
+    private Table getQuestContentTable(ArrayList<String> completed, ArrayList<String> received, ArrayList<String> notReceived) {
+        Skin skin = GameAssetManager.skin;
+        Table questTable = new Table();
+        questTable.top().left();
+
+        Label title = new Label("Quests", skin, "title");
+        title.setColor(Color.GOLD);
+        title.setAlignment(Align.center);
+        questTable.add(title).center().colspan(2).pad(10).row();
+
+        // Completed
+        if (!completed.isEmpty()) {
+            Label lblCompleted = new Label("Completed :", skin);
+            lblCompleted.setColor(Color.GREEN);
+            questTable.add(lblCompleted).colspan(2).padTop(5).left().row();
+            for (String q : completed) {
+                Image icon = new Image(questIconGreen);
+                Label qLabel = new Label(q, skin);
+                qLabel.setColor(Color.WHITE);
+                questTable.add(icon).size(24).padRight(5);
+                questTable.add(qLabel).left().row();
+            }
+        }
+
+        // Received
+        if (!received.isEmpty()) {
+            Label lblReceived = new Label("Received :", skin);
+            lblReceived.setColor(Color.YELLOW);
+            questTable.add(lblReceived).colspan(2).padTop(10).left().row();
+            for (String q : received) {
+                Image icon = new Image(questIconYellow);
+                Label qLabel = new Label(q, skin);
+                qLabel.setColor(Color.WHITE);
+                questTable.add(icon).size(24).padRight(5);
+                questTable.add(qLabel).left().row();
+            }
+        }
+
+        // Not Received
+        if (!notReceived.isEmpty()) {
+            Label lblNotReceived = new Label("Not Received :", skin);
+            lblNotReceived.setColor(Color.RED);
+            questTable.add(lblNotReceived).colspan(2).padTop(10).left().row();
+            for (String q : notReceived) {
+                Image icon = new Image(questIconRed);
+                Label qLabel = new Label(q, skin);
+                qLabel.setColor(Color.WHITE);
+                questTable.add(icon).size(24).padRight(5);
+                questTable.add(qLabel).left().row();
+            }
+        }
+
+        return questTable;
+    }
+
+    public ArrayList<String> getCompletedQuests(String npcId) {
+        return switch (npcId) {
+            case "abigail" -> game.getPlayerInTurn().getAbigailDoQuests();
+            case "harvey" -> game.getPlayerInTurn().getHarveyDoQuests();
+            case "leah" -> game.getPlayerInTurn().getLeahDoQuests();
+            case "robin" -> game.getPlayerInTurn().getRobinDoQuests();
+            case "sebastian" -> game.getPlayerInTurn().getSebastianDoQuests();
+            default -> null;
+        };
+    }
+
+    public ArrayList<String> getDoneQuests(String npcId) {
+        return switch (npcId) {
+            case "abigail" -> game.getPlayerInTurn().getAbigalReceivedQuests();
+            case "harvey" -> game.getPlayerInTurn().getHarveyReceivedQuests();
+            case "leah" -> game.getPlayerInTurn().getLeahReceivedQuests();
+            case "robin" -> game.getPlayerInTurn().getRobinReceivedQuests();
+            case "sebastian" -> game.getPlayerInTurn().getSebastianReceivedQuests();
+            default -> null;
+        };
     }
 
     // WINDOWS

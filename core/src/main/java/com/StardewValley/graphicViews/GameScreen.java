@@ -1,6 +1,7 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
+import com.StardewValley.graphicViews.widgets.ChatBox;
 import com.StardewValley.graphicViews.widgets.ReactionBubble;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
@@ -18,6 +19,7 @@ import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.network.client.NetworkClient;
 import com.StardewValley.network.shares.GameState;
+import com.StardewValley.network.shares.dtos.ChatMessageDTO;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
 import com.StardewValley.network.shares.dtos.PlayerStateDTO;
 import com.StardewValley.network.shares.dtos.ShowReactionDTO;
@@ -144,6 +146,7 @@ public class GameScreen implements Screen {
     //Network
     private NetworkClient networkClient;
 
+    private ChatBox chatBox;
 
 
     public GameScreen() {
@@ -203,6 +206,10 @@ public class GameScreen implements Screen {
 
 
         networkClient = Main.getMain().getNetworkClient();
+
+        chatBox = new ChatBox("Game Chat", GameAssetManager.skin, this.networkClient);
+        chatBox.setVisible(false);
+        uiStage.addActor(chatBox);
     }
 
     // utils
@@ -953,6 +960,19 @@ public class GameScreen implements Screen {
                 ReactionBubble bubble = new ReactionBubble(targetPlayer, dto.getReactionType(), GameAssetManager.skin);
                 uiStage.addActor(bubble);
             }
+        } else if (serverRequest.getType() == RequestType.RECEIVE_CHAT_MESSAGE) {
+            ChatMessageDTO chatMessage = (ChatMessageDTO) serverRequest.getPayload();
+            chatBox.addMessage(chatMessage);
+        }
+    }
+
+    public void changeChatBox() {
+        if (chatBox.isVisible()) {
+            chatBox.setVisible(false);
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        } else {
+            chatBox.setVisible(true);
+            Gdx.input.setInputProcessor(uiStage);
         }
     }
 
@@ -1095,7 +1115,7 @@ public class GameScreen implements Screen {
         camera.viewportHeight = h;
         camera.update();
 
-//        Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        Gdx.input.setInputProcessor(gameMenuInputAdapter);
     }
 
     @Override

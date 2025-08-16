@@ -157,11 +157,6 @@ public class ServerMain {
         }
     }
 
-    public static void broadcastChatMessageToLobby(String lobbyId, ChatMessage chatMessage) {
-        Request chatRequest = new Request(RequestType.LOBBY_CHAT_MESSAGE, chatMessage);
-        broadcastMessageToLobby(lobbyId, chatRequest);
-    }
-
     public static List<Lobby> getLobbies() {
         // ... (بدون تغییر)
         synchronized (lobbies) {

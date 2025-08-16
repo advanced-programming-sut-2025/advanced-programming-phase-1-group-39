@@ -78,7 +78,7 @@ public class GameInputAdapter extends InputAdapter {
 
         // <<--- بخش کلیدی: ارسال درخواست به سرور ---<<
         // کلاینت دیگر خودش را حرکت نمی‌دهد، فقط قصدش را به سرور اعلام می‌کند.
-        networkClient.sendMoveRequest(movementIntent.x, movementIntent.y);
+        //networkClient.sendMoveRequest(movementIntent.x, movementIntent.y);
 
         // تمام منطق قبلی از اینجا به بعد حذف می‌شود!
     /*
@@ -116,6 +116,8 @@ public class GameInputAdapter extends InputAdapter {
             screen.changeCraftingMenu();
         } else if (keycode == Input.Keys.P) {
             screen.showShopMenu();
+        } else if (keycode == Input.Keys.F1) {
+            screen.changeChatBox();
         }
         return true;
     }

@@ -1,7 +1,6 @@
 package com.StardewValley.network.client;
 
 import com.StardewValley.network.shares.Lobby;
-import com.StardewValley.network.shares.message.ChatMessage;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
 
@@ -46,59 +45,41 @@ public class ClientMain {
     private static void showMenu() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            if (gameRunning) {
-                // منوی داخل بازی (فعلا ساده)
-                System.out.print("[In Game] Enter chat message: ");
-                String message = scanner.nextLine();
-                sendRequest(new Request(RequestType.LOBBY_CHAT_MESSAGE, message));
-            } else {
-                // منوی لابی
-                System.out.println("\n--- Main Menu ---");
-                System.out.println("1. Create Lobby");
-                System.out.println("2. Join Lobby");
-                System.out.println("3. Refresh Lobby List");
-                System.out.println("4. Send Chat Message (if in lobby)");
-                System.out.println("5. Start Game (if admin)");
-                System.out.print("Enter command: ");
-                String command = scanner.nextLine();
+            System.out.println("\n--- Main Menu ---");
+            System.out.println("1. Create Lobby");
+            System.out.println("2. Join Lobby");
+            System.out.println("3. Refresh Lobby List");
+            System.out.println("4. Start Game (if admin)");
+            System.out.print("Enter command: ");
+            String command = scanner.nextLine();
 
-                switch (command) {
-                    case "1":
-                        System.out.print("Enter lobby name: ");
-                        String lobbyName = scanner.nextLine();
-                        sendRequest(new Request(RequestType.CREATE_LOBBY, lobbyName));
-                        inLobby = true;
-                        break;
-                    case "2":
-                        System.out.print("Enter Lobby ID to join: ");
-                        String lobbyId = scanner.nextLine();
-                        sendRequest(new Request(RequestType.JOIN_LOBBY, lobbyId));
-                        inLobby = true;
-                        break;
-                    case "3":
-                        sendRequest(new Request(RequestType.GET_LOBBY_LIST, null));
-                        break;
-                    case "4":
-                        if (inLobby) {
-                            System.out.print("Enter message: ");
-                            String message = scanner.nextLine();
-                            sendRequest(new Request(RequestType.LOBBY_CHAT_MESSAGE, message));
-                        } else {
-                            System.out.println("You must be in a lobby to chat.");
-                        }
-                        break;
-                    case "5":
-                        if (inLobby) {
-                            System.out.println("Sending start game request...");
-                            sendRequest(new Request(RequestType.START_GAME, null));
-                        } else {
-                            System.out.println("You must be in a lobby to start a game.");
-                        }
-                        break;
-                    default:
-                        System.out.println("Invalid command.");
-                        break;
-                }
+            switch (command) {
+                case "1":
+                    System.out.print("Enter lobby name: ");
+                    String lobbyName = scanner.nextLine();
+                    sendRequest(new Request(RequestType.CREATE_LOBBY, lobbyName));
+                    inLobby = true;
+                    break;
+                case "2":
+                    System.out.print("Enter Lobby ID to join: ");
+                    String lobbyId = scanner.nextLine();
+                    sendRequest(new Request(RequestType.JOIN_LOBBY, lobbyId));
+                    inLobby = true;
+                    break;
+                case "3":
+                    sendRequest(new Request(RequestType.GET_LOBBY_LIST, null));
+                    break;
+                case "4":
+                    if (inLobby) {
+                        System.out.println("Sending start game request...");
+                        sendRequest(new Request(RequestType.START_GAME, null));
+                    } else {
+                        System.out.println("You must be in a lobby to start a game.");
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid command.");
+                    break;
             }
         }
     }
@@ -124,13 +105,6 @@ public class ClientMain {
                 } else {
                     lobbies.forEach(System.out::println);
                 }
-                System.out.print("Enter command: ");
-                break;
-
-            case LOBBY_CHAT_MESSAGE:
-                ChatMessage chatMessage = (ChatMessage) request.getPayload();
-                System.out.print("\r" + " ".repeat(50) + "\r");
-                System.out.println("[Lobby Chat] " + chatMessage);
                 System.out.print("Enter command: ");
                 break;
 

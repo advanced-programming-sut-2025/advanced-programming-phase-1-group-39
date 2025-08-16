@@ -11,7 +11,6 @@ public enum RequestType {
     CREATE_LOBBY,
     JOIN_LOBBY,
     GET_LOBBY_LIST,
-    LOBBY_CHAT_MESSAGE,
 
     //Start Game
     START_GAME,
@@ -29,4 +28,7 @@ public enum RequestType {
 
     PLAYER_REACTION,
     SHOW_REACTION_ON_PLAYER,
+
+    SEND_CHAT_MESSAGE,
+    RECEIVE_CHAT_MESSAGE,
 }

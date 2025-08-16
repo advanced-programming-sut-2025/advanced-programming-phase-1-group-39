@@ -4,10 +4,7 @@ import com.StardewValley.Main; // <<-- وارد کردن کلاس اصلی با�
 import com.StardewValley.models.App; // <<-- وارد کردن مدل App
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
-import com.StardewValley.network.shares.message.PlayerReactionPayload;
-import com.StardewValley.network.shares.message.ReactionType;
-import com.StardewValley.network.shares.message.Request;
-import com.StardewValley.network.shares.message.RequestType;
+import com.StardewValley.network.shares.message.*;
 import com.badlogic.gdx.Gdx;
 
 import java.io.IOException;
@@ -118,6 +115,15 @@ public class NetworkClient {
     public void sendReactionRequest(ReactionType reaction) {
         PlayerReactionPayload payload = new PlayerReactionPayload(reaction);
         Request request = new Request(RequestType.PLAYER_REACTION, payload);
+        sendRequest(request);
+    }
+
+    public void sendChatMessage(String message, String recipientUsername) {
+        ChatMessagePayload payload = (recipientUsername == null || recipientUsername.isEmpty())
+                ? new ChatMessagePayload(message)
+                : new ChatMessagePayload(message, recipientUsername);
+
+        Request request = new Request(RequestType.SEND_CHAT_MESSAGE, payload);
         sendRequest(request);
     }
 }

@@ -2,7 +2,6 @@ package com.StardewValley.network.client.controllers;
 
 
 import com.StardewValley.network.server.ServerMain;
-import com.StardewValley.network.shares.message.ChatMessage;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
 
@@ -82,14 +81,6 @@ public class ClientHandler implements Runnable {
 
             case START_GAME:
                 ServerMain.startGame(this);
-                break;
-
-            case LOBBY_CHAT_MESSAGE:
-                if (lobbyId != null) {
-                    String messageContent = (String) request.getPayload();
-                    ChatMessage chatMessage = new ChatMessage(this.clientIdentifier, messageContent);
-                    ServerMain.broadcastChatMessageToLobby(this.lobbyId, chatMessage);
-                }
                 break;
 
             case PlAYER_MOVE:

@@ -2,13 +2,11 @@ package com.StardewValley.network.server;// در GameSession.java (سمت سرو
 
 import com.StardewValley.models.*;
 import com.StardewValley.network.client.controllers.ClientHandler;
+import com.StardewValley.network.shares.dtos.ChatMessageDTO;
 import com.StardewValley.network.shares.dtos.GameStateDTO;
 import com.StardewValley.network.shares.dtos.PlayerStateDTO;
 import com.StardewValley.network.shares.dtos.ShowReactionDTO;
-import com.StardewValley.network.shares.message.PlayerMovePayload;
-import com.StardewValley.network.shares.message.PlayerReactionPayload;
-import com.StardewValley.network.shares.message.Request;
-import com.StardewValley.network.shares.message.RequestType;
+import com.StardewValley.network.shares.message.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,6 +102,49 @@ public class GameSession implements Runnable {
             // کلاینت در فریم بعدی آپدیت را دریافت کرده و می‌بیند که بازیکن حرکت نکرده است.
         }
     }*/
+
+
+    public void processChatMessage(ChatMessagePayload payload, String fromUsername) {
+        // 1. ساخت DTO برای ارسال به کلاینت‌ها
+        ChatMessageDTO chatMessage = new ChatMessageDTO(fromUsername, payload.getMessageContent(), payload.isPrivate());
+        Request chatRequest = new Request(RequestType.RECEIVE_CHAT_MESSAGE, chatMessage);
+
+        if (payload.isPrivate()) {
+            // --- منطق چت خصوصی ---
+            System.out.println("Private chat from " + fromUsername + " to " + payload.getRecipientUsername());
+
+            // پیدا کردن هندلر فرستنده و گیرنده
+            ClientHandler senderHandler = findClientHandlerByUsername(fromUsername);
+            ClientHandler recipientHandler = findClientHandlerByUsername(payload.getRecipientUsername());
+
+            // ارسال پیام فقط به این دو نفر
+            if (senderHandler != null) {
+                senderHandler.sendMessage(chatRequest);
+            }
+            if (recipientHandler != null) {
+                recipientHandler.sendMessage(chatRequest);
+            } else if (senderHandler != null) {
+                // اگر گیرنده پیدا نشد، به فرستنده خطا بده
+                // senderHandler.sendMessage(new Request(RequestType.ERROR, "Player not found."));
+            }
+        } else {
+            // --- منطق چت عمومی ---
+            System.out.println("Public chat from " + fromUsername);
+
+            // ارسال پیام به تمام بازیکنان در این جلسه
+            broadcastToSession(chatRequest);
+        }
+    }
+
+    private ClientHandler findClientHandlerByUsername(String username) {
+        if (username == null) return null;
+        for (ClientHandler client : playersInSession) {
+            if (username.equals(client.getUsername())) {
+                return client;
+            }
+        }
+        return null;
+    }
 
     // Check disconnection
     public void onPlayerDisconnected(String username) {

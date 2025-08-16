@@ -57,17 +57,9 @@ public class ClientHandler implements Runnable {
             // قطع ناگهانی
             System.out.println("Client " + getClientIdentifier() + " disconnected abruptly.");
         } catch (Exception e) {
-            System.out.println("Error with client " + getClientIdentifier() + ": " + e.getMessage());
+            e.printStackTrace(); // TODO : check
         } finally {
             ServerMain.handleDisconnection(this);
-        }
-    }
-
-    public void closeConnection() {
-        try {
-            clientSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

@@ -231,9 +231,11 @@ public class ServerMain {
                 .filter(lobby -> !lobby.isGameStarted())
                 .collect(Collectors.toList());
         Request updateRequest = new Request(RequestType.UPDATE_LOBBY_LIST, availableLobbies);
-        for (ClientHandler client : clients) {
-            if (client.getLobbyId() == null) {
-                client.sendMessage(updateRequest);
+        synchronized (clients) {
+            for (ClientHandler client : clients) {
+                if (client.getLobbyId() == null) {
+                    client.sendMessage(updateRequest);
+                }
             }
         }
     }

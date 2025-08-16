@@ -32,12 +32,16 @@ import com.esotericsoftware.kryo.io.Output;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AppDataManager {
-    private static final String USERS_DATA_PATH = "projectData/users.json";
-    public static final String GAMES_DATA_PATH = "projectData/games/";
+    public static String USERS_DATA_PATH = "projectData/users.json";
+    public static String GAMES_DATA_PATH = "projectData/games/";
 
     private static UsersData usersData;
     private static final Kryo kryo = new Kryo();
@@ -210,6 +214,7 @@ public class AppDataManager {
             saveUsers(app.getUsers(), null);
     }
 
+    // Users GSON
     public static void loadApp() {
         ItemManager.loadItems();
         App app = App.getApp();
@@ -220,7 +225,7 @@ public class AppDataManager {
         // loading user game -> after he clicked on load game
     }
 
-    // Users GSON
+
     public static void saveUsers(ArrayList<User> users, User loggedInUser) {
         ArrayList<UserData> usersData = new ArrayList<>();
         for (User user : users) {
@@ -232,21 +237,46 @@ public class AppDataManager {
             loggedInUserData = loggedInUser.getUserName();
         }
 
-        FileHandle file = Gdx.files.local(USERS_DATA_PATH);
-        file.writeString(gson.toJson(new UsersData(usersData, loggedInUserData)), false);
+        File file = new File(USERS_DATA_PATH);
+        file.getParentFile().mkdirs();
+
+        try (FileWriter writer = new FileWriter(file, false)) {
+            gson.toJson(new UsersData(usersData, loggedInUserData), writer);
+            System.out.println("Users data saved successfully to: " + file.getAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Error saving users data: " + e.getMessage());
+        }
     }
 
     public static void loadUsersFromFile() {
-        FileHandle file = Gdx.files.local(USERS_DATA_PATH);
+        File file = new File(USERS_DATA_PATH);
 
         if (!file.exists()) {
-            Gdx.app.log("UserManager", "Save file not found. Creating a new one.");
+            System.out.println("Users file not found. Creating a new one.");
             usersData = new UsersData(new ArrayList<>(), null);
             return;
         }
 
-        usersData = gson.fromJson(file.readString(), UsersData.class);
+        try (FileReader reader = new FileReader(file)) {
+            usersData = gson.fromJson(reader, UsersData.class);
+            System.out.println("Users data loaded successfully from: " + file.getAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Error loading users data: " + e.getMessage());
+            usersData = new UsersData(new ArrayList<>(), null);
+        }
     }
+
+//    public static void loadUsersFromFile() {
+//        FileHandle file = Gdx.files.local(USERS_DATA_PATH);
+//
+//        if (!file.exists()) {
+//            Gdx.app.log("UserManager", "Save file not found. Creating a new one.");
+//            usersData = new UsersData(new ArrayList<>(), null);
+//            return;
+//        }
+//
+//        usersData = gson.fromJson(file.readString(), UsersData.class);
+//    }
 
     public static void loadAppDetails(App app) {
         ArrayList<User> users = new ArrayList<>();

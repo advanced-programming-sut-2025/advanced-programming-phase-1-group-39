@@ -2,6 +2,7 @@ package com.StardewValley.network.server;
 
 import com.StardewValley.models.*;
 import com.StardewValley.models.map.FarmType;
+import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.network.server.controllers.ClientHandler;
 import com.StardewValley.network.shares.Lobby;
 import com.StardewValley.network.shares.message.*;
@@ -19,11 +20,13 @@ public class ServerMain {
     public static final Map<Integer, GameSession> activeGames = Collections.synchronizedMap(new HashMap<>());
 
     public static void main(String[] args) {
+        changePlaceOfData();
+
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is running on port " + PORT);
-//            System.out.println("Loading server app ...");
-//            AppDataManager.loadApp();
-//            System.out.println("server app Loaded. " + App.getApp().getUsers().size() + " users loaded.");
+            System.out.println("Loading server app ...");
+            AppDataManager.loadUsersFromFile();
+            System.out.println("server app Loaded. " + App.getApp().getUsers().size() + " users loaded.");
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
@@ -38,6 +41,10 @@ public class ServerMain {
         }
     }
 
+    private static void changePlaceOfData() {
+        AppDataManager.USERS_DATA_PATH = "serverData/users.json";
+    }
+
     public static synchronized void registerNewClient(User user, ClientHandler handler) {
         handler.setUsername(user.getUserName());
         if (App.getApp().getUserByUsername(user.getUserName()) == null) {
@@ -45,8 +52,8 @@ public class ServerMain {
         } else {
             App.getApp().updateUser(user);
         }
-// TODO : saving app for server
-//        AppDataManager.saveApp();
+        // saving app for server
+        AppDataManager.saveUsers(App.getApp().getUsers(), App.getApp().getLoggedInUser());
         broadcastOnlineUserList();
     }
 

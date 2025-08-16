@@ -82,8 +82,9 @@ public class ClientHandler implements Runnable {
 
             case JOIN_LOBBY:
                 String requestedLobbyId = (String) request.getPayload();
-                Result res = ServerMain.joinLobby(requestedLobbyId, username, this);
-                sendMessage(new Request(RequestType.JOIN_LOBBY_RESPONSE, res.success()));
+                JoinLobbyResponse response = ServerMain.joinLobby(requestedLobbyId, username, this);
+
+                sendMessage(new Request(RequestType.JOIN_LOBBY_RESPONSE, response));
                 break;
 
 

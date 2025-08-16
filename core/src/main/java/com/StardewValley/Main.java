@@ -4,6 +4,7 @@ import com.StardewValley.graphicViews.*;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Enums.Menu;
 import com.StardewValley.models.GameSetting;
+import com.StardewValley.models.Result;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.network.client.NetworkClient;
 import com.badlogic.gdx.Game;
@@ -43,30 +44,28 @@ public class Main extends Game {
         }
     }
 
-    public NetworkClient getNetworkClient() {
-        return networkClient;
-    }
 
-
-    // این متد توسط NetworkClient از طریق Gdx.app.postRunnable صدا زده می‌شود
+    // --- Events ---
     public void onConnectionSuccess() {
         networkClient.sendUserDataToServer(App.getApp().getLoggedInUser());
     }
 
-    // این متد هم توسط NetworkClient صدا زده می‌شود
     public void onConnectionFailed(String reason) {
         System.out.println("Connection Failed: " + reason);
-        // به منوی اصلی برگرد
-        setScreen(new MainMenuScreen());
+        switchScreen(new MainMenuScreen());
     }
 
-    // این متد هم توسط NetworkClient صدا زده می‌شود
     public void onDisconnectedFromServer(String reason) {
         System.out.println("Disconnected: " + reason);
-        // به منوی اصلی برگرد
-        setScreen(new MainMenuScreen());
+        switchScreen(new MainMenuScreen());
     }
 
+    public void onJoinLobbyResponse(Result result) {
+        Screen currentScreen = getScreen();
+        if (currentScreen instanceof LobbyScreen) {
+            ((LobbyScreen) currentScreen).handleJoinResponse(result);
+        }
+    }
 
     @Override
     public void render() {

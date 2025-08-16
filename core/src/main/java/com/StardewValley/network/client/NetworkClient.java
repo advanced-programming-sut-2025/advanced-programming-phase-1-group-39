@@ -4,6 +4,7 @@ import com.StardewValley.Main; // <<-- وارد کردن کلاس اصلی با�
 import com.StardewValley.graphicViews.GameScreen;
 import com.StardewValley.models.App; // <<-- وارد کردن مدل App
 import com.StardewValley.models.Game;
+import com.StardewValley.models.Result;
 import com.StardewValley.models.User;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.saveClasses.UserData;
@@ -107,9 +108,11 @@ public class NetworkClient {
                 break;
 
             case JOIN_LOBBY_RESPONSE:
-                if (payload instanceof Boolean) {
-                    Boolean response = (Boolean) payload;
-                    joinLobby(response);
+                if (payload instanceof JoinLobbyResponse) {
+                    JoinLobbyResponse response = (JoinLobbyResponse) payload;
+                    main.onJoinLobbyResponse(response.joiningResult);
+                    if (response.joiningResult.success())
+                        app.setCurrentLobby(response.joinedLobby);
                 }
                 break;
 
@@ -170,7 +173,7 @@ public class NetworkClient {
         sendRequest(new Request(RequestType.SEND_USER_DATA, new UserData(user)));
     }
 
-    // TODO : call after click refresh
+    //call after click refresh
     public void sendRefreshLobbiesRequest() {
         sendRequest(new Request(RequestType.REFRESH_LOBBY_LIST, null));
     }
@@ -180,17 +183,9 @@ public class NetworkClient {
         sendRequest(new Request(RequestType.CREATE_LOBBY, new LobbyData(lobbyName, usernameOfAdmin, isPrivate, isVisibleToAll, password)));
     }
 
-    //TODO : after click on each lobby or searching lobby by id
+    // after  on each lobby or searching lobby by id
     public void sendJoinLobbyRequest(String lobbyId) {
         sendRequest(new Request(RequestType.JOIN_LOBBY, new String[]{lobbyId, app.getLoggedInUser().getUserName()}));
-    }
-
-    public void joinLobby(boolean success) {
-        if (!success) {
-        //TODO  : show error
-        } else {
-        //TODO  : show lobby window
-        }
     }
 
     // TODO : on button clicked

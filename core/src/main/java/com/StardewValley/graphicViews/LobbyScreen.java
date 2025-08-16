@@ -1,15 +1,20 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
+import com.StardewValley.models.App;
+import com.StardewValley.models.Result;
 import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.network.client.NetworkClient;
 import com.StardewValley.network.shares.Lobby;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
@@ -23,10 +28,15 @@ public class LobbyScreen implements Screen {
     private Skin skin;
 
     // عناصر UI
+    private List<Lobby> currentlyDisplayedLobbies = new ArrayList<>();
     private Table lobbyListTable;
     private ScrollPane scrollPane;
 
+    private Label errorLabel;
+
+    // network
     public NetworkClient networkClient;
+
 
     public LobbyScreen(NetworkClient networkClient) {
         this.networkClient = networkClient;
@@ -38,20 +48,16 @@ public class LobbyScreen implements Screen {
     }
 
     private void setupUI() {
-        // استفاده از Stack برای قرار دادن پس‌زمینه در لایه زیرین و جدول اصلی در لایه رویی
         Stack stack = new Stack();
         stack.setFillParent(true);
         stage.addActor(stack);
 
-        // 1. لایه پس‌زمینه
         stack.add(new Image(GameAssetManager.pregameBackground));
 
-        // 2. لایه UI اصلی
         Table rootTable = new Table();
         rootTable.setFillParent(true);
         stack.add(rootTable);
 
-        // --- دکمه بازگشت در بالا-چپ ---
         TextButton backButton = new TextButton("Back", skin);
         rootTable.add(backButton).width(150).top().left();
 
@@ -93,18 +99,25 @@ public class LobbyScreen implements Screen {
         controlsTable.add(leftControls).padRight(20);
         controlsTable.add(rightControls).padLeft(20);
 
-//        // --- لیست لابی‌ها در ScrollPane ---
         lobbyListTable = new Table();
         scrollPane = new ScrollPane(lobbyListTable, skin);
         scrollPane.setFadeScrollBars(false);
-        scrollPane.setScrollingDisabled(true, false); // فقط اسکرول عمودی
+        scrollPane.setScrollingDisabled(true, false);
 
         // grow() باعث می‌شود این بخش تمام فضای عمودی و افقی باقیمانده را بگیرد
         contentTable.add(scrollPane).grow().width(820).row();
-//
-//        // --- اضافه کردن Listener ها ---
+
+        // بخش ارور ها
+        Table messageTable = new Table();
+        messageTable.setFillParent(true);
+        stack.add(messageTable);
+
+        errorLabel = new Label("", GameAssetManager.messageBoxStyle);
+        errorLabel.setVisible(false);
+        errorLabel.setAlignment(Align.center);
+        messageTable.add(errorLabel).bottom().padBottom(50).expandY();
+
         addListeners(backButton, refreshButton, createLobbyButton);
-        stage.setDebugAll(true);
     }
 
     private void addListeners(TextButton backButton, TextButton refreshButton, TextButton createLobbyButton) {
@@ -119,8 +132,7 @@ public class LobbyScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("Refreshing lobbies...");
-                // TODO : complete
-                populateLobbyList(new ArrayList<>());
+                populateLobbyList();
             }
         });
 
@@ -133,36 +145,31 @@ public class LobbyScreen implements Screen {
         });
     }
 
-    // این متد لیست لابی‌ها را از سرور دریافت و در جدول نمایش می‌دهد
-    public void populateLobbyList(List<Lobby> lobbies) {
-        lobbyListTable.clear();
-        if (lobbies.isEmpty()) {
-            lobbyListTable.add(new Label("No active lobbies found.", skin));
+    public void populateLobbyList() {
+        networkClient.sendRefreshLobbiesRequest();
+
+        currentlyDisplayedLobbies = App.getApp().getAvailableLobbies();
+        rebuildLobbyListUI();
+    }
+
+
+    public void showError(String message) {
+        if(message == null || message.isEmpty()) {
+            errorLabel.setVisible(false);
             return;
         }
 
-        for (Lobby lobby : lobbies) {
-            String lobbyText = String.format("%s (%d/4)", lobby.getName(), lobby.getPlayerCount());
-            TextButton lobbyButton = new TextButton(lobbyText, skin);
-//            if (lobby.isPrivate()) {
-//                lobbyButton.getImageCell().padLeft(10);
-//                lobbyButton.add(new Image(new Texture(Gdx.files.internal("icons/lock_icon.png")))).size(32,32).padLeft(10); // آیکون قفل برای لابی خصوصی
-//            }
+        errorLabel.setText(message);
 
-            lobbyButton.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    if (lobby.isPrivate()) {
-                        showPasswordDialog(lobby);
-                    } else {
-                        System.out.println("Joining public lobby: " + lobby.getName());
-                        showJoinedLobbyWindow(lobby, "Player1"); // فرض می‌کنیم بازیکن فعلی ادمین است
-                    }
-                }
-            });
+        errorLabel.clearActions();
+        errorLabel.getColor().a = 1;
+        errorLabel.setVisible(true);
 
-            lobbyListTable.add(lobbyButton).fillX().height(80).pad(5).row();
-        }
+        errorLabel.addAction(Actions.sequence(
+                Actions.delay(3f),
+                Actions.fadeOut(1f),
+                Actions.visible(false)
+        ));
     }
 
     private void showPasswordDialog(Lobby lobby) {
@@ -191,7 +198,6 @@ public class LobbyScreen implements Screen {
     }
 
     private void showJoinedLobbyWindow(Lobby lobby, String currentPlayerName) {
-        // ابتدا پنجره‌های قبلی را می‌بندیم (اگر وجود داشته باشند)
         Actor oldWindow = stage.getRoot().findActor("joinedLobbyWindow");
         if(oldWindow != null) oldWindow.remove();
 
@@ -243,15 +249,68 @@ public class LobbyScreen implements Screen {
         stage.addActor(joinedWindow);
     }
 
+    private void rebuildLobbyListUI() {
+        lobbyListTable.clear();
+        if (currentlyDisplayedLobbies.isEmpty()) {
+            lobbyListTable.add(new Label("No active currentlyDisplayedLobbies found.", skin));
+            return;
+        }
+
+        for (Lobby lobby : currentlyDisplayedLobbies) {
+            if (!lobby.isVisibleToAll()) continue;
+            String lobbyText = String.format("%s (%d/4)", lobby.getName(), lobby.getPlayerCount());
+            TextButton lobbyButton = new TextButton(lobbyText, skin);
+            if (lobby.isPrivate()) {
+                lobbyButton.setColor(Color.GRAY);
+            }
+
+            lobbyButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    if (lobby.isPrivate()) {
+                        showPasswordDialog(lobby);
+                    } else {
+                        networkClient.sendJoinLobbyRequest(lobby.getId());
+
+                    }
+                }
+            });
+
+            lobbyListTable.add(lobbyButton).fillX().height(80).pad(5).row();
+        }
+    }
+
+    // join lobby handling
+    public void handleJoinResponse(Result result) {
+        boolean success = result.success();
+        if (!success) {
+            showError(result.message());
+        } else {
+            showJoinedLobbyWindow(App.getApp().getCurrentLobby(), App.getApp().getLoggedInUser().getUserName());
+        }
+    }
+
+
+    //Utils
+    private boolean areListsEqual(List<Lobby> list1, List<Lobby> list2) {
+        return list1.size() == list2.size() && list1.containsAll(list2);
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        // TODO : get lobbies
-        populateLobbyList(new ArrayList<Lobby>()); // نمایش داده‌های ساختگی برای تست
+        populateLobbyList();
     }
 
     @Override
     public void render(float delta) {
+        List<Lobby> appLobbyList = App.getApp().getAvailableLobbies();
+
+        if (!areListsEqual(currentlyDisplayedLobbies, appLobbyList)) {
+            this.currentlyDisplayedLobbies = new ArrayList<>(appLobbyList);
+            rebuildLobbyListUI();
+        }
+
         stage.act(Math.min(delta, 1 / 30f));
         stage.draw();
     }

@@ -58,9 +58,9 @@ public class ServerMain {
     }
 
 
-        // متد createLobby با دریافت نام کاربری ادمین
+    // متد createLobby با دریافت نام کاربری ادمین
     public static void createLobby(LobbyData lobbyData, ClientHandler adminHandler) {
-        Lobby newLobby = new Lobby(lobbyData.lobbyName, lobbyData.adminUsername, lobbyData.isPrivate, lobbyData.isVisibleToAll);
+        Lobby newLobby = new Lobby(lobbyData.lobbyName, lobbyData.adminUsername, lobbyData.isPrivate, lobbyData.password, lobbyData.isVisibleToAll);
         synchronized (lobbies) {
             lobbies.add(newLobby);
             adminHandler.setLobbyId(newLobby.getId());
@@ -71,23 +71,28 @@ public class ServerMain {
     }
 
     // متد joinLobby با دریافت نام کاربری
-    public static Result joinLobby(String lobbyId, String username, ClientHandler joiningClient) {
+    public static JoinLobbyResponse joinLobby(String lobbyId, String username, ClientHandler joiningClient) {
         synchronized (lobbies) {
+            Result res;
+            Lobby targetLobby = null;
             for (Lobby lobby : lobbies) {
                 if (lobby.getId().equals(lobbyId) && !lobby.isFull()) {
-                    boolean success = lobby.addPlayer(username); // بازیکن با نام کاربری اضافه می‌شود
+                    boolean success = lobby.addPlayer(username);
                     if (success) {
-                        joiningClient.setUsername(username); // نام کاربری را در هندلر ذخیره کن
+                        joiningClient.setUsername(username);
                         joiningClient.setLobbyId(lobby.getId());
                         broadcastLobbyListInternal();
-                        return new Result(true,
-                                "Player " + username + " joined lobby. New state: " + lobby);
+                        targetLobby = lobby;
+                        res = new Result(true,
+                                "Player " + username + " joined lobby " + lobby);
                     } else {
-                        return new Result(false, "Failed to join lobby (Admin: " + username + ")");
+                        res = new Result(false, "Failed to join lobby (Admin: " + username + ")");
                     }
                 }
             }
-            return new Result(false, "Lobby with ID " + lobbyId + " not found or is full.");
+            res = new Result(false, "Lobby with ID " + lobbyId + " not found or is full.");
+
+            return new JoinLobbyResponse(res, targetLobby);
         }
     }
 

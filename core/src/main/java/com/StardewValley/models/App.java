@@ -25,9 +25,10 @@ public class App {
     private Menu currentMenu = Menu.SIGNUP_MENU;
 
     // NETWORK
-    private List<String> onlineUsers = new ArrayList<>();
     private List<Lobby> availableLobbies = new ArrayList<>();
+    private transient Lobby currentLobby = null;
 
+    private List<String> onlineUsers = new ArrayList<>();
 
     private App() {
 
@@ -177,5 +178,14 @@ public class App {
 
     public void removeGame(Game game) {
         games.remove(game);
+    }
+
+
+    public Lobby getCurrentLobby() {
+        return currentLobby;
+    }
+
+    public void setCurrentLobby(Lobby currentLobby) {
+        this.currentLobby = currentLobby;
     }
 }

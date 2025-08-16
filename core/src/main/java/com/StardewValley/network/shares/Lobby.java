@@ -12,15 +12,16 @@ public class Lobby implements Serializable {
     private final String id;
     private final String lobbyName;
     private boolean isPrivate;
+    private String lobbyPassword;
+
     private boolean isVisibleToAll;
 
-    // <<-- برای thread-safety بهتر، لیست را final می‌کنیم --
     private final List<String> players; //  !! Usernames
     private final Map<String, FarmType> playersMap = new HashMap<>();
     private final String admin;
     private boolean gameStarted;
 
-    public Lobby(String lobbyName, String admin, boolean isPrivate, boolean isVisibleToAll) {
+    public Lobby(String lobbyName, String admin, boolean isPrivate, String password, boolean isVisibleToAll) {
         this.id = UUID.randomUUID().toString().substring(0, 8);
         this.lobbyName = lobbyName;
         this.admin = admin;
@@ -29,6 +30,7 @@ public class Lobby implements Serializable {
         this.gameStarted = false;
 
         this.isPrivate = isPrivate;
+        if (isPrivate) this.lobbyPassword = password;
         this.isVisibleToAll = isVisibleToAll;
     }
 
@@ -67,14 +69,22 @@ public class Lobby implements Serializable {
     }
 
 
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public boolean isVisibleToAll() {
+        return isVisibleToAll;
+    }
+
+    public String getPassword() {
+        return lobbyPassword;
+    }
+
     @Override
     public String toString() {
         // از getPlayerCount() استفاده می‌کنیم که مستقیما سایز لیست همگام‌شده را می‌خواند
         String status = gameStarted ? "[In Game]" : "[Waiting]";
         return status + " ID: " + id + " | Name: " + lobbyName + " | Players: " + getPlayerCount() + "/" + MAX_PLAYERS;
-    }
-
-    public boolean isPrivate() {
-        return isPrivate;
     }
 }

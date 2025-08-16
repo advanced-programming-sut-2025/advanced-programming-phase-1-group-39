@@ -1,13 +1,11 @@
 package com.StardewValley.network.server.controllers;
 
 
-import com.StardewValley.models.Result;
 import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.saveClasses.UserData;
 import com.StardewValley.network.server.ServerMain;
 import com.StardewValley.network.shares.message.*;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -81,13 +79,21 @@ public class ClientHandler implements Runnable {
                 ServerMain.createLobby(lobbyData, this);
                 break;
 
-            case JOIN_LOBBY:
+            case JOIN_PUBLIC_LOBBY:
                 String requestedLobbyId = (String) request.getPayload();
                 JoinLobbyResponse response = ServerMain.joinLobby(requestedLobbyId, username, this);
 
                 sendMessage(new Request(RequestType.JOIN_LOBBY_RESPONSE, response));
                 break;
 
+            case JOIN_PRIVATE_LOBBY:
+                String[] payload = (String[]) request.getPayload();
+                String id = payload[0];
+                String password = payload[1];
+                JoinLobbyResponse lobbyResponse = ServerMain.joinLobby(id, password, username, this);
+
+                sendMessage(new Request(RequestType.JOIN_LOBBY_RESPONSE, lobbyResponse));
+                break;
 
             case CHOOSE_MAP:
                 FarmType farmType = (FarmType) request.getPayload();

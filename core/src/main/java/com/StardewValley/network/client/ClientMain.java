@@ -73,7 +73,7 @@ public class ClientMain {
                     case "2":
                         System.out.print("Enter Lobby ID to join: ");
                         String lobbyId = scanner.nextLine();
-                        sendRequest(new Request(RequestType.JOIN_LOBBY, lobbyId));
+                        sendRequest(new Request(RequestType.JOIN_PUBLIC_LOBBY, lobbyId));
                         inLobby = true;
                         break;
                     case "3":

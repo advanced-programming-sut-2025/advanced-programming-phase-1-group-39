@@ -20,7 +20,6 @@ public class ServerMain {
     public static final Map<Integer, GameSession> activeGames = Collections.synchronizedMap(new HashMap<>());
 
     public static void main(String[] args) {
-
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is running on port " + PORT);
             System.out.println("Loading server app ...");
@@ -53,8 +52,6 @@ public class ServerMain {
         broadcastOnlineUserList();
     }
 
-
-    // متد createLobby با دریافت نام کاربری ادمین
     public static void createLobby(LobbyData lobbyData, ClientHandler adminHandler) {
         Lobby newLobby = new Lobby(lobbyData.lobbyName, lobbyData.adminUsername, lobbyData.isPrivate, lobbyData.password, lobbyData.isVisibleToAll);
         synchronized (lobbies) {
@@ -74,6 +71,35 @@ public class ServerMain {
             Result res;
             for (Lobby lobby : lobbies) {
                 if (lobby.getId().equals(lobbyId) && !lobby.isFull()) {
+                    boolean success = lobby.addPlayer(username);
+                    if (success) {
+                        joiningClient.setUsername(username);
+                        joiningClient.setLobbyId(lobby.getId());
+                        broadcastLobbyListInternal();
+                        res = new Result(true,
+                                "Player " + username + " joined lobby " + lobby);
+                        return new JoinLobbyResponse(res, lobby);
+                    } else {
+                        res = new Result(false, "Failed to join lobby (Admin: " + username + ")");
+                        return new JoinLobbyResponse(res, null);
+                    }
+                }
+            }
+            res = new Result(false, "Lobby with ID " + lobbyId + " not found or is full.");
+            return new JoinLobbyResponse(res, null);
+        }
+    }
+
+    public static JoinLobbyResponse joinLobby(String lobbyId, String password, String username, ClientHandler joiningClient) {
+        synchronized (lobbies) {
+            Result res;
+            for (Lobby lobby : lobbies) {
+                if (lobby.getId().equals(lobbyId) && !lobby.isFull()) {
+                    if (!lobby.getPassword().equals(password)) {
+                        res = new Result(false, "The password does not match.");
+                        return new JoinLobbyResponse(res, null);
+                    }
+
                     boolean success = lobby.addPlayer(username);
                     if (success) {
                         joiningClient.setUsername(username);

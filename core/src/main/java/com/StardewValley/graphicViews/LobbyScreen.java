@@ -172,27 +172,56 @@ public class LobbyScreen implements Screen {
     }
 
     private void showPasswordDialog(Lobby lobby) {
-        Dialog passwordDialog = new Dialog("Enter Password", skin) {
-            @Override
-            protected void result(Object object) {
-                if ((Boolean) object) {
-                    TextField passwordField = findActor("passwordField");
-                    System.out.println("Attempting to join private lobby with password...");
-                    // TODO: ارسال درخواست Join به سرور با رمز عبور
-                    // بعد از تایید سرور، پنجره لابی باز می‌شود
-                    showJoinedLobbyWindow(lobby, "Player1"); // نام بازیکن فعلی
-                }
-            }
-        };
-        passwordDialog.text("Lobby \"" + lobby.getName() + "\" requires a password:");
+        Dialog passwordDialog = new Dialog("Enter Password", skin);
+
+        // عناصر UI
+        Label infoLabel = new Label("Lobby \"" + lobby.getName() + "\" requires a password:", skin);
         TextField passwordField = new TextField("", skin);
         passwordField.setPasswordMode(true);
         passwordField.setPasswordCharacter('*');
-        passwordField.setName("passwordField");
-        passwordDialog.getContentTable().row();
-        passwordDialog.getContentTable().add(passwordField).width(300).pad(20);
-        passwordDialog.button("Join", true);
-        passwordDialog.button("Cancel", false);
+
+        TextButton joinButton = new TextButton("Join", skin);
+        TextButton cancelButton = new TextButton("Cancel", skin);
+
+        // یک لیبل برای نمایش پیام "در حال بررسی..." یا خطا
+        Label statusLabel = new Label("", skin);
+        statusLabel.setColor(Color.YELLOW);
+
+        // چیدمان UI
+        Table content = passwordDialog.getContentTable();
+        content.pad(20);
+        content.add(infoLabel).colspan(2).row();
+        content.add(passwordField).width(300).colspan(2).pad(20).row();
+        content.add(statusLabel).colspan(2).padBottom(10).row();
+
+        passwordDialog.getButtonTable().add(cancelButton).width(150).pad(10);
+        passwordDialog.getButtonTable().add(joinButton).width(150).pad(10);
+
+        // --- Listener های جدید ---
+
+        cancelButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                passwordDialog.hide();
+            }
+        });
+
+        joinButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // ۱. UI را در حالت انتظار قرار بده
+                statusLabel.setText("Verifying password...");
+                joinButton.setDisabled(true);
+                cancelButton.setDisabled(true);
+
+                // ۲. درخواست را به سرور بفرست
+                String password = passwordField.getText();
+                // <<-- یک متد جدید در NetworkClient برای این کار بسازید -->>
+                networkClient.sendJoinPrivateLobbyRequest(lobby.getId(), password);
+            }
+        });
+
+        // نمایش دیالوگ
         passwordDialog.show(stage);
     }
 
@@ -367,7 +396,6 @@ public class LobbyScreen implements Screen {
                         showPasswordDialog(lobby);
                     } else {
                         networkClient.sendJoinLobbyRequest(lobby.getId());
-
                     }
                 }
             });

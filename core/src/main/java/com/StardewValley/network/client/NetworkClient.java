@@ -105,17 +105,19 @@ public class NetworkClient {
                     app.setAvailableLobbies(lobbies);
                 }
                 break;
+
             case CREATE_LOBBY_SUCCESS:
                 Lobby currentLobby = (Lobby) payload;
                 app.setCurrentLobby(currentLobby);
                 main.onJoinLobbyResponse(new Result(true, ""));
                 break;
+
             case JOIN_LOBBY_RESPONSE:
                 if (payload instanceof JoinLobbyResponse) {
                     JoinLobbyResponse response = (JoinLobbyResponse) payload;
-                    main.onJoinLobbyResponse(response.joiningResult);
                     if (response.joiningResult.success())
                         app.setCurrentLobby(response.joinedLobby);
+                    main.onJoinLobbyResponse(response.joiningResult);
                 }
                 break;
 
@@ -124,6 +126,7 @@ public class NetworkClient {
                 disconnect();
                 main.onDisconnectedFromServer(reason);
                 break;
+
 
             case GAME_START_FAILED:
                 String errorMessage = (String) payload;
@@ -193,10 +196,15 @@ public class NetworkClient {
 
     // after  on each lobby or searching lobby by id
     public void sendJoinLobbyRequest(String lobbyId) {
-        sendRequest(new Request(RequestType.JOIN_LOBBY, lobbyId));
+        sendRequest(new Request(RequestType.JOIN_PUBLIC_LOBBY, lobbyId));
     }
 
-    // TODO : on button clicked
+
+    public void sendJoinPrivateLobbyRequest(String id, String password) {
+        sendRequest(new Request(RequestType.JOIN_PRIVATE_LOBBY, new String[]{id, password}));
+    }
+
+    // on button clicked
     public void sendChooseMapRequest(FarmType farmType) {
         sendRequest(new Request(RequestType.CHOOSE_MAP, farmType));
     }
@@ -227,4 +235,5 @@ public class NetworkClient {
         Request request = new Request(RequestType.PLAYER_REACTION, payload);
         sendRequest(request);
     }
+
 }

@@ -7,11 +7,12 @@ import com.StardewValley.network.shares.Lobby;
 import com.badlogic.gdx.audio.Music;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class App {
     private static App app;
-    private ArrayList<User> users = new ArrayList<>();
+    private List<User> users = Collections.synchronizedList(new ArrayList<>());
     private ArrayList<Game> games = new ArrayList<>();
 
     private User loggedInUser = null;
@@ -63,10 +64,12 @@ public class App {
     }
 
     public void updateUser(User user) {
-        for (User appUser : users ) {
-            if (appUser.getUserName().equals(user.getUserName())) {
-                users.remove(appUser);
-                users.add(user);
+        synchronized (users) {
+            for (User appUser : users) {
+                if (appUser.getUserName().equals(user.getUserName())) {
+                    users.remove(appUser);
+                    users.add(user);
+                }
             }
         }
     }
@@ -84,7 +87,7 @@ public class App {
     }
 
     public ArrayList<User> getUsers() {
-        return users;
+        return new ArrayList<>(users);
     }
 
     public String getRandomPassword() {
@@ -147,9 +150,11 @@ public class App {
 
     public void resetLastGameId() {
         int max = 101;
-        for (User user : users) {
-            for (GameMetadata gameData : user.getGamesData()) {
-                max = Math.max(gameData.gameId + 1, max);
+        synchronized (users) {
+            for (User user : users) {
+                for (GameMetadata gameData : user.getGamesData()) {
+                    max = Math.max(gameData.gameId + 1, max);
+                }
             }
         }
 
@@ -170,8 +175,10 @@ public class App {
     }
 
     public User getUserByUsername(String username) {
-        for (User user : users) {
-            if (user.getUserName().equals(username)) return user;
+        synchronized (users) {
+            for (User user : users) {
+                if (user.getUserName().equals(username)) return user;
+            }
         }
         return null;
     }

@@ -11,7 +11,8 @@ public enum RequestType {
     REFRESH_LOBBY_LIST, // client
     CREATE_LOBBY,
 
-    JOIN_LOBBY,
+    JOIN_PUBLIC_LOBBY,
+    JOIN_PRIVATE_LOBBY,
     JOIN_LOBBY_RESPONSE, // server
 
     //Start Game

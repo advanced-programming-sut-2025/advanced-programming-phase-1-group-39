@@ -1687,7 +1687,7 @@ public class GameScreen implements Screen {
         this.npcMenuCurrentNpcId = npcId;
 
         Skin skin = GameAssetManager.skin;
-        npcMenuWindow = new Window("Gift to " + npcId, skin);
+        npcMenuWindow = new Window(npcId + "NPC menu", skin);
         npcMenuWindow.setModal(true);
         npcMenuWindow.setSize(1356, 1000);
         npcMenuWindow.setPosition(uiStage.getWidth() / 2f, uiStage.getHeight() / 2f, Align.center);
@@ -1786,16 +1786,17 @@ public class GameScreen implements Screen {
 
                 if (i == player.getSelectedSlot()) {
                     Image highlight = new Image(GameAssetManager.inventoryHighlightSlot);
+                    highlight.setName("giftHighlight");  // تگ برای تشخیص
                     highlight.setColor(new Color(1, 1, 1, 0.41f));
                     slotStack.add(highlight);
                 }
 
-                final int slotIndex = i;
+                final int slotIndexFinal = i;
                 slotStack.addListener(new InputListener() {
                     @Override
                     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        player.setSelectedSlot(slotIndex);
-                        // اینجا updateInventoryContent() رو عمدا صدا نمی‌زنیم
+                        player.setSelectedSlot(slotIndexFinal);
+                        refreshGiftInventoryHighlight(inventoryGrid, player);
                         return true;
                     }
                 });
@@ -1808,10 +1809,30 @@ public class GameScreen implements Screen {
         return inventoryGrid;
     }
 
+    private void refreshGiftInventoryHighlight(Table grid, Player player) {
+        Array<Cell> cells = grid.getCells();
+        for (int c = 0; c < cells.size; c++) {
+            Stack slotStack = (Stack) cells.get(c).getActor();
+
+            for (Actor actor : new Array<>(slotStack.getChildren())) {
+                if ("giftHighlight".equals(actor.getName())) {
+                    slotStack.removeActor(actor);
+                    break;
+                }
+            }
+
+            if (c == player.getSelectedSlot()) {
+                Image highlight = new Image(GameAssetManager.inventoryHighlightSlot);
+                highlight.setName("giftHighlight");  // اینجا هم تگ بزن
+                highlight.setColor(new Color(1, 1, 1, 0.41f));
+                slotStack.add(highlight);
+            }
+        }
+    }
+
     private Table getGiftContentTable(String npcId) {
         Skin skin = GameAssetManager.skin;
 
-        // جدول اسلات‌های اینونتوری
         Table gridTable = getGiftInventoryTable();
         ScrollPane scrollPane = new ScrollPane(gridTable, skin);
         scrollPane.setScrollingDisabled(true, false);
@@ -1824,7 +1845,6 @@ public class GameScreen implements Screen {
         float slotSize = 82 + 8;
         scrollPane.setHeight(2 * slotSize);
 
-        // دکمه تیک برای هدیه دادن
         Image tickImg = new Image(new Texture("NPC/tick.png"));
         tickImg.setSize(55, 55);
         tickImg.addListener(new ClickListener() {
@@ -1833,8 +1853,7 @@ public class GameScreen implements Screen {
                 giveSelectedItemToNpc(npcId);
             }
         });
-
-        // لیبل عنوان
+        
         Label titleLabel = new Label("Select Item to Gift", skin, "title");
         titleLabel.setAlignment(Align.center);
         titleLabel.setFontScale(1.1f);

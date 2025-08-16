@@ -24,7 +24,7 @@ public class GameAssetManager {
     //public static Skin skin = new Skin(Gdx.files.internal("skin2/uiskin.json"));
     public static Texture logoTexture = new Texture("Stardew_Valley_Images-main/sprites/Logo No Background.png");
     public static Texture MenuTexture = new Texture("Stardew_Valley_Images-main/sprites/Panorama.png");
-    public static Texture MenuTexture2 = new Texture("Stardew_Valley_Images-main/sprites/pixel-art-river-landscape-illustration (1).jpg");
+    public static Texture MenuTexture2 = new Texture("background/back.jpg");
     public static Texture pregameBackground = new Texture(Gdx.files.internal("menu_background.jfif"));
 
     public static Label.LabelStyle messageBoxStyle;

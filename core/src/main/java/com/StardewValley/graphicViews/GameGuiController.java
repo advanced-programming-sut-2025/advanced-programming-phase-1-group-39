@@ -380,7 +380,7 @@ public class GameGuiController {
         return text.replaceAll("\\u001B\\[[;\\d]*m", "");
     }
 
-    public void useTool(Direction direction) {
+    public boolean useTool(Direction direction) {
         Game game = screen.getGame();
         Player player = game.getPlayerInTurn();
 
@@ -400,9 +400,12 @@ public class GameGuiController {
                     } else {
                         player.changeEnergy(-energyConsumed);
                     }
+                    return result;
                 }
             }
         }
+
+        return false;
     }
 
     public String getQuesList(String NPCName) {

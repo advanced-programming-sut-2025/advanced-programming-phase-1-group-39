@@ -300,7 +300,10 @@ public class GameInputAdapter extends InputAdapter {
             System.out.println("dir: " + dir);
 
             if (dir != null) {
-                controller.useTool(dir);
+                boolean done = controller.useTool(dir);
+                if (!done) {
+                    if ()
+                }
             }
             // چک برای هر NPC
             for (String npcId : screen.npcNames) {

@@ -3,6 +3,7 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
+import com.StardewValley.models.NPC.PlayerNPCInteraction;
 import com.StardewValley.models.Shops.Shop;
 import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.animals.AnimalType;
@@ -43,6 +44,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
@@ -53,7 +55,7 @@ import java.util.LinkedHashMap;
 public class GameScreen implements Screen {
     private static GameScreen screen;
     private GameGuiController controller;
-    private Game game;
+    private static Game game;
     private GameInputAdapter gameMenuInputAdapter;
     private SpriteBatch batch;
 
@@ -67,7 +69,7 @@ public class GameScreen implements Screen {
     private TextField commandInput;
     private String lastCommand;
 
-    //  player
+    // player
     private TextureAtlas playerAtlas;
     private HashMap<Player, ArrayList<Animation<TextureRegion>>> playersAnimations = new LinkedHashMap<>();
 
@@ -147,7 +149,34 @@ public class GameScreen implements Screen {
     private Cell<?> contentCell;
     private Window skillTooltip;
     private Label skillTooltipLabel;
-    private Image skillDescImage; // تصویر توضیح مهارت
+    private Image skillDescImage;
+    private Texture starTexture;
+    private HashMap<String, Integer> friendPlayers;
+
+
+    // NPC
+    private Texture npcAbigail, npcHarvey, npcLeah, npcRobin, npcSebastian;
+    private Texture speechCloudTexture;
+    private Texture speechBubbleTexture;
+    public static Location abigailLocation;
+    public static Location harveyLocation;
+    public static Location leahLocation;
+    public static Location robinLocation;
+    public static Location sebastianLocation;
+    private HashMap<String, Boolean> npcDialogVisible = new HashMap<>();
+    public String[] npcNames = {"sebastian", "abigail", "harvey", "leah", "robin"};
+    private Window npcMenuWindow;
+    private String npcMenuCurrentNpcId;
+    private HashMap<String, Boolean> npcHeartVisible = new HashMap<>();
+    private Texture heartBubbleTexture;
+    private TextureRegion questIconGreen;
+    private TextureRegion questIconYellow;
+    private TextureRegion questIconRed;
+
+    // shipping sell
+    private Window sellBasketWindow;
+    private Cell<?> sellBasketContentCell;
+    ShippingBin bin = new ShippingBin();
 
     // animal popup
     private Window animalWindow;
@@ -183,6 +212,7 @@ public class GameScreen implements Screen {
         this.controller = AppGuiControllers.gameGuiController;
         controller.setScreen(this);
         this.game = App.getApp().getCurrentGame();
+        this.friendPlayers = getFriendshipLevel();
         gameMenuInputAdapter = new GameInputAdapter(controller, this);
         Gdx.input.setInputProcessor(gameMenuInputAdapter);
         batch = new SpriteBatch();
@@ -219,7 +249,7 @@ public class GameScreen implements Screen {
 
         Table barTable = new Table();
         barTable.add(energyAmount).top().padTop(-10f).row();
-        barTable.add(energyBar).expand().fill().pad(80,8,20,0);
+        barTable.add(energyBar).expand().fill().pad(80, 8, 20, 0);
         energyStack.add(barTable);
 
         miniMapWidget = new MiniMapWidget(this.game);
@@ -234,6 +264,28 @@ public class GameScreen implements Screen {
         inventoryTable.bottom().center().padTop(950f);
         rootStack.add(inventoryTable);
 
+        // NPC
+        this.npcAbigail = new Texture("NPC/Abigail1.png");
+        this.npcHarvey = new Texture("NPC/Abigail1.png");
+        this.npcLeah = new Texture("NPC/Leah1.png");
+        this.npcRobin = new Texture("NPC/Robin1.png");
+        this.npcSebastian = new Texture("NPC/Sebastian1.png");
+        this.speechCloudTexture = new Texture("NPC/Emot1.png");
+        this.speechBubbleTexture = new Texture("NPC/comment.png");
+        abigailLocation = Map.TileToPixelConverter(game.getNPC("abigail").getLocation());
+        harveyLocation = Map.TileToPixelConverter(game.getNPC("harvey").getLocation());
+        leahLocation = Map.TileToPixelConverter(game.getNPC("leah").getLocation());
+        robinLocation = Map.TileToPixelConverter(game.getNPC("robin").getLocation());
+        sebastianLocation = Map.TileToPixelConverter(game.getNPC("sebastian").getLocation());
+        for (String npcName : npcNames) {
+            npcDialogVisible.put(npcName, false);
+        }
+        this.heartBubbleTexture = new Texture("NPC/Emote2.png");
+        for (String npc : npcNames) {
+            npcHeartVisible.put(npc.toLowerCase(), false);
+        }
+
+        this.bin = (ShippingBin) game.getPlayerInTurn().getBuildingByName("Shipping Bin");
 
         // for error message
         Table messageTable = new Table();
@@ -248,7 +300,7 @@ public class GameScreen implements Screen {
 
     // utils and menu
     public void showError(String message) {
-        if(message == null || message.isEmpty()) {
+        if (message == null || message.isEmpty()) {
             errorLabel.setVisible(false);
             return;
         }
@@ -335,12 +387,13 @@ public class GameScreen implements Screen {
 
     private void setDisableButton(TextButton button, boolean disable) {
         button.setDisabled(disable);
-        if(disable) {
+        if (disable) {
             button.setColor(Color.GRAY);
         } else {
             button.setColor(Color.WHITE);
         }
     }
+
     public void loadAnimalInfoPopup() {
         animalWindow = new Window("", GameAssetManager.skin);
         animalWindow.setVisible(false);
@@ -454,11 +507,14 @@ public class GameScreen implements Screen {
     }
 
 
-
     public void loadTextures() {
         playerAtlas = new TextureAtlas(Gdx.files.internal("characters/woman/woman.atlas"));
+        starTexture = new Texture(Gdx.files.internal("inventory/Achievement_Star_06.png"));
         clock = new Texture(Gdx.files.internal("clock/Clock.png"));
         clock.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        questIconGreen = new TextureRegion(new Texture("NPC/Emoji3.png"));
+        questIconYellow = new TextureRegion(new Texture("NPC/Emoji2.png"));
+        questIconRed = new TextureRegion(new Texture("NPC/Emoji۱.png"));
 
         Color[] playerColors = new Color[4];
         playerColors[0] = Color.CYAN;
@@ -703,15 +759,16 @@ public class GameScreen implements Screen {
     public void cheatPlayer() {
         Player player = game.getPlayerInTurn();
         Location pLoc = player.getTileLocation();
-        player.addToBuildings(new AnimalBuilding("coop", new Location(pLoc.x() + 1, pLoc.y() + 1), 7,4, LivingPlace.COOP));
+        player.addToBuildings(new AnimalBuilding("coop", new Location(pLoc.x() + 1, pLoc.y() + 1), 7, 4, LivingPlace.COOP));
         AnimalBuilding building = player.getAnimalBuilding(LivingPlace.COOP);
         building.updateMap(game.getMap());
 
-        Animal animal = new Animal(AnimalType.CHICKEN, "joojeh", 500, LivingPlace.COOP, new ArrayList<>() );
+        Animal animal = new Animal(AnimalType.CHICKEN, "joojeh", 500, LivingPlace.COOP, new ArrayList<>());
         player.addAnimal(animal);
         building.addAnimalAndSetLocationInside(animal);
         showError("cheated Animal");
     }
+
     /// end of test
 
     public void renderPlayers(float data) {
@@ -720,7 +777,7 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void renderPlayer(Player currentPlayer , float delta) {
+    private void renderPlayer(Player currentPlayer, float delta) {
         int animIndex = switch (currentPlayer.getDirection()) {
             case DOWN -> 0;
             case RIGHT -> 1;
@@ -806,7 +863,7 @@ public class GameScreen implements Screen {
         batch.draw(seasonTexture, drawX + 210, drawY + 137, (float) seasonTexture.getRegionWidth() / 2, (float) seasonTexture.getRegionHeight() / 2);
         batch.draw(weatherTexture, drawX + 115, drawY + 137, (float) weatherTexture.getRegionWidth() / 2, (float) weatherTexture.getRegionHeight() / 2);
 
-        String date = (time.getDayOfWeek().toString().substring(0,3)) + ". " + time.getDay();
+        String date = (time.getDayOfWeek().toString().substring(0, 3)) + ". " + time.getDay();
         font.draw(batch, date, drawX + 150, drawY + 210);
         font.draw(batch, time.getHourText(), drawX + 150, drawY + 120);
         font.draw(batch, String.valueOf(App.getApp().getCurrentGame().getPlayerInTurn().getMoney()), drawX + 200, drawY + 40);
@@ -826,6 +883,7 @@ public class GameScreen implements Screen {
             Gdx.input.setInputProcessor(gameMenuInputAdapter);
         }
     }
+
     public void prepareFoodMenu(Skin skin) {
         cookingMenuTable = new Table(skin);
         cookingMenuTable.setFillParent(true);
@@ -833,8 +891,8 @@ public class GameScreen implements Screen {
         cookingMenuTable.setBackground(skin.getDrawable("window")); // Use window background from atlas
         ScrollPane scrollPane = new ScrollPane(cookingMenuTable, skin);
         scrollPane.setSize(720, 1080);
-        scrollPane.setPosition((uiStage.getWidth() - cookingMenuTable.getWidth())/2,
-                (uiStage.getHeight() - cookingMenuTable.getHeight())/2, Align.center);
+        scrollPane.setPosition((uiStage.getWidth() - cookingMenuTable.getWidth()) / 2,
+                (uiStage.getHeight() - cookingMenuTable.getHeight()) / 2, Align.center);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         Label titleLabel = new Label("Cooking Menu", labelStyle);
@@ -895,8 +953,8 @@ public class GameScreen implements Screen {
 
         ScrollPane scrollPane = new ScrollPane(craftingMenu, skin);
         scrollPane.setSize(700, 700);
-        scrollPane.setPosition((uiStage.getWidth() - craftingMenu.getWidth())/2,
-                (uiStage.getHeight() - craftingMenu.getHeight())/2, Align.center);
+        scrollPane.setPosition((uiStage.getWidth() - craftingMenu.getWidth()) / 2,
+                (uiStage.getHeight() - craftingMenu.getHeight()) / 2, Align.center);
 
         int perRow = 3;
         for (CraftingRecipe recipe : CraftingRecipe.values()) {
@@ -936,7 +994,6 @@ public class GameScreen implements Screen {
     }
 
 
-
     private void updateEnergyBar() {
         Player player = game.getPlayerInTurn();
         float playerEnergy = (float) player.getEnergy();
@@ -969,6 +1026,8 @@ public class GameScreen implements Screen {
             );
         }
     }
+
+    // inventory
 
     private void renderInventory() {
         inventoryTable.clear();
@@ -1067,6 +1126,15 @@ public class GameScreen implements Screen {
                             break;
                         case "Skills":
                             contentCell.setActor(getSkillsMenuTable());
+                            break;
+                        case "Map":
+                            contentCell.setActor(getMapMenuTable());
+                            break;
+                        case "Setting":
+                            contentCell.setActor(getSettingsTable());
+                            break;
+                        case "Social":
+                            contentCell.setActor(getSocialMenuTable(game.getMainPlayer()));
                             break;
                         default:
                             Label comingSoon = new Label(tab + " content coming soon!", skin);
@@ -1218,7 +1286,7 @@ public class GameScreen implements Screen {
                 ArrayList<ItemStack> items = inv.getInventoryItems();
 
                 if (idx >= 0 && idx < items.size() && items.get(idx) != null) {
-                    pendingTrashSlot = idx;
+                    inv.pickItem(inv.getInventoryItems().get(idx).getName(), 1);
                 }
 
                 return true;
@@ -1322,6 +1390,7 @@ public class GameScreen implements Screen {
                 public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                     showSkillImageTooltip(descRegion, skillIcon);
                 }
+
                 @Override
                 public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                     hideSkillImageTooltip();
@@ -1378,7 +1447,850 @@ public class GameScreen implements Screen {
             skillDescImage.setVisible(false);
     }
 
+    private Table getMapMenuTable() {
+        Skin skin = GameAssetManager.skin;
+        Table mapTable = new Table(skin);
 
+        Label title = new Label("World Map", skin, "title");
+        title.setAlignment(Align.center);
+        title.setFontScale(1.18f);
+
+        mapTable.add(title).growX().height(70).padBottom(22).center().row();
+
+        mapTable.add(miniMapWidget).size(720, 540).center().row();
+
+        mapTable.pad(36, 36, 36, 36).center();
+        return mapTable;
+    }
+
+    private Table getSettingsTable() {
+        Skin skin = GameAssetManager.skin;
+        Table settingsTable = new Table(skin);
+
+        Label title = new Label("Settings", skin, "title");
+        title.setAlignment(Align.center);
+        title.setFontScale(1.18f);
+
+        // ------------------------------
+        Label changePlayer = new Label("Change Player :", skin);
+        changePlayer.setFontScale(1.1f);
+        changePlayer.setColor(Color.valueOf("9A8C98"));
+
+        TextField changePlayerField = new TextField("", skin);
+        changePlayerField.setMessageText("Enter new player username...");
+        changePlayerField.setMaxLength(20);
+
+        TextButton changePlayerButton = new TextButton("Change Player", skin);
+        changePlayerButton.setColor(Color.valueOf("E9D8A6"));
+
+        TextButton exitButton = new TextButton("Exit", skin);
+        exitButton.setColor(Color.valueOf("E9D8A6"));
+        // ------------------------------
+        settingsTable.pad(36);
+        settingsTable.add(title).colspan(2).growX().height(70).padBottom(100).center().row();
+
+        settingsTable.add(changePlayer).left().padRight(12).width(180).height(38).row();
+        settingsTable.add(changePlayerField).left().width(800).row();
+
+        settingsTable.add(changePlayerButton).left().padTop(35).padRight(50).row();
+
+        settingsTable.add(exitButton).colspan(2).padTop(70).row();
+        // ------------------------------
+        changePlayerButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String newName = changePlayerField.getText().trim();
+                if (controller.isUsernameExist(newName)) {
+                    User newUser = controller.getUserByUsername(newName);
+                    if (newUser.getCurrentGame() == null) {
+                        newUser.setCurrentGame(game);
+                    }
+                }
+            }
+        });
+
+        exitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Main.getMain().switchScreen(new MainMenuScreen());
+            }
+        });
+
+        return settingsTable;
+    }
+
+    private Table getSocialMenuTable(Player player) {
+
+        Skin skin = GameAssetManager.skin;
+        Table socialTable = new Table(skin);
+
+        Label title = new Label("Social", skin, "title");
+        title.setAlignment(Align.center);
+        title.setFontScale(1.18f);
+        socialTable.add(title).growX().height(70).padBottom(25).center().row();
+
+        // بخش دوستان (بازیکنان)
+        Label friendsLabel = new Label("Friends:", skin, "subtitle");
+        friendsLabel.setFontScale(1.1f);
+        friendsLabel.setColor(Color.valueOf("7b81a9"));
+        socialTable.add(friendsLabel).left().padBottom(12).padTop(10).row();
+
+        ArrayList<Player> otherPlayers = game.getOtherPlayers(player.getUsername());
+        for (Player otherPlayer : otherPlayers) {
+            socialTable.add(getSocialRow(otherPlayer.getUsername(), friendPlayers.get(otherPlayer.getUsername()))).left().padBottom(8).row();
+        }
+
+        // بخش NPC ها
+        Label npcsLabel = new Label("NPCs:", skin, "subtitle");
+        npcsLabel.setFontScale(1.1f);
+        npcsLabel.setColor(Color.valueOf("BA9B82"));
+        socialTable.add(npcsLabel).left().padBottom(8).row();
+
+        ArrayList<PlayerNPCInteraction> friendships = player.getAllFriendships();
+        for (String npc : npcNames) {
+            int level = 0;
+            for (PlayerNPCInteraction f : friendships) {
+                if (f.getNPCName().equalsIgnoreCase(npc)) {
+                    level = f.getFriendshipLevel();
+                }
+            }
+            socialTable.add(getSocialRow(npc, level)).left().padBottom(12).row();
+        }
+
+        socialTable.pad(25, 45, 35, 45).center();
+        return socialTable;
+    }
+
+    private Table getSocialRow(String name, int level) {
+        Table row = new Table();
+        Skin skin = GameAssetManager.skin;
+
+        Label nameLabel = new Label(name, skin);
+        nameLabel.setFontScale(1.05f);
+        nameLabel.setColor(Color.valueOf("e9edc9"));
+
+        row.add(nameLabel).width(140).padRight(15).left();
+
+        for (int i = 0; i < level; i++) {
+            row.add(new Image(starTexture)).size(24, 24).pad(2);
+        }
+        for (int i = level; i < 5; i++) {
+            row.add().size(24, 24).pad(2);
+        }
+        return row;
+    }
+
+    public HashMap<String, Integer> getFriendshipLevel() {
+        Player player = game.getPlayerInTurn();
+        ArrayList<Player> otherPlayers = game.getOtherPlayers(player.getUsername());
+        HashMap<String, Integer> friendshipLevel = new HashMap<>();
+        for (Player otherPlayer : otherPlayers) {
+            friendshipLevel.put(otherPlayer.getUsername(), game.getFriendship(player, otherPlayer).getFriendshipLevel());
+        }
+        return friendshipLevel;
+    }
+
+    // NPC
+    private void renderNPCs(SpriteBatch batch) {
+        renderNPC(batch, npcAbigail, abigailLocation.x(), abigailLocation.y(), "abigail");
+        renderNPC(batch, npcHarvey, harveyLocation.x(), harveyLocation.y(), "harvey");
+        renderNPC(batch, npcLeah, leahLocation.x(), leahLocation.y(), "leah");
+        renderNPC(batch, npcRobin, robinLocation.x(), robinLocation.y(), "robin");
+        renderNPC(batch, npcSebastian, sebastianLocation.x(), sebastianLocation.y(), "sebastian");
+    }
+
+    private void renderNPC(SpriteBatch batch, Texture npcTexture, float x, float y, String id) {
+        // رسم خود NPC
+        float scale = 3.5f;
+        batch.draw(npcTexture, x, y, npcTexture.getWidth() * scale, npcTexture.getHeight() * scale);
+
+
+        float cloudX = x;
+        float cloudY = y + npcTexture.getHeight() * scale + 10;
+        float scale2 = 3f;
+        if (!npcDialogVisible.get(id)) {
+
+            batch.draw(speechCloudTexture, cloudX, cloudY, speechCloudTexture.getWidth() * scale2,
+                    speechCloudTexture.getHeight() * scale2);
+        } else {
+            String condition = controller.getConditions(game.getTime(), game.getPlayerInTurn().getFriendship(id), game.getTodayWeather());
+            String text = controller.getDialogueByConditions(condition, id, game);
+            BitmapFont font = smallFont;
+            font.setColor(Color.BLACK);
+            GlyphLayout layout = new GlyphLayout(font, text);
+
+            float padding = 10f;
+            float bubbleWidth = layout.width + padding * 2;
+            float bubbleHeight = layout.height + padding * 2;
+
+            float bubbleX = cloudX;
+            float bubbleY = cloudY;
+
+            batch.draw(speechBubbleTexture, bubbleX, bubbleY, bubbleWidth, bubbleHeight * 1.2f);
+            font.draw(batch, layout, bubbleX + padding, bubbleY + bubbleHeight - 5f);
+        }
+
+        if (npcHeartVisible.get(id)) {
+            batch.draw(heartBubbleTexture, cloudX, cloudY, speechCloudTexture.getWidth() * scale2,
+                    speechCloudTexture.getHeight() * scale2);
+        }
+    }
+
+    public void toggleNpcDialog(String npcId) {
+        npcDialogVisible.put(npcId, !npcDialogVisible.get(npcId));
+    }
+
+    public float getNPCx(String npcId) {
+        return switch (npcId) {
+            case "abigail" -> abigailLocation.x();
+            case "harvey" -> harveyLocation.x();
+            case "leah" -> leahLocation.x();
+            case "robin" -> robinLocation.x();
+            case "sebastian" -> sebastianLocation.x();
+            default -> 0;
+        };
+    }
+
+    public float getNPCy(String npcId) {
+        return switch (npcId) {
+            case "abigail" -> abigailLocation.y();
+            case "harvey" -> harveyLocation.y();
+            case "leah" -> leahLocation.y();
+            case "robin" -> robinLocation.y();
+            case "sebastian" -> sebastianLocation.y();
+            default -> 0;
+        };
+    }
+
+    public Texture getNPCTexture(String npcId) {
+        return switch (npcId) {
+            case "abigail" -> npcAbigail;
+            case "harvey" -> npcHarvey;
+            case "leah" -> npcLeah;
+            case "robin" -> npcRobin;
+            case "sebastian" -> npcSebastian;
+            default -> null;
+        };
+    }
+
+    public boolean isDialogVisible(String npcId) {
+        return npcDialogVisible.get(npcId);
+    }
+
+    public String getNpcDialogText(String npcId) {
+        String condition = controller.getConditions(game.getTime(), game.getPlayerInTurn().getFriendship(npcId), game.getTodayWeather());
+        return controller.getDialogueByConditions(condition, npcId, game);
+    }
+
+    public Texture getSpeechCloudTexture() {
+        return speechCloudTexture;
+    }
+
+    public float getSpeechBubbleWidth(String npcId) {
+        BitmapFont font = smallFont;
+        GlyphLayout layout = new GlyphLayout(font, getNpcDialogText(npcId));
+        return layout.width + 20f; //padding
+    }
+
+    public float getSpeechBubbleHeight(String npcId) {
+        BitmapFont font = smallFont;
+        GlyphLayout layout = new GlyphLayout(font, getNpcDialogText(npcId));
+        return layout.height + 20f;
+    }
+
+    public void openNpcGiftMenu(String npcId) {
+        this.npcMenuCurrentNpcId = npcId;
+
+        Skin skin = GameAssetManager.skin;
+        npcMenuWindow = new Window(npcId + "NPC menu", skin);
+        npcMenuWindow.setModal(true);
+        npcMenuWindow.setSize(1356, 1000);
+        npcMenuWindow.setPosition(uiStage.getWidth() / 2f, uiStage.getHeight() / 2f, Align.center);
+
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+
+        // === ردیف اول: دکمه‌های تب ===
+        String[] tabNames = {"Gift", "Info", "Quests", "Receive", "Complete"};
+        Table tabsRow = new Table();
+        for (String tab : tabNames) {
+            TextButton tabBtn = new TextButton(tab, skin);
+            tabsRow.add(tabBtn).pad(5);
+
+            tabBtn.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    contentCell.setActor(null);
+                    switch (tab) {
+                        case "Gift":
+                            contentCell.setActor(getGiftContentTable(npcId));
+                            break;
+                        case "Info":
+                            PlayerNPCInteraction interaction = game.getPlayerInTurn().getFriendship(npcId);
+                            contentCell.setActor(getNpcInfoContentTable(npcId, interaction.getFriendshipLevel(),
+                                    interaction.getFriendshipScore()));
+                            break;
+                        case "Quests":
+                            contentCell.setActor(getQuestContentTable(getCompletedQuests(npcId), getDoneQuests(npcId), controller.getQuesLists(npcId)));
+                            break;
+                        case "Receive":
+                            contentCell.setActor(getQuestReceiveTable(controller.getQuesLists(npcId), getDoneQuests(npcId), npcId));
+                            break;
+                            case "Complete":
+                                contentCell.setActor(getQuestCompleteTable(getDoneQuests(npcId), getCompletedQuests(npcId), npcId));
+                    }
+                }
+            });
+        }
+        mainTable.add(tabsRow).growX().padTop(20).row();
+
+        // === ردیف وسط: محتوای اولیه (Gift) ===
+        contentCell = mainTable.add(getGiftContentTable(npcId)).expand().fill();
+        mainTable.row();
+
+        // === ردیف آخر: دکمه Close ===
+        TextButton closeBtn = new TextButton("Close", skin);
+        closeBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                closeNpcMenu();
+            }
+        });
+        Table closeRow = new Table();
+        closeRow.add(closeBtn).center().padBottom(12);
+        mainTable.add(closeRow).growX().bottom().row();
+
+        npcMenuWindow.clearChildren();
+        npcMenuWindow.add(mainTable).grow().pad(8);
+
+        uiStage.addActor(npcMenuWindow);
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    private Table getGiftInventoryTable() {
+        Table inventoryGrid = new Table();
+        Skin skin = GameAssetManager.skin;
+
+        Player player = game.getPlayerInTurn();
+        Inventory inventory = player.getInventory();
+        int numSlots = player.getMaxInventorySize();
+        ArrayList<ItemStack> items = inventory.getInventoryItems();
+
+        final float slotSize = 82f;
+
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                int i = row * 10 + col;
+
+                Stack slotStack = new Stack();
+
+                Image slotBg = new Image(GameAssetManager.inventorySlot);
+                slotBg.setColor(Color.WHITE);
+                slotStack.add(slotBg);
+
+                if (i < items.size() && items.get(i) != null && items.get(i).getItem() != null) {
+                    TextureRegion itemTex = items.get(i).getItem().getTexture();
+                    Image itemImg = new Image(new TextureRegionDrawable(itemTex));
+                    slotStack.add(itemImg);
+
+                    int quantity = items.get(i).getAmount();
+                    if (quantity > 1) {
+                        Table countTable = new Table();
+                        Label lbl = new Label(String.valueOf(quantity), skin);
+                        lbl.setFontScale(0.74f);
+                        lbl.setColor(Color.GOLD);
+                        countTable.add(lbl).bottom().center().padBottom(4);
+                        countTable.setFillParent(true);
+                        countTable.bottom();
+                        slotStack.add(countTable);
+                    }
+                }
+
+                if (i == player.getSelectedSlot()) {
+                    Image highlight = new Image(GameAssetManager.inventoryHighlightSlot);
+                    highlight.setName("giftHighlight");  // تگ برای تشخیص
+                    highlight.setColor(new Color(1, 1, 1, 0.41f));
+                    slotStack.add(highlight);
+                }
+
+                final int slotIndexFinal = i;
+                slotStack.addListener(new InputListener() {
+                    @Override
+                    public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        player.setSelectedSlot(slotIndexFinal);
+                        refreshGiftInventoryHighlight(inventoryGrid, player);
+                        return true;
+                    }
+                });
+
+                inventoryGrid.add(slotStack).size(slotSize, slotSize).pad(4);
+            }
+            inventoryGrid.row();
+        }
+
+        return inventoryGrid;
+    }
+
+    private void refreshGiftInventoryHighlight(Table grid, Player player) {
+        Array<Cell> cells = grid.getCells();
+        for (int c = 0; c < cells.size; c++) {
+            Stack slotStack = (Stack) cells.get(c).getActor();
+
+            for (Actor actor : new Array<>(slotStack.getChildren())) {
+                if ("giftHighlight".equals(actor.getName())) {
+                    slotStack.removeActor(actor);
+                    break;
+                }
+            }
+
+            if (c == player.getSelectedSlot()) {
+                Image highlight = new Image(GameAssetManager.inventoryHighlightSlot);
+                highlight.setName("giftHighlight");  // اینجا هم تگ بزن
+                highlight.setColor(new Color(1, 1, 1, 0.41f));
+                slotStack.add(highlight);
+            }
+        }
+    }
+
+    private Table getGiftContentTable(String npcId) {
+        Skin skin = GameAssetManager.skin;
+
+        Table gridTable = getGiftInventoryTable();
+        ScrollPane scrollPane = new ScrollPane(gridTable, skin);
+        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollbarsOnTop(true);
+        scrollPane.setOverscroll(false, false);
+        scrollPane.setForceScroll(false, true);
+        scrollPane.setScrollPercentY(0);
+
+        float slotSize = 82 + 8;
+        scrollPane.setHeight(2 * slotSize);
+
+        Image tickImg = new Image(new Texture("NPC/tick.png"));
+        tickImg.setSize(55, 55);
+        tickImg.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                giveSelectedItemToNpc(npcId);
+            }
+        });
+
+        Label titleLabel = new Label("Select Item to Gift", skin, "title");
+        titleLabel.setAlignment(Align.center);
+        titleLabel.setFontScale(1.1f);
+
+        Table giftTable = new Table(skin);
+        giftTable.add(titleLabel).center().padBottom(20).row();
+
+        Table row = new Table();
+        row.add(scrollPane).width(944).height(2 * slotSize).padRight(14);
+        row.add(tickImg).size(55, 55).center();
+        giftTable.add(row).center().padTop(10).row();
+
+        return giftTable;
+    }
+
+    public void closeNpcMenu() {
+        if (npcMenuWindow != null) {
+            npcMenuWindow.remove();
+            npcMenuWindow = null;
+            npcMenuCurrentNpcId = null;
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
+
+    private void giveSelectedItemToNpc(String npcId) {
+        String currentNpcId = npcId;
+
+        Player player = game.getPlayerInTurn();
+        int idx = player.getSelectedSlot();
+        Inventory inv = player.getInventory();
+        ArrayList<ItemStack> items = inv.getInventoryItems();
+
+        if (idx >= 0 && idx < items.size() && items.get(idx) != null) {
+            ItemStack stack = items.get(idx);
+
+            if (player.getFriendship(currentNpcId).isFirstGift()) {
+                controller.setFriendshipScore(player.getFriendship(currentNpcId), 200);
+                player.getFriendship(currentNpcId).setFirstGift(false);
+            }
+
+            inv.pickItem(inv.getInventoryItems().get(idx).getName(), 1);
+
+            closeNpcMenu();
+
+            npcHeartVisible.put(currentNpcId.toLowerCase(), true);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    npcHeartVisible.put(currentNpcId.toLowerCase(), false);
+                }
+            }, 5f);
+        }
+    }
+
+    private Table getQuestContentTable(ArrayList<String> completed, ArrayList<String> received, ArrayList<String> notReceived) {
+        Skin skin = GameAssetManager.skin;
+        Table questTable = new Table();
+        questTable.top().left();
+
+        Label title = new Label("Quests", skin, "title");
+        title.setColor(Color.GOLD);
+        title.setAlignment(Align.center);
+        questTable.add(title).center().colspan(2).pad(10).row();
+
+        // Completed
+        if (!completed.isEmpty()) {
+            Label lblCompleted = new Label("Completed :", skin);
+            lblCompleted.setColor(Color.GREEN);
+            questTable.add(lblCompleted).colspan(2).padTop(5).left().row();
+            for (String q : completed) {
+                Image icon = new Image(questIconGreen);
+                Label qLabel = new Label(q, skin);
+                qLabel.setColor(Color.WHITE);
+                questTable.add(icon).size(24).padRight(5);
+                questTable.add(qLabel).left().row();
+            }
+        }
+
+        // Received
+        if (!received.isEmpty()) {
+            Label lblReceived = new Label("Received :", skin);
+            lblReceived.setColor(Color.YELLOW);
+            questTable.add(lblReceived).colspan(2).padTop(10).left().row();
+            for (String q : received) {
+                Image icon = new Image(questIconYellow);
+                Label qLabel = new Label(q, skin);
+                qLabel.setColor(Color.WHITE);
+                questTable.add(icon).size(24).padRight(5);
+                questTable.add(qLabel).left().row();
+            }
+        }
+
+        // Not Received
+        if (!notReceived.isEmpty()) {
+            Label lblNotReceived = new Label("Not Received :", skin);
+            lblNotReceived.setColor(Color.RED);
+            questTable.add(lblNotReceived).colspan(2).padTop(10).left().row();
+            for (String q : notReceived) {
+                Image icon = new Image(questIconRed);
+                Label qLabel = new Label(q, skin);
+                qLabel.setColor(Color.WHITE);
+                questTable.add(icon).size(24).padRight(5);
+                questTable.add(qLabel).left().row();
+            }
+        }
+
+        return questTable;
+    }
+
+    public ArrayList<String> getCompletedQuests(String npcId) {
+        return switch (npcId) {
+            case "abigail" -> game.getPlayerInTurn().getAbigailDoQuests();
+            case "harvey" -> game.getPlayerInTurn().getHarveyDoQuests();
+            case "leah" -> game.getPlayerInTurn().getLeahDoQuests();
+            case "robin" -> game.getPlayerInTurn().getRobinDoQuests();
+            case "sebastian" -> game.getPlayerInTurn().getSebastianDoQuests();
+            default -> null;
+        };
+    }
+
+    public ArrayList<String> getDoneQuests(String npcId) {
+        return switch (npcId) {
+            case "abigail" -> game.getPlayerInTurn().getAbigalReceivedQuests();
+            case "harvey" -> game.getPlayerInTurn().getHarveyReceivedQuests();
+            case "leah" -> game.getPlayerInTurn().getLeahReceivedQuests();
+            case "robin" -> game.getPlayerInTurn().getRobinReceivedQuests();
+            case "sebastian" -> game.getPlayerInTurn().getSebastianReceivedQuests();
+            default -> null;
+        };
+    }
+
+    private Table getNpcInfoContentTable(String npcName, int friendshipLevel, int friendshipPoints) {
+        Skin skin = GameAssetManager.skin;
+        Table infoTable = new Table();
+        infoTable.top().left();
+
+        // Title
+        Label title = new Label(npcName + " - Info", skin, "title");
+        title.setAlignment(Align.center);
+        title.setColor(Color.GOLD);
+        infoTable.add(title).colspan(2).pad(10).row();
+
+        // Friendship Level
+        Label lblLevelTitle = new Label("Friendship Level: ", skin);
+        lblLevelTitle.setColor(Color.CYAN);
+        Label lblLevelValue = new Label(friendshipLevel + "", skin);
+        lblLevelValue.setColor(Color.WHITE);
+        infoTable.add(lblLevelTitle).pad(5).left();
+        infoTable.add(lblLevelValue).pad(5).left().row();
+
+        // Friendship Points
+        Label lblPointsTitle = new Label("Friendship Points: ", skin);
+        lblPointsTitle.setColor(Color.CYAN);
+        Label lblPointsValue = new Label(String.valueOf(friendshipPoints), skin);
+        lblPointsValue.setColor(Color.WHITE);
+        infoTable.add(lblPointsTitle).pad(5).left();
+        infoTable.add(lblPointsValue).pad(5).left().row();
+
+        return infoTable;
+    }
+
+    private Table getQuestReceiveTable(ArrayList<String> notReceived, ArrayList<String> received, String npcId) {
+        Skin skin = GameAssetManager.skin;
+        Table table = new Table();
+        table.top().left();
+
+        // Title
+        Label title = new Label("Available Quests", skin, "title");
+        title.setColor(Color.GOLD);
+        title.setAlignment(Align.center);
+        table.add(title).colspan(2).pad(10).center().row();
+
+        final String[] selectedQuest = {null};
+
+        for (String q : notReceived) {
+            CheckBox btnQuest = new CheckBox(q, skin);
+            btnQuest.getLabel().setFontScale(0.5f);
+            btnQuest.getLabel().setColor(Color.WHITE);
+            btnQuest.getLabel().setWrap(false);
+            btnQuest.getLabelCell().padLeft(8f);
+
+            btnQuest.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    selectedQuest[0] = q;
+                }
+            });
+
+            table.add(btnQuest)
+                    .expandX().fillX()
+                    .pad(5)
+                    .colspan(2)
+                    .left()
+                    .row();
+        }
+
+        TextButton btnReceive = new TextButton("Receive Quest", skin);
+        btnReceive.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (selectedQuest[0] != null) {
+                    getDoneQuests(npcId).add(selectedQuest[0]);
+                    controller.deleteQuest(getDoneQuests(npcId).size(), npcId);
+                    selectedQuest[0] = null;
+
+                    table.clear();
+                    Table newTable = getQuestReceiveTable(controller.getQuesLists(npcId), getDoneQuests(npcId), npcId);
+                    table.add(newTable).expand().fill();
+                }
+            }
+        });
+
+        table.add(btnReceive)
+                .padTop(15)
+                .colspan(2)
+                .center()
+                .row();
+
+        return table;
+    }
+
+    private Table getQuestCompleteTable(ArrayList<String> received, ArrayList<String> completed, String npcId) {
+        String currentNpcId = npcId;
+        Skin skin = GameAssetManager.skin;
+        Table table = new Table();
+        table.top().left();
+
+        // Title
+        Label title = new Label("Quests to Complete", skin, "title");
+        title.setColor(Color.GOLD);
+        title.setAlignment(Align.center);
+        table.add(title).colspan(2).pad(10).center().row();
+
+        final String[] selectedQuest = {null};
+
+        for (String q : received) {
+            CheckBox btnQuest = new CheckBox(q, skin);
+            btnQuest.getLabel().setFontScale(0.5f);
+            btnQuest.getLabel().setColor(Color.WHITE);
+            btnQuest.getLabel().setWrap(false);
+            btnQuest.getLabelCell().padLeft(8f);
+
+            btnQuest.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    selectedQuest[0] = q;
+                }
+            });
+
+            table.add(btnQuest)
+                    .expandX().fillX()
+                    .pad(5)
+                    .colspan(2)
+                    .left()
+                    .row();
+        }
+
+        TextButton btnComplete = new TextButton("Complete Quest", skin);
+        btnComplete.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (selectedQuest[0] != null) {
+                    if (controller.canDoRequest(0, npcId)) {
+                        controller.getReward(getDoneQuests(npcId).size(), npcId, game.getPlayerInTurn().getFriendship(npcId).getFriendshipLevel());
+                        getDoneQuests(npcId).removeFirst();
+                        getCompletedQuests(npcId).add(selectedQuest[0]);
+                        npcHeartVisible.put(currentNpcId.toLowerCase(), true);
+
+                        closeNpcMenu();
+
+                        Timer.schedule(new Timer.Task() {
+                            @Override
+                            public void run() {
+                                npcHeartVisible.put(currentNpcId.toLowerCase(), false);
+                            }
+                        }, 5f);
+                    }
+
+
+
+                    selectedQuest[0] = null;
+                    // refresh کردن Table
+                    table.clear();
+                    Table newTable = getQuestCompleteTable(getDoneQuests(npcId), getCompletedQuests(npcId), npcId);
+                    table.add(newTable).expand().fill();
+                }
+            }
+        });
+
+        table.add(btnComplete)
+                .padTop(15)
+                .colspan(2)
+                .center()
+                .row();
+
+        return table;
+    }
+
+    // shipping sell
+
+    public void showSellBasketWindow() {
+        if (sellBasketWindow != null && sellBasketWindow.isVisible()) return;
+
+        Skin skin = GameAssetManager.skin;
+        sellBasketWindow = new Window("Sell Basket", skin);
+        sellBasketWindow.setModal(true);
+        sellBasketWindow.setSize(1000, 800);
+        sellBasketWindow.setPosition(uiStage.getWidth() / 2f, uiStage.getHeight() / 2f, Align.center);
+
+        Table mainTable = new Table();
+        mainTable.top().pad(20);
+
+        // عنوان
+        Label title = new Label("Select item to sell", skin, "title");
+        title.setAlignment(Align.center);
+        mainTable.add(title).colspan(2).padBottom(20).row();
+
+        // جدول اینونتوری فروش
+        sellBasketContentCell = mainTable.add(getSellBasketContentTable()).expand().fill();
+        mainTable.row();
+
+        // دکمه بستن
+        TextButton closeBtn = new TextButton("Close", skin);
+        closeBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideSellBasketWindow();
+            }
+        });
+        mainTable.add(closeBtn).padTop(20).center();
+
+        sellBasketWindow.clearChildren();
+        sellBasketWindow.add(mainTable).grow();
+
+        uiStage.addActor(sellBasketWindow);
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    private ScrollPane getSellBasketContentTable() {
+        Skin skin = GameAssetManager.skin;
+        Table content = new Table();
+
+        Player player = game.getPlayerInTurn();
+        Inventory inv = player.getInventory();
+        ArrayList<ItemStack> items = inv.getInventoryItems();
+
+        final float slotSize = 82f;
+
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                int index = row * 10 + col;
+
+                Stack slotStack = new Stack();
+                Image slotBg = new Image(GameAssetManager.inventorySlot);
+                slotStack.add(slotBg);
+
+                if (index < items.size() && items.get(index) != null) {
+                    ItemStack stack = items.get(index);
+                    slotStack.add(new Image(new TextureRegionDrawable(stack.getItem().getTexture())));
+
+                    int quantity = stack.getAmount();
+                    if (quantity > 1) {
+                        Label lbl = new Label(String.valueOf(quantity), skin);
+                        lbl.setColor(Color.GOLD);
+                        Table lblTable = new Table();
+                        lblTable.add(lbl).bottom().center().padBottom(4);
+                        lblTable.setFillParent(true);
+                        slotStack.add(lblTable);
+                    }
+
+                    // آیکون تیک برای فروش
+                    Image tickImg = new Image(new Texture("ui/tick.png"));
+                    tickImg.setVisible(false);
+                    slotStack.add(tickImg);
+
+                    // انتخاب/فروش آیتم موقع کلیک
+                    slotStack.addListener(new ClickListener() {
+                        private boolean selected = false;
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            selected = !selected;
+                            tickImg.setVisible(selected);
+                            if (!selected) return;
+
+                            // عملیات فروش
+                            int num = 1;
+                            player.getInventory().addItem(stack.getItem(), -num);
+                            int price = num * stack.getItem().getItemPrice();
+                            player.addToRevenue(price); // متد فروش آیتم که باید تو کنترلر اضافه بشه
+                            items.remove(index);
+                            refreshSellBasketContent();
+                        }
+                    });
+                }
+                content.add(slotStack).size(slotSize, slotSize).pad(4);
+            }
+            content.row();
+        }
+
+        return new ScrollPane(content, skin);
+    }
+
+    private void refreshSellBasketContent() {
+        if (sellBasketContentCell != null) {
+            sellBasketContentCell.setActor(getSellBasketContentTable());
+        }
+    }
+
+    public void hideSellBasketWindow() {
+        if (sellBasketWindow != null) {
+            sellBasketWindow.remove();
+            sellBasketWindow = null;
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
+    }
 
     // WINDOWS
     public void closeAllUiMenus() {
@@ -1387,6 +2299,7 @@ public class GameScreen implements Screen {
         if (popupWindow != null && popupWindow.isVisible()) hidePopup();
         if (animalWindow != null && animalWindow.isVisible()) hideAnimalInfoPopup();
     }
+
     // exit Menu
     public void toggleExitMenu() {
         if (exitWindow != null) {
@@ -1586,7 +2499,7 @@ public class GameScreen implements Screen {
             weatherEffectImage.setVisible(true);
             animationTime += delta;
 
-            ((TextureRegionDrawable)weatherEffectImage.getDrawable()).setRegion(currentAnimation.getKeyFrame(animationTime, true));
+            ((TextureRegionDrawable) weatherEffectImage.getDrawable()).setRegion(currentAnimation.getKeyFrame(animationTime, true));
         } else {
             weatherEffectImage.setVisible(false);
         }
@@ -1600,7 +2513,7 @@ public class GameScreen implements Screen {
             wentNextDay = true;
 
             showError("Time to sleep 10 PM. Going next day");
-            delayForAndDo(1.0f, () -> blackBackgroundAnimation(()-> {
+            delayForAndDo(1.0f, () -> blackBackgroundAnimation(() -> {
                 game.goToNextDay();
                 wentNextDay = false;
             }, 1.0f));
@@ -1616,7 +2529,7 @@ public class GameScreen implements Screen {
         float targetAlpha = 0f;
 
         if (currentHour >= startHour && currentHour < endHour) {
-            float progress = (float)(currentHour - startHour) / (endHour - startHour);
+            float progress = (float) (currentHour - startHour) / (endHour - startHour);
             targetAlpha = progress * GameSetting.getMaxNightAlpha();
         } else if (currentHour >= endHour || currentHour < 6) {
             targetAlpha = GameSetting.getMaxNightAlpha();
@@ -1753,6 +2666,7 @@ public class GameScreen implements Screen {
 
             renderBuildings();
             renderPlayers(v);
+            renderNPCs(batch);
 
             // TODO : (Better) move clock render to uiStage
             renderClockUI();
@@ -1788,7 +2702,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int w, int h) {
-        uiStage.getViewport().update(w,h, true);
+        uiStage.getViewport().update(w, h, true);
 
         effectsStage.getViewport().update(w, h, true);
 
@@ -1825,6 +2739,7 @@ public class GameScreen implements Screen {
     public static GameScreen getScreen() {
         return screen;
     }
+
     public GameInputAdapter getGameMenuInputAdapter() {
         return gameMenuInputAdapter;
     }
@@ -1832,4 +2747,6 @@ public class GameScreen implements Screen {
     public Stage getStage() {
         return uiStage;
     }
+
+    public ShippingBin getShippingBin() { return  this.bin; }
 }

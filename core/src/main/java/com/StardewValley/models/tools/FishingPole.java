@@ -6,6 +6,7 @@ import com.StardewValley.models.Result;
 import com.StardewValley.models.Skill;
 import com.StardewValley.models.Weather;
 import com.StardewValley.models.map.Tile;
+import com.StardewValley.models.map.TileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -32,6 +33,9 @@ public class FishingPole extends Tool {
 
     @Override
     public Result useTool(Tile tile, Player player, Skill skill) {
+        if (tile.getType() == TileType.WATER) {
+
+        }
         return null;
     }
 

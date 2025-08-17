@@ -8,6 +8,7 @@ import com.StardewValley.models.map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -27,15 +28,15 @@ public class GameInputAdapter extends InputAdapter {
         // check if not conscious
         Player player = game.getPlayerInTurn();
         if (player.getCurrentState().equals(GameScreen.PlayerState.Unconscious)) return;
-        float   initialX = player.getX(),
+        float initialX = player.getX(),
                 initialY = player.getY();
 
         // greenhouse check
         if (controller.nearGreenHouse(player) && !player.isBuildGreenhouse()) {
             Result buildGreenHousePopup = controller.buildGreenHouseRequest(player);
             if (buildGreenHousePopup.success()) {
-                screen.showPopup(buildGreenHousePopup.message(), ()->{
-                    screen.blackBackgroundAnimation(()-> controller.buildGreenhouse(player, game), 0.5f);
+                screen.showPopup(buildGreenHousePopup.message(), () -> {
+                    screen.blackBackgroundAnimation(() -> controller.buildGreenhouse(player, game), 0.5f);
                 });
             } else {
                 screen.showError(buildGreenHousePopup.message());
@@ -45,7 +46,7 @@ public class GameInputAdapter extends InputAdapter {
 
         Direction currentDirection = Direction.NONE;
 
-        Vector2 movement = new Vector2(0,0);
+        Vector2 movement = new Vector2(0, 0);
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             movement.y += 1;
             currentDirection = Direction.UP;
@@ -194,9 +195,7 @@ public class GameInputAdapter extends InputAdapter {
             screen.getGame().getPlayerInTurn().changeEnergy(-10);
         } else if (keycode == Input.Keys.TAB) {
             screen.cheatPlayer();
-        }
-
-        else if (keycode == Input.Keys.N) {
+        } else if (keycode == Input.Keys.N) {
             Game game = App.getApp().getCurrentGame();
             game.getMap().growWateredPlantsAndTrees();
         } else if (keycode == Input.Keys.C) {
@@ -207,10 +206,20 @@ public class GameInputAdapter extends InputAdapter {
             screen.showShopMenu();
         } else if (keycode == Input.Keys.E) {
             screen.toggleInventoryMenu();
-        }
-
-        else if (keycode == Input.Keys.M) {
+        } else if (keycode == Input.Keys.M) {
             screen.toggleBiggerMiniMap();
+        } else if (keycode >= Input.Keys.NUM_1 && keycode <= Input.Keys.NUM_9) {
+            int selectedSlot = keycode - Input.Keys.NUM_1; // 0 تا 8
+            Player player = screen.getGame().getPlayerInTurn();
+            if (selectedSlot < player.getMaxInventorySize()) {
+                player.setSelectedSlot(selectedSlot);
+            }
+        } else if (keycode == Input.Keys.NUM_0) {
+            Player player = screen.getGame().getPlayerInTurn();
+            int slotIndex = 9; // اسلات دهم
+            if (slotIndex < player.getMaxInventorySize()) {
+                player.setSelectedSlot(slotIndex);
+            }
         }
         return true;
     }
@@ -230,6 +239,7 @@ public class GameInputAdapter extends InputAdapter {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.RIGHT) {
             Vector3 worldCoordinates = new Vector3(screenX, screenY, 0);
+            Vector3 worldCoords = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
             screen.getCamera().unproject(worldCoordinates);
 
             for (Player player : screen.getGame().getPlayers()) {
@@ -245,6 +255,16 @@ public class GameInputAdapter extends InputAdapter {
                     }
                 }
             }
+
+            for (String npcId : screen.npcNames) {
+                Rectangle bounds = new Rectangle(screen.getNPCx(npcId), screen.getNPCy(npcId),
+                        screen.getNPCTexture(npcId).getWidth(),
+                        screen.getNPCTexture(npcId).getHeight());
+                if (bounds.contains(worldCoords.x, worldCoords.y)) {
+                    screen.openNpcGiftMenu(npcId);
+                    return true;
+                }
+            }
         } else if (button == Input.Buttons.LEFT) {
             // ۱. مختصات screen به world
             Vector3 worldCoords = screen.getCamera().unproject(new Vector3(screenX, screenY, 0));
@@ -255,6 +275,18 @@ public class GameInputAdapter extends InputAdapter {
 
             Direction dir = getMouseDirectionAroundPlayer(playerTile, mouseTile);
 
+            Rectangle sellBinBounds = new Rectangle(
+                    screen.getShippingBin().getLocation().x(),
+                    screen.getShippingBin().getLocation().y(),
+                    screen.getShippingBin().getWidth(),
+                    screen.getShippingBin().getHeight()
+            );
+
+            if (sellBinBounds.contains(worldCoords.x, worldCoords.y)) {
+                screen.showSellBasketWindow();
+                return true;
+            }
+
             // دیباگ برای تست مختصات:
             System.out.println("mouseTile: " + mouseTile.x() + "," + mouseTile.y());
             System.out.println("playerTile: " + playerTile.x() + "," + playerTile.y());
@@ -263,8 +295,28 @@ public class GameInputAdapter extends InputAdapter {
             if (dir != null) {
                 controller.useTool(dir);
             }
+            // چک برای هر NPC
+            for (String npcId : screen.npcNames) {
+                float npcX = screen.getNPCx(npcId);
+                float npcY = screen.getNPCy(npcId);
+                Texture npcTexture = screen.getNPCTexture(npcId);
+
+                float cloudX = npcX;
+                float cloudY = npcY + npcTexture.getHeight() + 10;
+                float cloudW = screen.isDialogVisible(npcId) ?
+                        screen.getSpeechBubbleWidth(npcId) :
+                        screen.getSpeechCloudTexture().getWidth();
+                float cloudH = screen.isDialogVisible(npcId) ?
+                        screen.getSpeechBubbleHeight(npcId) :
+                        screen.getSpeechCloudTexture().getHeight();
+
+                if (worldCoords.x >= cloudX && worldCoords.x <= cloudX + cloudW &&
+                        worldCoords.y >= cloudY && worldCoords.y <= cloudY + cloudH) {
+                    screen.toggleNpcDialog(npcId);
+                    return true;
+                }
+            }// دیگه لازم نیست ادامه بدیم
         }
         return false;
     }
-
 }

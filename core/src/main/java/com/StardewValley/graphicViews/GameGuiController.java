@@ -6,6 +6,8 @@ import com.StardewValley.controllers.NPCGameController;
 import com.StardewValley.controllers.PlayersInteractionController;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Direction;
+import com.StardewValley.models.Enums.Season;
+import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.Enums.commands.GameCommands;
 import com.StardewValley.models.Enums.commands.InteractionsCommand;
 import com.StardewValley.models.Enums.commands.NPCGameCommand;
@@ -13,6 +15,7 @@ import com.StardewValley.models.NPC.PlayerNPCInteraction;
 import com.StardewValley.models.NPC.Quest;
 import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.buildings.AnimalBuilding;
+import com.StardewValley.models.buildings.ShippingBin;
 import com.StardewValley.models.cooking.FoodManager;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingManager;
@@ -22,8 +25,12 @@ import com.StardewValley.models.tools.Axe;
 import com.StardewValley.models.tools.Pickaxe;
 import com.StardewValley.models.tools.Tool;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 
 
@@ -64,7 +71,7 @@ public class GameGuiController {
     }
 
     public Result buildGreenHouseRequest(Player player) {
-        if(player.canBuildGreenHouse()) {
+        if (player.canBuildGreenHouse()) {
             return new Result(true, "You are already building a green house!\ndo you want to build it?");
         } else {
             return new Result(false, "Needed resources to build the greenhouse: \n\t500 woods\n\t1000 G money");
@@ -404,7 +411,9 @@ public class GameGuiController {
         StringBuilder output = new StringBuilder();
         PlayerNPCInteraction friendship = player.getFriendship(NPCName);
         int count = 0;
-        if (NPCName.equals("Sebastian")) { output.append("     "); }
+        if (NPCName.equals("Sebastian")) {
+            output.append("     ");
+        }
         if (getMission(1, NPCName) != null) {
             count++;
             output.append(count).append(") ").append(getMission(1, NPCName)).append("\n");
@@ -422,6 +431,27 @@ public class GameGuiController {
         return output.toString();
     }
 
+    public ArrayList<String> getQuesLists(String NPCName) {
+        App app = App.getApp();
+        Game game = screen.getGame();
+        Player player = game.getPlayerInTurn();
+        ArrayList<String> output = new ArrayList<>();
+        PlayerNPCInteraction friendship = player.getFriendship(NPCName);
+        int count = 0;
+        if (getMission(1, NPCName) != null) {
+            output.add(getMission(1, NPCName));
+        }
+        if (getMission(2, NPCName) != null && player.getFriendship(NPCName).getFriendshipLevel() >= 1) {
+            output.add(getMission(2, NPCName));
+        }
+        if (getMission(3, NPCName) != null &&
+                player.getFriendship(NPCName).getFriendshipLevel() >= 1 &&
+                friendship.getActiveMission3().isGreater(game.getTime())) {
+            output.add(getMission(3, NPCName));
+        }
+        return output;
+    }
+
 
     private String getMission(int level, String NPCName) {
         App app = App.getApp();
@@ -434,6 +464,141 @@ public class GameGuiController {
         return null;
     }
 
+    public boolean isUsernameExist(String username) {
+        for (User user : App.getApp().getUsers()) {
+            if (user.getUserName().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public User getUserByUsername(String username) {
+        for (User user : App.getApp().getUsers()) {
+            if (user.getUserName().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
 
+    public String getConditions(Time time, PlayerNPCInteraction interaction, Weather weather) {
+        StringBuilder conditions = new StringBuilder();
+        if (interaction.getFriendshipLevel() == 3) {
+            conditions.append("HIGH|");
+        } else if (interaction.getFriendshipLevel() == 2) {
+            conditions.append("MEDIUM|");
+        } else {
+            conditions.append("LOW|");
+        }
+
+        if (time.getSeason().equals(Season.SPRING)) {
+            conditions.append("SPRING|");
+        } else if (time.getSeason().equals(Season.SUMMER)) {
+            conditions.append("SUMMER|");
+        } else if (time.getSeason().equals(Season.FALL)) {
+            conditions.append("FALL|");
+        } else {
+            conditions.append("WINTER|");
+        }
+
+        if (time.getHour() < 15) {
+            conditions.append("DAY|");
+        } else {
+            conditions.append("NIGHT|");
+        }
+
+        if (weather.getStatus().equals(WeatherStatus.SUNNY)) {
+            conditions.append("CLEAR");
+        } else {
+            conditions.append("BAD WEATHER");
+        }
+
+        return conditions.toString();
+    }
+
+    public String getDialogueByConditions(String conditions, String NPCName, Game game) {
+        String output;
+        switch (NPCName) {
+            case "sebastian" -> {
+                HashMap<String, String> map = game.getNPC("sebastian").getDialogues();
+                output = map.get(conditions);
+                return output;
+            }
+            case "abigail" -> {
+                HashMap<String, String> map = game.getNPC("abigail").getDialogues();
+                output = map.get(conditions);
+                return output;
+            }
+            case "harvey" -> {
+                HashMap<String, String> map = game.getNPC("harvey").getDialogues();
+                output = map.get(conditions);
+                return output;
+            }
+            case "leah" -> {
+                HashMap<String, String> map = game.getNPC("leah").getDialogues();
+                output = map.get(conditions);
+            }
+            case "robin" -> {
+                HashMap<String, String> map = game.getNPC("robin").getDialogues();
+                output = map.get(conditions);
+                return output;
+            }
+        }
+        return null;
+    }
+
+    protected void setFriendshipScore(PlayerNPCInteraction interaction, int score) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        int levelScore = interaction.getFriendshipScore() % 200;
+        if (interaction.getFriendshipLevel() != 3) {
+            if (levelScore + score >= 200) {
+                interaction.setFriendshipLevel(interaction.getFriendshipLevel() + 1);
+                if (interaction.getFriendshipLevel() == 1) {
+                    interaction.setActiveMission3(game.getTime().clone());
+                    interaction.getActiveMission3().addToDay(interaction.getDaysPassed());
+                }
+            }
+            interaction.setFriendshipScore(interaction.getFriendshipScore() + score);
+        } else {
+            if (interaction.getFriendshipScore() + score > 800) {
+                interaction.setFriendshipScore(799);
+            } else {
+                interaction.setFriendshipScore(interaction.getFriendshipScore() + score);
+            }
+        }
+
+    }
+
+    public void deleteQuest(int level, String NPCName) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        for (int i = 0; i < game.getNPC(NPCName).getQuests().size(); i++) {
+            if (game.getNPC(NPCName).getQuests().get(i).getLevel() == level) {
+                game.getNPC(NPCName).getQuests().get(i).setLevel(0);
+                break;
+            }
+        }
+    }
+
+    protected Boolean canDoRequest(int level, String NPCName) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        Quest quest = game.getNPC(NPCName).getQuest(level);
+        Player currentPlayer = game.getPlayerInTurn();
+        return currentPlayer.getInventory().hasEnoughStack(quest.getTask().getItem().getName(), quest.getTask().getAmount());
+    }
+
+    protected void getReward(int level, String NPCName, int friendShipLevel) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        if (level == 1) {
+            game.getNPC(NPCName).getRewardMission1(friendShipLevel, game);
+        } else if (level == 2) {
+            game.getNPC(NPCName).getRewardMission2(friendShipLevel, game);
+        } else if (level == 3) {
+            game.getNPC(NPCName).getRewardMission3(friendShipLevel, game);
+        }
+    }
 }

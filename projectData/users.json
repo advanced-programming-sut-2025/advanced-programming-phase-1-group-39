@@ -1,0 +1,80 @@
+{
+  "users": [
+    {
+      "userName": "mir",
+      "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
+      "nickname": "mir one",
+      "email": "mir@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "1",
+        "answer": "mir"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0,
+      "gamesData": [],
+      "avatar": "Avatars/Alex.png"
+    },
+    {
+      "userName": "mir2",
+      "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
+      "nickname": "mir two",
+      "email": "mir@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "1",
+        "answer": "mir"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0,
+      "gamesData": [],
+      "avatar": "Avatars/Alex.png"
+    },
+    {
+      "userName": "mir3",
+      "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
+      "nickname": "mir three",
+      "email": "mir@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "1",
+        "answer": "mir"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0,
+      "gamesData": [],
+      "avatar": "Avatars/Alex.png"
+    },
+    {
+      "userName": "mir4",
+      "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
+      "nickname": "mir four",
+      "email": "mir@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "1",
+        "answer": "mir"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0,
+      "gamesData": [],
+      "avatar": "Avatars/Alex.png"
+    },
+    {
+      "userName": "mir5",
+      "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
+      "nickname": "mir five",
+      "email": "mir@gmail.com",
+      "isMale": true,
+      "securityQuestion": {
+        "question": "1",
+        "answer": "mir"
+      },
+      "numberOfGamesPlayed": 0,
+      "highestMoneyEarnedInASingleGame": 0,
+      "gamesData": [],
+      "avatar": "Avatars/Alex.png"
+    }
+  ],
+  "loggedInUserName": "mir2"
+}

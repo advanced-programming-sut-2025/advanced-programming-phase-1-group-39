@@ -40,6 +40,7 @@ public class Scythe extends Tool {
                 if (!player.getInventory().hasSpace(item))
                     return new Result(false, "You don't have enough space to get objects!");
                 player.getInventory().addItem(item.getItem(), item.getAmount());
+                tile.removeItemOnTile();
                 return new Result(true, "You cut the grasses!");
             }
             if (tile.getTree() != null) {

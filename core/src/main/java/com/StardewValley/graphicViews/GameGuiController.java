@@ -14,12 +14,14 @@ import com.StardewValley.models.Enums.commands.NPCGameCommand;
 import com.StardewValley.models.NPC.PlayerNPCInteraction;
 import com.StardewValley.models.NPC.Quest;
 import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.animals.AnimalProduct;
 import com.StardewValley.models.buildings.AnimalBuilding;
 import com.StardewValley.models.buildings.ShippingBin;
 import com.StardewValley.models.cooking.FoodManager;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingManager;
 import com.StardewValley.models.crafting.CraftingRecipe;
+import com.StardewValley.models.inventory.Inventory;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.tools.Axe;
 import com.StardewValley.models.tools.Pickaxe;
@@ -599,5 +601,49 @@ public class GameGuiController {
         } else if (level == 3) {
             game.getNPC(NPCName).getRewardMission3(friendShipLevel, game);
         }
+    }
+
+    public Result petAnimal(Animal animal) {
+
+        if (animal == null) {
+            return new Result(false, "You don't have this animal ):");
+        }
+        if (!screen.getGame().getPlayerInTurn().isNear(screen.getGame().getPlayerInTurn().getTileLocation(), animal.getLocation())) {
+            return new Result(false, "You must be near to animal");
+        }
+        animal.pet();
+
+        return new Result(true, "\"Thank you (:\" said " + animal.getName() +
+                ". Your frienship: " + animal.getFriendship());
+    }
+
+    public Result collectProducts(Animal animal) {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+
+        if (animal == null) {
+            return new Result(false, "You don't have this animal");
+        }
+
+        AnimalProduct product = animal.collectProduct();
+        if (!player.getInventory().hasSpace(new ItemStack(product, 1))) {
+            return new Result(false, "Your inventory has not space anymore!");
+        }
+        player.getInventory().addItem(product, 1);
+        player.getSkills().addToFarmingXP(5);
+        return new Result(true, "You have collected " + product.getName() + " from " + animal.getName() + ". (Farming XP + 5)");
+    }
+
+    public Result feedHayAnimal (Animal animal) {
+        Player player = App.getApp().getCurrentGame().getPlayerInTurn();
+        Inventory inv = player.getInventory();
+        if (!inv.hasItem("Hay")) {
+            return new Result(false, "You don't have any hay to feed animal");
+        }
+        if (animal == null) {
+            return new Result(false, "You don't have this animal");
+        }
+        inv.pickItem("Hay", 1);
+        animal.feedHay();
+        return new Result(true, "You have successfully fed the " + animal.getName());
     }
 }

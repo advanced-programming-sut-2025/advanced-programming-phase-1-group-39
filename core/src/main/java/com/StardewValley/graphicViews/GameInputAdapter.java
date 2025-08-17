@@ -205,6 +205,10 @@ public class GameInputAdapter extends InputAdapter {
             screen.changeCraftingMenu();
         } else if (keycode == Input.Keys.P) {
             screen.showShopMenu();
+        } else if (keycode == Input.Keys.Q) {
+            if (screen.getAnimal() != null) {
+                controller.petAnimal(screen.getAnimal());
+            }
         } else if (keycode == Input.Keys.E) {
             screen.toggleInventoryMenu();
         } else if (keycode == Input.Keys.M) {

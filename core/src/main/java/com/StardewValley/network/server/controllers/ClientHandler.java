@@ -113,21 +113,6 @@ public class ClientHandler implements Runnable {
                 ServerMain.startGame(this);
                 break;
 
-            case LOBBY_PUBLIC_CHAT_MESSAGE:
-                if (lobbyId != null) {
-                    String messageContent = (String) request.getPayload();
-                    PublicChatMessage publicChatMessage = new PublicChatMessage(this.clientIdentifier, messageContent);
-                    ServerMain.broadcastChatMessageToLobby(this.lobbyId, publicChatMessage);
-                }
-                break;
-            case LOBBY_PRIVATE_CHAT_MESSAGE:
-                if (lobbyId != null) {
-                    String[] messageContent = (String[]) request.getPayload();
-                    PrivateChatMessage privateChatMessage = new PrivateChatMessage(this.clientIdentifier, messageContent[1], messageContent[0]);
-                    ServerMain.broadcastChatMessageToLobby(this.lobbyId, privateChatMessage);
-                }
-                break;
-
             case PLAYER_REACTION:
                 if (gameId != -1) {
                     ServerMain.forwardRequestToGameSession(request, this);
@@ -143,7 +128,7 @@ public class ClientHandler implements Runnable {
     }
 
     private boolean isGameRequest(RequestType type) {
-        return type == RequestType.PlAYER_MOVE ||
+        return type == RequestType.PLAYER_MOVE ||
                 type == RequestType.PLAYER_REACTION ||
                 type == RequestType.SEND_CHAT_MESSAGE;
     }

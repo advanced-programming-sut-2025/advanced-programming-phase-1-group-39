@@ -1,6 +1,8 @@
 package com.StardewValley.graphicViews;
 
 import com.StardewValley.Main;
+import com.StardewValley.graphicViews.widgets.ChatBox;
+import com.StardewValley.graphicViews.widgets.ReactionBubble;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
 import com.StardewValley.models.NPC.PlayerNPCInteraction;
@@ -22,9 +24,8 @@ import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.map.TileType;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.models.services.GameAssetManager;
-import com.StardewValley.network.shares.dtos.GameStateDTO;
-import com.StardewValley.network.shares.dtos.PlayerStateDTO;
-import com.StardewValley.network.shares.dtos.ShowReactionDTO;
+import com.StardewValley.network.client.NetworkClient;
+import com.StardewValley.network.shares.dtos.*;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
 import com.badlogic.gdx.Gdx;

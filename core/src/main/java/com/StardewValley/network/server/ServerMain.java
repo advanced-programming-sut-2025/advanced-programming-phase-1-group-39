@@ -262,28 +262,6 @@ public class ServerMain {
         }
     }
 
-
-    public static void broadcastChatMessageToLobby(String lobbyId, PublicChatMessage chatMessage) {
-        if (chatMessage instanceof PrivateChatMessage) {
-            PrivateChatMessage privateMessage = (PrivateChatMessage) chatMessage;
-            Request chatRequest = new Request(RequestType.LOBBY_PRIVATE_CHAT_MESSAGE, privateMessage);
-
-            ClientHandler senderHandler = findClientByUsername(privateMessage.getSenderName());
-            ClientHandler recipientHandler = findClientByUsername(privateMessage.getRecipientName());
-
-            if (senderHandler != null) {
-                senderHandler.sendMessage(chatRequest);
-            }
-            if (recipientHandler != null) {
-                recipientHandler.sendMessage(chatRequest);
-            }
-
-        } else {
-            Request chatRequest = new Request(RequestType.LOBBY_PUBLIC_CHAT_MESSAGE, chatMessage);
-            broadcastMessageToLobby(lobbyId, chatRequest);
-        }
-    }
-
     private static ClientHandler findClientByUsername(String username) {
         synchronized (clients) {
             return clients.stream()

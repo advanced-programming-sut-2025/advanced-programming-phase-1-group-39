@@ -125,4 +125,8 @@ public class Main extends Game {
     public static SpriteBatch getBatch() {
         return batch;
     }
+
+    public NetworkClient getNetworkClient() {
+        return networkClient;
+    }
 }

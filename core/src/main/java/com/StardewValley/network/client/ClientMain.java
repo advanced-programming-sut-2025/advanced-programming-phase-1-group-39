@@ -1,7 +1,6 @@
 package com.StardewValley.network.client;
 
 import com.StardewValley.network.shares.Lobby;
-import com.StardewValley.network.shares.message.PublicChatMessage;
 import com.StardewValley.network.shares.message.Request;
 import com.StardewValley.network.shares.message.RequestType;
 
@@ -125,13 +124,6 @@ public class ClientMain {
                 } else {
                     lobbies.forEach(System.out::println);
                 }
-                System.out.print("Enter command: ");
-                break;
-
-            case LOBBY_PUBLIC_CHAT_MESSAGE:
-                PublicChatMessage publicChatMessage = (PublicChatMessage) request.getPayload();
-                System.out.print("\r" + " ".repeat(50) + "\r");
-                System.out.println("[Lobby Chat] " + publicChatMessage);
                 System.out.print("Enter command: ");
                 break;
 

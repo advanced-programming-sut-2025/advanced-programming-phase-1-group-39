@@ -654,6 +654,8 @@ public class Player {
 
     public void setSelectedSlot(int selectedSlot) {
         this.selectedSlot = selectedSlot;
+        selectedSlot = Math.min(selectedSlot, inventory.getInventoryItems().size() - 1);
+        selectedSlot = Math.max(selectedSlot, 0);
         this.inventory.setInHand(inventory.getInventoryItems().get(selectedSlot));
     }
 

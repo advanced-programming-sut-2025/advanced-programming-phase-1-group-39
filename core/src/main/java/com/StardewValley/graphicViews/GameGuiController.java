@@ -21,6 +21,7 @@ import com.StardewValley.models.cooking.FoodManager;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingManager;
 import com.StardewValley.models.crafting.CraftingRecipe;
+import com.StardewValley.models.cropsAndFarming.Seed;
 import com.StardewValley.models.inventory.Inventory;
 import com.StardewValley.models.map.Tile;
 import com.StardewValley.models.tools.Axe;
@@ -406,6 +407,66 @@ public class GameGuiController {
         }
 
         return false;
+    }
+
+    public Result plant(Direction direction) {
+        Game game = screen.getGame();
+        Player player = game.getPlayerInTurn();
+        ItemStack itemStack = player.getInventory().getInHand();
+        String seedName = null;
+        if (itemStack != null && itemStack.getItem() instanceof Seed seed) {
+            seedName = seed.getName();
+        }
+
+        if (direction == null || seedName == null) {
+            return new Result(false, "Wrong direction");
+        }
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(player.getTileLocation().x() + direction.dx,
+                player.getTileLocation().y() + direction.dy);
+        if (tile  == null) {
+            return new Result(false, "tile doesn't exist");
+        }
+        if(!tile.canPlant()) {
+            return new Result(false, "You can't plant anything on this tile!");
+        }
+        if (!player.getInventory().hasItem(seedName)) {
+            return new Result(false, "You don't have " + seedName);
+        }
+        player.getInventory().pickItem(seedName, 1);
+        tile.plantSeed(seedName);
+        return new Result(false, "You have successfully planted " + seedName);
+    }
+
+    public Result placeItem(Direction direction) {
+        Game game = screen.getGame();
+        Player player = game.getPlayerInTurn();
+        Inventory inv = player.getInventory();
+        ItemStack itemStack = inv.getInHand();
+        String itemName = null;
+        if (itemStack != null) {
+            itemName = itemStack.getName();
+        }
+        if (itemName == null) {
+            return new Result(false, "");
+        }
+
+        if (!inv.hasItem(itemName)) {
+            return new Result(false, "You don't have this item in your inventory");
+        }
+        if (direction == null) {
+            return new Result(false, "This direction is unavailable");
+        }
+        Location playerLocation = player.getTileLocation();
+        Tile tile = App.getApp().getCurrentGame().getMap().getTile(playerLocation.x() + direction.dx,
+                playerLocation.y() + direction.dy);
+        if (tile  == null) {
+            return new Result(false, "tile doesn't exist");
+        }
+        if (!tile.canAddItemToTile()) {
+            return new Result(false, "You can't add item to this tile");
+        }
+        inv.placeItem(itemName, tile);
+        return new Result(true, "You have placed this item to tile successfully!");
     }
 
     public String getQuesList(String NPCName) {

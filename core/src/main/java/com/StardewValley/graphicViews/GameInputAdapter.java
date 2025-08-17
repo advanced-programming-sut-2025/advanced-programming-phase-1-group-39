@@ -302,7 +302,10 @@ public class GameInputAdapter extends InputAdapter {
             if (dir != null) {
                 boolean done = controller.useTool(dir);
                 if (!done) {
-                    if ()
+                    done = controller.plant(dir).success();
+                    if (!done) {
+                        controller.placeItem(dir);
+                    }
                 }
             }
             // چک برای هر NPC

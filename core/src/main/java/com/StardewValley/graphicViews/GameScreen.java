@@ -2242,7 +2242,7 @@ public class GameScreen implements Screen {
                     }
 
                     // آیکون تیک برای فروش
-                    Image tickImg = new Image(new Texture("ui/tick.png"));
+                    Image tickImg = new Image(new Texture("NPC/tick.png"));
                     tickImg.setVisible(false);
                     slotStack.add(tickImg);
 

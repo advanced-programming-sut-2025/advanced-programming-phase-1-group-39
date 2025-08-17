@@ -396,8 +396,7 @@ public class GameGuiController {
                             player.changeEnergy(-energyConsumed);
                         }
                     } else {
-                        player.changeEnergy(-
-                                energyConsumed);
+                        player.changeEnergy(-energyConsumed);
                     }
                 }
             }

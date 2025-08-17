@@ -286,6 +286,7 @@ public class GameScreen implements Screen {
         }
 
         this.bin = (ShippingBin) game.getPlayerInTurn().getBuildingByName("Shipping Bin");
+        System.out.println(bin.getLocation() + " " + bin.getWidth());
 
         // for error message
         Table messageTable = new Table();
@@ -736,7 +737,7 @@ public class GameScreen implements Screen {
                     int tileSize = Map.TILE_SIZE;
 
                     TextureRegion texture = new TextureRegion(GameAssetManager.shippingBinTexture);
-                    batch.draw(texture, inMapLocation.x(), inMapLocation.y());
+                    batch.draw(texture, inMapLocation.x(), inMapLocation.y(), building.getWidth()*tileSize, building.getHeight()*tileSize);
                 }
             }
         }
@@ -2247,7 +2248,7 @@ public class GameScreen implements Screen {
                     }
 
                     // آیکون تیک برای فروش
-                    Image tickImg = new Image(new Texture("ui/tick.png"));
+                    Image tickImg = new Image(new Texture("NPC/tick.png"));
                     tickImg.setVisible(false);
                     slotStack.add(tickImg);
 

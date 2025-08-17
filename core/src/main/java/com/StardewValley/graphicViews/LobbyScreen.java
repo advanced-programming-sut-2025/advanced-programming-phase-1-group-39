@@ -118,11 +118,11 @@ public class LobbyScreen implements Screen {
         errorLabel.setAlignment(Align.center);
         messageTable.add(errorLabel).bottom().padBottom(50).expandY();
 
-        addListeners(backButton, refreshButton, createLobbyButton, searchField);
+        addListeners(backButton, refreshButton, createLobbyButton, searchField, onlineUsersButton);
     }
 
     private void addListeners(TextButton backButton, TextButton refreshButton, TextButton createLobbyButton,
-                              TextField searchField) {
+                              TextField searchField, TextButton onlineUsersButton) {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -142,6 +142,13 @@ public class LobbyScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 showCreateLobbyWindow();
+            }
+        });
+
+        onlineUsersButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                showOnlineUsersWindow();
             }
         });
 
@@ -238,6 +245,53 @@ public class LobbyScreen implements Screen {
 
         // نمایش دیالوگ
         passwordDialog.show(stage);
+    }
+
+    private void showOnlineUsersWindow() {
+        // از Dialog استفاده می‌کنیم چون به طور خودکار Modal است (جلوی بقیه UI را می‌گیرد)
+        Dialog onlineUsersDialog = new Dialog("Online Users", skin);
+        onlineUsersDialog.setModal(true);
+        onlineUsersDialog.setMovable(true);
+
+        // محتوای دیالوگ
+        Table content = onlineUsersDialog.getContentTable();
+        content.pad(20);
+
+        // ۱. ساختن یک جدول برای لیست کاربران
+        Table userListTable = new Table();
+
+        // ۲. گرفتن لیست کاربران آنلاین از مدل مرکزی (App)
+        List<String> onlineUsers = App.getApp().getOnlineUsers();
+
+        if (onlineUsers.isEmpty()) {
+            userListTable.add(new Label("No other users are online.", skin));
+        } else {
+            for (String username : onlineUsers) {
+                Label userLabel = new Label(username, skin);
+                userLabel.setFontScale(1.2f);
+
+                userListTable.add(userLabel).left().pad(5).row();
+            }
+        }
+
+        // ۴. لیست کاربران را داخل یک ScrollPane قرار بده تا قابل اسکرول باشد
+        ScrollPane scrollPane = new ScrollPane(userListTable, skin);
+        scrollPane.setFadeScrollBars(false);
+        content.add(scrollPane).width(400).height(500).expand().fill();
+
+        // ۵. اضافه کردن دکمه "Close" برای بستن پنجره
+        TextButton closeButton = new TextButton("Close", skin);
+        onlineUsersDialog.getButtonTable().add(closeButton).width(150).pad(20);
+
+        closeButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                onlineUsersDialog.hide();
+            }
+        });
+
+        // نمایش دیالوگ
+        onlineUsersDialog.show(stage);
     }
 
     public void closeJoinedLobbyWindow() {

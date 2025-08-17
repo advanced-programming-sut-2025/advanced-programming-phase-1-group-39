@@ -4,6 +4,7 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.Direction;
 import com.StardewValley.models.animals.Animal;
+import com.StardewValley.models.buildings.ShippingBin;
 import com.StardewValley.models.map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -282,7 +283,7 @@ public class GameInputAdapter extends InputAdapter {
                     screen.getShippingBin().getHeight()
             );
 
-            if (sellBinBounds.contains(worldCoords.x, worldCoords.y)) {
+            if (sellBinBounds.contains(mouseTile.x(), mouseTile.y())) {
                 screen.showSellBasketWindow();
                 return true;
             }
@@ -315,7 +316,7 @@ public class GameInputAdapter extends InputAdapter {
                     screen.toggleNpcDialog(npcId);
                     return true;
                 }
-            }// دیگه لازم نیست ادامه بدیم
+            }
         }
         return false;
     }

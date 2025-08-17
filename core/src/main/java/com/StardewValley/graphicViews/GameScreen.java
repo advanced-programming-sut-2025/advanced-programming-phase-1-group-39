@@ -207,6 +207,12 @@ public class GameScreen implements Screen {
     private boolean craftingMenuOpen = false;
 
 
+    //Network
+    private NetworkClient networkClient;
+
+    private ChatBox chatBox;
+
+
     public GameScreen() {
         this.screen = this;
         this.controller = AppGuiControllers.gameGuiController;
@@ -297,6 +303,21 @@ public class GameScreen implements Screen {
         errorLabel.setVisible(false);
         errorLabel.setAlignment(Align.center);
         messageTable.add(errorLabel).bottom().padBottom(50).expandY(); // expandY is needed to effect by the bottom()
+
+        networkClient = Main.getMain().getNetworkClient();
+
+        chatBox = new ChatBox("Game Chat", GameAssetManager.skin, this.networkClient);
+        chatBox.setVisible(false);
+        chatBox.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == com.badlogic.gdx.Input.Keys.F1) {
+                    changeChatBox();
+                }
+                return false;
+            }
+        });
+        uiStage.addActor(chatBox);
     }
 
     // utils and menu
@@ -1734,8 +1755,8 @@ public class GameScreen implements Screen {
                         case "Receive":
                             contentCell.setActor(getQuestReceiveTable(controller.getQuesLists(npcId), getDoneQuests(npcId), npcId));
                             break;
-                            case "Complete":
-                                contentCell.setActor(getQuestCompleteTable(getDoneQuests(npcId), getCompletedQuests(npcId), npcId));
+                        case "Complete":
+                            contentCell.setActor(getQuestCompleteTable(getDoneQuests(npcId), getCompletedQuests(npcId), npcId));
                     }
                 }
             });
@@ -2554,19 +2575,37 @@ public class GameScreen implements Screen {
 
         if (serverRequest.getType() == RequestType.SHOW_REACTION_ON_PLAYER) {
             ShowReactionDTO dto = (ShowReactionDTO) serverRequest.getPayload();
+            Player targetPlayer = game.getPlayerByUsername(dto.getReactingPlayerUsername());
+            if (targetPlayer != null) {
+                // Todo: چک و تکمیل شود
+                ReactionBubble bubble = new ReactionBubble(targetPlayer, dto.getReactionType(), GameAssetManager.skin);
+                uiStage.addActor(bubble);
+            }
+        } else if (serverRequest.getType() == RequestType.RECEIVE_QUICK_MESSAGE) {
+            ShowQuickMessageDTO dto = (ShowQuickMessageDTO) serverRequest.getPayload();
 
-            // **اینجا منطق نهایی گرافیکی شما قرار خواهد گرفت**
-            // برای الان، فقط در کنسول چاپ می‌کنیم تا مطمئن شویم پیام رسیده
-            System.out.println("[REACTION] Player '" + dto.getReactingPlayerUsername() +
-                    "' says: " + dto.getReactionContent());
+            String formattedMessage = dto.getMessageType().getMessageText();
+            ChatMessageDTO chatMessage = new ChatMessageDTO(dto.getSenderUsername(), formattedMessage, false); // isPrivate = false
 
-            // TODO (برای آینده):
-            // 1. Player targetPlayer = game.getPlayerByUsername(dto.getReactingPlayerUsername());
-            // 2. یک آبجکت گرافیکی (مثلا یک Label) با متن dto.getReactionContent() بساز.
-            // 3. موقعیت این Label را بالای سر targetPlayer تنظیم کن (targetPlayer.getX(), targetPlayer.getY() + TILE_SIZE).
-            // 4. آن را به uiStage اضافه کن.
-            // 5. یک Action به آن اضافه کن که بعد از 5 ثانیه، Label را محو و حذف کند:
-            //    label.addAction(Actions.sequence(Actions.delay(5f), Actions.fadeOut(0.5f), Actions.removeActor()));
+            if (chatBox != null) {
+                Label quickMessageLabel = new Label("[Quick] " + chatMessage.toString(), GameAssetManager.skin);
+                quickMessageLabel.setColor(Color.CYAN);
+
+                chatBox.addCustomMessage(quickMessageLabel);
+            }
+        } else if (serverRequest.getType() == RequestType.RECEIVE_CHAT_MESSAGE) {
+            ChatMessageDTO chatMessage = (ChatMessageDTO) serverRequest.getPayload();
+            chatBox.addMessage(chatMessage);
+        }
+    }
+
+    public void changeChatBox() {
+        if (chatBox.isVisible()) {
+            chatBox.setVisible(false);
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        } else {
+            chatBox.setVisible(true);
+            Gdx.input.setInputProcessor(uiStage);
         }
     }
 

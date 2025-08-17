@@ -29,7 +29,7 @@ public class NetworkClient {
     private final App app;
 
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
-
+    private boolean inGame = false; //TODO : true
 
     public NetworkClient() {
         app = App.getApp();
@@ -154,22 +154,6 @@ public class NetworkClient {
                 }
                 break;
 
-            case LOBBY_PUBLIC_CHAT_MESSAGE:
-                if (payload instanceof PublicChatMessage) {
-                    PublicChatMessage receivedMessage = (PublicChatMessage) payload;
-                    // TODO : show message in user public message box
-                }
-                break;
-
-            case LOBBY_PRIVATE_CHAT_MESSAGE:
-                if (payload instanceof PrivateChatMessage) {
-                    PrivateChatMessage receivedMessage = (PrivateChatMessage) payload;
-                    // TODO : show message in user private message box (only by this)
-                }
-                break;
-
-
-
             case UPDATE_GAME_STATE:
                 // این پیام فقط زمانی که در GameScreen هستیم معنا دارد
                 if (payload instanceof GameStateDTO) {
@@ -177,6 +161,13 @@ public class NetworkClient {
 //                    app.getCurrentGame().updateFromDTO((GameStateDTO) payload);
                 }
                 break;
+
+            default:
+                if (inGame) {
+                    GameScreen.getScreen().handleServerUpdate(request);
+                }
+                break;
+
         }
     }
 
@@ -245,10 +236,24 @@ public class NetworkClient {
 
     // in game
     // TODO : after reaction in game
-    public void sendReactionRequest(String reaction) {
+    public void sendReactionRequest(ReactionType reaction) {
         PlayerReactionPayload payload = new PlayerReactionPayload(reaction);
         Request request = new Request(RequestType.PLAYER_REACTION, payload);
         sendRequest(request);
     }
 
+    public void sendQuickMessage(QuickMessageType messageType) {
+        QuickMessagePayload payload = new QuickMessagePayload(messageType);
+        Request request = new Request(RequestType.SEND_QUICK_MESSAGE, payload);
+        sendRequest(request);
+    }
+
+    public void sendChatMessage(String message, String recipientUsername) {
+        ChatMessagePayload payload = (recipientUsername == null || recipientUsername.isEmpty())
+                ? new ChatMessagePayload(message)
+                : new ChatMessagePayload(message, recipientUsername);
+
+        Request request = new Request(RequestType.SEND_CHAT_MESSAGE, payload);
+        sendRequest(request);
+    }
 }

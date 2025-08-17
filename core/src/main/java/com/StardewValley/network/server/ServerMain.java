@@ -255,6 +255,8 @@ public class ServerMain {
                     //session.processMoveRequest((PlayerMovePayload) request.getPayload(), fromClient.getUsername());
                 } else if (request.getType() == RequestType.PLAYER_REACTION && request.getPayload() instanceof PlayerReactionPayload) {
                     session.processReactionRequest((PlayerReactionPayload) request.getPayload(), fromClient.getUsername());
+                } else if (request.getType() == RequestType.SEND_CHAT_MESSAGE && request.getPayload() instanceof ChatMessagePayload) {
+                    session.processChatMessage((ChatMessagePayload) request.getPayload(), fromClient.getUsername());
                 }
             }
         }

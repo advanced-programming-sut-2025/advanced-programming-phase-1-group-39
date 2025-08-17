@@ -62,6 +62,11 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleRequest(Request request) {
+        if (gameId != -1 && isGameRequest(request.getType())) {
+            ServerMain.forwardRequestToGameSession(request, this);
+            return;
+        }
+
         switch (request.getType()) {
             case SEND_USER_DATA:
                 if (request.getPayload() instanceof UserData userData) {
@@ -137,6 +142,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    private boolean isGameRequest(RequestType type) {
+        return type == RequestType.PlAYER_MOVE ||
+                type == RequestType.PLAYER_REACTION ||
+                type == RequestType.SEND_CHAT_MESSAGE;
+    }
+
     public void sendMessage(Request request) {
         try {
             synchronized (out) {
@@ -155,6 +166,6 @@ public class ClientHandler implements Runnable {
     }
 
     public String getUsername() {
-            return username;
+        return username;
     }
 }

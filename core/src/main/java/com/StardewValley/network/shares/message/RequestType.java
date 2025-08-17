@@ -25,8 +25,6 @@ public enum RequestType {
     LOBBY_PUBLIC_CHAT_MESSAGE,
     LOBBY_PRIVATE_CHAT_MESSAGE,
 
-    SHOW_REACTION_ON_PLAYER,
-
     //InGame
     PLAYER_DISCONNECTED,
     PLAYER_RECONNECTED,
@@ -99,4 +97,11 @@ public enum RequestType {
      * Payload: AnimationPayload(String animationName, Location location)
      */
     SHOW_ANIMATION, YOU_WERE_KICKED, CREATE_LOBBY_SUCCESS, UPDATE_LOBBY_STATE, LEAVE_LOBBY, LEAVE_LOBBY_SUCCESS, // may needed
+
+    SHOW_REACTION_ON_PLAYER,
+    SEND_QUICK_MESSAGE,
+    RECEIVE_QUICK_MESSAGE,
+
+    SEND_CHAT_MESSAGE,
+    RECEIVE_CHAT_MESSAGE,
 }

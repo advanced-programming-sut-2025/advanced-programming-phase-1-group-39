@@ -1719,7 +1719,9 @@ public class GameScreen implements Screen {
                             contentCell.setActor(getGiftContentTable(npcId));
                             break;
                         case "Info":
-                            contentCell.setActor(getNpcInfoTable(npcId));
+                            PlayerNPCInteraction interaction = game.getPlayerInTurn().getFriendship(npcId);
+                            contentCell.setActor(getNpcInfoContentTable(npcId, interaction.getFriendshipLevel(),
+                                    interaction.getFriendshipScore()));
                             break;
                         case "Quests":
                             contentCell.setActor(getQuestContentTable(getCompletedQuests(npcId), getDoneQuests(npcId), controller.getQuesLists(npcId)));
@@ -1877,12 +1879,6 @@ public class GameScreen implements Screen {
         return giftTable;
     }
 
-    private Table getNpcInfoTable(String npcId) {
-        Table info = new Table(GameAssetManager.skin);
-        info.add(new Label("Info about " + npcId, GameAssetManager.skin)).center();
-        return info;
-    }
-
     public void closeNpcMenu() {
         if (npcMenuWindow != null) {
             npcMenuWindow.remove();
@@ -1997,6 +1993,36 @@ public class GameScreen implements Screen {
             case "sebastian" -> game.getPlayerInTurn().getSebastianReceivedQuests();
             default -> null;
         };
+    }
+
+    private Table getNpcInfoContentTable(String npcName, int friendshipLevel, int friendshipPoints) {
+        Skin skin = GameAssetManager.skin;
+        Table infoTable = new Table();
+        infoTable.top().left();
+
+        // Title
+        Label title = new Label(npcName + " - Info", skin, "title");
+        title.setAlignment(Align.center);
+        title.setColor(Color.GOLD);
+        infoTable.add(title).colspan(2).pad(10).row();
+
+        // Friendship Level
+        Label lblLevelTitle = new Label("Friendship Level: ", skin);
+        lblLevelTitle.setColor(Color.CYAN);
+        Label lblLevelValue = new Label(friendshipLevel + "", skin);
+        lblLevelValue.setColor(Color.WHITE);
+        infoTable.add(lblLevelTitle).pad(5).left();
+        infoTable.add(lblLevelValue).pad(5).left().row();
+
+        // Friendship Points
+        Label lblPointsTitle = new Label("Friendship Points: ", skin);
+        lblPointsTitle.setColor(Color.CYAN);
+        Label lblPointsValue = new Label(String.valueOf(friendshipPoints), skin);
+        lblPointsValue.setColor(Color.WHITE);
+        infoTable.add(lblPointsTitle).pad(5).left();
+        infoTable.add(lblPointsValue).pad(5).left().row();
+
+        return infoTable;
     }
 
     // WINDOWS

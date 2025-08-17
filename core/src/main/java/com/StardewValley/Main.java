@@ -36,6 +36,9 @@ public class Main extends Game {
     }
 
     public void goOnline() {
+        if (networkClient != null) {
+            networkClient.disconnect();
+        }
         networkClient = new NetworkClient();
         networkClient.connect("127.0.0.1", 5050);
 

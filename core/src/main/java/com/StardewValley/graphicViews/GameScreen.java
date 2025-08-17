@@ -1704,7 +1704,7 @@ public class GameScreen implements Screen {
         mainTable.setFillParent(true);
 
         // === ردیف اول: دکمه‌های تب ===
-        String[] tabNames = {"Gift", "Info", "Quests", "Receive"};
+        String[] tabNames = {"Gift", "Info", "Quests", "Receive", "Complete"};
         Table tabsRow = new Table();
         for (String tab : tabNames) {
             TextButton tabBtn = new TextButton(tab, skin);
@@ -1726,8 +1726,11 @@ public class GameScreen implements Screen {
                         case "Quests":
                             contentCell.setActor(getQuestContentTable(getCompletedQuests(npcId), getDoneQuests(npcId), controller.getQuesLists(npcId)));
                             break;
-                            case "Receive":
-                                contentCell.setActor(getQuestReceiveTable(controller.getQuesLists(npcId), getDoneQuests(npcId), npcId));
+                        case "Receive":
+                            contentCell.setActor(getQuestReceiveTable(controller.getQuesLists(npcId), getDoneQuests(npcId), npcId));
+                            break;
+                            case "Complete":
+                                contentCell.setActor(getQuestCompleteTable(getDoneQuests(npcId), getCompletedQuests(npcId), npcId));
                     }
                 }
             });
@@ -2038,7 +2041,7 @@ public class GameScreen implements Screen {
         title.setAlignment(Align.center);
         table.add(title).colspan(2).pad(10).center().row();
 
-        final String[] selectedQuest = { null };
+        final String[] selectedQuest = {null};
 
         for (String q : notReceived) {
             CheckBox btnQuest = new CheckBox(q, skin);
@@ -2079,6 +2082,72 @@ public class GameScreen implements Screen {
         });
 
         table.add(btnReceive)
+                .padTop(15)
+                .colspan(2)
+                .center()
+                .row();
+
+        return table;
+    }
+
+    private Table getQuestCompleteTable(ArrayList<String> received, ArrayList<String> completed, String npcId) {
+        Skin skin = GameAssetManager.skin;
+        Table table = new Table();
+        table.top().left();
+
+        // Title
+        Label title = new Label("Quests to Complete", skin, "title");
+        title.setColor(Color.GOLD);
+        title.setAlignment(Align.center);
+        table.add(title).colspan(2).pad(10).center().row();
+
+        final String[] selectedQuest = {null};
+
+        for (String q : received) {
+            CheckBox btnQuest = new CheckBox(q, skin);
+            btnQuest.getLabel().setFontScale(0.5f);
+            btnQuest.getLabel().setColor(Color.WHITE);
+            btnQuest.getLabel().setWrap(false);
+            btnQuest.getLabelCell().padLeft(8f);
+
+            btnQuest.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    selectedQuest[0] = q;
+                }
+            });
+
+            table.add(btnQuest)
+                    .expandX().fillX()
+                    .pad(5)
+                    .colspan(2)
+                    .left()
+                    .row();
+        }
+
+        TextButton btnComplete = new TextButton("Complete Quest", skin);
+        btnComplete.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (selectedQuest[0] != null) {
+                    if (controller.canDoRequest(0, npcId)) {
+                        controller.getReward(getDoneQuests(npcId).size(), npcId, game.getPlayerInTurn().getFriendship(npcId).getFriendshipLevel());
+                        getDoneQuests(npcId).removeFirst();
+                        getCompletedQuests(npcId).add(selectedQuest[0]);
+                    }
+
+
+
+                    selectedQuest[0] = null;
+                    // refresh کردن Table
+                    table.clear();
+                    Table newTable = getQuestCompleteTable(getDoneQuests(npcId), getCompletedQuests(npcId), npcId);
+                    table.add(newTable).expand().fill();
+                }
+            }
+        });
+
+        table.add(btnComplete)
                 .padTop(15)
                 .colspan(2)
                 .center()

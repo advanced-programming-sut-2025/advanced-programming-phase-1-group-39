@@ -581,4 +581,24 @@ public class GameGuiController {
         }
     }
 
+    protected Boolean canDoRequest(int level, String NPCName) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        Quest quest = game.getNPC(NPCName).getQuest(level);
+        Player currentPlayer = game.getPlayerInTurn();
+        return currentPlayer.getInventory().hasEnoughStack(quest.getTask().getItem().getName(), quest.getTask().getAmount());
+    }
+
+    protected void getReward(int level, String NPCName, int friendShipLevel) {
+        App app = App.getApp();
+        Game game = app.getCurrentGame();
+        if (level == 1) {
+            game.getNPC(NPCName).getRewardMission1(friendShipLevel, game);
+        } else if (level == 2) {
+            game.getNPC(NPCName).getRewardMission2(friendShipLevel, game);
+        } else if (level == 3) {
+            game.getNPC(NPCName).getRewardMission3(friendShipLevel, game);
+        }
+    }
+
 }

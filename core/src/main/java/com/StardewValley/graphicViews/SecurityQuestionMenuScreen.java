@@ -57,15 +57,15 @@ public class SecurityQuestionMenuScreen implements Screen {
         this.answerErrorLabel = new Label("", skin);
         this.registerButton = new TextButton("Register", skin);
         this.backButton = new TextButton("Back", skin);
-        this.music = GameSetting.getMusic();
+//        this.music = GameSetting.getMusic();
         AppGuiControllers.securityQuestionGuiController.setView(this);
     }
 
 
     @Override
     public void show() {
-        music.setLooping(true);
-        music.play();
+//        music.setLooping(true);
+//        music.play();
 
         stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);

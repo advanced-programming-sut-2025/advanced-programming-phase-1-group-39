@@ -144,6 +144,7 @@ public class ClientHandler implements Runnable {
                 out.flush();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Error sending message to " + clientIdentifier);
         }
     }

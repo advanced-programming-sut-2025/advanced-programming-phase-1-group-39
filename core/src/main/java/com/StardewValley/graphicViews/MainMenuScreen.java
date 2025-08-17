@@ -54,7 +54,7 @@ public class MainMenuScreen implements Screen {
         this.nameTexture = GameAssetManager.nameLabel;
         this.nameLabel = new Label("Your Name :" + App.getApp().getLoggedInUser().getNickname(), skin);
         this.avatarTexture = new TextureRegion(new Texture(App.getApp().getLoggedInUser().getAvatar()));
-        this.music = GameAssetManager.music1;
+//        this.music = GameAssetManager.music1;
         AppGuiControllers.mainGuiController.setMenuView(this);
     }
 
@@ -65,8 +65,8 @@ public class MainMenuScreen implements Screen {
             stage = new Stage(new FitViewport(1920, 1080));
             Gdx.input.setInputProcessor(stage);
 
-            music.setLooping(true);
-            music.play();
+//            music.setLooping(true);
+//            music.play();
 
             // تنظیم و اضافه‌کردن بک‌گراند
             background.setSize(stage.getWidth(), stage.getHeight());

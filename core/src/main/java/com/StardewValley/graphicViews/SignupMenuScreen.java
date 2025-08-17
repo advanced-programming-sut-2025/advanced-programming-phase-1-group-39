@@ -95,14 +95,14 @@ public class SignupMenuScreen implements Screen {
         this.loginButton = new TextButton("Login", skin);
         this.exitButton = new TextButton("Exit", skin);
         this.randomPasswordButton = new TextButton("Random", skin);
-        this.music = GameAssetManager.music1;
+//        this.music = GameAssetManager.music1;
         AppGuiControllers.signupGuiController.setView(this);
     }
 
     @Override
     public void show() {
-        music.setLooping(true);
-        music.play();
+//        music.setLooping(true);
+//        music.play();
 
         stage = new Stage(new StretchViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);

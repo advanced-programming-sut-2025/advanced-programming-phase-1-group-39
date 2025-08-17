@@ -312,6 +312,11 @@ public class LobbyScreen implements Screen {
         // لیست بازیکنان
         joinedWindow.add(new Label("Lobby Id: " + lobby.getId(), skin)).pad(15).row();
         Table playersTable = new Table();
+
+//        Label label2 = new Label(lobby.getAdmin(), skin);
+//        label2.setFontScale(1.5f);
+//        playersTable.add().left().pad(5).row();
+
         for (String playerName : lobby.getPlayers()) {
             String labelText = playerName;
             if (playerName.equals(lobby.getAdmin())) {
@@ -319,7 +324,7 @@ public class LobbyScreen implements Screen {
             }
             Label label = new Label(labelText, skin);
             label.setFontScale(1.5f);
-            playersTable.add().left().pad(5).row();
+            playersTable.add(label).left().pad(5).row();
         }
         joinedWindow.add(new ScrollPane(playersTable, skin)).expand().fill().pad(10).row();
 

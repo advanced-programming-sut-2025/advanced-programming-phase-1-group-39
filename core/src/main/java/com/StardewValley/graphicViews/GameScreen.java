@@ -2594,7 +2594,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        GameSetting.getMusic().pause();
+//        GameSetting.getMusic().pause();
 
         font = new BitmapFont();
         font.getData().setScale(2f);

@@ -61,8 +61,6 @@ public class ServerMain {
 
             adminHandler.sendMessage(new Request(RequestType.CREATE_LOBBY_SUCCESS, newLobby));
         }
-
-        broadcastLobbyList();
     }
 
     // متد joinLobby با دریافت نام کاربری

@@ -36,12 +36,10 @@ public class Main extends Game {
     }
 
     public void goOnline() {
-        if (networkClient == null) {
-            networkClient = new NetworkClient();
-            networkClient.connect("127.0.0.1", 5050);
-        } else {
-            switchScreen(new LobbyScreen(networkClient));
-        }
+        networkClient = new NetworkClient();
+        networkClient.connect("127.0.0.1", 5050);
+
+        switchScreen(new LobbyScreen(networkClient));
     }
 
 

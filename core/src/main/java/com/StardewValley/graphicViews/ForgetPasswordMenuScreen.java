@@ -72,8 +72,8 @@ public class ForgetPasswordMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         // موسیقی و بک‌گراند
-        music.setLooping(true);
-        music.play();
+//        music.setLooping(true);
+//        music.play();
         background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         background.setColor(1, 1, 1, 0.5f);
         stage.addActor(background);

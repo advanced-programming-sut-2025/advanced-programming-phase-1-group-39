@@ -16,9 +16,9 @@
       "avatar": "Avatars/Alex.png"
     },
     {
-      "userName": "mir",
+      "userName": "mir2",
       "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
-      "nickname": "mir one",
+      "nickname": "mir two",
       "email": "mir@gmail.com",
       "isMale": true,
       "securityQuestion": {
@@ -27,13 +27,18 @@
       },
       "numberOfGamesPlayed": 0,
       "highestMoneyEarnedInASingleGame": 0,
-      "gamesData": [],
+      "gamesData": [
+        {
+          "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        }
+      ],
       "avatar": "Avatars/Alex.png"
     },
     {
-      "userName": "mir2",
+      "userName": "mir",
       "password": "ffab90a84eae40962683b24c09eba2a6674e44e23686fe0de99f007087906b23",
-      "nickname": "mir two",
+      "nickname": "mir one",
       "email": "mir@gmail.com",
       "isMale": true,
       "securityQuestion": {

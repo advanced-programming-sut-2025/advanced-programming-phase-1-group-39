@@ -99,7 +99,7 @@ public class ProfileMenuScreen implements Screen {
         this.changeAvatarsBox.setItems(new String[]{"Alex", "Sam", "Leah", "Penny"});
 
         this.backButton = new TextButton("Back", skin);
-        this.music = GameAssetManager.music1;
+//        this.music = GameAssetManager.music1;
         AppGuiControllers.profileGuiController.setView(this);
     }
 
@@ -107,8 +107,8 @@ public class ProfileMenuScreen implements Screen {
     public void show() {
         stage = new Stage(new FitViewport(1920, 1080));
         Gdx.input.setInputProcessor(stage);
-        music.setLooping(true);
-        music.play();
+//        music.setLooping(true);
+//        music.play();
 
         background.setSize(stage.getWidth(), stage.getHeight());
         background.setColor(1, 1, 1, 0.5f);

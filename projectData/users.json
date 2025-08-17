@@ -16,6 +16,10 @@
         {
           "gameId": 101,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 102,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
       ],
       "avatar": "Avatars/Alex.png"
@@ -35,6 +39,10 @@
       "gamesData": [
         {
           "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 102,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
       ],
@@ -56,6 +64,10 @@
         {
           "gameId": 101,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 102,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
       ],
       "avatar": "Avatars/Alex.png"
@@ -75,6 +87,10 @@
       "gamesData": [
         {
           "gameId": 101,
+          "description": "Year 1  SPRING, Day 1  SATURDAY"
+        },
+        {
+          "gameId": 102,
           "description": "Year 1  SPRING, Day 1  SATURDAY"
         }
       ],

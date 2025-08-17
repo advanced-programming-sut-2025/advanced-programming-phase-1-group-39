@@ -646,6 +646,7 @@ public class Player {
 
     public void setSelectedSlot(int selectedSlot) {
         this.selectedSlot = selectedSlot;
+        this.inventory.setInHand(inventory.getInventoryItems().get(selectedSlot));
     }
 
     // state of player

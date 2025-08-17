@@ -1704,7 +1704,7 @@ public class GameScreen implements Screen {
         mainTable.setFillParent(true);
 
         // === ردیف اول: دکمه‌های تب ===
-        String[] tabNames = {"Gift", "Info", "Quests"};
+        String[] tabNames = {"Gift", "Info", "Quests", "Receive"};
         Table tabsRow = new Table();
         for (String tab : tabNames) {
             TextButton tabBtn = new TextButton(tab, skin);
@@ -1726,6 +1726,8 @@ public class GameScreen implements Screen {
                         case "Quests":
                             contentCell.setActor(getQuestContentTable(getCompletedQuests(npcId), getDoneQuests(npcId), controller.getQuesLists(npcId)));
                             break;
+                            case "Receive":
+                                contentCell.setActor(getQuestReceiveTable(controller.getQuesLists(npcId), getDoneQuests(npcId), npcId));
                     }
                 }
             });
@@ -2023,6 +2025,66 @@ public class GameScreen implements Screen {
         infoTable.add(lblPointsValue).pad(5).left().row();
 
         return infoTable;
+    }
+
+    private Table getQuestReceiveTable(ArrayList<String> notReceived, ArrayList<String> received, String npcId) {
+        Skin skin = GameAssetManager.skin;
+        Table table = new Table();
+        table.top().left();
+
+        // Title
+        Label title = new Label("Available Quests", skin, "title");
+        title.setColor(Color.GOLD);
+        title.setAlignment(Align.center);
+        table.add(title).colspan(2).pad(10).center().row();
+
+        final String[] selectedQuest = { null };
+
+        for (String q : notReceived) {
+            CheckBox btnQuest = new CheckBox(q, skin);
+            btnQuest.getLabel().setFontScale(0.5f);
+            btnQuest.getLabel().setColor(Color.WHITE);
+            btnQuest.getLabel().setWrap(false);
+            btnQuest.getLabelCell().padLeft(8f);
+
+            btnQuest.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    selectedQuest[0] = q;
+                }
+            });
+
+            table.add(btnQuest)
+                    .expandX().fillX()
+                    .pad(5)
+                    .colspan(2)
+                    .left()
+                    .row();
+        }
+
+        TextButton btnReceive = new TextButton("Receive Quest", skin);
+        btnReceive.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (selectedQuest[0] != null) {
+                    getDoneQuests(npcId).add(selectedQuest[0]);
+                    controller.deleteQuest(getDoneQuests(npcId).size(), npcId);
+                    selectedQuest[0] = null;
+
+                    table.clear();
+                    Table newTable = getQuestReceiveTable(controller.getQuesLists(npcId), getDoneQuests(npcId), npcId);
+                    table.add(newTable).expand().fill();
+                }
+            }
+        });
+
+        table.add(btnReceive)
+                .padTop(15)
+                .colspan(2)
+                .center()
+                .row();
+
+        return table;
     }
 
     // WINDOWS

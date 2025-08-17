@@ -19,5 +19,9 @@ public class Quest {
     public ItemStack getTask() {
         return task;
     }
+
+    public void setLevel(int i) {
+        this.level = i;
+    }
 }
 

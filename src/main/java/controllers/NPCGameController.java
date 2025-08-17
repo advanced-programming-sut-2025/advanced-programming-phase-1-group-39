@@ -435,7 +435,7 @@ public class NPCGameController {
         Game game = app.getCurrentGame();
         for (int i = 0; i < game.getNPC(NPCName).getQuests().size(); i++) {
             if (game.getNPC(NPCName).getQuests().get(i).getLevel() == level) {
-                game.getNPC(NPCName).getQuests().remove(i);
+                game.getNPC(NPCName).getQuests().get(i).setLevel(0);
                 break;
             }
         }

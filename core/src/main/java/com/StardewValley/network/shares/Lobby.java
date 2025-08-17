@@ -18,7 +18,7 @@ public class Lobby implements Serializable {
 
     private final List<String> players; //  !! Usernames
     private final Map<String, FarmType> playersMap = new HashMap<>();
-    private final String admin;
+    private String admin;
     private boolean gameStarted;
 
     public Lobby(String lobbyName, String admin, boolean isPrivate, String password, boolean isVisibleToAll) {
@@ -86,5 +86,16 @@ public class Lobby implements Serializable {
         // از getPlayerCount() استفاده می‌کنیم که مستقیما سایز لیست همگام‌شده را می‌خواند
         String status = gameStarted ? "[In Game]" : "[Waiting]";
         return status + " ID: " + id + " | Name: " + lobbyName + " | Players: " + getPlayerCount() + "/" + MAX_PLAYERS;
+    }
+
+    public void removePlayer(String playerName) {
+        synchronized (players) {
+            players.remove(playerName);
+            playersMap.remove(playerName);
+        }
+    }
+
+    public void setAdmin(String newAdminUsername) {
+         this.admin = newAdminUsername; // اگر admin را از final بودن خارج کنید
     }
 }

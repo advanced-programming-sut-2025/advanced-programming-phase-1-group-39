@@ -119,6 +119,62 @@ public class ServerMain {
         }
     }
 
+    public static void leaveLobby(ClientHandler leavingClient) {
+        String username = leavingClient.getUsername();
+        String lobbyId = leavingClient.getLobbyId();
+
+        // ۱. بررسی اولیه: آیا بازیکن اصلاً در لابی هست؟
+        if (lobbyId == null || username == null) {
+            System.err.println("Attempted to leave lobby but client was not in one.");
+            return;
+        }
+
+        Lobby targetLobby = getLobbyById(lobbyId);
+
+        if (targetLobby == null) {
+            System.err.println("Lobby " + lobbyId + " not found for leaving client " + username);
+            leavingClient.setLobbyId(null); // وضعیت کلاینت را تصحیح کن
+            return;
+        }
+
+        boolean wasAdmin = targetLobby.getAdmin().equals(username);
+
+        // ۲. بازیکن را از لیست لابی حذف کن
+        targetLobby.removePlayer(username);
+        System.out.println("Player " + username + " removed from lobby " + lobbyId);
+
+        // ۳. وضعیت خود کلاینت را آپدیت کن
+        leavingClient.setLobbyId(null);
+        // (اختیاری) می‌توانید یک پیام تایید برای خود بازیکن بفرستید
+        leavingClient.sendMessage(new Request(RequestType.LEAVE_LOBBY_SUCCESS, "You have left the lobby."));
+
+        // ۴. منطق اصلی بر اساس اینکه چه کسی خارج شده
+        if (wasAdmin) {
+            // اگر ادمین خارج شده...
+            if (targetLobby.getPlayerCount() > 0) {
+                // ...و هنوز بازیکنی هست، نفر اول را به عنوان ادمین جدید انتخاب کن
+                String newAdmin = targetLobby.getPlayers().get(0);
+                // targetLobby.setAdmin(newAdmin); // اگر فیلد admin را non-final کردید
+                System.out.println("Admin left. New admin for lobby " + lobbyId + " is " + newAdmin);
+                // به بازیکنان داخل لابی، وضعیت جدید لابی را اطلاع بده
+                broadcastLobbyStateUpdate(targetLobby);
+            } else {
+                // ...و هیچکس نمانده، لابی را به طور کامل حذف کن
+                synchronized (lobbies) {
+                    lobbies.remove(targetLobby);
+                }
+                System.out.println("Lobby " + lobbyId + " closed as the last player (admin) left.");
+            }
+        } else {
+            // اگر یک بازیکن عادی خارج شده، فقط وضعیت لابی را برای بقیه آپدیت کن
+            broadcastLobbyStateUpdate(targetLobby);
+        }
+
+        // ۵. در نهایت، لیست کلی لابی‌ها را برای همه کسانی که بیرون هستند، آپدیت کن
+        broadcastLobbyList();
+    }
+
+
     public static void startGame(ClientHandler requestingClient) {
         String lobbyId = requestingClient.getLobbyId();
         if (lobbyId == null) {
@@ -282,6 +338,11 @@ public class ServerMain {
                 }
             }
         }
+    }
+
+    private static void broadcastLobbyStateUpdate(Lobby lobby) {
+        Request updateRequest = new Request(RequestType.UPDATE_LOBBY_STATE, lobby);
+        broadcastMessageToLobby(lobby.getId(), updateRequest);
     }
 
 

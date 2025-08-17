@@ -7,6 +7,7 @@ import com.StardewValley.models.GameSetting;
 import com.StardewValley.models.Result;
 import com.StardewValley.models.services.AppDataManager;
 import com.StardewValley.network.client.NetworkClient;
+import com.StardewValley.network.shares.Lobby;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -72,6 +73,23 @@ public class Main extends Game {
             ((LobbyScreen) currentScreen).handleJoinResponse(result);
         }
     }
+
+    public void onLeftLobby(String message) {
+        Screen currentScreen = getScreen();
+        if (currentScreen instanceof LobbyScreen) {
+            ((LobbyScreen) currentScreen).closeJoinedLobbyWindow();
+        }
+    }
+
+    public void onUpdateLobby(Lobby lobby) {
+        Screen currentScreen = getScreen();
+        if (currentScreen instanceof LobbyScreen) {
+            ((LobbyScreen) currentScreen).updateJoinedLobbyWindow(lobby);
+        }
+    }
+
+
+
 
     @Override
     public void render() {

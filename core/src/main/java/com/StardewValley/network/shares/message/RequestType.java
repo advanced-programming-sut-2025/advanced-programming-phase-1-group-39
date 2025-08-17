@@ -98,5 +98,5 @@ public enum RequestType {
      * دستور برای نمایش یک انیمیشن در یک مکان خاص.
      * Payload: AnimationPayload(String animationName, Location location)
      */
-    SHOW_ANIMATION, YOU_WERE_KICKED, CREATE_LOBBY_SUCCESS, // may needed
+    SHOW_ANIMATION, YOU_WERE_KICKED, CREATE_LOBBY_SUCCESS, UPDATE_LOBBY_STATE, LEAVE_LOBBY, LEAVE_LOBBY_SUCCESS, // may needed
 }

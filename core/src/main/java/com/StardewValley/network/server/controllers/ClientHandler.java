@@ -95,6 +95,10 @@ public class ClientHandler implements Runnable {
                 sendMessage(new Request(RequestType.JOIN_LOBBY_RESPONSE, lobbyResponse));
                 break;
 
+            case LEAVE_LOBBY: // یک RequestType جدید برای این کار بسازید
+                ServerMain.leaveLobby(this);
+                break;
+
             case CHOOSE_MAP:
                 FarmType farmType = (FarmType) request.getPayload();
                 ServerMain.setPlayerFarmType(this, farmType);

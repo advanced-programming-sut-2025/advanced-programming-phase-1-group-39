@@ -3,6 +3,7 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.models.App;
 import com.StardewValley.models.Result;
+import com.StardewValley.models.map.FarmType;
 import com.StardewValley.models.services.GameAssetManager;
 import com.StardewValley.network.client.NetworkClient;
 import com.StardewValley.network.shares.Lobby;
@@ -117,10 +118,11 @@ public class LobbyScreen implements Screen {
         errorLabel.setAlignment(Align.center);
         messageTable.add(errorLabel).bottom().padBottom(50).expandY();
 
-        addListeners(backButton, refreshButton, createLobbyButton);
+        addListeners(backButton, refreshButton, createLobbyButton, searchField);
     }
 
-    private void addListeners(TextButton backButton, TextButton refreshButton, TextButton createLobbyButton) {
+    private void addListeners(TextButton backButton, TextButton refreshButton, TextButton createLobbyButton,
+                              TextField searchField) {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -140,6 +142,19 @@ public class LobbyScreen implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 showCreateLobbyWindow();
+            }
+        });
+
+        searchField.setTextFieldListener(new TextField.TextFieldListener() {
+            public void keyTyped(TextField textField, char c) {
+                if (c == '\n' || c == '\r') {
+                    String id = textField.getText().trim();
+                    if (id.isEmpty()) return;
+
+                    networkClient.sendJoinLobbyRequest(id);
+
+                    textField.setText("");
+                }
             }
         });
     }
@@ -225,6 +240,11 @@ public class LobbyScreen implements Screen {
         passwordDialog.show(stage);
     }
 
+    public void closeJoinedLobbyWindow() {
+        Actor oldWindow = stage.getRoot().findActor("joinedLobbyWindow");
+        if(oldWindow != null) oldWindow.remove();
+    }
+
     private void showJoinedLobbyWindow(Lobby lobby, String currentPlayerName) {
         Actor oldWindow = stage.getRoot().findActor("joinedLobbyWindow");
         if(oldWindow != null) oldWindow.remove();
@@ -236,6 +256,7 @@ public class LobbyScreen implements Screen {
         joinedWindow.setModal(true);
 
         // لیست بازیکنان
+        joinedWindow.add(new Label("Lobby Id: " + lobby.getId(), skin)).pad(15).row();
         Table playersTable = new Table();
         for (String playerName : lobby.getPlayers()) {
             String labelText = playerName;
@@ -250,13 +271,24 @@ public class LobbyScreen implements Screen {
 
         // انتخاب نقشه
         joinedWindow.add(new Label("Choose your map:", skin)).padTop(20).row();
-        SelectBox<String> mapSelectBox = new SelectBox<>(skin);
-        mapSelectBox.setItems("Default Farm", "Riverland Farm", "Forest Farm", "Hill-top Farm", "Wilderness Farm");
+        SelectBox<FarmType> mapSelectBox = new SelectBox<>(skin);
+        mapSelectBox.setItems(FarmType.values());
+        mapSelectBox.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                networkClient.sendChooseMapRequest(mapSelectBox.getSelected());
+            }
+        });
         joinedWindow.add(mapSelectBox).pad(10).row();
 
         // دکمه‌های پایین صفحه
         TextButton startGameButton = new TextButton("Start Game", skin);
-        startGameButton.setDisabled(!currentPlayerName.equals(lobby.getAdmin())); // فقط برای ادمین فعال است
+        if (currentPlayerName.equals(lobby.getAdmin())) {
+            startGameButton.setDisabled(false);
+            startGameButton.setColor(Color.WHITE);
+        } else {
+            startGameButton.setDisabled(true);
+            startGameButton.setColor(Color.GRAY);
+        }
         TextButton leaveLobbyButton = new TextButton("Leave Lobby", skin);
 
         Table bottomTable = new Table();
@@ -269,12 +301,50 @@ public class LobbyScreen implements Screen {
         leaveLobbyButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // TODO: ارسال پیام خروج از لابی به سرور
+                networkClient.sendLeaveLobbyRequest();
                 joinedWindow.remove();
             }
         });
 
         stage.addActor(joinedWindow);
+    }
+
+    public void updateJoinedLobbyWindow(Lobby updatedLobby) {
+        // ۱. پنجره فعلی را پیدا کن
+        Window joinedWindow = stage.getRoot().findActor("joinedLobbyWindow");
+        if (joinedWindow == null) {
+            // اگر پنجره به هر دلیلی بسته شده بود، کاری نکن
+            return;
+        }
+
+        String currentPlayerName = App.getApp().getLoggedInUser().getUserName();
+
+        // ۲. <<-- آپدیت لیست بازیکنان -->>
+        // ابتدا ScrollPane و سپس Table داخل آن را پیدا کن
+        ScrollPane scrollPane = joinedWindow.findActor("playersScrollPane"); // <<-- باید به ScrollPane نام بدهید
+        if (scrollPane != null) {
+            Table playersTable = (Table) scrollPane.getActor();
+            playersTable.clear(); // لیست قدیمی را کاملاً پاک کن
+
+            // لیست جدید را بساز
+            for (String playerName : updatedLobby.getPlayers()) {
+                String labelText = playerName;
+                if (playerName.equals(updatedLobby.getAdmin())) {
+                    labelText += " (Admin)";
+                }
+                Label label = new Label(labelText, skin);
+                label.setFontScale(1.5f);
+                playersTable.add(label).left().pad(5).row(); // <<-- اشتباه قبلی در کد شما اصلاح شد
+            }
+        }
+
+        // ۳. <<-- آپدیت وضعیت دکمه Start Game -->>
+        TextButton startGameButton = joinedWindow.findActor("startGameButton"); // <<-- باید به دکمه نام بدهید
+        if (startGameButton != null) {
+            boolean isAdmin = currentPlayerName.equals(updatedLobby.getAdmin());
+            startGameButton.setDisabled(!isAdmin);
+            startGameButton.setColor(isAdmin ? Color.WHITE : Color.GRAY);
+        }
     }
 
     private void showCreateLobbyWindow() {

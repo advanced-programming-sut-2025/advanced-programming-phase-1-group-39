@@ -121,6 +121,17 @@ public class NetworkClient {
                 }
                 break;
 
+            case LEAVE_LOBBY_SUCCESS:
+                String message = (String) payload;
+                main.onLeftLobby(message);
+                break;
+
+            case UPDATE_LOBBY_STATE:
+                Lobby lobby = (Lobby) payload;
+                app.setCurrentLobby(lobby);
+                main.onUpdateLobby(lobby);
+                break;
+
             case YOU_WERE_KICKED:
                 String reason = (String) request.getPayload();
                 disconnect();
@@ -204,13 +215,17 @@ public class NetworkClient {
         sendRequest(new Request(RequestType.JOIN_PRIVATE_LOBBY, new String[]{id, password}));
     }
 
-    // on button clicked
+    public void sendLeaveLobbyRequest() {
+        sendRequest(new Request(RequestType.LEAVE_LOBBY, null));
+    }
+
+    //  on button clicked
     public void sendChooseMapRequest(FarmType farmType) {
         sendRequest(new Request(RequestType.CHOOSE_MAP, farmType));
     }
 
     // Game starting
-    // TODO : on button clicked
+    // on button clicked
     public void sendStartGameRequest() {
         sendRequest(new Request(RequestType.START_GAME, null));
     }

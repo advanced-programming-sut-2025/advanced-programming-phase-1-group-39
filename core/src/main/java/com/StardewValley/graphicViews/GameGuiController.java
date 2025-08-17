@@ -15,6 +15,7 @@ import com.StardewValley.models.NPC.PlayerNPCInteraction;
 import com.StardewValley.models.NPC.Quest;
 import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.buildings.AnimalBuilding;
+import com.StardewValley.models.buildings.ShippingBin;
 import com.StardewValley.models.cooking.FoodManager;
 import com.StardewValley.models.cooking.FoodRecipe;
 import com.StardewValley.models.crafting.CraftingManager;
@@ -600,5 +601,4 @@ public class GameGuiController {
             game.getNPC(NPCName).getRewardMission3(friendShipLevel, game);
         }
     }
-
 }

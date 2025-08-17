@@ -3,10 +3,7 @@ package com.StardewValley.graphicViews;
 import com.StardewValley.Main;
 import com.StardewValley.models.*;
 import com.StardewValley.models.Enums.WeatherStatus;
-import com.StardewValley.models.NPC.AbigailNPC;
-import com.StardewValley.models.NPC.NPC;
 import com.StardewValley.models.NPC.PlayerNPCInteraction;
-import com.StardewValley.models.NPC.Quest;
 import com.StardewValley.models.Shops.Shop;
 import com.StardewValley.models.animals.Animal;
 import com.StardewValley.models.animals.AnimalType;
@@ -46,7 +43,6 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -172,6 +168,10 @@ public class GameScreen implements Screen {
     private TextureRegion questIconYellow;
     private TextureRegion questIconRed;
 
+    // shipping sell
+    private Window sellBasketWindow;
+    private Cell<?> sellBasketContentCell;
+    ShippingBin bin = new ShippingBin();
 
     // animal popup
     private Window animalWindow;
@@ -279,6 +279,8 @@ public class GameScreen implements Screen {
         for (String npc : npcNames) {
             npcHeartVisible.put(npc.toLowerCase(), false);
         }
+
+        this.bin = (ShippingBin) game.getPlayerInTurn().getBuildingByName("Shipping Bin");
 
         // for error message
         Table messageTable = new Table();
@@ -1279,7 +1281,7 @@ public class GameScreen implements Screen {
                 ArrayList<ItemStack> items = inv.getInventoryItems();
 
                 if (idx >= 0 && idx < items.size() && items.get(idx) != null) {
-                    pendingTrashSlot = idx;
+                    inv.pickItem(inv.getInventoryItems().get(idx).getName(), 1);
                 }
 
                 return true;
@@ -2136,6 +2138,9 @@ public class GameScreen implements Screen {
                         getDoneQuests(npcId).removeFirst();
                         getCompletedQuests(npcId).add(selectedQuest[0]);
                         npcHeartVisible.put(currentNpcId.toLowerCase(), true);
+
+                        closeNpcMenu();
+
                         Timer.schedule(new Timer.Task() {
                             @Override
                             public void run() {
@@ -2162,6 +2167,124 @@ public class GameScreen implements Screen {
                 .row();
 
         return table;
+    }
+
+    // shipping sell
+
+    public void showSellBasketWindow() {
+        if (sellBasketWindow != null && sellBasketWindow.isVisible()) return;
+
+        Skin skin = GameAssetManager.skin;
+        sellBasketWindow = new Window("Sell Basket", skin);
+        sellBasketWindow.setModal(true);
+        sellBasketWindow.setSize(1000, 800);
+        sellBasketWindow.setPosition(uiStage.getWidth() / 2f, uiStage.getHeight() / 2f, Align.center);
+
+        Table mainTable = new Table();
+        mainTable.top().pad(20);
+
+        // عنوان
+        Label title = new Label("Select item to sell", skin, "title");
+        title.setAlignment(Align.center);
+        mainTable.add(title).colspan(2).padBottom(20).row();
+
+        // جدول اینونتوری فروش
+        sellBasketContentCell = mainTable.add(getSellBasketContentTable()).expand().fill();
+        mainTable.row();
+
+        // دکمه بستن
+        TextButton closeBtn = new TextButton("Close", skin);
+        closeBtn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideSellBasketWindow();
+            }
+        });
+        mainTable.add(closeBtn).padTop(20).center();
+
+        sellBasketWindow.clearChildren();
+        sellBasketWindow.add(mainTable).grow();
+
+        uiStage.addActor(sellBasketWindow);
+        Gdx.input.setInputProcessor(uiStage);
+    }
+
+    private ScrollPane getSellBasketContentTable() {
+        Skin skin = GameAssetManager.skin;
+        Table content = new Table();
+
+        Player player = game.getPlayerInTurn();
+        Inventory inv = player.getInventory();
+        ArrayList<ItemStack> items = inv.getInventoryItems();
+
+        final float slotSize = 82f;
+
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                int index = row * 10 + col;
+
+                Stack slotStack = new Stack();
+                Image slotBg = new Image(GameAssetManager.inventorySlot);
+                slotStack.add(slotBg);
+
+                if (index < items.size() && items.get(index) != null) {
+                    ItemStack stack = items.get(index);
+                    slotStack.add(new Image(new TextureRegionDrawable(stack.getItem().getTexture())));
+
+                    int quantity = stack.getAmount();
+                    if (quantity > 1) {
+                        Label lbl = new Label(String.valueOf(quantity), skin);
+                        lbl.setColor(Color.GOLD);
+                        Table lblTable = new Table();
+                        lblTable.add(lbl).bottom().center().padBottom(4);
+                        lblTable.setFillParent(true);
+                        slotStack.add(lblTable);
+                    }
+
+                    // آیکون تیک برای فروش
+                    Image tickImg = new Image(new Texture("ui/tick.png"));
+                    tickImg.setVisible(false);
+                    slotStack.add(tickImg);
+
+                    // انتخاب/فروش آیتم موقع کلیک
+                    slotStack.addListener(new ClickListener() {
+                        private boolean selected = false;
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            selected = !selected;
+                            tickImg.setVisible(selected);
+                            if (!selected) return;
+
+                            // عملیات فروش
+                            int num = 1;
+                            player.getInventory().addItem(stack.getItem(), -num);
+                            int price = num * stack.getItem().getItemPrice();
+                            player.addToRevenue(price); // متد فروش آیتم که باید تو کنترلر اضافه بشه
+                            items.remove(index);
+                            refreshSellBasketContent();
+                        }
+                    });
+                }
+                content.add(slotStack).size(slotSize, slotSize).pad(4);
+            }
+            content.row();
+        }
+
+        return new ScrollPane(content, skin);
+    }
+
+    private void refreshSellBasketContent() {
+        if (sellBasketContentCell != null) {
+            sellBasketContentCell.setActor(getSellBasketContentTable());
+        }
+    }
+
+    public void hideSellBasketWindow() {
+        if (sellBasketWindow != null) {
+            sellBasketWindow.remove();
+            sellBasketWindow = null;
+            Gdx.input.setInputProcessor(gameMenuInputAdapter);
+        }
     }
 
     // WINDOWS
@@ -2577,4 +2700,6 @@ public class GameScreen implements Screen {
     public Stage getStage() {
         return uiStage;
     }
+
+    public ShippingBin getShippingBin() { return  this.bin; }
 }

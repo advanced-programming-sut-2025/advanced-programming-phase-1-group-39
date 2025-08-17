@@ -206,6 +206,18 @@ public class GameInputAdapter extends InputAdapter {
 
             Direction dir = getMouseDirectionAroundPlayer(playerTile, mouseTile);
 
+            Rectangle sellBinBounds = new Rectangle(
+                    screen.getShippingBin().getLocation().x(),
+                    screen.getShippingBin().getLocation().y(),
+                    screen.getShippingBin().getWidth(),
+                    screen.getShippingBin().getHeight()
+            );
+
+            if (sellBinBounds.contains(worldCoords.x, worldCoords.y)) {
+                screen.showSellBasketWindow();
+                return true;
+            }
+
             // دیباگ برای تست مختصات:
             System.out.println("mouseTile: " + mouseTile.x() + "," + mouseTile.y());
             System.out.println("playerTile: " + playerTile.x() + "," + playerTile.y());

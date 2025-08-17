@@ -30,6 +30,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -431,25 +432,35 @@ public class GameScreen implements Screen {
         petAnimal.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                hideAnimalInfoPopup();
+               if (controller.petAnimal(animalToggled).success()) {
+                   hideAnimalInfoPopup();
+                   showHeartAboveAnimal(animalToggled);
+               };
             }
         });
         getProductsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                hideAnimalInfoPopup();
+                controller.collectProducts(animalToggled);
             }
         });
         feedAnimalButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                hideAnimalInfoPopup();
+                if (controller.feedHayAnimal(animalToggled).success()) {
+                    hideAnimalInfoPopup();
+                    showStarAboveAnimal(animalToggled);
+                };
             }
         });
         shepherdAnimalButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                hideAnimalInfoPopup();
+                Player player = game.getPlayerInTurn();
+                AnimalBuilding animalBuilding = player.getAnimalLivingPlaceBuilding(animalToggled);
+                if (animalBuilding != null) {
+                    animalToggled.setLocation(animalBuilding.getRandomLocationInside());
+                }
             }
         });
         sell.addListener(new ChangeListener() {
@@ -466,6 +477,63 @@ public class GameScreen implements Screen {
         });
 
     }
+
+    private void showHeartAboveAnimal(Animal animal) {
+        // لود تصویر قلب
+        Texture heartTexture = new Texture(Gdx.files.internal("NPC/Emote2.png"));
+        Image heartImage = new Image(heartTexture);
+
+        // موقعیت حیوان در world
+        float animalX = animal.getX();
+        float animalY = animal.getY();
+
+        // تبدیل مختصات world به UI stage
+        Vector3 uiCoords = camera.project(new Vector3(
+                animalX + Map.TILE_SIZE / 2f - heartImage.getWidth() / 2f, // وسط حیوان
+                animalY + Map.TILE_SIZE, // بالای حیوان
+                0
+        ));
+
+        heartImage.setPosition(uiCoords.x, uiCoords.y);
+
+        // افکت ظاهر و محو شدن
+        heartImage.getColor().a = 0f;
+        heartImage.addAction(Actions.sequence(
+                Actions.fadeIn(0.3f),
+                Actions.delay(3f),
+                Actions.fadeOut(0.5f),
+                Actions.run(heartImage::remove)
+        ));
+
+        effectsStage.addActor(heartImage);
+    }
+
+    private void showStarAboveAnimal(Animal animal) {
+        Texture starTexture = new Texture(Gdx.files.internal("NPC/Emote5.png"));
+        Image starImage = new Image(starTexture);
+
+        float animalX = animal.getX();
+        float animalY = animal.getY();
+
+        Vector3 uiCoords = camera.project(new Vector3(
+                animalX + Map.TILE_SIZE / 2f - starImage.getWidth() / 2f,
+                animalY + Map.TILE_SIZE,
+                0
+        ));
+
+        starImage.setPosition(uiCoords.x, uiCoords.y);
+
+        starImage.getColor().a = 0f;
+        starImage.addAction(Actions.sequence(
+                Actions.fadeIn(0.3f),
+                Actions.delay(3f),
+                Actions.fadeOut(0.5f),
+                Actions.run(starImage::remove)
+        ));
+
+        effectsStage.addActor(starImage);
+    }
+
 
     public void showAnimalInfoPopup(Animal animal) {
         closeAllUiMenus();
@@ -2702,4 +2770,6 @@ public class GameScreen implements Screen {
     }
 
     public ShippingBin getShippingBin() { return  this.bin; }
+
+    public Animal getAnimal() { return this.animalToggled; }
 }

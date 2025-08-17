@@ -441,6 +441,14 @@ public class Player {
         return dx <= 1 && dy <= 1 && dx >= -1 && dy >= -1;
     }
 
+
+    public boolean isNear(Location location1, Location location2) {
+        int dx = location1.x() - location2.x();
+        int dy = location1.y() - location2.y();
+
+        return dx <= 1 && dy <= 1 && dx >= -1 && dy >= -1;
+    }
+
     public Skill getSkills() {
         return skills;
     }

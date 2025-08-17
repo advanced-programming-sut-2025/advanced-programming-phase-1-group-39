@@ -365,6 +365,14 @@ public class LobbyScreen implements Screen {
             }
         });
 
+        startGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                networkClient.sendStartGameRequest();
+            }
+        });
+
+
         stage.addActor(joinedWindow);
     }
 

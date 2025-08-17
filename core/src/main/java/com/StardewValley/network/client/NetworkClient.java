@@ -2,6 +2,7 @@ package com.StardewValley.network.client;
 
 import com.StardewValley.Main; // <<-- وارد کردن کلاس اصلی بازی
 import com.StardewValley.graphicViews.GameScreen;
+import com.StardewValley.graphicViews.LobbyScreen;
 import com.StardewValley.models.App; // <<-- وارد کردن مدل App
 import com.StardewValley.models.Game;
 import com.StardewValley.models.Result;
@@ -141,15 +142,13 @@ public class NetworkClient {
 
             case GAME_START_FAILED:
                 String errorMessage = (String) payload;
-                // TODO: یک متد برای نمایش خطاهای عمومی در UI بسازید
-                // gameMain.showErrorPopup(errorMessage);
+                ((LobbyScreen) main.getScreen()).showError(errorMessage);
                 break;
 
             case GAME_STARTED:
                 if (payload instanceof Game) {
                     Game receivedGame = (Game) payload;
                     app.setCurrentGame(receivedGame);
-
                     main.switchScreen(new GameScreen());
                 }
                 break;

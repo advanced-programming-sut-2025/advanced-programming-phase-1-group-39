@@ -2091,6 +2091,7 @@ public class GameScreen implements Screen {
     }
 
     private Table getQuestCompleteTable(ArrayList<String> received, ArrayList<String> completed, String npcId) {
+        String currentNpcId = npcId;
         Skin skin = GameAssetManager.skin;
         Table table = new Table();
         table.top().left();
@@ -2134,6 +2135,13 @@ public class GameScreen implements Screen {
                         controller.getReward(getDoneQuests(npcId).size(), npcId, game.getPlayerInTurn().getFriendship(npcId).getFriendshipLevel());
                         getDoneQuests(npcId).removeFirst();
                         getCompletedQuests(npcId).add(selectedQuest[0]);
+                        npcHeartVisible.put(currentNpcId.toLowerCase(), true);
+                        Timer.schedule(new Timer.Task() {
+                            @Override
+                            public void run() {
+                                npcHeartVisible.put(currentNpcId.toLowerCase(), false);
+                            }
+                        }, 5f);
                     }
 
 
